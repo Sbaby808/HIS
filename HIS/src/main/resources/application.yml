@@ -1,0 +1,35 @@
+
+debug: true
+server:
+  port: 8089
+
+spring:
+      
+  datasource:
+      url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+      username: hiser
+      password: his123456
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x' 
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+      
+  jpa:
+    database: oracle
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+ 
