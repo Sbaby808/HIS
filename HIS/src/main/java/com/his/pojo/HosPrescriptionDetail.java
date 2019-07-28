@@ -29,12 +29,12 @@ public class HosPrescriptionDetail implements Serializable {
 
 	//bi-directional many-to-one association to DrugInformation
 	@ManyToOne
-	@JoinColumn(name="YP_ID")
+	@JoinColumn(name="YP_ID", insertable=false, updatable=false)
 	private DrugInformation drugInformation;
 
 	//bi-directional many-to-one association to HosPrescription
 	@ManyToOne
-	@JoinColumn(name="HOS_PRE_ID")
+	@JoinColumn(name="HOS_PRE_ID", insertable=false, updatable=false)
 	private HosPrescription hosPrescription;
 
 	public HosPrescriptionDetail() {

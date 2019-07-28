@@ -36,29 +36,13 @@ public class OperationRecord implements Serializable {
 	@Column(name="OPE_TYPE")
 	private String opeType;
 
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="YGXH")
-	private EmpInformation empInformation1;
-
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="EMP_YGXH3")
-	private EmpInformation empInformation2;
-
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="EMP_YGXH2")
-	private EmpInformation empInformation3;
-
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="EMP_YGXH")
-	private EmpInformation empInformation4;
-
 	//bi-directional many-to-one association to OpeDrugDetail
 	@OneToMany(mappedBy="operationRecord")
 	private List<OpeDrugDetail> opeDrugDetails;
+
+	//bi-directional many-to-one association to OpeEmp
+	@OneToMany(mappedBy="operationRecord")
+	private List<OpeEmp> opeEmps;
 
 	public OperationRecord() {
 	}
@@ -111,38 +95,6 @@ public class OperationRecord implements Serializable {
 		this.opeType = opeType;
 	}
 
-	public EmpInformation getEmpInformation1() {
-		return this.empInformation1;
-	}
-
-	public void setEmpInformation1(EmpInformation empInformation1) {
-		this.empInformation1 = empInformation1;
-	}
-
-	public EmpInformation getEmpInformation2() {
-		return this.empInformation2;
-	}
-
-	public void setEmpInformation2(EmpInformation empInformation2) {
-		this.empInformation2 = empInformation2;
-	}
-
-	public EmpInformation getEmpInformation3() {
-		return this.empInformation3;
-	}
-
-	public void setEmpInformation3(EmpInformation empInformation3) {
-		this.empInformation3 = empInformation3;
-	}
-
-	public EmpInformation getEmpInformation4() {
-		return this.empInformation4;
-	}
-
-	public void setEmpInformation4(EmpInformation empInformation4) {
-		this.empInformation4 = empInformation4;
-	}
-
 	public List<OpeDrugDetail> getOpeDrugDetails() {
 		return this.opeDrugDetails;
 	}
@@ -163,6 +115,28 @@ public class OperationRecord implements Serializable {
 		opeDrugDetail.setOperationRecord(null);
 
 		return opeDrugDetail;
+	}
+
+	public List<OpeEmp> getOpeEmps() {
+		return this.opeEmps;
+	}
+
+	public void setOpeEmps(List<OpeEmp> opeEmps) {
+		this.opeEmps = opeEmps;
+	}
+
+	public OpeEmp addOpeEmp(OpeEmp opeEmp) {
+		getOpeEmps().add(opeEmp);
+		opeEmp.setOperationRecord(this);
+
+		return opeEmp;
+	}
+
+	public OpeEmp removeOpeEmp(OpeEmp opeEmp) {
+		getOpeEmps().remove(opeEmp);
+		opeEmp.setOperationRecord(null);
+
+		return opeEmp;
 	}
 
 }

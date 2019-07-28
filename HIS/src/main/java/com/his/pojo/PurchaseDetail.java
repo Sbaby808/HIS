@@ -23,12 +23,12 @@ public class PurchaseDetail implements Serializable {
 
 	//bi-directional many-to-one association to DrugInformation
 	@ManyToOne
-	@JoinColumn(name="YP_ID")
+	@JoinColumn(name="YP_ID", insertable=false, updatable=false)
 	private DrugInformation drugInformation;
 
 	//bi-directional many-to-one association to Purchase
 	@ManyToOne
-	@JoinColumn(name="CG_ID")
+	@JoinColumn(name="CG_ID", insertable=false, updatable=false)
 	private Purchase purchase;
 
 	public PurchaseDetail() {

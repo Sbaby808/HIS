@@ -25,12 +25,12 @@ public class PutStockDetail implements Serializable {
 
 	//bi-directional many-to-one association to DrugWarehouse
 	@ManyToOne
-	@JoinColumn(name="PCKC_ID")
+	@JoinColumn(name="PCKC_ID", insertable=false, updatable=false)
 	private DrugWarehouse drugWarehouse;
 
 	//bi-directional many-to-one association to PutStock
 	@ManyToOne
-	@JoinColumn(name="RK_ID")
+	@JoinColumn(name="RK_ID", insertable=false, updatable=false)
 	private PutStock putStock;
 
 	public PutStockDetail() {

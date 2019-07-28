@@ -55,14 +55,6 @@ public class EmpInformation implements Serializable {
 	@OneToMany(mappedBy="empInformation")
 	private List<AllocationOutbound> allocationOutbounds;
 
-	//bi-directional many-to-one association to AmbulanceRecord
-	@OneToMany(mappedBy="empInformation1")
-	private List<AmbulanceRecord> ambulanceRecords1;
-
-	//bi-directional many-to-one association to AmbulanceRecord
-	@OneToMany(mappedBy="empInformation2")
-	private List<AmbulanceRecord> ambulanceRecords2;
-
 	//bi-directional many-to-one association to AskleaveRecord
 	@OneToMany(mappedBy="empInformation")
 	private List<AskleaveRecord> askleaveRecords;
@@ -117,14 +109,6 @@ public class EmpInformation implements Serializable {
 	@OneToMany(mappedBy="empInformation")
 	private List<Examination> examinations;
 
-	//bi-directional many-to-one association to HospitalizedPatient
-	@OneToMany(mappedBy="empInformation1")
-	private List<HospitalizedPatient> hospitalizedPatients1;
-
-	//bi-directional many-to-one association to HospitalizedPatient
-	@OneToMany(mappedBy="empInformation2")
-	private List<HospitalizedPatient> hospitalizedPatients2;
-
 	//bi-directional many-to-one association to HosDrugRecord
 	@OneToMany(mappedBy="empInformation")
 	private List<HosDrugRecord> hosDrugRecords;
@@ -145,22 +129,6 @@ public class EmpInformation implements Serializable {
 	@OneToMany(mappedBy="empInformation")
 	private List<OperationPay> operationPays;
 
-	//bi-directional many-to-one association to OperationRecord
-	@OneToMany(mappedBy="empInformation1")
-	private List<OperationRecord> operationRecords1;
-
-	//bi-directional many-to-one association to OperationRecord
-	@OneToMany(mappedBy="empInformation2")
-	private List<OperationRecord> operationRecords2;
-
-	//bi-directional many-to-one association to OperationRecord
-	@OneToMany(mappedBy="empInformation3")
-	private List<OperationRecord> operationRecords3;
-
-	//bi-directional many-to-one association to OperationRecord
-	@OneToMany(mappedBy="empInformation4")
-	private List<OperationRecord> operationRecords4;
-
 	//bi-directional many-to-one association to OperPayRecord
 	@OneToMany(mappedBy="empInformation")
 	private List<OperPayRecord> operPayRecords;
@@ -168,14 +136,6 @@ public class EmpInformation implements Serializable {
 	//bi-directional many-to-one association to OutpatientPay
 	@OneToMany(mappedBy="empInformation")
 	private List<OutpatientPay> outpatientPays;
-
-	//bi-directional many-to-one association to OutpatientRegistration
-	@OneToMany(mappedBy="empInformation1")
-	private List<OutpatientRegistration> outpatientRegistrations1;
-
-	//bi-directional many-to-one association to OutpatientRegistration
-	@OneToMany(mappedBy="empInformation2")
-	private List<OutpatientRegistration> outpatientRegistrations2;
 
 	//bi-directional many-to-one association to OutpatientRequestionMedicine
 	@OneToMany(mappedBy="empInformation")
@@ -241,13 +201,25 @@ public class EmpInformation implements Serializable {
 	@OneToMany(mappedBy="empInformation")
 	private List<WorkoverRecord> workoverRecords;
 
-	//bi-directional many-to-one association to WorkTime
-	@OneToMany(mappedBy="empInformation1")
-	private List<WorkTime> workTimes1;
+	//bi-directional many-to-one association to AbuEmp
+	@OneToMany(mappedBy="empInformation")
+	private List<AbuEmp> abuEmps;
 
-	//bi-directional many-to-one association to WorkTime
-	@OneToMany(mappedBy="empInformation2")
-	private List<WorkTime> workTimes2;
+	//bi-directional many-to-one association to HosEmp
+	@OneToMany(mappedBy="empInformation")
+	private List<HosEmp> hosEmps;
+
+	//bi-directional many-to-one association to OpeEmp
+	@OneToMany(mappedBy="empInformation")
+	private List<OpeEmp> opeEmps;
+
+	//bi-directional many-to-one association to RegEmp
+	@OneToMany(mappedBy="empInformation")
+	private List<RegEmp> regEmps;
+
+	//bi-directional many-to-one association to WktimeEmp
+	@OneToMany(mappedBy="empInformation")
+	private List<WktimeEmp> wktimeEmps;
 
 	public EmpInformation() {
 	}
@@ -374,50 +346,6 @@ public class EmpInformation implements Serializable {
 		allocationOutbound.setEmpInformation(null);
 
 		return allocationOutbound;
-	}
-
-	public List<AmbulanceRecord> getAmbulanceRecords1() {
-		return this.ambulanceRecords1;
-	}
-
-	public void setAmbulanceRecords1(List<AmbulanceRecord> ambulanceRecords1) {
-		this.ambulanceRecords1 = ambulanceRecords1;
-	}
-
-	public AmbulanceRecord addAmbulanceRecords1(AmbulanceRecord ambulanceRecords1) {
-		getAmbulanceRecords1().add(ambulanceRecords1);
-		ambulanceRecords1.setEmpInformation1(this);
-
-		return ambulanceRecords1;
-	}
-
-	public AmbulanceRecord removeAmbulanceRecords1(AmbulanceRecord ambulanceRecords1) {
-		getAmbulanceRecords1().remove(ambulanceRecords1);
-		ambulanceRecords1.setEmpInformation1(null);
-
-		return ambulanceRecords1;
-	}
-
-	public List<AmbulanceRecord> getAmbulanceRecords2() {
-		return this.ambulanceRecords2;
-	}
-
-	public void setAmbulanceRecords2(List<AmbulanceRecord> ambulanceRecords2) {
-		this.ambulanceRecords2 = ambulanceRecords2;
-	}
-
-	public AmbulanceRecord addAmbulanceRecords2(AmbulanceRecord ambulanceRecords2) {
-		getAmbulanceRecords2().add(ambulanceRecords2);
-		ambulanceRecords2.setEmpInformation2(this);
-
-		return ambulanceRecords2;
-	}
-
-	public AmbulanceRecord removeAmbulanceRecords2(AmbulanceRecord ambulanceRecords2) {
-		getAmbulanceRecords2().remove(ambulanceRecords2);
-		ambulanceRecords2.setEmpInformation2(null);
-
-		return ambulanceRecords2;
 	}
 
 	public List<AskleaveRecord> getAskleaveRecords() {
@@ -678,50 +606,6 @@ public class EmpInformation implements Serializable {
 		return examination;
 	}
 
-	public List<HospitalizedPatient> getHospitalizedPatients1() {
-		return this.hospitalizedPatients1;
-	}
-
-	public void setHospitalizedPatients1(List<HospitalizedPatient> hospitalizedPatients1) {
-		this.hospitalizedPatients1 = hospitalizedPatients1;
-	}
-
-	public HospitalizedPatient addHospitalizedPatients1(HospitalizedPatient hospitalizedPatients1) {
-		getHospitalizedPatients1().add(hospitalizedPatients1);
-		hospitalizedPatients1.setEmpInformation1(this);
-
-		return hospitalizedPatients1;
-	}
-
-	public HospitalizedPatient removeHospitalizedPatients1(HospitalizedPatient hospitalizedPatients1) {
-		getHospitalizedPatients1().remove(hospitalizedPatients1);
-		hospitalizedPatients1.setEmpInformation1(null);
-
-		return hospitalizedPatients1;
-	}
-
-	public List<HospitalizedPatient> getHospitalizedPatients2() {
-		return this.hospitalizedPatients2;
-	}
-
-	public void setHospitalizedPatients2(List<HospitalizedPatient> hospitalizedPatients2) {
-		this.hospitalizedPatients2 = hospitalizedPatients2;
-	}
-
-	public HospitalizedPatient addHospitalizedPatients2(HospitalizedPatient hospitalizedPatients2) {
-		getHospitalizedPatients2().add(hospitalizedPatients2);
-		hospitalizedPatients2.setEmpInformation2(this);
-
-		return hospitalizedPatients2;
-	}
-
-	public HospitalizedPatient removeHospitalizedPatients2(HospitalizedPatient hospitalizedPatients2) {
-		getHospitalizedPatients2().remove(hospitalizedPatients2);
-		hospitalizedPatients2.setEmpInformation2(null);
-
-		return hospitalizedPatients2;
-	}
-
 	public List<HosDrugRecord> getHosDrugRecords() {
 		return this.hosDrugRecords;
 	}
@@ -832,94 +716,6 @@ public class EmpInformation implements Serializable {
 		return operationPay;
 	}
 
-	public List<OperationRecord> getOperationRecords1() {
-		return this.operationRecords1;
-	}
-
-	public void setOperationRecords1(List<OperationRecord> operationRecords1) {
-		this.operationRecords1 = operationRecords1;
-	}
-
-	public OperationRecord addOperationRecords1(OperationRecord operationRecords1) {
-		getOperationRecords1().add(operationRecords1);
-		operationRecords1.setEmpInformation1(this);
-
-		return operationRecords1;
-	}
-
-	public OperationRecord removeOperationRecords1(OperationRecord operationRecords1) {
-		getOperationRecords1().remove(operationRecords1);
-		operationRecords1.setEmpInformation1(null);
-
-		return operationRecords1;
-	}
-
-	public List<OperationRecord> getOperationRecords2() {
-		return this.operationRecords2;
-	}
-
-	public void setOperationRecords2(List<OperationRecord> operationRecords2) {
-		this.operationRecords2 = operationRecords2;
-	}
-
-	public OperationRecord addOperationRecords2(OperationRecord operationRecords2) {
-		getOperationRecords2().add(operationRecords2);
-		operationRecords2.setEmpInformation2(this);
-
-		return operationRecords2;
-	}
-
-	public OperationRecord removeOperationRecords2(OperationRecord operationRecords2) {
-		getOperationRecords2().remove(operationRecords2);
-		operationRecords2.setEmpInformation2(null);
-
-		return operationRecords2;
-	}
-
-	public List<OperationRecord> getOperationRecords3() {
-		return this.operationRecords3;
-	}
-
-	public void setOperationRecords3(List<OperationRecord> operationRecords3) {
-		this.operationRecords3 = operationRecords3;
-	}
-
-	public OperationRecord addOperationRecords3(OperationRecord operationRecords3) {
-		getOperationRecords3().add(operationRecords3);
-		operationRecords3.setEmpInformation3(this);
-
-		return operationRecords3;
-	}
-
-	public OperationRecord removeOperationRecords3(OperationRecord operationRecords3) {
-		getOperationRecords3().remove(operationRecords3);
-		operationRecords3.setEmpInformation3(null);
-
-		return operationRecords3;
-	}
-
-	public List<OperationRecord> getOperationRecords4() {
-		return this.operationRecords4;
-	}
-
-	public void setOperationRecords4(List<OperationRecord> operationRecords4) {
-		this.operationRecords4 = operationRecords4;
-	}
-
-	public OperationRecord addOperationRecords4(OperationRecord operationRecords4) {
-		getOperationRecords4().add(operationRecords4);
-		operationRecords4.setEmpInformation4(this);
-
-		return operationRecords4;
-	}
-
-	public OperationRecord removeOperationRecords4(OperationRecord operationRecords4) {
-		getOperationRecords4().remove(operationRecords4);
-		operationRecords4.setEmpInformation4(null);
-
-		return operationRecords4;
-	}
-
 	public List<OperPayRecord> getOperPayRecords() {
 		return this.operPayRecords;
 	}
@@ -962,50 +758,6 @@ public class EmpInformation implements Serializable {
 		outpatientPay.setEmpInformation(null);
 
 		return outpatientPay;
-	}
-
-	public List<OutpatientRegistration> getOutpatientRegistrations1() {
-		return this.outpatientRegistrations1;
-	}
-
-	public void setOutpatientRegistrations1(List<OutpatientRegistration> outpatientRegistrations1) {
-		this.outpatientRegistrations1 = outpatientRegistrations1;
-	}
-
-	public OutpatientRegistration addOutpatientRegistrations1(OutpatientRegistration outpatientRegistrations1) {
-		getOutpatientRegistrations1().add(outpatientRegistrations1);
-		outpatientRegistrations1.setEmpInformation1(this);
-
-		return outpatientRegistrations1;
-	}
-
-	public OutpatientRegistration removeOutpatientRegistrations1(OutpatientRegistration outpatientRegistrations1) {
-		getOutpatientRegistrations1().remove(outpatientRegistrations1);
-		outpatientRegistrations1.setEmpInformation1(null);
-
-		return outpatientRegistrations1;
-	}
-
-	public List<OutpatientRegistration> getOutpatientRegistrations2() {
-		return this.outpatientRegistrations2;
-	}
-
-	public void setOutpatientRegistrations2(List<OutpatientRegistration> outpatientRegistrations2) {
-		this.outpatientRegistrations2 = outpatientRegistrations2;
-	}
-
-	public OutpatientRegistration addOutpatientRegistrations2(OutpatientRegistration outpatientRegistrations2) {
-		getOutpatientRegistrations2().add(outpatientRegistrations2);
-		outpatientRegistrations2.setEmpInformation2(this);
-
-		return outpatientRegistrations2;
-	}
-
-	public OutpatientRegistration removeOutpatientRegistrations2(OutpatientRegistration outpatientRegistrations2) {
-		getOutpatientRegistrations2().remove(outpatientRegistrations2);
-		outpatientRegistrations2.setEmpInformation2(null);
-
-		return outpatientRegistrations2;
 	}
 
 	public List<OutpatientRequestionMedicine> getOutpatientRequestionMedicines() {
@@ -1360,48 +1112,114 @@ public class EmpInformation implements Serializable {
 		return workoverRecord;
 	}
 
-	public List<WorkTime> getWorkTimes1() {
-		return this.workTimes1;
+	public List<AbuEmp> getAbuEmps() {
+		return this.abuEmps;
 	}
 
-	public void setWorkTimes1(List<WorkTime> workTimes1) {
-		this.workTimes1 = workTimes1;
+	public void setAbuEmps(List<AbuEmp> abuEmps) {
+		this.abuEmps = abuEmps;
 	}
 
-	public WorkTime addWorkTimes1(WorkTime workTimes1) {
-		getWorkTimes1().add(workTimes1);
-		workTimes1.setEmpInformation1(this);
+	public AbuEmp addAbuEmp(AbuEmp abuEmp) {
+		getAbuEmps().add(abuEmp);
+		abuEmp.setEmpInformation(this);
 
-		return workTimes1;
+		return abuEmp;
 	}
 
-	public WorkTime removeWorkTimes1(WorkTime workTimes1) {
-		getWorkTimes1().remove(workTimes1);
-		workTimes1.setEmpInformation1(null);
+	public AbuEmp removeAbuEmp(AbuEmp abuEmp) {
+		getAbuEmps().remove(abuEmp);
+		abuEmp.setEmpInformation(null);
 
-		return workTimes1;
+		return abuEmp;
 	}
 
-	public List<WorkTime> getWorkTimes2() {
-		return this.workTimes2;
+	public List<HosEmp> getHosEmps() {
+		return this.hosEmps;
 	}
 
-	public void setWorkTimes2(List<WorkTime> workTimes2) {
-		this.workTimes2 = workTimes2;
+	public void setHosEmps(List<HosEmp> hosEmps) {
+		this.hosEmps = hosEmps;
 	}
 
-	public WorkTime addWorkTimes2(WorkTime workTimes2) {
-		getWorkTimes2().add(workTimes2);
-		workTimes2.setEmpInformation2(this);
+	public HosEmp addHosEmp(HosEmp hosEmp) {
+		getHosEmps().add(hosEmp);
+		hosEmp.setEmpInformation(this);
 
-		return workTimes2;
+		return hosEmp;
 	}
 
-	public WorkTime removeWorkTimes2(WorkTime workTimes2) {
-		getWorkTimes2().remove(workTimes2);
-		workTimes2.setEmpInformation2(null);
+	public HosEmp removeHosEmp(HosEmp hosEmp) {
+		getHosEmps().remove(hosEmp);
+		hosEmp.setEmpInformation(null);
 
-		return workTimes2;
+		return hosEmp;
+	}
+
+	public List<OpeEmp> getOpeEmps() {
+		return this.opeEmps;
+	}
+
+	public void setOpeEmps(List<OpeEmp> opeEmps) {
+		this.opeEmps = opeEmps;
+	}
+
+	public OpeEmp addOpeEmp(OpeEmp opeEmp) {
+		getOpeEmps().add(opeEmp);
+		opeEmp.setEmpInformation(this);
+
+		return opeEmp;
+	}
+
+	public OpeEmp removeOpeEmp(OpeEmp opeEmp) {
+		getOpeEmps().remove(opeEmp);
+		opeEmp.setEmpInformation(null);
+
+		return opeEmp;
+	}
+
+	public List<RegEmp> getRegEmps() {
+		return this.regEmps;
+	}
+
+	public void setRegEmps(List<RegEmp> regEmps) {
+		this.regEmps = regEmps;
+	}
+
+	public RegEmp addRegEmp(RegEmp regEmp) {
+		getRegEmps().add(regEmp);
+		regEmp.setEmpInformation(this);
+
+		return regEmp;
+	}
+
+	public RegEmp removeRegEmp(RegEmp regEmp) {
+		getRegEmps().remove(regEmp);
+		regEmp.setEmpInformation(null);
+
+		return regEmp;
+	}
+
+	public List<WktimeEmp> getWktimeEmps() {
+		return this.wktimeEmps;
+	}
+
+	public void setWktimeEmps(List<WktimeEmp> wktimeEmps) {
+		this.wktimeEmps = wktimeEmps;
+	}
+
+	public WktimeEmp addWktimeEmp(WktimeEmp wktimeEmp) {
+		getWktimeEmps().add(wktimeEmp);
+		wktimeEmp.setEmpInformation(this);
+
+		return wktimeEmp;
+	}
+
+	public WktimeEmp removeWktimeEmp(WktimeEmp wktimeEmp) {
+		getWktimeEmps().remove(wktimeEmp);
+		wktimeEmp.setEmpInformation(null);
+
+		return wktimeEmp;
 	}
 
 }

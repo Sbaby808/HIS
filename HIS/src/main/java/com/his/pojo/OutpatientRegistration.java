@@ -54,16 +54,6 @@ public class OutpatientRegistration implements Serializable {
 	@JoinColumn(name="KS_ID")
 	private Department department;
 
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="YGXH")
-	private EmpInformation empInformation1;
-
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="EMP_YGXH")
-	private EmpInformation empInformation2;
-
 	//bi-directional many-to-one association to Examination
 	@ManyToOne
 	@JoinColumn(name="EXAM_ID")
@@ -97,6 +87,10 @@ public class OutpatientRegistration implements Serializable {
 	//bi-directional many-to-one association to OutMedicalRecord
 	@OneToMany(mappedBy="outpatientRegistration")
 	private List<OutMedicalRecord> outMedicalRecords;
+
+	//bi-directional many-to-one association to RegEmp
+	@OneToMany(mappedBy="outpatientRegistration")
+	private List<RegEmp> regEmps;
 
 	public OutpatientRegistration() {
 	}
@@ -223,22 +217,6 @@ public class OutpatientRegistration implements Serializable {
 		this.department = department;
 	}
 
-	public EmpInformation getEmpInformation1() {
-		return this.empInformation1;
-	}
-
-	public void setEmpInformation1(EmpInformation empInformation1) {
-		this.empInformation1 = empInformation1;
-	}
-
-	public EmpInformation getEmpInformation2() {
-		return this.empInformation2;
-	}
-
-	public void setEmpInformation2(EmpInformation empInformation2) {
-		this.empInformation2 = empInformation2;
-	}
-
 	public Examination getExamination() {
 		return this.examination;
 	}
@@ -307,6 +285,28 @@ public class OutpatientRegistration implements Serializable {
 		outMedicalRecord.setOutpatientRegistration(null);
 
 		return outMedicalRecord;
+	}
+
+	public List<RegEmp> getRegEmps() {
+		return this.regEmps;
+	}
+
+	public void setRegEmps(List<RegEmp> regEmps) {
+		this.regEmps = regEmps;
+	}
+
+	public RegEmp addRegEmp(RegEmp regEmp) {
+		getRegEmps().add(regEmp);
+		regEmp.setOutpatientRegistration(this);
+
+		return regEmp;
+	}
+
+	public RegEmp removeRegEmp(RegEmp regEmp) {
+		getRegEmps().remove(regEmp);
+		regEmp.setOutpatientRegistration(null);
+
+		return regEmp;
 	}
 
 }

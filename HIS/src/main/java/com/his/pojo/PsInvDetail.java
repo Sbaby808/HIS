@@ -32,12 +32,12 @@ public class PsInvDetail implements Serializable {
 
 	//bi-directional many-to-one association to DrugWarehouse
 	@ManyToOne
-	@JoinColumn(name="PCKC_ID")
+	@JoinColumn(name="PCKC_ID", insertable=false, updatable=false)
 	private DrugWarehouse drugWarehouse;
 
 	//bi-directional many-to-one association to PsInventoryTaking
 	@ManyToOne
-	@JoinColumn(name="INVENTORY_TAKING_ID")
+	@JoinColumn(name="INVENTORY_TAKING_ID", insertable=false, updatable=false)
 	private PsInventoryTaking psInventoryTaking;
 
 	public PsInvDetail() {

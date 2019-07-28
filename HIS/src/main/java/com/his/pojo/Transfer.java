@@ -3,6 +3,7 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -30,15 +31,9 @@ public class Transfer implements Serializable {
 	@JoinColumn(name="YGXH")
 	private EmpInformation empInformation;
 
-	//bi-directional many-to-one association to Role
-	@ManyToOne
-	@JoinColumn(name="ROL_ROLE_ID")
-	private Role role1;
-
-	//bi-directional many-to-one association to Role
-	@ManyToOne
-	@JoinColumn(name="ROLE_ID")
-	private Role role2;
+	//bi-directional many-to-one association to ChangeRole
+	@OneToMany(mappedBy="transfer")
+	private List<ChangeRole> changeRoles;
 
 	public Transfer() {
 	}
@@ -75,20 +70,26 @@ public class Transfer implements Serializable {
 		this.empInformation = empInformation;
 	}
 
-	public Role getRole1() {
-		return this.role1;
+	public List<ChangeRole> getChangeRoles() {
+		return this.changeRoles;
 	}
 
-	public void setRole1(Role role1) {
-		this.role1 = role1;
+	public void setChangeRoles(List<ChangeRole> changeRoles) {
+		this.changeRoles = changeRoles;
 	}
 
-	public Role getRole2() {
-		return this.role2;
+	public ChangeRole addChangeRole(ChangeRole changeRole) {
+		getChangeRoles().add(changeRole);
+		changeRole.setTransfer(this);
+
+		return changeRole;
 	}
 
-	public void setRole2(Role role2) {
-		this.role2 = role2;
+	public ChangeRole removeChangeRole(ChangeRole changeRole) {
+		getChangeRoles().remove(changeRole);
+		changeRole.setTransfer(null);
+
+		return changeRole;
 	}
 
 }

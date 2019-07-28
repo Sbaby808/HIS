@@ -23,12 +23,12 @@ public class OutstockDetail implements Serializable {
 
 	//bi-directional many-to-one association to DrugWarehouse
 	@ManyToOne
-	@JoinColumn(name="PCKC_ID")
+	@JoinColumn(name="PCKC_ID", insertable=false, updatable=false)
 	private DrugWarehouse drugWarehouse;
 
 	//bi-directional many-to-one association to Outstock
 	@ManyToOne
-	@JoinColumn(name="CK_ID")
+	@JoinColumn(name="CK_ID", insertable=false, updatable=false)
 	private Outstock outstock;
 
 	public OutstockDetail() {

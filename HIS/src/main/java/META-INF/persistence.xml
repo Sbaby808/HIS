@@ -2,6 +2,8 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="HIS">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>com.his.pojo.AbuEmp</class>
+		<class>com.his.pojo.AbuEmpPK</class>
 		<class>com.his.pojo.AllergyRecord</class>
 		<class>com.his.pojo.AllocationOutbound</class>
 		<class>com.his.pojo.AmbulanceRecord</class>
@@ -13,6 +15,8 @@
 		<class>com.his.pojo.BusinessRecord</class>
 		<class>com.his.pojo.ChangeDrugDetail</class>
 		<class>com.his.pojo.ChangeDrugDetailPK</class>
+		<class>com.his.pojo.ChangeRole</class>
+		<class>com.his.pojo.ChangeRolePK</class>
 		<class>com.his.pojo.CheckItem</class>
 		<class>com.his.pojo.CheckNoticeForm</class>
 		<class>com.his.pojo.CheckPay</class>
@@ -46,6 +50,8 @@
 		<class>com.his.pojo.HosDoctorAdvice</class>
 		<class>com.his.pojo.HosDrugCost</class>
 		<class>com.his.pojo.HosDrugRecord</class>
+		<class>com.his.pojo.HosEmp</class>
+		<class>com.his.pojo.HosEmpPK</class>
 		<class>com.his.pojo.HosOtherCost</class>
 		<class>com.his.pojo.HosOutNotice</class>
 		<class>com.his.pojo.HosPatientsApply</class>
@@ -69,6 +75,8 @@
 		<class>com.his.pojo.OperPayRecord</class>
 		<class>com.his.pojo.OpeDrugDetail</class>
 		<class>com.his.pojo.OpeDrugDetailPK</class>
+		<class>com.his.pojo.OpeEmp</class>
+		<class>com.his.pojo.OpeEmpPK</class>
 		<class>com.his.pojo.OpeNotice</class>
 		<class>com.his.pojo.OtherAdvice</class>
 		<class>com.his.pojo.OtherProject</class>
@@ -102,6 +110,8 @@
 		<class>com.his.pojo.PutStock</class>
 		<class>com.his.pojo.PutStockDetail</class>
 		<class>com.his.pojo.PutStockDetailPK</class>
+		<class>com.his.pojo.RegEmp</class>
+		<class>com.his.pojo.RegEmpPK</class>
 		<class>com.his.pojo.RemainRecord</class>
 		<class>com.his.pojo.ReqDetail</class>
 		<class>com.his.pojo.ReqDetailPK</class>
@@ -118,6 +128,8 @@
 		<class>com.his.pojo.WaitingRoom</class>
 		<class>com.his.pojo.Ward</class>
 		<class>com.his.pojo.WardRoom</class>
+		<class>com.his.pojo.WktimeEmp</class>
+		<class>com.his.pojo.WktimeEmpPK</class>
 		<class>com.his.pojo.WorkoverRecord</class>
 		<class>com.his.pojo.WorkTime</class>
 	</persistence-unit>

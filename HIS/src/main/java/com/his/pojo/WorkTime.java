@@ -3,6 +3,7 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -26,15 +27,9 @@ public class WorkTime implements Serializable {
 	@Column(name="PB_TYPE")
 	private String pbType;
 
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="EMP_YGXH")
-	private EmpInformation empInformation1;
-
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="YGXH")
-	private EmpInformation empInformation2;
+	//bi-directional many-to-one association to WktimeEmp
+	@OneToMany(mappedBy="workTime")
+	private List<WktimeEmp> wktimeEmps;
 
 	public WorkTime() {
 	}
@@ -63,20 +58,26 @@ public class WorkTime implements Serializable {
 		this.pbType = pbType;
 	}
 
-	public EmpInformation getEmpInformation1() {
-		return this.empInformation1;
+	public List<WktimeEmp> getWktimeEmps() {
+		return this.wktimeEmps;
 	}
 
-	public void setEmpInformation1(EmpInformation empInformation1) {
-		this.empInformation1 = empInformation1;
+	public void setWktimeEmps(List<WktimeEmp> wktimeEmps) {
+		this.wktimeEmps = wktimeEmps;
 	}
 
-	public EmpInformation getEmpInformation2() {
-		return this.empInformation2;
+	public WktimeEmp addWktimeEmp(WktimeEmp wktimeEmp) {
+		getWktimeEmps().add(wktimeEmp);
+		wktimeEmp.setWorkTime(this);
+
+		return wktimeEmp;
 	}
 
-	public void setEmpInformation2(EmpInformation empInformation2) {
-		this.empInformation2 = empInformation2;
+	public WktimeEmp removeWktimeEmp(WktimeEmp wktimeEmp) {
+		getWktimeEmps().remove(wktimeEmp);
+		wktimeEmp.setWorkTime(null);
+
+		return wktimeEmp;
 	}
 
 }

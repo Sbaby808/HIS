@@ -23,12 +23,12 @@ public class ChangeDrugDetail implements Serializable {
 
 	//bi-directional many-to-one association to AllocationOutbound
 	@ManyToOne
-	@JoinColumn(name="ALLO_ID")
+	@JoinColumn(name="ALLO_ID", insertable=false, updatable=false)
 	private AllocationOutbound allocationOutbound;
 
 	//bi-directional many-to-one association to Medicine
 	@ManyToOne
-	@JoinColumn(name="MEDICINE_ID")
+	@JoinColumn(name="MEDICINE_ID", insertable=false, updatable=false)
 	private Medicine medicine;
 
 	public ChangeDrugDetail() {

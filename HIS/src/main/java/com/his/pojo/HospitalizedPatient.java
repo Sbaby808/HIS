@@ -40,24 +40,10 @@ public class HospitalizedPatient implements Serializable {
 	@OneToMany(mappedBy="hospitalizedPatient")
 	private List<BedTransRecord> bedTransRecords;
 
-	//bi-directional many-to-one association to History
-	@OneToMany(mappedBy="hospitalizedPatient")
-	private List<History> histories;
-
 	//bi-directional many-to-one association to Department
 	@ManyToOne
 	@JoinColumn(name="KS_ID")
 	private Department department;
-
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="YGXH")
-	private EmpInformation empInformation1;
-
-	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
-	@JoinColumn(name="EMP_YGXH")
-	private EmpInformation empInformation2;
 
 	//bi-directional many-to-one association to HosBed
 	@ManyToOne
@@ -107,6 +93,10 @@ public class HospitalizedPatient implements Serializable {
 	//bi-directional many-to-one association to TransOfficeRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
 	private List<TransOfficeRecord> transOfficeRecords;
+
+	//bi-directional many-to-one association to HosEmp
+	@OneToMany(mappedBy="hospitalizedPatient")
+	private List<HosEmp> hosEmps;
 
 	public HospitalizedPatient() {
 	}
@@ -181,50 +171,12 @@ public class HospitalizedPatient implements Serializable {
 		return bedTransRecord;
 	}
 
-	public List<History> getHistories() {
-		return this.histories;
-	}
-
-	public void setHistories(List<History> histories) {
-		this.histories = histories;
-	}
-
-	public History addHistory(History history) {
-		getHistories().add(history);
-		history.setHospitalizedPatient(this);
-
-		return history;
-	}
-
-	public History removeHistory(History history) {
-		getHistories().remove(history);
-		history.setHospitalizedPatient(null);
-
-		return history;
-	}
-
 	public Department getDepartment() {
 		return this.department;
 	}
 
 	public void setDepartment(Department department) {
 		this.department = department;
-	}
-
-	public EmpInformation getEmpInformation1() {
-		return this.empInformation1;
-	}
-
-	public void setEmpInformation1(EmpInformation empInformation1) {
-		this.empInformation1 = empInformation1;
-	}
-
-	public EmpInformation getEmpInformation2() {
-		return this.empInformation2;
-	}
-
-	public void setEmpInformation2(EmpInformation empInformation2) {
-		this.empInformation2 = empInformation2;
 	}
 
 	public HosBed getHosBed() {
@@ -397,6 +349,28 @@ public class HospitalizedPatient implements Serializable {
 		transOfficeRecord.setHospitalizedPatient(null);
 
 		return transOfficeRecord;
+	}
+
+	public List<HosEmp> getHosEmps() {
+		return this.hosEmps;
+	}
+
+	public void setHosEmps(List<HosEmp> hosEmps) {
+		this.hosEmps = hosEmps;
+	}
+
+	public HosEmp addHosEmp(HosEmp hosEmp) {
+		getHosEmps().add(hosEmp);
+		hosEmp.setHospitalizedPatient(this);
+
+		return hosEmp;
+	}
+
+	public HosEmp removeHosEmp(HosEmp hosEmp) {
+		getHosEmps().remove(hosEmp);
+		hosEmp.setHospitalizedPatient(null);
+
+		return hosEmp;
 	}
 
 }

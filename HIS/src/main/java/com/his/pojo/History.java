@@ -31,11 +31,6 @@ public class History implements Serializable {
 	@JoinColumn(name="KS_ID")
 	private Department department;
 
-	//bi-directional many-to-one association to HospitalizedPatient
-	@ManyToOne
-	@JoinColumn(name="HOSP_ID")
-	private HospitalizedPatient hospitalizedPatient;
-
 	//bi-directional many-to-one association to Illness
 	@ManyToOne
 	@JoinColumn(name="ILL_ID")
@@ -110,14 +105,6 @@ public class History implements Serializable {
 
 	public void setDepartment(Department department) {
 		this.department = department;
-	}
-
-	public HospitalizedPatient getHospitalizedPatient() {
-		return this.hospitalizedPatient;
-	}
-
-	public void setHospitalizedPatient(HospitalizedPatient hospitalizedPatient) {
-		this.hospitalizedPatient = hospitalizedPatient;
 	}
 
 	public Illness getIllness() {

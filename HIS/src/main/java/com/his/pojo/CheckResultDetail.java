@@ -22,12 +22,12 @@ public class CheckResultDetail implements Serializable {
 
 	//bi-directional many-to-one association to CheckItem
 	@ManyToOne
-	@JoinColumn(name="CHECK_ITEM_ID")
+	@JoinColumn(name="CHECK_ITEM_ID", insertable=false, updatable=false)
 	private CheckItem checkItem;
 
 	//bi-directional many-to-one association to CheckResultForm
 	@ManyToOne
-	@JoinColumn(name="CHECK_RESULT_ID")
+	@JoinColumn(name="CHECK_RESULT_ID", insertable=false, updatable=false)
 	private CheckResultForm checkResultForm;
 
 	public CheckResultDetail() {

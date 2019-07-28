@@ -23,12 +23,12 @@ public class BackDetail implements Serializable {
 
 	//bi-directional many-to-one association to BackMedicine
 	@ManyToOne
-	@JoinColumn(name="BACK_ID")
+	@JoinColumn(name="BACK_ID", insertable=false, updatable=false)
 	private BackMedicine backMedicine;
 
 	//bi-directional many-to-one association to Medicine
 	@ManyToOne
-	@JoinColumn(name="MEDICINE_ID")
+	@JoinColumn(name="MEDICINE_ID", insertable=false, updatable=false)
 	private Medicine medicine;
 
 	public BackDetail() {

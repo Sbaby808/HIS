@@ -34,12 +34,12 @@ public class InjectionDetail implements Serializable {
 
 	//bi-directional many-to-one association to Medicine
 	@ManyToOne
-	@JoinColumn(name="MEDICINE_ID")
+	@JoinColumn(name="MEDICINE_ID", insertable=false, updatable=false)
 	private Medicine medicine;
 
 	//bi-directional many-to-one association to UseDrugRecord
 	@ManyToOne
-	@JoinColumn(name="INJ_ID")
+	@JoinColumn(name="INJ_ID", insertable=false, updatable=false)
 	private UseDrugRecord useDrugRecord;
 
 	public InjectionDetail() {

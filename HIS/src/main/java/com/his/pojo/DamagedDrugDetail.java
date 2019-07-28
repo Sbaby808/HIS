@@ -23,12 +23,12 @@ public class DamagedDrugDetail implements Serializable {
 
 	//bi-directional many-to-one association to DamagedMedicine
 	@ManyToOne
-	@JoinColumn(name="DAMAGED_ID")
+	@JoinColumn(name="DAMAGED_ID", insertable=false, updatable=false)
 	private DamagedMedicine damagedMedicine;
 
 	//bi-directional many-to-one association to Medicine
 	@ManyToOne
-	@JoinColumn(name="MEDICINE_ID")
+	@JoinColumn(name="MEDICINE_ID", insertable=false, updatable=false)
 	private Medicine medicine;
 
 	public DamagedDrugDetail() {

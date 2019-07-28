@@ -23,12 +23,12 @@ public class PhaInDetail implements Serializable {
 
 	//bi-directional many-to-one association to Medicine
 	@ManyToOne
-	@JoinColumn(name="MEDICINE_ID")
+	@JoinColumn(name="MEDICINE_ID", insertable=false, updatable=false)
 	private Medicine medicine;
 
 	//bi-directional many-to-one association to PhaIn
 	@ManyToOne
-	@JoinColumn(name="PHA_IN_ID")
+	@JoinColumn(name="PHA_IN_ID", insertable=false, updatable=false)
 	private PhaIn phaIn;
 
 	public PhaInDetail() {

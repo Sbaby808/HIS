@@ -29,12 +29,12 @@ public class OpeDrugDetail implements Serializable {
 
 	//bi-directional many-to-one association to Medicine
 	@ManyToOne
-	@JoinColumn(name="MEDICINE_ID")
+	@JoinColumn(name="MEDICINE_ID", insertable=false, updatable=false)
 	private Medicine medicine;
 
 	//bi-directional many-to-one association to OperationRecord
 	@ManyToOne
-	@JoinColumn(name="OPE_ID")
+	@JoinColumn(name="OPE_ID", insertable=false, updatable=false)
 	private OperationRecord operationRecord;
 
 	public OpeDrugDetail() {

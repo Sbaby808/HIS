@@ -35,12 +35,12 @@ public class OutPreItem implements Serializable {
 
 	//bi-directional many-to-one association to DrugInformation
 	@ManyToOne
-	@JoinColumn(name="YP_ID")
+	@JoinColumn(name="YP_ID", insertable=false, updatable=false)
 	private DrugInformation drugInformation;
 
 	//bi-directional many-to-one association to Prescription
 	@ManyToOne
-	@JoinColumn(name="PRESCRIPTION_ID")
+	@JoinColumn(name="PRESCRIPTION_ID", insertable=false, updatable=false)
 	private Prescription prescription;
 
 	public OutPreItem() {

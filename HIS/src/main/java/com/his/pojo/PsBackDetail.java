@@ -29,12 +29,12 @@ public class PsBackDetail implements Serializable {
 
 	//bi-directional many-to-one association to DrugWarehouse
 	@ManyToOne
-	@JoinColumn(name="PCKC_ID")
+	@JoinColumn(name="PCKC_ID", insertable=false, updatable=false)
 	private DrugWarehouse drugWarehouse;
 
 	//bi-directional many-to-one association to PutstockBack
 	@ManyToOne
-	@JoinColumn(name="PS_BACK_ID_")
+	@JoinColumn(name="PS_BACK_ID_", insertable=false, updatable=false)
 	private PutstockBack putstockBack;
 
 	public PsBackDetail() {

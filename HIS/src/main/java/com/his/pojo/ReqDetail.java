@@ -23,12 +23,12 @@ public class ReqDetail implements Serializable {
 
 	//bi-directional many-to-one association to DrugInformation
 	@ManyToOne
-	@JoinColumn(name="YP_ID")
+	@JoinColumn(name="YP_ID", insertable=false, updatable=false)
 	private DrugInformation drugInformation;
 
 	//bi-directional many-to-one association to OutpatientRequestionMedicine
 	@ManyToOne
-	@JoinColumn(name="REQ_ID")
+	@JoinColumn(name="REQ_ID", insertable=false, updatable=false)
 	private OutpatientRequestionMedicine outpatientRequestionMedicine;
 
 	public ReqDetail() {
