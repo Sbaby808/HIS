@@ -6,16 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.his.dao.IDeptDao;
-import com.his.pojo.Dept;
+import com.his.dao.IWardDao;
+import com.his.pojo.Ward;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
-public class DeptService {
+@Transactional(rollbackFor=Exception.class)
+public class WardService {
+
 	@Autowired
-	private IDeptDao deptDao;
+	private IWardDao wardDao;
 	
-	public List <Dept> getAll(){
-		return deptDao.getDepts();
+	public List <Ward> getAllWards(){
+		return wardDao.getAllWards();
 	}
+	
 }
