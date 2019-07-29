@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.Date;
 
 
@@ -31,11 +34,13 @@ public class BedTransRecord implements Serializable {
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
+	@JsonBackReference
 	@JoinColumn(name="YGXH")
 	private EmpInformation empInformation;
 
 	//bi-directional many-to-one association to HospitalizedPatient
 	@ManyToOne
+	@JsonBackReference
 	@JoinColumn(name="HOSP_ID")
 	private HospitalizedPatient hospitalizedPatient;
 

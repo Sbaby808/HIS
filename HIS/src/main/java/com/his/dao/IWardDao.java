@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.his.pojo.Dept;
+import com.his.pojo.Ward;
 
-public interface IDeptDao extends CrudRepository<Dept, String>{
-	@Query("from Dept d")
-	public List<Dept> getDepts();
+public interface IWardDao extends CrudRepository<Ward, String>{
+	
+	@Query("from Ward w")
+	public List <Ward> getAllWards(); 
 }
