@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -65,26 +68,32 @@ public class MedicalCard implements Serializable {
 
 	//bi-directional many-to-one association to AllergyRecord
 	@OneToMany(mappedBy="medicalCard")
+	@JSONField(serialize=false)
 	private List<AllergyRecord> allergyRecords;
 
 	//bi-directional many-to-one association to CheckPayRecord
 	@OneToMany(mappedBy="medicalCard")
+	@JSONField(serialize=false)
 	private List<CheckPayRecord> checkPayRecords;
 
 	//bi-directional many-to-one association to HospitalizedPatient
 	@OneToMany(mappedBy="medicalCard")
+	@JSONField(serialize=false)
 	private List<HospitalizedPatient> hospitalizedPatients;
 
 	//bi-directional many-to-one association to OperPayRecord
 	@OneToMany(mappedBy="medicalCard")
+	@JSONField(serialize=false)
 	private List<OperPayRecord> operPayRecords;
 
 	//bi-directional many-to-one association to OutpatientRegistration
 	@OneToMany(mappedBy="medicalCard")
+	@JSONField(serialize=false)
 	private List<OutpatientRegistration> outpatientRegistrations;
 
 	//bi-directional many-to-one association to RemainRecord
 	@OneToMany(mappedBy="medicalCard")
+	@JSONField(serialize=false)
 	private List<RemainRecord> remainRecords;
 
 	public MedicalCard() {

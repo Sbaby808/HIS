@@ -12,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IHosOutDao;
 import com.his.pojo.OutHospitaiRecord;
 
-
+/**
+ * 出院记录
+ * @author dell
+ *
+ */
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class HosOutService {

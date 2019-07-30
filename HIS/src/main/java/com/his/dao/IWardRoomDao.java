@@ -8,8 +8,14 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.WardRoom;
 
+/**
+ * 住院病房
+ * @author dell
+ *
+ */
 public interface IWardRoomDao extends CrudRepository<WardRoom, String>{
 	
 	@Query("from WardRoom w")
 	public List <WardRoom> getAllWardRoom(Pageable page);
+	
 }

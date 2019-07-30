@@ -8,6 +8,11 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.HospitalizedPatient;
 
+/**
+ * 入院记录
+ * @author dell
+ *
+ */
 public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, String>{
 	
 	@Query(value="select * from hospitalized_patients",nativeQuery=true)

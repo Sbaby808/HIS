@@ -6,15 +6,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.his.pojo.Ward;
+import com.his.pojo.HosDrugRecord;
 
 /**
- * 住院病区
+ * 住院用药记录
  * @author dell
  *
  */
-public interface IWardDao extends CrudRepository<Ward, String>{
-	
-	@Query("from Ward w")
-	public List <Ward> getAllWards(Pageable page); 
+public interface IHosDrugRecordDao extends CrudRepository<HosDrugRecord, String>{
+
+	@Query("from HosDrugRecord h")
+	public List <HosDrugRecord> getAllDrugRecords(Pageable page);
 }

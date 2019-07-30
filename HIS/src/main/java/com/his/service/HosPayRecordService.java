@@ -6,29 +6,33 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.his.dao.IHosBedDao;
-import com.his.pojo.HosBed;
+import com.his.dao.IHosPayRecordDao;
+import com.his.pojo.HosPayRecord;
+
 /**
- * 住院床位
+ * 住院患者缴费记录
  * @author dell
  *
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class HosBedService {
+public class HosPayRecordService{
 	
 	@Autowired
-	private IHosBedDao hosBedDao;
+	private IHosPayRecordDao hosPayRecordDao;
 	
-	public Map getAllBeds(int curpage,int pagesize){
-		List <HosBed> list = hosBedDao.getAllBeds(PageRequest.of(curpage-1, pagesize));
-		long total  = hosBedDao.count();
+	private Map getAllPayRecord(int curpage,int pagesize){
+		List <HosPayRecord> list = hosPayRecordDao.getAllPayRecord(PageRequest.of(curpage-1, pagesize));
+		long total = hosPayRecordDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
 		return map;
 	}
+	
 }

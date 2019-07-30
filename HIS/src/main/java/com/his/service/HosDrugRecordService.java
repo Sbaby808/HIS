@@ -9,23 +9,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.his.dao.IHosBedDao;
-import com.his.pojo.HosBed;
+import com.his.dao.IHosDrugRecordDao;
+import com.his.pojo.HosDrugRecord;
 /**
- * 住院床位
+ * 住院用药记录
  * @author dell
  *
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
-public class HosBedService {
-	
+public class HosDrugRecordService {
+
 	@Autowired
-	private IHosBedDao hosBedDao;
+	private IHosDrugRecordDao hosDrugRecordDao;
 	
-	public Map getAllBeds(int curpage,int pagesize){
-		List <HosBed> list = hosBedDao.getAllBeds(PageRequest.of(curpage-1, pagesize));
-		long total  = hosBedDao.count();
+	public Map getAllDrugRecords(int curpage,int pagesize){
+		List <HosDrugRecord> list = hosDrugRecordDao.getAllDrugRecords(PageRequest.of(curpage-1, pagesize));
+		long total = hosDrugRecordDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

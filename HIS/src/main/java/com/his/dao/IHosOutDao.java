@@ -8,6 +8,11 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.OutHospitaiRecord;
 
+/**
+ * 出院记录
+ * @author dell
+ *
+ */
 public interface IHosOutDao extends CrudRepository<OutHospitaiRecord, String>{
 	
 	@Query("from OutHospitaiRecord o")

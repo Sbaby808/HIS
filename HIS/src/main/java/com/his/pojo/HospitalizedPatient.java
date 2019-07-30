@@ -3,6 +3,7 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
@@ -35,12 +36,13 @@ public class HospitalizedPatient implements Serializable {
 	@Column(name="HOSP_STATE")
 	private String hospState;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="REGISTER_TIME")
 	private Date registerTime;
 
 	//bi-directional many-to-one association to BedTransRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<BedTransRecord> bedTransRecords;
 
 	//bi-directional many-to-one association to Department
@@ -75,30 +77,37 @@ public class HospitalizedPatient implements Serializable {
 
 	//bi-directional many-to-one association to HosBed
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<HosBed> hosBeds;
 
 	//bi-directional many-to-one association to HosPatientsApply
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<HosPatientsApply> hosPatientsApplies;
 
 	//bi-directional many-to-one association to HosPayRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<HosPayRecord> hosPayRecords;
 
 	//bi-directional many-to-one association to MedicalRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<MedicalRecord> medicalRecords;
 
 	//bi-directional many-to-one association to OutHospitaiRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<OutHospitaiRecord> outHospitaiRecords;
 
 	//bi-directional many-to-one association to TransOfficeRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<TransOfficeRecord> transOfficeRecords;
 
 	//bi-directional many-to-one association to HosEmp
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<HosEmp> hosEmps;
 
 	public HospitalizedPatient() {

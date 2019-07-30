@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -31,10 +34,12 @@ public class WardRoom implements Serializable {
 
 	//bi-directional many-to-one association to HospitalizedPatient
 	@OneToMany(mappedBy="wardRoom")
+	@JSONField(serialize=false)
 	private List<HospitalizedPatient> hospitalizedPatients;
 
 	//bi-directional many-to-one association to HosBed
 	@OneToMany(mappedBy="wardRoom")
+	@JSONField(serialize=false)
 	private List<HosBed> hosBeds;
 
 	//bi-directional many-to-one association to Ward

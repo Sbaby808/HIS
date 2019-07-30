@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.dao.IHosPatientDao;
 import com.his.pojo.HospitalizedPatient;
-
+/**
+ * 住院登记
+ * @author dell
+ *
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class HosPatientsService {
