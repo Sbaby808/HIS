@@ -56,5 +56,20 @@ public class EmpInformationService {
 			return false;
 		}
 	}
+	
+	/**
+	 * 获得员工信息
+	* @Title:getEmpInfoById
+	* @Description:TODO
+	* @param:@param empId
+	* @param:@return
+	* @return:EmpInformation
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年7月31日 下午3:15:42
+	 */
+	public EmpInformation getEmpInfoById(String empId) {
+		return empInformationDao.findById(empId).get();
+	}
 
 }
