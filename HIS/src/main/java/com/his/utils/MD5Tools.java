@@ -90,5 +90,24 @@ public class MD5Tools {
 		String k = new String(a);
 		return k;
 	}
+	
+	/**
+	* @Title:check
+	* @Description:验证密码
+	* @param:@param sourceStr
+	* @param:@param destStr
+	* @param:@return
+	* @return:Boolean
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年7月31日 下午2:41:09
+	 */
+	public static Boolean check(String sourceStr, String destStr) {
+		if(Md5(sourceStr).equals(JM(destStr))){
+			return new Boolean(true);
+		} else {
+			return new Boolean(false);
+		}
+	}
 
 }

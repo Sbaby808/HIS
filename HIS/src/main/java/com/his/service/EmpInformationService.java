@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IEmpInformationDao;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.JsonResult;
+import com.his.utils.MD5Tools;
 
 /**  
 * @ClassName: EmpInformationService  
@@ -34,6 +36,25 @@ public class EmpInformationService {
 	 */
 	public void addTestEmp(EmpInformation empInformation) {
 		empInformationDao.save(empInformation);
+	}
+	
+	/**
+	 * 
+	* @Title:loginTestEmp
+	* @Description:员工登录验证
+	* @param:@param empInformation
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年7月31日 下午2:37:29
+	 */
+	public boolean loginTestEmp(EmpInformation empInformation) {
+		EmpInformation emp = empInformationDao.findById(empInformation.getYgxh()).get();
+		if(MD5Tools.check(empInformation.getYgPassword(), emp.getYgPassword())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
