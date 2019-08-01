@@ -29,8 +29,7 @@ public class HisApplication {
 		
 		// 2. 添加fastjson的配置信息，比如：是否需要格式化返回的json数据
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
-		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat,
-				SerializerFeature.DisableCircularReferenceDetect);
+		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat,SerializerFeature.DisableCircularReferenceDetect);
 		
 		// 3. 在converter中添加配置信息
 		fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);

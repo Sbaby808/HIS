@@ -3,6 +3,8 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 
 /**
  * The persistent class for the HOS_BEDS database table.
@@ -37,6 +39,7 @@ public class HosBed implements Serializable {
 	//bi-directional one-to-one association to HospitalizedPatient
 	@OneToOne
 	@JoinColumn(name="HOSP_ID")
+	@JSONField(serialize=false)
 	private HospitalizedPatient hospitalizedPatient;
 
 	public HosBed() {

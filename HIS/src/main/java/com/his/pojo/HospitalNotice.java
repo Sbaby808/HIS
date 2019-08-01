@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -22,6 +25,7 @@ public class HospitalNotice implements Serializable {
 	@Column(name="RY_NOTE")
 	private String ryNote;
 
+	@JSONField(format="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name="RY_TIME")
 	private Date ryTime;

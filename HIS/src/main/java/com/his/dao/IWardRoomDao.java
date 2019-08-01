@@ -17,5 +17,7 @@ public interface IWardRoomDao extends CrudRepository<WardRoom, String>{
 	
 	@Query("from WardRoom w")
 	public List <WardRoom> getAllWardRoom(Pageable page);
-	
+
+	@Query(value="select * from ward_room w where w.ward_id=?1",nativeQuery=true)
+	public List <WardRoom> getWardRoomByWid(String wid);
 }

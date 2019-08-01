@@ -16,5 +16,11 @@ import com.his.pojo.Ward;
 public interface IWardDao extends CrudRepository<Ward, String>{
 	
 	@Query("from Ward w")
-	public List <Ward> getAllWards(Pageable page); 
+	public List <Ward> getAllWardByPage(Pageable page); 
+	
+	@Query("from Ward w")
+	public List <Ward> getAllWard();
+	
+	@Query(value="select * from ward w where w.ks_id=?1",nativeQuery=true)
+	public List <Ward> getWardByDid(String ks_id);
 }

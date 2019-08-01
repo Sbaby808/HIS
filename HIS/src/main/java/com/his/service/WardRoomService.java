@@ -3,6 +3,7 @@ package com.his.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,10 +27,16 @@ public class WardRoomService {
 	private IWardRoomDao wardRoomDao;
 	
 	/**
-	 * 查询所有病房
-	 * @param curpage
-	 * @param pagesize
-	 * @return
+	 * 
+	* @Title:getAllWardRoom
+	* @Description:查询所有病房信息
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月30日 下午4:56:39
 	 */
 	public Map getAllWardRoom(int curpage,int pagesize){
 		List <WardRoom> list = wardRoomDao.getAllWardRoom(PageRequest.of(curpage-1, pagesize));
@@ -40,12 +47,64 @@ public class WardRoomService {
 		return map;
 	}
 	
+	
+	/**
+	 * 
+	* @Title:delWardRoom
+	* @Description:删除病房
+	* @param:@param wardRoom
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月30日 下午4:57:04
+	 */
 	public void delWardRoom(WardRoom wardRoom){
 		wardRoomDao.delete(wardRoom);
 	}
 	
+	/**
+	 * 
+	* @Title:addWardRoom
+	* @Description:新增病房信息
+	* @param:@param wardRoom
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月30日 下午4:57:26
+	 */
 	public void addWardRoom(WardRoom wardRoom){
+		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+		wardRoom.setWroomId(uuid.substring(0,8));
+		wardRoom.setWNum(0);
 		wardRoomDao.save(wardRoom);
 	}
 	
+	/**
+	 * 
+	* @Title:changeWardRoom
+	* @Description:修改病房信息
+	* @param:@param wardRoom
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月31日 下午10:13:10
+	 */
+	public void changeWardRoom(WardRoom wardRoom){
+		wardRoomDao.save(wardRoom);
+	}
+	
+	/**
+	 * 
+	* @Title:getWardRoomByWid
+	* @Description:根据病区id获取病房
+	* @param:@param wid
+	* @param:@return
+	* @return:List<WardRoom>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月31日 下午10:27:27
+	 */
+	public List <WardRoom> getWardRoomByWid(String wid){
+		return wardRoomDao.getWardRoomByWid(wid);
+	}
 }

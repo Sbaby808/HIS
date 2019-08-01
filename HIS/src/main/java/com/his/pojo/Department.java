@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -36,34 +39,42 @@ public class Department implements Serializable {
 
 	//bi-directional many-to-one association to History
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<History> histories;
 
 	//bi-directional many-to-one association to HospitalizedPatient
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<HospitalizedPatient> hospitalizedPatients;
 
 	//bi-directional many-to-one association to HospitalNotice
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<HospitalNotice> hospitalNotices;
 
 	//bi-directional many-to-one association to OutpatientRegistration
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<OutpatientRegistration> outpatientRegistrations;
 
 	//bi-directional many-to-one association to Role
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<Role> roles;
 
 	//bi-directional many-to-one association to UseDrugRecord
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<UseDrugRecord> useDrugRecords;
 
 	//bi-directional many-to-one association to WaitingRoom
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<WaitingRoom> waitingRooms;
 
 	//bi-directional many-to-one association to Ward
 	@OneToMany(mappedBy="department")
+	@JSONField(serialize=false)
 	private List<Ward> wards;
 
 	public Department() {

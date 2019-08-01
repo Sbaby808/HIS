@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosBedDao;
+import com.his.pojo.BedTransRecord;
 import com.his.pojo.HosBed;
 /**
  * 住院床位
@@ -30,5 +31,35 @@ public class HosBedService {
 		map.put("list", list);
 		map.put("total", total);
 		return map;
+	}
+	
+	/**
+	 * 
+	* @Title:getBedsByRoomid
+	* @Description:根据病房id查询床位
+	* @param:@param room_id
+	* @param:@return
+	* @return:List<HosBed>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月31日 下午10:51:23
+	 */
+	public List <HosBed> getBedsByRoomid(String room_id){
+		return hosBedDao.getBedsByRoomid(room_id);
+	}
+	
+	/**
+	 * 
+	* @Title:getBedByBid
+	* @Description:根据id查询床位
+	* @param:@param bid
+	* @param:@return
+	* @return:HosBed
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月1日 下午6:36:19
+	 */
+	public HosBed getBedByBid(String bid){
+		return hosBedDao.getBedByBid(bid);
 	}
 }
