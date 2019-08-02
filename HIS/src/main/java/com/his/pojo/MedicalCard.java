@@ -49,6 +49,8 @@ public class MedicalCard implements Serializable {
 	private String linkRelation;
 
 	private String married;
+	
+	private String tel;
 
 	private String passwd;
 
@@ -104,6 +106,14 @@ public class MedicalCard implements Serializable {
 
 	public void setAge(BigDecimal age) {
 		this.age = age;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
 	}
 
 	public Date getBirthday() {
