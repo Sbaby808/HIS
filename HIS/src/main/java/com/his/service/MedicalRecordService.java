@@ -1,8 +1,10 @@
 package com.his.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -32,5 +34,12 @@ public class MedicalRecordService {
 		map.put("list", list);
 		map.put("total", total);
 		return map;
+	}
+	
+	public void addMedicalRecord(MedicalRecord medicalRecord){
+		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+		medicalRecord.setMedRid(uuid.substring(0,8));
+		medicalRecord.setMedInTime(new Date());
+		medicalRecordDao.save(medicalRecord);
 	}
 }

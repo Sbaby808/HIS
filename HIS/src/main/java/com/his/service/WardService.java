@@ -27,11 +27,19 @@ public class WardService {
 	private IWardDao wardDao;
 	
 	/**
-	 * 查询所有病区
-	 * @return
+	 * 分页查询所有病区
+	* @Title:getAllWardByPage
+	* @Description:TODO
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月30日 下午5:12:33
 	 */
-	public Map getAllWards(int curpage,int pagesize){
-		List <Ward> list = wardDao.getAllWards(PageRequest.of(curpage-1, pagesize));
+	public Map getAllWardByPage(int curpage,int pagesize){
+		List <Ward> list = wardDao.getAllWardByPage(PageRequest.of(curpage-1, pagesize));
 		long total = wardDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
@@ -40,8 +48,29 @@ public class WardService {
 	}
 	
 	/**
-	 * 新增病区
-	 * @param ward
+	 * 查询所有病区
+	* @Title:getAllWard
+	* @Description:TODO
+	* @param:@return
+	* @return:List<Ward>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月30日 下午5:13:47
+	 */
+	public List <Ward> getAllWard(){
+		return wardDao.getAllWard();
+	}
+	
+	
+	/**
+	 * 新增和修改病区信息
+	* @Title:addWard
+	* @Description:TODO
+	* @param:@param ward
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年7月30日 下午5:12:50
 	 */
 	public void addWard(Ward ward){
 		if(ward.getWardId()!=null){
@@ -52,5 +81,9 @@ public class WardService {
 			ward.setWardId(uuid.substring(0,8));
 			wardDao.save(ward);
 		}	
+	}
+	
+	public List<Ward> getWardByDid(String ks_id){
+		return wardDao.getWardByDid(ks_id);
 	}
 }

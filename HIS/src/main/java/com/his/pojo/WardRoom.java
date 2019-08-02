@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,20 +24,22 @@ public class WardRoom implements Serializable {
 	private String wroomId;
 
 	@Column(name="W_NUM")
-	private BigDecimal wNum;
+	private Integer wNum;
 
 	@Column(name="WBED_NUM")
-	private BigDecimal wbedNum;
+	private Integer wbedNum;
 
 	@Column(name="WROOM_NAME")
 	private String wroomName;
 
 	//bi-directional many-to-one association to HospitalizedPatient
 	@OneToMany(mappedBy="wardRoom")
+	@JSONField(serialize=false)
 	private List<HospitalizedPatient> hospitalizedPatients;
 
 	//bi-directional many-to-one association to HosBed
 	@OneToMany(mappedBy="wardRoom")
+	@JSONField(serialize=false)
 	private List<HosBed> hosBeds;
 
 	//bi-directional many-to-one association to Ward
@@ -53,19 +58,19 @@ public class WardRoom implements Serializable {
 		this.wroomId = wroomId;
 	}
 
-	public BigDecimal getWNum() {
+	public Integer getWNum() {
 		return this.wNum;
 	}
 
-	public void setWNum(BigDecimal wNum) {
+	public void setWNum(Integer wNum) {
 		this.wNum = wNum;
 	}
 
-	public BigDecimal getWbedNum() {
+	public Integer getWbedNum() {
 		return this.wbedNum;
 	}
 
-	public void setWbedNum(BigDecimal wbedNum) {
+	public void setWbedNum(Integer wbedNum) {
 		this.wbedNum = wbedNum;
 	}
 

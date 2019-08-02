@@ -13,15 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.his.pojo.WardRoom;
 import com.his.service.WardRoomService;
 
-/**  
-* @ClassName: ${type_name}  
-* @Description: ${todo} 住院病房
+/**
+ * 
+* @ClassName: WardRoomController  
+* @Description: TODO住院病房
 * @author Hamster
-* @date ${date}  ${time}
-*  
-* ${tags}  
-*/
-
+* @date 2019年8月1日  下午6:08:32
+*
+ */
 @Controller
 public class WardRoomController {
 
@@ -38,5 +37,24 @@ public class WardRoomController {
 	@PostMapping("/del_ward_room")
 	public void delWardRoom(@RequestBody WardRoom wardRoom){
 		wardRoomService.delWardRoom(wardRoom);
+	}
+	
+	@ResponseBody
+	@PostMapping("/add_ward_room")
+	public void addWardRoom(@RequestBody WardRoom wardRoom){
+		wardRoomService.addWardRoom(wardRoom);
+	}
+	
+	@ResponseBody
+	@PostMapping("/change_ward_room")
+	public void changeWardRoom(@RequestBody WardRoom wardRoom){
+		wardRoomService.changeWardRoom(wardRoom);
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_ward_room_byWid")
+	public List <WardRoom> getWardRoomByWid(String ward_id){
+		System.out.println(ward_id);
+		return wardRoomService.getWardRoomByWid(ward_id);
 	}
 }

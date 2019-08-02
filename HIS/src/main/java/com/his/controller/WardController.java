@@ -25,9 +25,15 @@ public class WardController {
 	private WardService wardService;
 	
 	@ResponseBody
+	@GetMapping("/get_all_wards_byPage")
+	public Map getAllWardByPage(int curpage,int pagesize){
+		return wardService.getAllWardByPage(curpage, pagesize);
+	}
+	
+	@ResponseBody
 	@GetMapping("/get_all_wards")
-	public Map getAllWard(int curpage,int pagesize){
-		return wardService.getAllWards(curpage, pagesize);
+	public List <Ward> getAllWard(){
+		return wardService.getAllWard();
 	}
 	
 	@ResponseBody
@@ -41,4 +47,11 @@ public class WardController {
 	public void changeWard(@RequestBody Ward ward){
 		wardService.addWard(ward);
 	}
+	
+	@ResponseBody
+	@GetMapping("/get_ward_ByDid")
+	public List <Ward> getWardByDid(String ks_id){
+		return wardService.getWardByDid(ks_id);
+	}
+	
 }

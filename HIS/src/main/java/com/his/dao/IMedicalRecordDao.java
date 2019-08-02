@@ -17,4 +17,6 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 	
 	@Query("from MedicalRecord m")
 	public List <MedicalRecord> getAllMedicalRecord(Pageable page);
+	
+	
 }

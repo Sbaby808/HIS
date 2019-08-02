@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +69,7 @@ public class OutpatientRegistration implements Serializable {
 
 	//bi-directional many-to-one association to RegEmp
 	@OneToMany(mappedBy="outpatientRegistration")
+	@JSONField(serialize=false)
 	private List<RegEmp> regEmps;
 
 	//bi-directional one-to-one association to OutMedicalRecord
@@ -74,6 +78,7 @@ public class OutpatientRegistration implements Serializable {
 
 	//bi-directional one-to-one association to History
 	@OneToOne(mappedBy="outpatientRegistration")
+	@JSONField(serialize=false)
 	private History history;
 
 	//bi-directional one-to-one association to Examination

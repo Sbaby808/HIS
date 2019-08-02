@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -21,10 +24,10 @@ public class HospitalizedPatient implements Serializable {
 	@Column(name="HOSP_ID")
 	private String hospId;
 
-	private BigDecimal balance;
+	private Double balance;
 
 	@Column(name="DEPOSIT_MONEY")
-	private BigDecimal depositMoney;
+	private Double depositMoney;
 
 	@Column(name="HOS_BID")
 	private String hosBid;
@@ -41,12 +44,14 @@ public class HospitalizedPatient implements Serializable {
 	@Column(name="OUT_RID")
 	private String outRid;
 
+	@JSONField(format="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name="REGISTER_TIME")
 	private Date registerTime;
 
 	//bi-directional many-to-one association to BedTransRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<BedTransRecord> bedTransRecords;
 
 	//bi-directional many-to-one association to Department
@@ -66,18 +71,22 @@ public class HospitalizedPatient implements Serializable {
 
 	//bi-directional many-to-one association to HosEmp
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<HosEmp> hosEmps;
 
 	//bi-directional many-to-one association to HosPatientsApply
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<HosPatientsApply> hosPatientsApplies;
 
 	//bi-directional many-to-one association to HosPayRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<HosPayRecord> hosPayRecords;
 
 	//bi-directional many-to-one association to TransOfficeRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private List<TransOfficeRecord> transOfficeRecords;
 
 	//bi-directional one-to-one association to MedicalRecord
@@ -103,19 +112,19 @@ public class HospitalizedPatient implements Serializable {
 		this.hospId = hospId;
 	}
 
-	public BigDecimal getBalance() {
+	public Double getBalance() {
 		return this.balance;
 	}
 
-	public void setBalance(BigDecimal balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 
-	public BigDecimal getDepositMoney() {
+	public Double getDepositMoney() {
 		return this.depositMoney;
 	}
 
-	public void setDepositMoney(BigDecimal depositMoney) {
+	public void setDepositMoney(Double depositMoney) {
 		this.depositMoney = depositMoney;
 	}
 
