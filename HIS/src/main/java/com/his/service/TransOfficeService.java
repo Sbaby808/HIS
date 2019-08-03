@@ -10,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IHosBedDao;
 import com.his.dao.IHosPatientDao;
 import com.his.dao.ITransOfficeDao;
+import com.his.dao.IWardRoomDao;
+import com.his.pojo.HosBed;
 import com.his.pojo.HospitalizedPatient;
 import com.his.pojo.TransOfficeRecord;
+import com.his.pojo.WardRoom;
 
 /**
  * 
@@ -30,8 +34,24 @@ public class TransOfficeService {
 
 	@Autowired
 	private ITransOfficeDao transOfficeDao;
+	@Autowired
+	private IHosPatientDao hosPatientDao;
+	@Autowired
+	private IHosBedDao hosBedDao;
+	@Autowired
+	private IWardRoomDao wardRoomDao;
 	
-	
+	/**
+	 * 
+	* @Title:addTransOffice
+	* @Description:新增转科记录
+	* @param:@param transOfficeRecord
+	* @param:@throws ParseException
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月2日 下午10:32:01
+	 */
 	public void addTransOffice(TransOfficeRecord transOfficeRecord) throws ParseException{
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 		transOfficeRecord.setTransOid(uuid.substring(0,8));	
@@ -39,7 +59,29 @@ public class TransOfficeService {
 		String time = dateFormat.format(new Date());
 		transOfficeRecord.setOutOfficeTime(dateFormat.parse(time));
 		transOfficeDao.save(transOfficeRecord);
-		//HospitalizedPatient patient = transOfficeRecord.getHospitalizedPatient();
 		
+		//HospitalizedPatient patient = transOfficeRecord.getHospitalizedPatient();	
+	}
+	
+	public void changeMessage(String inBid,String outBid){
+		HospitalizedPatient patient = hosPatientDao.getPatientByBid(outBid);
+		patient.setHosBid(inBid);
+		hosPatientDao.save(patient);
+		
+		HosBed outBed = hosBedDao.getBedByBid(outBid);
+		outBed.setHospitalizedPatient(null);
+		hosBedDao.save(outBed);
+		
+		WardRoom outRoom = wardRoomDao.getWardRoomByRid(outBid);
+		outRoom.setWNum(outRoom.getWNum()-1);
+		wardRoomDao.save(outRoom);
+		
+		HosBed inBed = hosBedDao.getBedByBid(inBid);
+		inBed.setHospitalizedPatient(patient);
+		hosBedDao.save(inBed);
+		
+		WardRoom inRoom = wardRoomDao.getWardRoomByRid(inBid);
+		inRoom.setWNum(inRoom.getWNum()-1);
+		wardRoomDao.save(inRoom);
 	}
 }

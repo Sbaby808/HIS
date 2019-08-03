@@ -32,9 +32,4 @@ public class MedicalRecordController {
 		return  medicalRecordService.getAllMedicalRecord(curpage, pagesize);
 	}
 	
-	@ResponseBody
-	@PostMapping("/add_medical_record")
-	public void addMedicalRecord(@RequestBody MedicalRecord medicalRecord){
-		medicalRecordService.addMedicalRecord(medicalRecord);
-	}
 }

@@ -24,8 +24,26 @@ public class TransOfficeRecord implements Serializable {
 
 	@Column(name="OUT_DNAME")
 	private String outDname;
+	
+	@Column(name="IN_WNAME")
+	private String inWname;
 
-	@Temporal(TemporalType.DATE)
+	@Column(name="OUT_WNAME")
+	private String outWname;
+	
+	@Column(name="IN_RNAME")
+	private String inRname;
+
+	@Column(name="OUT_RNAME")
+	private String outRname;
+	
+	@Column(name="IN_BNAME")
+	private String inBname;
+
+	@Column(name="OUT_BNAME")
+	private String outBname;
+
+	@Temporal(TemporalType.TIME)
 	@Column(name="OUT_OFFICE_TIME")
 	private Date outOfficeTime;
 
@@ -72,6 +90,55 @@ public class TransOfficeRecord implements Serializable {
 
 	public void setOutOfficeTime(Date outOfficeTime) {
 		this.outOfficeTime = outOfficeTime;
+	}
+	
+
+	public String getInWname() {
+		return inWname;
+	}
+
+	public void setInWname(String inWname) {
+		this.inWname = inWname;
+	}
+
+	public String getOutWname() {
+		return outWname;
+	}
+
+	public void setOutWname(String outWname) {
+		this.outWname = outWname;
+	}
+
+	public String getInRname() {
+		return inRname;
+	}
+
+	public void setInRname(String inRname) {
+		this.inRname = inRname;
+	}
+
+	public String getOutRname() {
+		return outRname;
+	}
+
+	public void setOutRname(String outRname) {
+		this.outRname = outRname;
+	}
+
+	public String getInBname() {
+		return inBname;
+	}
+
+	public void setInBname(String inBname) {
+		this.inBname = inBname;
+	}
+
+	public String getOutBname() {
+		return outBname;
+	}
+
+	public void setOutBname(String outBname) {
+		this.outBname = outBname;
 	}
 
 	public EmpInformation getEmpInformation() {
