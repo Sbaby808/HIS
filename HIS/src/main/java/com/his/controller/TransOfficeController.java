@@ -28,9 +28,38 @@ public class TransOfficeController {
 	@Autowired
 	private TransOfficeService transOfficeService;
 	
+	
+	/**
+	 * 
+	* @Title:addTransOffice
+	* @Description:新增转科记录
+	* @param:@param transOfficeRecord
+	* @param:@throws ParseException
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月2日 下午10:47:15
+	 */
 	@ResponseBody
 	@PostMapping("/add_trans_office_record")
 	public void addTransOffice(@RequestBody TransOfficeRecord transOfficeRecord) throws ParseException{
 		transOfficeService.addTransOffice(transOfficeRecord);
+	}
+	
+	/**
+	 * 
+	* @Title:changeMessage
+	* @Description:转科修改其他信息
+	* @param:@param inBid
+	* @param:@param outBid
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月2日 下午10:49:01
+	 */
+	@ResponseBody
+	@PostMapping("/change_message")
+	public void changeMessage(String inBid,String outBid){
+		transOfficeService.changeMessage(inBid, outBid);
 	}
 }

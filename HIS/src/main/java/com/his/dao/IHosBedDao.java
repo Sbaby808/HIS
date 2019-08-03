@@ -59,4 +59,5 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	 */
 	@Query("from HosBed h where h.hosBid=?1")
 	public HosBed getBedByBid(String bid);
+	
 }

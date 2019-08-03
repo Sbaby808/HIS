@@ -34,6 +34,7 @@ public class HosPatientController {
 	@ResponseBody
 	@PostMapping("/add_hos_patient")
 	public void addHosPatient(@RequestBody HospitalizedPatient patient){
+		//System.out.println(patient.getHosBed().getHosBid());
 		hosPatientsService.addHosPatient(patient);
 	}
 }

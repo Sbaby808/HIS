@@ -83,6 +83,17 @@ public class WardService {
 		}	
 	}
 	
+	/**
+	 * 
+	* @Title:getWardByDid
+	* @Description:根据科室id查询病区信息
+	* @param:@param ks_id
+	* @param:@return
+	* @return:List<Ward>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月2日 下午8:33:38
+	 */
 	public List<Ward> getWardByDid(String ks_id){
 		return wardDao.getWardByDid(ks_id);
 	}

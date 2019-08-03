@@ -68,6 +68,7 @@ public class MedicalCard implements Serializable {
 	@Column(name="WORK_UNIT")
 	private String workUnit;
 
+
 	//bi-directional many-to-one association to AllergyRecord
 	@OneToMany(mappedBy="medicalCard")
 	@JSONField(serialize=false)
@@ -244,6 +245,7 @@ public class MedicalCard implements Serializable {
 	public void setWorkUnit(String workUnit) {
 		this.workUnit = workUnit;
 	}
+
 
 	public List<AllergyRecord> getAllergyRecords() {
 		return this.allergyRecords;
