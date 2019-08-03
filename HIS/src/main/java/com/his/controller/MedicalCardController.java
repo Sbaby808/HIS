@@ -13,6 +13,9 @@ import com.his.pojo.JsonResult;
 import com.his.pojo.MedicalCard;
 import com.his.service.MedicalCardService;
 
+import oracle.jdbc.proxy.annotation.Post;
+import oracle.net.aso.r;
+
 
 /**
  * 
@@ -155,6 +158,33 @@ public class MedicalCardController {
 			result.setStatus("ok");
 		} catch (Exception e) {
 			result.setResult(outTradeNo);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:addMoneyPay
+	* @Description:添加现金缴费记录控制器
+	* @param:@param ygxh
+	* @param:@param personId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午12:00:15
+	 */
+	@GetMapping("/add_card_money_pay")
+	@ResponseBody
+	public JsonResult addMoneyPay(String ygxh, String personId) {
+		JsonResult result = new JsonResult();
+		try {
+			medicalCardService.addMoneyPay(ygxh, personId);
+			result.setResult(personId);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult(personId);
 			result.setStatus("error");
 		}
 		return result;

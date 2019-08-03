@@ -150,6 +150,32 @@ public class MedicalCardService {
 		return flag;
 	}
 	
+	/**
+	* @Title:addMoneyPay
+	* @Description:添加现金缴费补办就诊卡记录
+	* @param:@param ygxh
+	* @param:@param personId
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 上午11:59:10
+	 */
+	public void addMoneyPay(String ygxh, String personId) {
+		// 插入缴费记录
+		OutpatientPay pay = new OutpatientPay();
+		pay.setEmpInformation(empInformationService.getEmpInfoById(ygxh));
+		pay.setPayAmount(new BigDecimal("5.0"));
+		pay.setPayType("现金");
+		pay.setActStatus("已缴费");
+		pay.setOutPayTime(new Date());
+		outpatientPayService.addOutPatientPay(pay);
+		// 修改就诊卡的部分信息（办卡次数，校验值）
+		MedicalCard card = queryByPersonId(personId);
+		card.setCardNum(card.getCardNum().add(new BigDecimal(1)));
+		card.setPasswd(MD5Tools.JM(MD5Tools.Md5(new Date().toString())));
+		medicalCardDao.save(card);
+	}
+	
 	
 	
 }
