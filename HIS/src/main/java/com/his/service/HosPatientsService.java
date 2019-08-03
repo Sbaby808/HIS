@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.dao.IHosBedDao;
 import com.his.dao.IHosPatientDao;
+import com.his.dao.IMedicalRecordDao;
 import com.his.dao.IWardRoomDao;
 import com.his.pojo.HosBed;
 import com.his.pojo.HospitalizedPatient;
+import com.his.pojo.MedicalRecord;
 import com.his.pojo.WardRoom;
 /**
  * 住院登记
@@ -31,10 +33,13 @@ public class HosPatientsService {
 	
 	@Autowired
 	private IHosPatientDao hosPatientDao;
-	@Autowired 
-	private IWardRoomDao wardRoomDao;
 	@Autowired
 	private IHosBedDao hosBedDao;
+	@Autowired
+	private IWardRoomDao wardRoomDao;
+	@Autowired
+	private IMedicalRecordDao medicalRecordDao;
+
 	
 	/*public Map getHosPatientsByPage(int curpage,int pagesize){
 		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(PageRequest.of(curpage-1,pagesize));
@@ -84,18 +89,28 @@ public class HosPatientsService {
 	* @Date:2019年8月1日 下午8:03:05
 	 */
 	public void addHosPatient(HospitalizedPatient patient){
-		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-		patient.setHospId(uuid.substring(0,8));
+		
+		MedicalRecord record = new MedicalRecord();
+		record.setMedInDept(patient.getDepartment().getKsName());
+		record.setMedInTime(new Date());
+		record.setHospitalizedPatient(patient);
+		medicalRecordDao.save(record);
+		
 		patient.setHospState("在院");
-		patient.setBalance(patient.getDepositMoney());
+		patient.setMedRid(record.getMedRid());
+		patient.setHosBid(patient.getHosBid());
 		patient.setRegisterTime(new Date());
+		patient.setBalance(patient.getDepositMoney());
 		hosPatientDao.save(patient);
+		
 		HosBed hosBed = patient.getHosBed();
 		hosBed.setHosBstate("已入住");
 		hosBed.setHospitalizedPatient(patient);
 		hosBedDao.save(hosBed);
+			
 		WardRoom room = patient.getHosBed().getWardRoom();
 		room.setWNum(room.getWNum()+1);
 		wardRoomDao.save(room);
+			
 	}
 }

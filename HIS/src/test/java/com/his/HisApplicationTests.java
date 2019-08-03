@@ -1,5 +1,7 @@
 package com.his;
 
+import java.util.UUID;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.his.pojo.EmpInformation;
 import com.his.service.EmpInformationService;
+import com.his.service.MedicalCardService;
 import com.his.utils.MD5Tools;
 
 @RunWith(SpringRunner.class)
@@ -16,6 +19,8 @@ public class HisApplicationTests {
 
 	@Autowired
 	private EmpInformationService empInformationService;
+	@Autowired
+	private MedicalCardService medicalCardService;
 	
 	@Test
 	public void contextLoads() {
@@ -62,6 +67,36 @@ public class HisApplicationTests {
 			String md5dpwd = MD5Tools.JM(md5spwd);
 			System.out.println("md5d:\t" + md5dpwd);
 		}
+	}
+	
+	/**
+	* @Title:testCheckCardTimes
+	* @Description:测试检查就诊卡
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月2日 上午10:04:10
+	 */
+	@Test
+	public void testCheckCardTimes() {
+		String pid = "430922199808088518";
+		System.out.println(medicalCardService.checkCardTimes(pid));
+	}
+	
+	/**
+	* @Title:testUUID
+	* @Description:测试UUID
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月2日 上午11:00:54
+	 */
+	@Test
+	public void testUUID() {
+		String id = UUID.randomUUID().toString();
+		System.out.println(id);
 	}
 
 }

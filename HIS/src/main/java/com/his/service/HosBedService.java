@@ -62,4 +62,6 @@ public class HosBedService {
 	public HosBed getBedByBid(String bid){
 		return hosBedDao.getBedByBid(bid);
 	}
+	
+
 }

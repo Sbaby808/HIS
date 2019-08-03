@@ -2,6 +2,11 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +22,8 @@ public class MedicalRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
 	@Column(name="MED_RID")
 	private String medRid;
 
@@ -51,14 +58,17 @@ public class MedicalRecord implements Serializable {
 
 	//bi-directional many-to-one association to HosDiagnosticRecord
 	@OneToMany(mappedBy="medicalRecord")
+	@JSONField(serialize=false)
 	private List<HosDiagnosticRecord> hosDiagnosticRecords;
 
 	//bi-directional many-to-one association to HosOtherCost
 	@OneToMany(mappedBy="medicalRecord")
+	@JSONField(serialize=false)
 	private List<HosOtherCost> hosOtherCosts;
 
 	//bi-directional one-to-one association to HospitalizedPatient
 	@OneToOne
+	@JSONField(serialize=false)
 	@JoinColumn(name="HOSP_ID")
 	private HospitalizedPatient hospitalizedPatient;
 
