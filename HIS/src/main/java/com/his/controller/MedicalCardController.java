@@ -82,4 +82,48 @@ public class MedicalCardController {
 		}
 		return result;
 	}
+	
+	/**
+	* @Title:getCardByPersonId
+	* @Description:根据身份证号查询就诊卡
+	* @param:@param person_id
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 上午8:41:05
+	 */
+	@GetMapping("/get_card_by_person_id")
+	@ResponseBody
+	public JsonResult getCardByPersonId(String person_id) {
+		JsonResult result = new JsonResult();
+		try {
+			MedicalCard card = medicalCardService.queryByPersonId(person_id);
+			result.setResult(card);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult(person_id);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getCardQrCode
+	* @Description:获取办理就诊卡支付二维码
+	* @param:@param ygxh
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 上午8:44:57
+	 */
+	@GetMapping("get_card_qr_code")
+	@ResponseBody
+	public JsonResult getCardQrCode(String ygxh) {
+		JsonResult result = new JsonResult();
+		
+		return result;
+	}
 }

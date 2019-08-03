@@ -65,4 +65,8 @@ public class MedicalCardService {
 		return count > 0 ? false : true;
 	}
 	
+	public MedicalCard queryByPersonId(String person_id) {
+		return medicalCardDao.queryByPersonId(person_id);
+	}
+	
 }
