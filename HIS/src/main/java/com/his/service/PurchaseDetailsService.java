@@ -14,5 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class PurchaseDetailsService {
+	
+	public void addPurchaseMX() {
+		
+	}
 
 }

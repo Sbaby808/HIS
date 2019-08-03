@@ -40,7 +40,7 @@ public class HisApplicationTests {
 		admin.setYgPassword(MD5Tools.KL(MD5Tools.Md5("admin123")));
 		empInformationService.addTestEmp(admin);
 	}
-	
+		
 	/**
 	 * 
 	* @Title:testMD5Tools
