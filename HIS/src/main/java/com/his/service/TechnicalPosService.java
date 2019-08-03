@@ -1,6 +1,7 @@
 package com.his.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,9 @@ public class TechnicalPosService {
 	* @Date:2019年8月3日 上午12:56:37
 	 */
 	public void addTechnicalPost(TechnicalPost technicalPost) {
-		technicalPost.setTpId(CreateUUID.getUUID_32());
+		String tid = UUID.randomUUID().toString().replaceAll("-", "");
+		System.out.println(tid);
+		technicalPost.setTpId(tid);
 		technicalPosdao.save(technicalPost);
 	}
 

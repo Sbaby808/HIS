@@ -1,5 +1,9 @@
 package com.his.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.EmpInformation;
+import com.his.service.EmpInformationService;
 
 /**  
 * @ClassName: EmpInformationController  
@@ -18,19 +23,22 @@ import com.his.pojo.EmpInformation;
 @Controller
 public class EmpInformationController {
 	
-	@ResponseBody
-	@GetMapping("eintest")
-	public String et(String tt) {
-		System.out.println(tt);
-		return "EmpInformationController";
-	}
+	@Autowired
+	private EmpInformationService empInformationService; 
+	
 	
 	@ResponseBody
 	@PostMapping("add_emp_information")
 	public EmpInformation addEmpInformation(@RequestBody EmpInformation emp) {
-		
 		return emp;
 	}
+	
+	@ResponseBody
+	@GetMapping("get_emp_by_page")
+	public Map get_all_emp(int curpage,int pagesize){
+		return empInformationService.queryEmpByPage(curpage, pagesize);
+	}
+	
 	
 
 }
