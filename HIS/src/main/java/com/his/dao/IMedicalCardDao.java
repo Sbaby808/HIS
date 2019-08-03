@@ -9,4 +9,7 @@ public interface IMedicalCardDao extends CrudRepository<MedicalCard, String>{
 
 	@Query("from MedicalCard m where m.cardId=?1")
 	public MedicalCard getCardByCid(String cardId);
+	
+	@Query("select count(*) from MedicalCard m where m.personId = ?1")
+	public Integer checkCardByPersonId(String person_id);
 }
