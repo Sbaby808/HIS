@@ -38,5 +38,19 @@ public class OtherProjectService {
 		otherProject.setProjectTime(new Date());
 		otherProjectDao.save(otherProject);
 	}
+	
+	/**
+	* @Title:getOtherPeojectById
+	* @Description:根据其他收费项id查询其他收费项
+	* @param:@param id
+	* @param:@return
+	* @return:OtherProjectService
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 上午9:36:55
+	 */
+	public OtherProject getOtherPeojectById(String id) {
+		return otherProjectDao.findById(id).get();
+	}
 
 }

@@ -11,6 +11,6 @@ import com.his.pojo.OtherProject;
 * @date 2019年8月3日  上午9:05:22
 *    
 */
-public interface IOtherProjectDao extends CrudRepository<OtherProject, Long> {
+public interface IOtherProjectDao extends CrudRepository<OtherProject, String> {
 
 }

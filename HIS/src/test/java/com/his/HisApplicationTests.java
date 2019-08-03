@@ -138,7 +138,7 @@ public class HisApplicationTests {
 	 */
 	@Test
 	public void testAliPayQuery() {
-		AliPay.query("8a0b782638f14f43aa3046b2a0370253");
+//		AliPay.query("8a0b782638f14f43aa3046b2a0370253");
 	}
 
 }

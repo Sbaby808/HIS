@@ -1,5 +1,7 @@
 package com.his.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -121,9 +123,42 @@ public class MedicalCardController {
 	 */
 	@GetMapping("get_card_qr_code")
 	@ResponseBody
-	public JsonResult getCardQrCode(String ygxh) {
+	public JsonResult getCardQrCode() {
 		JsonResult result = new JsonResult();
-		
+		try {
+			Map<String, String> res = medicalCardService.getCardQrCode();
+			result.setResult(res);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setStatus("error");
+		}
 		return result;
 	}
+	
+	/**
+	* @Title:CheckPay
+	* @Description:查询订单是否支付
+	* @param:@param outTradeNo
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 上午9:57:30
+	 */
+	@GetMapping("/check_pay")
+	@ResponseBody
+	public JsonResult CheckPay(String outTradeNo, String ygxh, String personId) {
+		JsonResult result = new JsonResult();
+		try {
+			boolean flag = medicalCardService.checkPay(outTradeNo, ygxh, personId);
+			result.setResult(flag);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setResult(outTradeNo);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	
 }
