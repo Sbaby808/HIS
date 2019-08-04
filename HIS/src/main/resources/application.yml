@@ -1,4 +1,9 @@
-
+logging:
+  level:
+    org:
+      springframework:
+        boot: debug
+  config: classpath:logback-spring.xml
 debug: true
 server:
   port: 8089

@@ -3,6 +3,8 @@ package com.his.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ import com.his.service.MedicalCardService;
  */
 @Controller
 public class MedicalCardController {
+	
+	private static Logger log = LoggerFactory.getLogger(MedicalCardController.class);
 
 	@Autowired
 	private MedicalCardService medicalCardService;
@@ -213,6 +217,7 @@ public class MedicalCardController {
 	@GetMapping("/query_card_by_page")
 	@ResponseBody
 	public JsonResult getCardByPage(int pageNum, int pageSize) {
+		log.debug("分页查询就诊卡信息");
 		JsonResult result = new JsonResult();
 		try {
 			List<MedicalCard> list = medicalCardService.getByPage(pageNum, pageSize);
