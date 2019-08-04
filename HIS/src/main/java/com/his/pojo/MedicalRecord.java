@@ -37,6 +37,7 @@ public class MedicalRecord implements Serializable {
 	private String medInSituation;
 
 	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="MED_IN_TIME")
 	private Date medInTime;
 
@@ -53,6 +54,7 @@ public class MedicalRecord implements Serializable {
 	private String medOutSituation;
 
 	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="MED_OUT_TIME")
 	private Date medOutTime;
 
@@ -68,7 +70,7 @@ public class MedicalRecord implements Serializable {
 
 	//bi-directional one-to-one association to HospitalizedPatient
 	@OneToOne
-	@JSONField(serialize=false)
+	//@JSONField(serialize=false)
 	@JoinColumn(name="HOSP_ID")
 	private HospitalizedPatient hospitalizedPatient;
 

@@ -38,4 +38,19 @@ public class HosInNoticeService {
 		return hosInNoticeDao.getAllHosInNotice();
 	}
 	
+	
+	/**
+	 * 
+	* @Title:delInNotice
+	* @Description:删除入院通知单
+	* @param:@param notice
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月3日 上午10:50:48
+	 */
+	public void delInNotice(HospitalNotice notice){
+		hosInNoticeDao.delete(notice);
+	}
+	
 }
