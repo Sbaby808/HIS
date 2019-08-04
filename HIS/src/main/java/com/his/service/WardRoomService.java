@@ -107,4 +107,5 @@ public class WardRoomService {
 	public List <WardRoom> getWardRoomByWid(String wid){
 		return wardRoomDao.getWardRoomByWid(wid);
 	}
+	
 }

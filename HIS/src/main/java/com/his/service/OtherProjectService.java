@@ -1,6 +1,7 @@
 package com.his.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,20 @@ public class OtherProjectService {
 	 */
 	public OtherProject getOtherPeojectById(String id) {
 		return otherProjectDao.findById(id).get();
+	}
+	
+	/**
+	 * 
+	* @Title:getHosProject
+	* @Description:查询住院床位的收费项
+	* @param:@return
+	* @return:List<OtherProject>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 下午9:43:50
+	 */
+	public List <OtherProject> getHosBedProject(){
+		return otherProjectDao.getHosBedProject();
 	}
 
 }

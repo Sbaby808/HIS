@@ -54,7 +54,6 @@ public class WardRoomController {
 	@ResponseBody
 	@GetMapping("/get_ward_room_byWid")
 	public List <WardRoom> getWardRoomByWid(String ward_id){
-		System.out.println(ward_id);
 		return wardRoomService.getWardRoomByWid(ward_id);
 	}
 }

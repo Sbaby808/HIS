@@ -1,6 +1,7 @@
 package com.his.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,6 +60,40 @@ public class HosBedController {
 	@GetMapping("/get_bed_by_bId")
 	public HosBed getBedByBid(String bid){
 		return hosBedService.getBedByBid(bid);
+	}
+	
+	/**
+	 * 
+	* @Title:getAllBeds
+	* @Description:无分页查询所有床位信息
+	* @param:@return
+	* @return:List<HosBed>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 上午10:50:43
+	 */
+	@ResponseBody
+	@GetMapping("get_all_hos_beds")
+	public List <HosBed> getAllBeds(){
+		return hosBedService.getAllBeds();
+	}
+	
+	/**
+	 * 
+	* @Title:getAllBedsByPage
+	* @Description:分页查询所有床位信息
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 下午10:08:44
+	 */
+	@ResponseBody
+	@GetMapping("get_hos_beds_byPage")
+	public Map getAllBedsByPage(int curpage,int pagesize){
+		return hosBedService.getAllBedsByPage(curpage, pagesize);
 	}
 	
 }

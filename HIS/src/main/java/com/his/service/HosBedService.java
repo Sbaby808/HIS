@@ -24,13 +24,40 @@ public class HosBedService {
 	@Autowired
 	private IHosBedDao hosBedDao;
 	
-	public Map getAllBeds(int curpage,int pagesize){
-		List <HosBed> list = hosBedDao.getAllBeds(PageRequest.of(curpage-1, pagesize));
+	
+	/**
+	 *
+	* @Title:getAllBeds
+	* @Description:分页查询所有床位信息
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 上午10:46:15
+	 */
+	public Map getAllBedsByPage(int curpage,int pagesize){
+		List <HosBed> list = hosBedDao.getAllBedsByPage(PageRequest.of(curpage-1, pagesize));
 		long total  = hosBedDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
 		return map;
+	}
+	
+	/**
+	 * 
+	* @Title:getAllBeds
+	* @Description:无分页查询所有床位
+	* @param:@return
+	* @return:List<HosBed>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 上午10:49:23
+	 */
+	public List <HosBed> getAllBeds(){
+		return hosBedDao.getAllBeds();
 	}
 	
 	/**
@@ -51,7 +78,7 @@ public class HosBedService {
 	/**
 	 * 
 	* @Title:getBedByBid
-	* @Description:根据id查询床位
+	* @Description:根据床位id查询床位
 	* @param:@param bid
 	* @param:@return
 	* @return:HosBed

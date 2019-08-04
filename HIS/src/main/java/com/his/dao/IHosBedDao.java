@@ -19,7 +19,7 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	/**
 	 * 
 	* @Title:getAllBeds
-	* @Description:查找所有床位
+	* @Description:分页查找所有床位
 	* @param:@param page
 	* @param:@return
 	* @return:List<HosBed>
@@ -28,8 +28,20 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	* @Date:2019年8月1日 上午9:37:08
 	 */
 	@Query("from HosBed h")
-	public List <HosBed> getAllBeds(Pageable page);
+	public List <HosBed> getAllBedsByPage(Pageable page);
 	
+	/**
+	 * 
+	* @Title:getAllBeds
+	* @Description:无分页查询所有床位
+	* @param:@return
+	* @return:List<HosBed>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 上午10:48:01
+	 */
+	@Query("from HosBed h")
+	public List <HosBed> getAllBeds();
 	
 	/**
 	 * 

@@ -1,7 +1,10 @@
 package com.his.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,6 +51,22 @@ public class OtherProjectController {
 			result.setStatus("error");
 		}
 		return result;
+	}
+	
+	/**
+	 * 
+	* @Title:getHosBedProject
+	* @Description:查询住院床位的收费项
+	* @param:@return
+	* @return:List<OtherProject>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 下午9:47:30
+	 */
+	@ResponseBody
+	@GetMapping("/get_hosBed_project")
+	public List <OtherProject> getHosBedProject(){
+		return otherProjectService.getHosBedProject();
 	}
 	
 }

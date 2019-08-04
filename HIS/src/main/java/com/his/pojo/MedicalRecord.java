@@ -70,7 +70,6 @@ public class MedicalRecord implements Serializable {
 
 	//bi-directional one-to-one association to HospitalizedPatient
 	@OneToOne
-	//@JSONField(serialize=false)
 	@JoinColumn(name="HOSP_ID")
 	private HospitalizedPatient hospitalizedPatient;
 

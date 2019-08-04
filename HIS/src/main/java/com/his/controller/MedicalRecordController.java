@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import com.his.service.MedicalRecordService;
 /**
  * 
 * @ClassName: MedicalRecordController  
-* @Description: TODO住院病案 
+* @Description: 住院病案 
 * @author Hamster
 * @date 2019年8月1日  下午9:46:26
 *
@@ -26,10 +27,28 @@ public class MedicalRecordController {
 	@Autowired
 	private MedicalRecordService medicalRecordService;
 	
+	/**
+	 * 
+	* @Title:getAllMedicalRecordByPage
+	* @Description:分页查询所有病案
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 下午5:23:54
+	 */
 	@ResponseBody
-	@GetMapping("/get_all_medical_record")
-	public Map getAllMedicalRecord(int curpage,int pagesize){
-		return  medicalRecordService.getAllMedicalRecord(curpage, pagesize);
+	@GetMapping("/get_medical_record_byPage")
+	public Map getAllMedicalRecordByPage(int curpage,int pagesize){
+		return  medicalRecordService.getAllMedicalRecordByPage(curpage, pagesize);
 	}
 	
+	
+	@ResponseBody
+	@GetMapping("/get_all_medical_record")
+	public List <MedicalRecord> getAllMedicalRecord(){
+		return medicalRecordService.getAllMedicalRecord();
+	}
 }
