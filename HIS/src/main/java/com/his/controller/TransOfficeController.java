@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.TransOfficeRecord;
@@ -49,7 +50,7 @@ public class TransOfficeController {
 	/**
 	 * 
 	* @Title:changeMessage
-	* @Description:转科修改其他信息
+	* @Description:转科后修改床位和病房信息
 	* @param:@param inBid
 	* @param:@param outBid
 	* @return:void
@@ -58,7 +59,7 @@ public class TransOfficeController {
 	* @Date:2019年8月2日 下午10:49:01
 	 */
 	@ResponseBody
-	@PostMapping("/change_message")
+	@GetMapping("/change_message")
 	public void changeMessage(String inBid,String outBid){
 		transOfficeService.changeMessage(inBid, outBid);
 	}

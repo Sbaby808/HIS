@@ -29,6 +29,17 @@ public class MedicalCardController {
 	@Autowired
 	private MedicalCardService medicalCardService;
 	
+	/**
+	 * 
+	* @Title:getCardByCid
+	* @Description:根据就诊卡id获取就诊卡信息
+	* @param:@param cardId
+	* @param:@return
+	* @return:MedicalCard
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月3日 上午10:37:43
+	 */
 	@ResponseBody
 	@GetMapping("/get_medical_card_by_Cid")
 	public MedicalCard getCardByCid(String cardId){

@@ -49,7 +49,7 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	/**
 	 * 
 	* @Title:getBedByBid
-	* @Description:根据id查询床位
+	* @Description:根据床位id查询床位
 	* @param:@param bid
 	* @param:@return
 	* @return:HosBed
@@ -59,5 +59,5 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	 */
 	@Query("from HosBed h where h.hosBid=?1")
 	public HosBed getBedByBid(String bid);
-	
+
 }

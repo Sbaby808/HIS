@@ -95,6 +95,7 @@ public class HospitalizedPatient implements Serializable {
 
 	//bi-directional one-to-one association to MedicalRecord
 	@OneToOne(mappedBy="hospitalizedPatient")
+	@JSONField(serialize=false)
 	private MedicalRecord medicalRecord;
 
 	//bi-directional one-to-one association to HosBed

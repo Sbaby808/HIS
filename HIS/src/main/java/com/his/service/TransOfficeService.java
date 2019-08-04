@@ -60,17 +60,31 @@ public class TransOfficeService {
 		transOfficeRecord.setOutOfficeTime(dateFormat.parse(time));
 		transOfficeDao.save(transOfficeRecord);
 		
-		//HospitalizedPatient patient = transOfficeRecord.getHospitalizedPatient();	
 	}
 	
+	/**
+	 * 
+	* @Title:changeMessage
+	* @Description:转科后修改床位和病房信息
+	* @param:@param inBid
+	* @param:@param outBid
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月3日 上午8:35:54
+	 */
 	public void changeMessage(String inBid,String outBid){
+		
+		HosBed outBed = hosBedDao.getBedByBid(outBid);
+		outBed.setHospitalizedPatient(null);
+		outBed.setHosBstate(null);
+		hosBedDao.save(outBed);
+		
+		
 		HospitalizedPatient patient = hosPatientDao.getPatientByBid(outBid);
 		patient.setHosBid(inBid);
 		hosPatientDao.save(patient);
 		
-		HosBed outBed = hosBedDao.getBedByBid(outBid);
-		outBed.setHospitalizedPatient(null);
-		hosBedDao.save(outBed);
 		
 		WardRoom outRoom = wardRoomDao.getWardRoomByRid(outBid);
 		outRoom.setWNum(outRoom.getWNum()-1);
@@ -78,10 +92,12 @@ public class TransOfficeService {
 		
 		HosBed inBed = hosBedDao.getBedByBid(inBid);
 		inBed.setHospitalizedPatient(patient);
+		inBed.setHosBstate("已入住");
 		hosBedDao.save(inBed);
 		
 		WardRoom inRoom = wardRoomDao.getWardRoomByRid(inBid);
 		inRoom.setWNum(inRoom.getWNum()-1);
 		wardRoomDao.save(inRoom);
+		
 	}
 }
