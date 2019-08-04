@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.his.pojo.JsonResult;
 import com.his.pojo.MedicalCard;
 import com.his.service.MedicalCardService;
-
-import oracle.jdbc.proxy.annotation.Post;
-import oracle.net.aso.r;
 
 
 /**
@@ -185,6 +183,81 @@ public class MedicalCardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setResult(personId);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getCardByPage
+	* @Description:分页查询所有的就诊卡信息
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午2:16:13
+	 */
+	@GetMapping("/query_card_by_page")
+	@ResponseBody
+	public JsonResult getCardByPage(int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			List<MedicalCard> list = medicalCardService.getByPage(pageNum, pageSize);
+			result.setResult(list);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult(pageNum);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getAllPages
+	* @Description:查询就诊卡信息的总页数
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午2:40:46
+	 */
+	@GetMapping("/get_card_pages")
+	@ResponseBody
+	public JsonResult getAllPages(int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			int pages = medicalCardService.getAllPages(pageSize);
+			result.setResult(pages);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setResult(pageSize);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getALLCount
+	* @Description:查询就诊卡总记录条数
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午3:03:25
+	 */
+	@GetMapping("/get_card_count")
+	@ResponseBody
+	public JsonResult getALLCount() {
+		JsonResult result = new JsonResult();
+		try {
+			int count = medicalCardService.getAllCount();
+			result.setResult(count);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
 			result.setStatus("error");
 		}
 		return result;

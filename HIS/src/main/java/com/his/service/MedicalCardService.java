@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -176,6 +178,49 @@ public class MedicalCardService {
 		medicalCardDao.save(card);
 	}
 	
+	/**
+	* @Title:getByPage
+	* @Description:分页查询就诊卡信息
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:List<MedicalCard>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午2:19:11
+	 */
+	public List<MedicalCard> getByPage(int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "personId");
+		return medicalCardDao.queryByPage(page);
+	}
 	
+	/**
+	* @Title:getAllPages
+	* @Description:查询就诊卡记录的总页数
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午2:32:34
+	 */
+	public int getAllPages(int pageSize) {
+		int count = medicalCardDao.queryAllPages();
+		return (int)Math.ceil(count * 0.1 / pageSize);
+	}
+	
+	/**
+	* @Title:getAllCount
+	* @Description:查询就诊卡总记录条数
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午3:04:12
+	 */
+	public int getAllCount() {
+		return medicalCardDao.queryAllPages();
+	}
+	
+
 	
 }
