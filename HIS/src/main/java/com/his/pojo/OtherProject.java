@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -40,10 +43,12 @@ public class OtherProject implements Serializable {
 
 	//bi-directional many-to-one association to HosBed
 	@OneToMany(mappedBy="otherProject")
+	@JSONField(serialize=false)
 	private List<HosBed> hosBeds;
 
 	//bi-directional many-to-one association to HosOtherCost
 	@OneToMany(mappedBy="otherProject")
+	@JSONField(serialize=false)
 	private List<HosOtherCost> hosOtherCosts;
 
 	//bi-directional many-to-one association to ObservationBed
