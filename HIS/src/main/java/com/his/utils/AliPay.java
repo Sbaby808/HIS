@@ -1,5 +1,15 @@
 package com.his.utils;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.domain.TradeFundBill;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
@@ -8,8 +18,18 @@ import com.alipay.api.response.MonitorHeartbeatSynResponse;
 import com.alipay.demo.trade.config.Configs;
 import com.alipay.demo.trade.model.ExtendParams;
 import com.alipay.demo.trade.model.GoodsDetail;
-import com.alipay.demo.trade.model.builder.*;
-import com.alipay.demo.trade.model.hb.*;
+import com.alipay.demo.trade.model.builder.AlipayHeartbeatSynRequestBuilder;
+import com.alipay.demo.trade.model.builder.AlipayTradePayRequestBuilder;
+import com.alipay.demo.trade.model.builder.AlipayTradePrecreateRequestBuilder;
+import com.alipay.demo.trade.model.builder.AlipayTradeQueryRequestBuilder;
+import com.alipay.demo.trade.model.builder.AlipayTradeRefundRequestBuilder;
+import com.alipay.demo.trade.model.hb.EquipStatus;
+import com.alipay.demo.trade.model.hb.ExceptionInfo;
+import com.alipay.demo.trade.model.hb.HbStatus;
+import com.alipay.demo.trade.model.hb.PosTradeInfo;
+import com.alipay.demo.trade.model.hb.Product;
+import com.alipay.demo.trade.model.hb.SysTradeInfo;
+import com.alipay.demo.trade.model.hb.Type;
 import com.alipay.demo.trade.model.result.AlipayF2FPayResult;
 import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
 import com.alipay.demo.trade.model.result.AlipayF2FQueryResult;
@@ -20,18 +40,7 @@ import com.alipay.demo.trade.service.impl.AlipayMonitorServiceImpl;
 import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.service.impl.AlipayTradeWithHBServiceImpl;
 import com.alipay.demo.trade.utils.Utils;
-import com.alipay.demo.trade.utils.ZxingUtils;
 import com.his.pojo.AliPayEntity;
-import com.his.pojo.JsonResult;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.*;
 
 /**
  * Created by liuyangkly on 15/8/9.
