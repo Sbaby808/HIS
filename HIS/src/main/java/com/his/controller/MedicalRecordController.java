@@ -51,4 +51,37 @@ public class MedicalRecordController {
 	public List <MedicalRecord> getAllMedicalRecord(){
 		return medicalRecordService.getAllMedicalRecord();
 	}
+	
+	/**
+	 * 
+	* @Title:closeMedicalRecord
+	* @Description:病案封档
+	* @param:@param record
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 上午10:29:44
+	 */
+	@ResponseBody
+	@PostMapping("/close_medical_record")
+	public void closeMedicalRecord(@RequestBody MedicalRecord record){
+		System.out.println(record.getMedRid());
+		medicalRecordService.closeMedicalRecord(record);
+	}
+	
+	/**
+	 * 
+	* @Title:openMedicalRecord
+	* @Description:病案解封
+	* @param:@param record
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 上午10:30:39
+	 */
+	@ResponseBody
+	@PostMapping("/open_medical_record")
+	public void openMedicalRecord(@RequestBody MedicalRecord record){
+		medicalRecordService.openMedicalRecord(record);
+	}
 }

@@ -12,9 +12,12 @@ import com.his.dao.IHosPrescriptionDao;
 import com.his.pojo.HosPrescription;
 
 /**
- * 住院处方
- * @author dell
- *
+ * 
+* @ClassName: HosPrescriptionService  
+* @Description: 住院处方  
+* @author Hamster
+* @date 2019年8月5日  下午7:21:36
+*
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -23,12 +26,38 @@ public class HosPrescriptionService {
 	@Autowired
 	private IHosPrescriptionDao hosPrescriptionDao;
 	
-	public Map getAllHosPrescription(int curpage,int pagesize){
-		List <HosPrescription> list =hosPrescriptionDao.getAllHosPrescription(PageRequest.of(curpage-1, pagesize));
+	/**
+	 * 
+	* @Title:getAllHosPrescription
+	* @Description:分页查询所有处方
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 下午7:21:52
+	 */
+	public Map getHosPrescriptionByPage(int curpage,int pagesize){
+		List <HosPrescription> list =hosPrescriptionDao.getHosPrescriptionByPage(PageRequest.of(curpage-1, pagesize));
 		long total = hosPrescriptionDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
 		return map;
+	}
+	
+	/**
+	 * 
+	* @Title:getAllHosPrescription
+	* @Description:无分页查询所有处方
+	* @param:@return
+	* @return:List<HosPrescription>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 下午7:22:57
+	 */
+	public List <HosPrescription> getAllHosPrescription(){
+		return hosPrescriptionDao.getAllHosPrescription();
 	}
 }
