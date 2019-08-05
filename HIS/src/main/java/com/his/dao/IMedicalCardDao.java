@@ -63,4 +63,63 @@ public interface IMedicalCardDao extends CrudRepository<MedicalCard, String>{
 	 */
 	@Query("select count(*) from MedicalCard m")
 	public int queryAllPages();
+	
+	/**
+	* @Title:searchByKey
+	* @Description:根据条件搜索就诊卡信息
+	* @param:@param searchKey
+	* @param:@param searchGender
+	* @param:@param searchMarried
+	* @param:@param searchCountry
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<MedicalCard>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 上午9:58:07
+	 */
+	@Query("from MedicalCard m "
+			+ "where (m.cardName like ?1 "
+			+ "or m.workUnit like ?1 "
+			+ "or m.profession like ?1 "
+			+ "or m.tel like ?1 "
+			+ "or m.personId like ?1) "
+			+ "and m.gender like ?2 "
+			+ "and m.married like ?3 "
+			+ "and m.country like ?4")
+	public List<MedicalCard> searchByKey(
+			String searchKey, 
+			String searchGender, 
+			String searchMarried, 
+			String searchCountry, 
+			Pageable pageable
+	);
+	
+	/**
+	* @Title:searchCount
+	* @Description:按条件查询的总记录条数
+	* @param:@param searchKey
+	* @param:@param searchGender
+	* @param:@param searchMarried
+	* @param:@param searchCountry
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 上午11:28:44
+	 */
+	@Query("select count(*) from MedicalCard m "
+			+ "where (m.cardName like ?1 "
+			+ "or m.workUnit like ?1 "
+			+ "or m.profession like ?1 "
+			+ "or m.tel like ?1 "
+			+ "or m.personId like ?1) "
+			+ "and m.gender like ?2 "
+			+ "and m.married like ?3 "
+			+ "and m.country like ?4")
+	public int searchCount(
+			String searchKey, 
+			String searchGender, 
+			String searchMarried, 
+			String searchCountry);
 }
