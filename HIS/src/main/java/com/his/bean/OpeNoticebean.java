@@ -15,13 +15,17 @@ private String moperComment;
 private Date moperTime;
 private String opexiang;
 private String brname;
-public OpeNoticebean(String moperId, String moperComment, Date moperTime, String opexiang, String brname) {
+private String brcar_id;
+private String opexiangid;
+public OpeNoticebean(String moperId, String moperComment, Date moperTime, String opexiang, String brname,String brcar_id,String opexiangid) {
 	super();
 	this.moperId = moperId;
 	this.moperComment = moperComment;
 	this.moperTime = moperTime;
 	this.opexiang = opexiang;
 	this.brname = brname;
+	this.brcar_id=brcar_id;
+	this.opexiangid=opexiangid;
 }
 public String getMoperId() {
 	return moperId;
@@ -52,6 +56,18 @@ public String getBrname() {
 }
 public void setBrname(String brname) {
 	this.brname = brname;
+}
+public String getBrcar_id() {
+	return brcar_id;
+}
+public void setBrcar_id(String brcar_id) {
+	this.brcar_id = brcar_id;
+}
+public String getOpexiangid() {
+	return opexiangid;
+}
+public void setOpexiangid(String opexiangid) {
+	this.opexiangid = opexiangid;
 }
 
 }

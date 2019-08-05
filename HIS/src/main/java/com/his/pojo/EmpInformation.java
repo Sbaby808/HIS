@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -136,6 +139,7 @@ public class EmpInformation implements Serializable {
 
 	//bi-directional many-to-one association to OperationPay
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<OperationPay> operationPays;
 
 	//bi-directional many-to-one association to OperPayRecord
