@@ -3,6 +3,8 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
@@ -19,6 +21,8 @@ public class HosDiagnosticRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
 	@Column(name="HOS_DIAG_ID")
 	private String hosDiagId;
 
@@ -31,7 +35,8 @@ public class HosDiagnosticRecord implements Serializable {
 	@Column(name="HOS_DIAG_RESULT")
 	private String hosDiagResult;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIME)
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="HOS_DIAG_TIME")
 	private Date hosDiagTime;
 
@@ -50,6 +55,7 @@ public class HosDiagnosticRecord implements Serializable {
 
 	//bi-directional one-to-one association to HosPrescription
 	@OneToOne(mappedBy="hosDiagnosticRecord")
+	@JSONField(serialize=false)
 	private HosPrescription hosPrescription;
 
 	public HosDiagnosticRecord() {

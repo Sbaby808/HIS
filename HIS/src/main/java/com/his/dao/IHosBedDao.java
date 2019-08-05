@@ -55,7 +55,7 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	* @Date:2019年8月1日 上午9:37:22
 	 */
 	@Query(value="select * from hos_beds h where h.wroom_id=?1 and h.hos_bstate is null",nativeQuery=true)
-	public List <HosBed> getBedsByRoomid(String room_id);
+	public List <HosBed> getFreeBedsByRoomid(String room_id);
 	
 	
 	/**
@@ -71,5 +71,20 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	 */
 	@Query("from HosBed h where h.hosBid=?1")
 	public HosBed getBedByBid(String bid);
+	
+	
+	/**
+	 * 
+	* @Title:getBedsByRid
+	* @Description:根据病房id查询所有床位
+	* @param:@param rid
+	* @param:@return
+	* @return:List<HosBed>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 上午8:58:12
+	 */
+	@Query(value="select * from hos_beds h where h.wroom_id=?1",nativeQuery=true)
+	public List <HosBed> getBedsByRid(String rid);
 
 }

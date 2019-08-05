@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 
 
@@ -35,6 +38,7 @@ public class MedicinePay implements Serializable {
 
 	//bi-directional one-to-one association to DrugInformation
 	@OneToOne
+	@JSONField(serialize=false)
 	@JoinColumn(name="YP_ID")
 	private DrugInformation drugInformation;
 
