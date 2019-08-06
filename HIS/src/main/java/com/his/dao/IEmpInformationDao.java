@@ -17,9 +17,8 @@ import com.his.pojo.EmpInformation;
 */
 public interface IEmpInformationDao extends CrudRepository<EmpInformation, String>{
 
-	@Query("select e.ygxh,e.waitingRoomId,e.ygBirth,e.ygEducation,e.ygEmail,e.ygGh,e.ygName,"
-			+ "e.ygNation,ygPlace,e.ygSex,e.ygTel,e.technicalPost from EmpInformation e")
-	public List<Object[]> queryByPage(Pageable page);
+	@Query("from EmpInformation e left outer join e.technicalPost t")
+	public List<EmpInformation> queryByPage(Pageable page);
 		
 	public List<EmpInformation> findByygGh(String ygGh);
 	

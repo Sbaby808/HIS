@@ -52,14 +52,14 @@ public class EmpInformationService {
 			// 维护职位id
 			String tp_id = empInformation.getTechnicalPost().getTpId();
 			if (tp_id.equals("")) {
-				TechnicalPost tp = technicalpostDao.findById(tp_id).get();
-				empInformation.setTechnicalPost(tp);
+				empInformation.setTechnicalPost(null);
+				System.out.println("into add tp_id");
 			}
 			// 维护waitingRoomId
 			String wid = empInformation.getWaitingRoomId();
 			if (wid.equals("")) {
-				WaitingRoom wr = waitingroomDao.findById(wid).get();
-				empInformation.setWaitingRoom(wr);
+				empInformation.setWaitingRoom(null);
+				System.out.println("into add wid");
 			}
 			// 员工id
 			empInformation.setYgxh(UUID.randomUUID().toString().replace("-", ""));
@@ -76,7 +76,7 @@ public class EmpInformationService {
 
 	/**
 	 * @Title:delEmp
-	 * @Description:根据员工序号删除员工
+	 * @Description:根据员工序号删除没有外键的员工
 	 * @param:@param ygxh
 	 * @return:void
 	 * @throws @author:crazy_long
@@ -89,6 +89,19 @@ public class EmpInformationService {
 			e.printStackTrace();
 			new ServiceException("删除员工失败");
 		}
+	}
+	
+	public void edittest() {
+		
+		WaitingRoom w = waitingroomDao.findById("8b21c198cd1e4996892e5c2f73353007").get();
+		System.out.println("--------------------waitingroomID:"+w.getWaitingRoomId());
+		System.out.println("--------------------waitingroomNmae:"+w.getWaitingRoomName());
+		EmpInformation e = empInformationDao.findById("55e6b68b7d04465e98a3d699acd395fd").get();
+		System.out.println("---------------------empname:"+e.getYgName());
+		e.setWaitingRoomId(null);
+		w.setEmpInformation(e);
+		waitingroomDao.save(w);
+	
 	}
 
 	/**
@@ -104,15 +117,28 @@ public class EmpInformationService {
 		try {
 			// 维护waitingRoomId
 			String waitingRoomId = empInformation.getWaitingRoomId();
-			if (waitingRoomId.equals("")) {
-				empInformation.setWaitingRoom(waitingroomDao.findById(waitingRoomId).get());
+			System.out.println("-----------------------waitingRoomId为"+waitingRoomId);
+			if (waitingRoomId.equals("")||waitingRoomId.equals("0")) {
+				System.out.println("into waitingRoomId");
+				//先找到存在的waitingRoomId;
+				String ygxh = empInformation.getYgxh();
+				String ewtId = this.getEmpInfoById(ygxh).getWaitingRoomId();
+				System.out.println("-----------------------waitingRoomId为"+ewtId);
+				WaitingRoom waitingroom = waitingroomDao.findById(ewtId).get();
+				EmpInformation e = empInformationDao.findById(ygxh).get();
+				e.setWaitingRoomId(null);
+				waitingroom.setEmpInformation(e);
+				waitingroomDao.save(waitingroom);
+				
 			}
 			// 维护职位id
 			String tp_id = empInformation.getTechnicalPost().getTpId();
-			if (tp_id.equals("")) {
-				TechnicalPost tp = technicalpostDao.findById(tp_id).get();
-				empInformation.setTechnicalPost(tp);
+			System.out.println("-----------------------tp_id为"+tp_id);
+			if (tp_id.equals("")||tp_id.equals("0")) {
+				System.out.println("into TechnicalPost");
+				empInformation.setTechnicalPost(null);
 			}
+			
 			empInformationDao.save(empInformation);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,7 +157,7 @@ public class EmpInformationService {
 	 * @Date:2019年8月3日 上午11:55:55
 	 */
 	public Map queryEmpByPage(int curpage, int pagesize) {
-		List<Object[]> list = empInformationDao.queryByPage(PageRequest.of(curpage - 1, pagesize));
+		List<EmpInformation> list = empInformationDao.queryByPage(PageRequest.of(curpage - 1, pagesize));
 		long total = empInformationDao.count();
 		Map map = new HashMap();
 		map.put("total", total);
@@ -149,8 +175,13 @@ public class EmpInformationService {
 	* @author:crazy_long
 	* @Date:2019年8月3日 下午2:19:10
 	 */
-	public List<EmpInformation> queryByGH(String yggh) {
-		return empInformationDao.findByygGh(yggh);
+	public Map queryByGH(String yggh) {
+		List<EmpInformation> list = empInformationDao.findByygGh(yggh);
+		int total = list.size();
+		Map map = new HashMap();
+		map.put("list",list);
+		map.put("total",total);
+		return map;
 	}
 	
 	/**
@@ -163,8 +194,13 @@ public class EmpInformationService {
 	* @author:crazy_long
 	* @Date:2019年8月3日 下午2:40:34
 	 */
-	public List<EmpInformation> queryEmpByYgname(String ygName){
-		return empInformationDao.qureyByygName(ygName);
+	public Map queryEmpByYgname(String ygName){
+		 List<EmpInformation> list = empInformationDao.qureyByygName(ygName);
+		 int total = list.size();
+		 Map map = new HashMap();
+		 map.put("list", list);
+		 map.put("total", total);
+		return map;
 	}
 
 	/**

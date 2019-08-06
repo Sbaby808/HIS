@@ -1,6 +1,6 @@
 package com.his;
 
-import java.util.UUID;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,10 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.his.pojo.TechnicalPost;
-import com.his.pojo.WaitingRoom;
 import com.his.service.TechnicalPosService;
-import com.his.service.WaitingRoomService;
-import com.his.utils.CreateUUID;
 
 /**  
 * @ClassName: TechnicalPostTest  
@@ -28,6 +25,14 @@ public class TechnicalPostTest {
 	
 	@Autowired
 	private TechnicalPosService technicalPosService;
+	
+	@Test
+	public void query() {
+		List<TechnicalPost> list = technicalPosService.queryAllTechnicalPost();
+		for (TechnicalPost technicalPost : list) {
+			System.out.println(technicalPost.getTpName());
+		}
+	}
 	
 	@Test
 	public void addTechnicalPost() {

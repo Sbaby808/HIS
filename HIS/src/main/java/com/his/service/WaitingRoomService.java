@@ -49,4 +49,8 @@ public class WaitingRoomService {
 	public void addWaitingroom(WaitingRoom waitingRoom) {
 		waitingroomdao.save(waitingRoom);
 	}
+	
+	public WaitingRoom getWaitingroomById(String wid) {
+		return waitingroomdao.findById(wid).get();
+	}
 }

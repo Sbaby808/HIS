@@ -3,6 +3,8 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 
 /**
  * The persistent class for the WAITING_ROOM database table.
@@ -27,6 +29,7 @@ public class WaitingRoom implements Serializable {
 	private Department department;
 
 	//bi-directional one-to-one association to EmpInformation
+	@JSONField(serialize=false)
 	@OneToOne
 	@JoinColumn(name="YGXH")
 	private EmpInformation empInformation;

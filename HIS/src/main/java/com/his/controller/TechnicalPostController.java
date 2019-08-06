@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,30 @@ public class TechnicalPostController {
 	private TechnicalPosService technicalposService;
 	
 	@ResponseBody
+	@GetMapping("tt")
+	public String tt(int a,int b) {
+		System.out.println("----------------------------");
+		System.out.println(a+b);
+		return "hello TechnicalPost";
+	}
+	
+	@ResponseBody
 	@GetMapping("get_all_technicalpost")
 	public List<TechnicalPost> get_all_technicalpost(){
-		return technicalposService.queryAllTechnicalPost();
+		System.out.println("----------------------------------------1");
+		List<TechnicalPost> list = technicalposService.queryAllTechnicalPost();
+		for (TechnicalPost technicalPost : list) {
+			System.out.println("----------------------------------------2");
+			System.out.println(technicalPost.getTpName());
+		}
+		/*List<TechnicalPost> list = new ArrayList<TechnicalPost>();
+		TechnicalPost t1 = new TechnicalPost();
+		t1.setTpName("aaaaaa");
+		TechnicalPost t2 = new TechnicalPost();
+		t2.setTpName("bbbbbbbbbbb");
+		list.add(t1);
+		list.add(t2);*/
+		return list;
 	}
 	
 

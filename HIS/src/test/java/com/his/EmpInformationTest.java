@@ -2,6 +2,7 @@ package com.his;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -32,30 +33,30 @@ public class EmpInformationTest {
 	@Autowired
 	private EmpInformationService empInformationService;
 	
+	
+	@Test
+	public void edittest() {
+		empInformationService.edittest();
+	}
+	
 	@Test
 	public void page() {
-		List<Object[]> list = (List<Object[]>) empInformationService.queryEmpByPage(1, 10);
-		for (Object[] ob : list) {
-			for(int i=0;i<ob.length;i++) {
-				System.out.println(ob[i]);
-				System.out.println("-------------");
-			}
+		Map map = empInformationService.queryEmpByPage(1, 30);
+		List<EmpInformation> list=(List<EmpInformation>) map.get("list");
+		for (EmpInformation e : list) {
+			System.out.println(e.getYgName());
+			//System.out.println(e.getTechnicalPost().getTpName());
 		}
 	}
 	
 	@Test
 	public void queryByGH() {
-		for (EmpInformation emp : empInformationService.queryByGH("1000001810811234")) {
-			System.out.println(emp.getYgName()+";"+emp.getYgNation());
-		}
+		
 	}
 	
 	@Test
 	public void queryByName() {
-		System.out.println("-----------------------");
-		for (EmpInformation emp : empInformationService.queryEmpByYgname("张三5")) {
-			System.out.println(emp.getYgName()+";"+emp.getYgNation());
-		}
+		
 	}
 	
 	@Test
