@@ -35,5 +35,18 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 	@Query("from MedicalRecord m")
 	public List <MedicalRecord> getAllMedicalRecordByPage(Pageable page);
 	
+	/**
+	 * 
+	* @Title:getMedicalRecordByhospId
+	* @Description:根据住院id查询病案
+	* @param:@param hospId
+	* @param:@return
+	* @return:MedicalRecord
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月6日 下午8:18:55
+	 */
+	@Query(value="select * from medical_record m where m.hosp_id=?1",nativeQuery=true)
+	public MedicalRecord getMedicalRecordByhospId(String hospId);
 	
 }

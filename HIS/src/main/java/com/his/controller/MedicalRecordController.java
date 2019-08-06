@@ -84,4 +84,21 @@ public class MedicalRecordController {
 	public void openMedicalRecord(@RequestBody MedicalRecord record){
 		medicalRecordService.openMedicalRecord(record);
 	}
+	
+	/**
+	 * 
+	* @Title:getMedicalRecordByhospId
+	* @Description:根据住院id查询病案
+	* @param:@param hospId
+	* @param:@return
+	* @return:MedicalRecord
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月6日 下午8:25:38
+	 */
+	@ResponseBody
+	@GetMapping("/get_medical_record_byHospId")
+	public MedicalRecord getMedicalRecordByhospId(String hospId){
+		return medicalRecordService.getMedicalRecordByhospId(hospId);
+	}
 }

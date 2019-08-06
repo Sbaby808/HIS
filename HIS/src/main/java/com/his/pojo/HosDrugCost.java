@@ -2,6 +2,11 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -16,10 +21,12 @@ public class HosDrugCost implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
 	@Column(name="HOS_CID")
 	private String hosCid;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOST_CTIME")
 	private Date hostCtime;
 

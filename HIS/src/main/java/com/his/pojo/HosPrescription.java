@@ -34,7 +34,7 @@ public class HosPrescription implements Serializable {
 	@Column(name="HOS_PRE_MONEY")
 	private BigDecimal hosPreMoney;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOS_PRE_TIME")
 	private Date hosPreTime;
 
@@ -55,6 +55,7 @@ public class HosPrescription implements Serializable {
 
 	//bi-directional one-to-one association to HosDrugCost
 	@OneToOne(mappedBy="hosPrescription")
+	@JSONField(serialize=false)
 	private HosDrugCost hosDrugCost;
 
 	public HosPrescription() {

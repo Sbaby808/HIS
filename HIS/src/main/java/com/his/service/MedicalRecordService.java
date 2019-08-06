@@ -94,4 +94,19 @@ public class MedicalRecordService {
 		record.setMedOther(null);
 		medicalRecordDao.save(record);
 	}
+	
+	/**
+	 * 
+	* @Title:getMedicalRecordByhospId
+	* @Description:根据住院id查询病案
+	* @param:@param hospId
+	* @param:@return
+	* @return:MedicalRecord
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月6日 下午8:24:09
+	 */
+	public MedicalRecord getMedicalRecordByhospId(String hospId){
+		return medicalRecordDao.getMedicalRecordByhospId(hospId);
+	}
 }

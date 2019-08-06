@@ -1,5 +1,8 @@
 package com.his.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosDiagRecordDao;
+import com.his.dao.IMedicalRecordDao;
 import com.his.pojo.HosDiagnosticRecord;
+import com.his.pojo.MedicalRecord;
+
+/**
+ * 
+* @ClassName: HosDiagRecordService  
+* @Description: 住院诊断记录 
+* @author Hamster
+* @date 2019年8月6日  上午8:49:33
+*
+ */
 
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -18,6 +32,7 @@ public class HosDiagRecordService {
 
 	@Autowired
 	private IHosDiagRecordDao hosDiagRecordDao;
+	
 	
 	/**
 	 * 
@@ -52,5 +67,38 @@ public class HosDiagRecordService {
 		map.put("list", list);
 		map.put("total", total);
 		return map;
+	}
+	
+	/**
+	 * 
+	* @Title:addHosDiagRecord
+	* @Description:新增诊断记录
+	* @param:@param record
+	* @param:@throws ParseException
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月6日 上午8:56:35
+	 */
+	public void addHosDiagRecord(HosDiagnosticRecord record) throws ParseException{
+		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = dateFormat.format(new Date());
+		record.setHosDiagTime(dateFormat.parse(time));
+		hosDiagRecordDao.save(record);	
+	}
+	
+	
+	/**
+	 * 
+	* @Title:delHosDiagRecord
+	* @Description:删除诊断记录
+	* @param:@param record
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月6日 上午8:57:33
+	 */
+	public void delHosDiagRecord(HosDiagnosticRecord record){
+		hosDiagRecordDao.delete(record);
 	}
 }

@@ -35,8 +35,7 @@ public class HosDiagnosticRecord implements Serializable {
 	@Column(name="HOS_DIAG_RESULT")
 	private String hosDiagResult;
 
-	@Temporal(TemporalType.TIME)
-	@JSONField(format="yyyy-MM-dd")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOS_DIAG_TIME")
 	private Date hosDiagTime;
 
