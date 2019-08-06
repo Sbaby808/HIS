@@ -39,6 +39,7 @@ public class OtherProject implements Serializable {
 
 	//bi-directional many-to-one association to AmbulanceRecord
 	@OneToMany(mappedBy="otherProject")
+	@JSONField(serialize = false)
 	private List<AmbulanceRecord> ambulanceRecords;
 
 	//bi-directional many-to-one association to HosBed
@@ -53,6 +54,7 @@ public class OtherProject implements Serializable {
 
 	//bi-directional many-to-one association to ObservationBed
 	@OneToMany(mappedBy="otherProject")
+	@JSONField(serialize = false)
 	private List<ObservationBed> observationBeds;
 
 	public OtherProject() {
