@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IOtherProjectDao;
 import com.his.pojo.OtherProject;
+import com.his.utils.SimpleTools;
 import com.sun.xml.xsom.impl.WildcardImpl.Other;
 
 /**  
@@ -115,5 +117,41 @@ public class OtherProjectService {
 	public int getCount() {
 		return otherProjectDao.getCount();
 	}
+	
+	/**
+	* @Title:searchByKey
+	* @Description:按条件查询其他划价项目
+	* @param:@param key
+	* @param:@param min
+	* @param:@param max
+	* @param:@return
+	* @return:List<OtherProject>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月6日 下午3:43:11
+	 */
+	public List<OtherProject> searchByKey(String key, BigDecimal min, BigDecimal max, int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "projectName");
+		return otherProjectDao.searchByKey(SimpleTools.addCharForSearch(key), min, max, page);
+	}
+	
+	/**
+	* @Title:getSearchCount
+	* @Description:根据条件查询其他划价项目条数
+	* @param:@param key
+	* @param:@param min
+	* @param:@param max
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月6日 下午4:18:02
+	 */
+	public int getSearchCount(String key, BigDecimal min, BigDecimal max) {
+		return otherProjectDao.searchCount(SimpleTools.addCharForSearch(key), min, max);
+	}
+	
 
 }

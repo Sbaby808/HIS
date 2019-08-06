@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,4 +162,55 @@ public class OtherProjectController {
 		return result;
 	}
 	
+	/**
+	* @Title:searchOtherProject
+	* @Description:按条件查询其他划价项目
+	* @param:@param searchkey
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月6日 下午3:42:08
+	 */
+	@GetMapping("/search_other_project")
+	@ResponseBody
+	public JsonResult searchOtherProject(String searchKey, BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(otherProjectService.searchByKey(searchKey, minPrice, maxPrice, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:searchCount
+	* @Description:根据条件搜索的记录条数
+	* @param:@param searchKey
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月6日 下午4:17:18
+	 */
+	@GetMapping("/get_search_other_project_count")
+	@ResponseBody
+	public JsonResult searchCount(String searchKey, BigDecimal minPrice, BigDecimal maxPrice) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(otherProjectService.getSearchCount(searchKey, minPrice, maxPrice));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 }
