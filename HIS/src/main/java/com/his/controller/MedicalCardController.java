@@ -279,5 +279,104 @@ public class MedicalCardController {
 		return result;
 	}
 	
+	/**
+	* @Title:searchByKey
+	* @Description:按条件查询就诊卡信息
+	* @param:@param searchKey 关键字（姓名、职业、工作单位、联系电话、身份证号码）
+	* @param:@param searchGender
+	* @param:@param searchMarried
+	* @param:@param searchCountry
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 上午9:39:49
+	 */
+	@GetMapping("/search_card_by_key")
+	@ResponseBody
+	public JsonResult searchByKey(String searchKey, String searchGender, String searchMarried, String searchCountry, int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			List<MedicalCard> list = medicalCardService.searchByKey(searchKey, searchGender, searchMarried, searchCountry, pageNum, pageSize);
+			result.setResult(list);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:searchCount
+	* @Description:根据条件搜索记录的总条数
+	* @param:@param searchKey
+	* @param:@param searchGender
+	* @param:@param searchMarried
+	* @param:@param searchCountry
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 下午2:11:15
+	 */
+	@GetMapping("/get_search_card_count")
+	@ResponseBody
+	public JsonResult searchCount(String searchKey, String searchGender, String searchMarried, String searchCountry) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicalCardService.getAllSearchCount(searchKey, searchGender, searchMarried, searchCountry));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:updateCard
+	* @Description:修改就诊卡信息
+	* @param:@param medicalCard
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 下午5:40:19
+	 */
+	@PostMapping("/update_card")
+	@ResponseBody
+	public JsonResult updateCard(@RequestBody MedicalCard medicalCard) {
+		JsonResult result = new JsonResult();
+		try {
+			medicalCardService.addMedicalCard(medicalCard);
+			result.setResult(medicalCard);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setResult(medicalCard);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getAllCard
+	* @Description:查询所有就诊卡信息
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 下午9:52:47
+	 */
+	@GetMapping("/get_all_card")
+	@ResponseBody
+	public JsonResult getAllCard() {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicalCardService.getAllCard());
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setStatus("error");
+		}
+		return result;
+	}
 	
 }

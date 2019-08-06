@@ -35,7 +35,7 @@ public class MedicalCard implements Serializable {
 	@Column(name="CARD_NUM")
 	private BigDecimal cardNum;
 
-	private String country;
+	private String country = "";
 
 	private String gender;
 
@@ -63,10 +63,10 @@ public class MedicalCard implements Serializable {
 	@Column(name="POSTAL_CODE")
 	private String postalCode;
 
-	private String profession;
+	private String profession = "";
 
 	@Column(name="WORK_UNIT")
-	private String workUnit;
+	private String workUnit = "";
 
 
 	//bi-directional many-to-one association to AllergyRecord
