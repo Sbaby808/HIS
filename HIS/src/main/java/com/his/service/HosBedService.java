@@ -71,8 +71,8 @@ public class HosBedService {
 	* @author:Hamster
 	* @Date:2019年7月31日 下午10:51:23
 	 */
-	public List <HosBed> getBedsByRoomid(String room_id){
-		return hosBedDao.getBedsByRoomid(room_id);
+	public List <HosBed> getFreeBedsByRoomid(String room_id){
+		return hosBedDao.getFreeBedsByRoomid(room_id);
 	}
 	
 	/**
@@ -90,5 +90,32 @@ public class HosBedService {
 		return hosBedDao.getBedByBid(bid);
 	}
 	
+	/**
+	 * 
+	* @Title:addHosBed
+	* @Description:新增床位
+	* @param:@param hosBed
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 下午10:57:27
+	 */
+	public void addHosBed(HosBed hosBed){
+		hosBedDao.save(hosBed);
+	}
+	
+	/**
+	 * 
+	* @Title:delHosBed
+	* @Description:删除床位
+	* @param:@param hosBed
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 上午9:01:55
+	 */
+	public void delHosBed(HosBed hosBed){
+		hosBedDao.delete(hosBed);
+	}
 
 }

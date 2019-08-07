@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IHosBedDao;
 import com.his.dao.IWardDao;
 import com.his.dao.IWardRoomDao;
+import com.his.pojo.HosBed;
 import com.his.pojo.WardRoom;
 
 /**
@@ -25,6 +27,8 @@ public class WardRoomService {
 	
 	@Autowired
 	private IWardRoomDao wardRoomDao;
+	@Autowired
+	private IHosBedDao hosBedDao;
 	
 	/**
 	 * 
@@ -51,7 +55,7 @@ public class WardRoomService {
 	/**
 	 * 
 	* @Title:delWardRoom
-	* @Description:删除病房
+	* @Description:删除病房以及该病房的所有床位
 	* @param:@param wardRoom
 	* @return:void
 	* @throws
@@ -59,6 +63,10 @@ public class WardRoomService {
 	* @Date:2019年7月30日 下午4:57:04
 	 */
 	public void delWardRoom(WardRoom wardRoom){
+		List <HosBed> beds = hosBedDao.getBedsByRid(wardRoom.getWroomId());
+		for(int i=0;i<beds.size();i++){
+			hosBedDao.delete(beds.get(i));
+		}
 		wardRoomDao.delete(wardRoom);
 	}
 	
@@ -73,8 +81,6 @@ public class WardRoomService {
 	* @Date:2019年7月30日 下午4:57:26
 	 */
 	public void addWardRoom(WardRoom wardRoom){
-		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-		wardRoom.setWroomId(uuid.substring(0,8));
 		wardRoom.setWNum(0);
 		wardRoomDao.save(wardRoom);
 	}

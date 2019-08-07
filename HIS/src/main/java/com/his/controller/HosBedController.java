@@ -17,7 +17,7 @@ import com.his.service.HosBedService;
 /**
  * 
 * @ClassName: HosBedController  
-* @Description: TODO住院床位 
+* @Description: 住院床位 
 * @author Hamster
 * @date 2019年7月31日  下午10:52:06
 *
@@ -42,7 +42,7 @@ public class HosBedController {
 	@ResponseBody
 	@GetMapping("/get_bed_by_roomId")
 	public List <HosBed> getBedsByRoomid(String room_id){
-		return hosBedService.getBedsByRoomid(room_id);
+		return hosBedService.getFreeBedsByRoomid(room_id);
 	}
 	
 	/**
@@ -94,6 +94,39 @@ public class HosBedController {
 	@GetMapping("get_hos_beds_byPage")
 	public Map getAllBedsByPage(int curpage,int pagesize){
 		return hosBedService.getAllBedsByPage(curpage, pagesize);
+	}
+	
+	/**
+	 * 
+	* @Title:addHosBed
+	* @Description:新增床位
+	* @param:@param hosBed
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 上午9:02:36
+	 */
+	@ResponseBody
+	@PostMapping("/add_hos_bed")
+	public void addHosBed(@RequestBody HosBed hosBed){
+		hosBedService.addHosBed(hosBed);
+	}
+	
+	/**
+	 * 
+	* @Title:delHosBed
+	* @Description:删除床位
+	* @param:@param hosBed
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 上午9:04:42
+	 */
+	@ResponseBody
+	@PostMapping("/del_hos_bed")
+	public void delHosBed(@RequestBody HosBed hosBed){
+		System.out.println(hosBed.getHosBid());
+		hosBedService.delHosBed(hosBed);
 	}
 	
 }

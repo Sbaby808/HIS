@@ -2,6 +2,10 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.support.spring.annotation.FastJsonView;
+
 import java.util.List;
 
 
@@ -23,6 +27,7 @@ public class TechnicalPost implements Serializable {
 	private String tpName;
 
 	//bi-directional many-to-one association to EmpInformation
+	@JSONField(serialize=false)
 	@OneToMany(mappedBy="technicalPost")
 	private List<EmpInformation> empInformations;
 

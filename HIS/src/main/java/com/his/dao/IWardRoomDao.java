@@ -53,7 +53,7 @@ public interface IWardRoomDao extends CrudRepository<WardRoom, String>{
 	* @author:Hamster
 	* @Date:2019年8月4日 下午10:18:13
 	 */
-	@Query("from WardRoom w where w.wroomId = ?1 and w.wNum<4")
+	@Query("from WardRoom w where w.wroomId = ?1 and w.wNum<w.wbedNum")
 	public WardRoom getWardRoomByRid(String roomId);
 	
 }
