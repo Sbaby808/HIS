@@ -68,6 +68,11 @@ public class EmpInformationController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping("get_emp_by_nameAndxh")
+	public List<Object[]> get_emp_by_nameAndxh(){
+		return empInformationService.queryEmpforNameAndXH();
+	}
 	
 
 }

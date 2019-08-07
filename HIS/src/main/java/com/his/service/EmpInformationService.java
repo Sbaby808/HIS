@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.ITechnicalPostDao;
+import com.his.dao.IUserRoleDao;
 import com.his.dao.IWaitingRoomDao;
 import com.his.pojo.EmpInformation;
-import com.his.pojo.TechnicalPost;
+import com.his.pojo.UserRole;
 import com.his.pojo.WaitingRoom;
 import com.his.utils.CreateUUID;
 import com.his.utils.MD5Tools;
@@ -38,6 +40,8 @@ public class EmpInformationService {
 	private ITechnicalPostDao technicalpostDao;
 	@Autowired
 	private IWaitingRoomDao waitingroomDao;
+	@Autowired
+	private IUserRoleDao userroledao;
 	
 	/**
 	 * @Title:addEmpAllInformation
@@ -157,7 +161,14 @@ public class EmpInformationService {
 	 * @Date:2019年8月3日 上午11:55:55
 	 */
 	public Map queryEmpByPage(int curpage, int pagesize) {
-		List<EmpInformation> list = empInformationDao.queryByPage(PageRequest.of(curpage - 1, pagesize));
+		System.out.println("分页进来没啊");
+		List<EmpInformation> list = new ArrayList<EmpInformation>();
+		list = empInformationDao.queryByPage(PageRequest.of(curpage - 1, pagesize));
+		//把员工角色循环加入到list
+		for (EmpInformation empInformation : list) {
+			List<UserRole> urlist = this.getUserRoleByYgxh(empInformation.getYgxh());
+			empInformation.setUserRoles(urlist);
+		}
 		long total = empInformationDao.count();
 		Map map = new HashMap();
 		map.put("total", total);
@@ -201,6 +212,33 @@ public class EmpInformationService {
 		 map.put("list", list);
 		 map.put("total", total);
 		return map;
+	}
+	
+	/**
+	* @Title:getUserRoleByYgxh
+	* @Description:根据员工序号查找员工的所有角色
+	* @param:@param ygxh
+	* @param:@return
+	* @return:List<UserRole>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月6日 下午4:53:52
+	 */
+	public List<UserRole> getUserRoleByYgxh(String ygxh){
+		return userroledao.queryAllRoleByYgxh(ygxh);
+	}
+	
+	/**
+	* @Title:queryEmpforNameAndXH
+	* @Description:获取员工的姓名和员工序号
+	* @param:@return
+	* @return:List<Object[]>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月6日 上午10:14:59
+	 */
+	public List<Object[]> queryEmpforNameAndXH(){
+		return empInformationDao.queryAllForNameAndXH();
 	}
 
 	/**

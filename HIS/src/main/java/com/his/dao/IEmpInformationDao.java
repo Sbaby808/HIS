@@ -19,9 +19,12 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
 
 	@Query("from EmpInformation e left outer join e.technicalPost t")
 	public List<EmpInformation> queryByPage(Pageable page);
-		
+			
 	public List<EmpInformation> findByygGh(String ygGh);
 	
 	@Query("from EmpInformation e where e.ygName = ?1")
 	public List<EmpInformation> qureyByygName(String ygName);
+	
+	@Query("select e.ygxh,e.ygName from EmpInformation e")
+	public List<Object[]> queryAllForNameAndXH();
 }

@@ -1,5 +1,8 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.UserRole;
@@ -13,4 +16,6 @@ import com.his.pojo.UserRole;
 */
 public interface IUserRoleDao extends CrudRepository<UserRole, String>{
 
+	@Query("from UserRole ur where ur.id.ygxh = ?1")
+	public List<UserRole> queryAllRoleByYgxh(String ygxh);
 }

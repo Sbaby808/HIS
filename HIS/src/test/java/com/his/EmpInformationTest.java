@@ -3,18 +3,15 @@ package com.his;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import com.his.dao.IEmpInformationDao;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.UserRole;
 import com.his.service.EmpInformationService;
 import com.his.utils.CreateUUID;
 
@@ -41,11 +38,14 @@ public class EmpInformationTest {
 	
 	@Test
 	public void page() {
-		Map map = empInformationService.queryEmpByPage(1, 30);
+		Map map = empInformationService.queryEmpByPage(1, 10);
 		List<EmpInformation> list=(List<EmpInformation>) map.get("list");
 		for (EmpInformation e : list) {
 			System.out.println(e.getYgName());
-			//System.out.println(e.getTechnicalPost().getTpName());
+			for (UserRole ur : e.getUserRoles()) {
+				System.out.println(ur.getRole().getRolePosition());
+			}
+			
 		}
 	}
 	

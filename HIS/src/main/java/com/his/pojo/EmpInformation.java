@@ -242,7 +242,7 @@ public class EmpInformation implements Serializable {
 	private List<TransOfficeRecord> transOfficeRecords;
 
 	//bi-directional many-to-one association to UserRole
-	@JSONField(serialize = false)
+	//@JSONField(serialize = false)
 	@OneToMany(mappedBy="empInformation")
 	private List<UserRole> userRoles;
 
