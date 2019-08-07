@@ -19,7 +19,7 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	/**
 	 * 
 	* @Title:getAllBeds
-	* @Description:查找所有床位
+	* @Description:分页查找所有床位
 	* @param:@param page
 	* @param:@return
 	* @return:List<HosBed>
@@ -28,8 +28,20 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	* @Date:2019年8月1日 上午9:37:08
 	 */
 	@Query("from HosBed h")
-	public List <HosBed> getAllBeds(Pageable page);
+	public List <HosBed> getAllBedsByPage(Pageable page);
 	
+	/**
+	 * 
+	* @Title:getAllBeds
+	* @Description:无分页查询所有床位
+	* @param:@return
+	* @return:List<HosBed>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 上午10:48:01
+	 */
+	@Query("from HosBed h")
+	public List <HosBed> getAllBeds();
 	
 	/**
 	 * 
@@ -43,13 +55,13 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	* @Date:2019年8月1日 上午9:37:22
 	 */
 	@Query(value="select * from hos_beds h where h.wroom_id=?1 and h.hos_bstate is null",nativeQuery=true)
-	public List <HosBed> getBedsByRoomid(String room_id);
+	public List <HosBed> getFreeBedsByRoomid(String room_id);
 	
 	
 	/**
 	 * 
 	* @Title:getBedByBid
-	* @Description:根据id查询床位
+	* @Description:根据床位id查询床位
 	* @param:@param bid
 	* @param:@return
 	* @return:HosBed
@@ -60,4 +72,19 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	@Query("from HosBed h where h.hosBid=?1")
 	public HosBed getBedByBid(String bid);
 	
+	
+	/**
+	 * 
+	* @Title:getBedsByRid
+	* @Description:根据病房id查询所有床位
+	* @param:@param rid
+	* @param:@return
+	* @return:List<HosBed>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月5日 上午8:58:12
+	 */
+	@Query(value="select * from hos_beds h where h.wroom_id=?1",nativeQuery=true)
+	public List <HosBed> getBedsByRid(String rid);
+
 }

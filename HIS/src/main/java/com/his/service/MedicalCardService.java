@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,11 +59,13 @@ public class MedicalCardService {
 	* @Date:2019年8月2日 上午9:47:19
 	 */
 	public void addMedicalCard(MedicalCard medicalCard) {
-		medicalCard.setCardId(UUID.randomUUID().toString().replace("-", ""));
-		medicalCard.setAge(new BigDecimal(SimpleTools.calAgeByBirthday(medicalCard.getBirthday())));
-		medicalCard.setCardNum(new BigDecimal(0));
-		medicalCard.setPasswd(MD5Tools.JM(MD5Tools.Md5(new Date().toString())));
-		System.out.println(medicalCard.getLinkPerson());
+		if(medicalCard.getCardId() == null) {
+			medicalCard.setCardId(UUID.randomUUID().toString().replace("-", ""));
+			medicalCard.setAge(new BigDecimal(SimpleTools.calAgeByBirthday(medicalCard.getBirthday())));
+			medicalCard.setCardNum(new BigDecimal(0));
+			medicalCard.setPasswd(MD5Tools.JM(MD5Tools.Md5(new Date().toString())));
+		}
+//		System.out.println(medicalCard.getLinkPerson());
 		medicalCardDao.save(medicalCard);
 	}
 	
@@ -176,6 +180,111 @@ public class MedicalCardService {
 		medicalCardDao.save(card);
 	}
 	
+	/**
+	* @Title:getByPage
+	* @Description:分页查询就诊卡信息
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:List<MedicalCard>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午2:19:11
+	 */
+	public List<MedicalCard> getByPage(int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "personId");
+		return medicalCardDao.queryByPage(page);
+	}
 	
+	/**
+	* @Title:getAllPages
+	* @Description:查询就诊卡记录的总页数
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午2:32:34
+	 */
+	public int getAllPages(int pageSize) {
+		int count = medicalCardDao.queryAllPages();
+		return (int)Math.ceil(count * 0.1 / pageSize);
+	}
+	
+	/**
+	* @Title:getAllCount
+	* @Description:查询就诊卡总记录条数
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月3日 下午3:04:12
+	 */
+	public int getAllCount() {
+		return medicalCardDao.queryAllPages();
+	}
+	
+	/**
+	* @Title:searchByKey
+	* @Description:根据条件查询就诊卡信息
+	* @param:@param searchKey
+	* @param:@param searchGender
+	* @param:@param searchMarried
+	* @param:@param searchCountry
+	* @param:@return
+	* @return:List<MedicalCard>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 上午9:43:00
+	 */
+	public List<MedicalCard> searchByKey(
+			String searchKey, String searchGender, String searchMarried, String searchCountry, 
+			int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "personId");
+		List<MedicalCard> list = medicalCardDao.searchByKey(
+				SimpleTools.addCharForSearch(searchKey), 
+					SimpleTools.addCharForSearch(searchGender), 
+						SimpleTools.addCharForSearch(searchMarried), 
+							SimpleTools.addCharForSearch(searchCountry),
+				page);
+		return list;
+	}
+	
+	/**
+	* @Title:getAllSearchCount
+	* @Description:按条件查询的总记录条数
+	* @param:@param searchKey
+	* @param:@param searchGender
+	* @param:@param searchMarried
+	* @param:@param searchCountry
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 上午11:30:44
+	 */
+	public int getAllSearchCount(
+			String searchKey, String searchGender, String searchMarried, String searchCountry){
+		return medicalCardDao.searchCount(
+				SimpleTools.addCharForSearch(searchKey), 
+					SimpleTools.addCharForSearch(searchGender), 
+						SimpleTools.addCharForSearch(searchMarried), 
+							SimpleTools.addCharForSearch(searchCountry)
+			);
+	}
+	
+	/**
+	* @Title:getAllCard
+	* @Description:查询所有就诊卡信息
+	* @param:@return
+	* @return:List<MedicalCard>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 下午5:41:49
+	 */
+	public List<MedicalCard> getAllCard() {
+		return (List<MedicalCard>) medicalCardDao.findAll();
+	}
+	
+
 	
 }

@@ -2,6 +2,11 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +23,8 @@ public class HosPrescription implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "system-uuid")
 	@Column(name="HOS_PRE_ID")
 	private String hosPreId;
 
@@ -27,16 +34,18 @@ public class HosPrescription implements Serializable {
 	@Column(name="HOS_PRE_MONEY")
 	private BigDecimal hosPreMoney;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOS_PRE_TIME")
 	private Date hosPreTime;
 
 	//bi-directional many-to-one association to HosDrugRecord
 	@OneToMany(mappedBy="hosPrescription")
+	@JSONField(serialize=false)
 	private List<HosDrugRecord> hosDrugRecords;
 
 	//bi-directional many-to-one association to HosPrescriptionDetail
 	@OneToMany(mappedBy="hosPrescription")
+	@JSONField(serialize=false)
 	private List<HosPrescriptionDetail> hosPrescriptionDetails;
 
 	//bi-directional one-to-one association to HosDiagnosticRecord
@@ -46,6 +55,7 @@ public class HosPrescription implements Serializable {
 
 	//bi-directional one-to-one association to HosDrugCost
 	@OneToOne(mappedBy="hosPrescription")
+	@JSONField(serialize=false)
 	private HosDrugCost hosDrugCost;
 
 	public HosPrescription() {

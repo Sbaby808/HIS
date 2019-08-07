@@ -3,6 +3,9 @@ package com.his.utils;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**  
 * @ClassName: SimpleTools  
 * @Description: 一些简单的工具方法
@@ -11,6 +14,7 @@ import java.util.Date;
 *    
 */
 public class SimpleTools {
+	private static Logger log = LoggerFactory.getLogger(SimpleTools.class);
 
 	/**
 	* @Title:calAgeByBirthday
@@ -46,4 +50,19 @@ public class SimpleTools {
         return age;
 	}
 	
+	/**
+	* @Title:addCharForSearch
+	* @Description:给字符串两端加上百分号
+	* @param:@param source
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月5日 上午10:12:53
+	 */
+	public static String addCharForSearch(String source) {
+		source = source == null ? "" : source;
+		String dest = "%" + source + "%";
+		return dest;
+	}
 }

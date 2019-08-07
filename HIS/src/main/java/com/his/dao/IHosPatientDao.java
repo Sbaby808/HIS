@@ -43,7 +43,17 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	@Query(value="select * from hospitalized_patients h where h.wroom_id=?1",nativeQuery=true)
 	public List <HospitalizedPatient> getPatientsByWroomId(String id);
 	
-	
+	/**
+	 * 
+	* @Title:getPatientByBid
+	* @Description:根据床位id查询住院患者信息
+	* @param:@param bedId
+	* @param:@return
+	* @return:HospitalizedPatient
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月3日 上午8:34:59
+	 */
 	@Query(value="select * from hospitalized_patients h where h.hos_bid=?1",nativeQuery=true)
 	public HospitalizedPatient getPatientByBid(String bedId);
 }

@@ -10,9 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IHosBedDao;
+import com.his.dao.IHosPatientDao;
 import com.his.dao.ITransBedDao;
+import com.his.dao.IWardRoomDao;
 import com.his.pojo.BedTransRecord;
+import com.his.pojo.HosBed;
 import com.his.pojo.HospitalizedPatient;
+import com.his.pojo.WardRoom;
 
 
 /**
@@ -29,7 +34,12 @@ public class TransBedService {
 	
 	@Autowired
 	private ITransBedDao transBedDao;
-	
+	@Autowired
+	private IHosPatientDao hosPatientDao;
+	@Autowired
+	private IHosBedDao hosBedDao;
+	@Autowired
+	private IWardRoomDao wardRoomDao;
 	
 	/**
 	 * 
@@ -50,4 +60,5 @@ public class TransBedService {
 		bedTransRecord.setBrTime(dateFormat.parse(time));
 		transBedDao.save(bedTransRecord);
 	}
+	
 }

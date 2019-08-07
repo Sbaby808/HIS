@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -37,14 +40,17 @@ public class HosDoctorAdvice implements Serializable {
 
 	//bi-directional many-to-one association to HosCheckNotice
 	@OneToMany(mappedBy="hosDoctorAdvice")
+	@JSONField(serialize=false)
 	private List<HosCheckNotice> hosCheckNotices;
 
 	//bi-directional many-to-one association to HosOutNotice
 	@OneToMany(mappedBy="hosDoctorAdvice")
+	@JSONField(serialize=false)
 	private List<HosOutNotice> hosOutNotices;
 
 	//bi-directional many-to-one association to HosSurgeryNotice
 	@OneToMany(mappedBy="hosDoctorAdvice")
+	@JSONField(serialize=false)
 	private List<HosSurgeryNotice> hosSurgeryNotices;
 
 	//bi-directional one-to-one association to HosDiagnosticRecord

@@ -42,7 +42,18 @@ public interface IWardRoomDao extends CrudRepository<WardRoom, String>{
 	@Query(value="select * from ward_room w where w.ward_id=?1",nativeQuery=true)
 	public List <WardRoom> getWardRoomByWid(String wid);
 	
-	@Query("from WardRoom w where w.wroomId = ?1")
+	/**
+	 * 
+	* @Title:getWardRoomByRid
+	* @Description:根据病房id查询病房信息
+	* @param:@param roomId
+	* @param:@return
+	* @return:WardRoom
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 下午10:18:13
+	 */
+	@Query("from WardRoom w where w.wroomId = ?1 and w.wNum<w.wbedNum")
 	public WardRoom getWardRoomByRid(String roomId);
 	
 }

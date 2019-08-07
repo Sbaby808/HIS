@@ -113,4 +113,19 @@ public class HosPatientsService {
 		wardRoomDao.save(room);
 			
 	}
+	
+	/**
+	 * 
+	* @Title:getPatientByBid
+	* @Description:根据床位号查询登记信息
+	* @param:@param bedId
+	* @param:@return
+	* @return:HospitalizedPatient
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月4日 下午8:52:02
+	 */
+	public HospitalizedPatient getPatientByBid(String bedId){
+		return hosPatientDao.getPatientByBid(bedId);
+	}
 }
