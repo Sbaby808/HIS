@@ -28,4 +28,16 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	@Query(value="select * from drug_information d where d.medicine_pay_id is null",nativeQuery=true)
 	public List<DrugInformation> getNoPrice();
 	
+	/**
+	 * 
+	* @Title:getAllDrugInformation
+	* @Description:查询所有药品信息
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月7日 下午9:12:41
+	 */
+	@Query("from DrugInformation d")
+	public List <DrugInformation> getAllDrugInformation();
 }
