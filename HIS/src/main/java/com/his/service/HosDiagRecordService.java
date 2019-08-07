@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosDiagRecordDao;
+import com.his.dao.IHosDocAdviceDao;
 import com.his.dao.IMedicalRecordDao;
 import com.his.pojo.HosDiagnosticRecord;
+import com.his.pojo.HosDoctorAdvice;
 import com.his.pojo.MedicalRecord;
 
 /**
@@ -32,6 +34,8 @@ public class HosDiagRecordService {
 
 	@Autowired
 	private IHosDiagRecordDao hosDiagRecordDao;
+	@Autowired
+	private IHosDocAdviceDao hosDocAdviceDao;
 	
 	
 	/**
@@ -81,10 +85,16 @@ public class HosDiagRecordService {
 	* @Date:2019年8月6日 上午8:56:35
 	 */
 	public void addHosDiagRecord(HosDiagnosticRecord record) throws ParseException{
+		HosDoctorAdvice advice = new HosDoctorAdvice();
+		advice.setHosDiagnosticRecord(record);
+		hosDocAdviceDao.save(advice);
+		
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
 		record.setHosDiagTime(dateFormat.parse(time));
+		record.setHosDcoId(advice.getHosDcoId());
 		hosDiagRecordDao.save(record);	
+		
 	}
 	
 	
