@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,7 +10,9 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IDrugInformationDao;
 import com.his.dao.IMedicinePayDao;
+import com.his.pojo.DrugInformation;
 import com.his.pojo.MedicinePay;
 
 /**  
@@ -25,6 +28,10 @@ public class MedicinePayService {
 
 	@Autowired
 	private IMedicinePayDao medicinePayDao;
+	@Autowired
+	private DrugInformationService drugInformationService;
+	@Autowired
+	private IDrugInformationDao drugInformationDao;
 	
 	/**
 	* @Title:getAll
@@ -79,6 +86,26 @@ public class MedicinePayService {
 	 */
 	public void addMedicinePay(MedicinePay medicinePay) {
 		medicinePay.setMedicinePayId(UUID.randomUUID().toString().replaceAll("-", ""));
+		medicinePayDao.save(medicinePay);
+	}
+	
+	/**
+	* @Title:setForDrug
+	* @Description:绑定药品收费项与药品间的关系
+	* @param:@param drugId
+	* @param:@param medicinePayId
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午11:20:22
+	 */
+	public void setForDrug(String drugId, String medicinePayId) {
+		MedicinePay medicinePay = medicinePayDao.findByUUID(medicinePayId);
+		DrugInformation drugInformation = drugInformationService.getById(drugId);
+		drugInformation.setMedicinePayId(medicinePayId);
+		drugInformation.setMedicinePay(medicinePay);
+		medicinePay.setDrugInformation(drugInformation);
+		drugInformationDao.save(drugInformation);
 		medicinePayDao.save(medicinePay);
 	}
 	

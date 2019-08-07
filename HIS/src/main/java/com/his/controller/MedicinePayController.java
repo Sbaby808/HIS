@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.JsonResult;
@@ -115,6 +116,31 @@ public class MedicinePayController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setResult(medicinePay);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:setDrug
+	* @Description:绑定药品收费项与药品间的关系
+	* @param:@param drugId
+	* @param:@param medicinePayId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午11:19:59
+	 */
+	@GetMapping("/set_medicine_pay_for_drug")
+	@ResponseBody
+	public JsonResult setDrug(String drugId, String medicinePayId) {
+		JsonResult result = new JsonResult();
+		try {
+			medicinePayService.setForDrug(drugId, medicinePayId);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
 			result.setStatus("error");
 		}
 		return result;

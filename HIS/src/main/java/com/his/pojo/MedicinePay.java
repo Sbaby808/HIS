@@ -38,7 +38,6 @@ public class MedicinePay implements Serializable {
 
 	//bi-directional one-to-one association to DrugInformation
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
-	@JSONField(serialize=false)
 	@JoinColumn(name="YP_ID")
 	private DrugInformation drugInformation;
 
