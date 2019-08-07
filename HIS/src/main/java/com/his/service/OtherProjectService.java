@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IOtherProjectDao;
 import com.his.pojo.OtherProject;
 import com.his.utils.SimpleTools;
-import com.sun.xml.xsom.impl.WildcardImpl.Other;
 
 /**  
 * @ClassName: OtherProjectService  
