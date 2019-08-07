@@ -58,54 +58,67 @@ public class EmpInformation implements Serializable {
 
 	//bi-directional many-to-one association to AbuEmp
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<AbuEmp> abuEmps;
 
 	//bi-directional many-to-one association to AllergyRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<AllergyRecord> allergyRecords;
 
 	//bi-directional many-to-one association to AllocationOutbound
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<AllocationOutbound> allocationOutbounds;
 
 	//bi-directional many-to-one association to AskleaveRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<AskleaveRecord> askleaveRecords;
 
 	//bi-directional many-to-one association to BackMedicine
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<BackMedicine> backMedicines;
 
 	//bi-directional many-to-one association to BedTransRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<BedTransRecord> bedTransRecords;
 
 	//bi-directional many-to-one association to BusinessRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<BusinessRecord> businessRecords;
 
 	//bi-directional many-to-one association to CheckPay
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<CheckPay> checkPays;
 
 	//bi-directional many-to-one association to CheckPayRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<CheckPayRecord> checkPayRecords;
 
 	//bi-directional many-to-one association to CheckResultForm
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<CheckResultForm> checkResultForms;
 
 	//bi-directional many-to-one association to CheckWork
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<CheckWork> checkWorks;
 
 	//bi-directional many-to-one association to DamagedMedicine
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<DamagedMedicine> damagedMedicines;
 
 	//bi-directional many-to-one association to DrugScrap
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<DrugScrap> drugScraps;
 
 	//bi-directional many-to-one association to TechnicalPost
@@ -115,26 +128,32 @@ public class EmpInformation implements Serializable {
 
 	//bi-directional many-to-one association to Examination
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<Examination> examinations;
 
 	//bi-directional many-to-one association to HosDrugRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<HosDrugRecord> hosDrugRecords;
 
 	//bi-directional many-to-one association to HosEmp
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<HosEmp> hosEmps;
 
 	//bi-directional many-to-one association to HosPatientsApply
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<HosPatientsApply> hosPatientsApplies;
 
 	//bi-directional many-to-one association to HosPayRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<HosPayRecord> hosPayRecords;
 
 	//bi-directional many-to-one association to MedicinePay
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<MedicinePay> medicinePays;
 
 	//bi-directional many-to-one association to OperationPay
@@ -144,86 +163,107 @@ public class EmpInformation implements Serializable {
 
 	//bi-directional many-to-one association to OperPayRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<OperPayRecord> operPayRecords;
 
 	//bi-directional many-to-one association to OpeEmp
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<OpeEmp> opeEmps;
 
 	//bi-directional many-to-one association to OutpatientPay
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<OutpatientPay> outpatientPays;
 
 	//bi-directional many-to-one association to OutpatientRequestionMedicine
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<OutpatientRequestionMedicine> outpatientRequestionMedicines;
 
 	//bi-directional many-to-one association to Outstock
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<Outstock> outstocks;
 
 	//bi-directional many-to-one association to OutHospitaiRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<OutHospitaiRecord> outHospitaiRecords;
 
 	//bi-directional many-to-one association to OutPrePay
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<OutPrePay> outPrePays;
 
 	//bi-directional many-to-one association to PhaIn
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<PhaIn> phaIns;
 
 	//bi-directional many-to-one association to PsInventoryTaking
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<PsInventoryTaking> psInventoryTakings;
 
 	//bi-directional many-to-one association to Purchase
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<Purchase> purchases;
 
 	//bi-directional many-to-one association to PurchaseCheck
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<PurchaseCheck> purchaseChecks;
 
 	//bi-directional many-to-one association to PutstockBack
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<PutstockBack> putstockBacks;
 
 	//bi-directional many-to-one association to PutStock
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<PutStock> putStocks;
 
 	//bi-directional many-to-one association to RegEmp
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<RegEmp> regEmps;
 
 	//bi-directional many-to-one association to Transfer
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<Transfer> transfers;
 
 	//bi-directional many-to-one association to TransOfficeRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<TransOfficeRecord> transOfficeRecords;
 
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<UserRole> userRoles;
 
 	//bi-directional many-to-one association to UseDrugRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<UseDrugRecord> useDrugRecords;
 
 	//bi-directional many-to-one association to WktimeEmp
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<WktimeEmp> wktimeEmps;
 
 	//bi-directional many-to-one association to WorkoverRecord
 	@OneToMany(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private List<WorkoverRecord> workoverRecords;
 
 	//bi-directional one-to-one association to WaitingRoom
 	@OneToOne(mappedBy="empInformation")
+	@JSONField(serialize=false)
 	private WaitingRoom waitingRoom;
 
 	public EmpInformation() {

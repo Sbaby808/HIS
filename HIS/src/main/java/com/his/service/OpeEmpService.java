@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.his.bean.Opeempbean;
+import com.his.bean.OperationRecordbean;
 import com.his.dao.IOpeEmpDao;
 import com.his.pojo.OpeEmp;
 
@@ -45,4 +47,8 @@ public class OpeEmpService {
     public List<OpeEmp> getallOpeEmps(){
     	return (List<OpeEmp>) iOpeEmpDao.findAll();
     }
+    public List<Opeempbean> getaList(String opeid){
+    	return iOpeEmpDao.getOpeEmps(opeid);
+    }
+  
 }

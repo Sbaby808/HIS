@@ -12,5 +12,6 @@ import com.his.pojo.EmpInformation;
 *    
 */
 public interface IEmpInformationDao extends CrudRepository<EmpInformation, String>{
+	public EmpInformation findEmpInformationByYgGh(String yggh);
 
 }

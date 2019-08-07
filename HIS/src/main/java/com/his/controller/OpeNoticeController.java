@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.his.bean.OpeNoticebean;
 import com.his.pojo.OpeNotice;
 import com.his.pojo.OperationPay;
+import com.his.pojo.Role;
 import com.his.service.OpeNoticeService;
 
 /**  
@@ -41,12 +42,17 @@ public class OpeNoticeController {
     }
 @ResponseBody
 @GetMapping("pay_fun")
-    public void payfun(String brcard_id,String opepay_id,String ygxh) {
-    	opeNoticeService.payfun(brcard_id, opepay_id,ygxh);
+    public void payfun(String brcard_id,String opepay_id,String ygxh,String noticeid) {
+    	opeNoticeService.payfun(brcard_id, opepay_id,ygxh,noticeid);
     }
 @ResponseBody
 @GetMapping("aaaa")
     public List<OperationPay> geta(){
     	return opeNoticeService.getn();
+    }
+@ResponseBody
+@GetMapping("bbbb")
+    public List<Role> getallRoles(){
+    	return opeNoticeService.getallRoles();
     }
 }
