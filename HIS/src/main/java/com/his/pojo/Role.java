@@ -51,7 +51,6 @@ public class Role implements Serializable {
 	//bi-directional many-to-one association to UserRole
 	@JSONField(serialize = false)
 	@OneToMany(mappedBy="role")
-	@JSONField(serialize=false)
 	private List<UserRole> userRoles;
 
 	public Role() {
