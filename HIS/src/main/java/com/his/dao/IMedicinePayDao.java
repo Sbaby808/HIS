@@ -16,7 +16,7 @@ import com.his.pojo.MedicinePay;
 *    
 */
 public interface IMedicinePayDao extends CrudRepository<MedicinePay, String> {
-
+	
 	/**
 	* @Title:getByPage
 	* @Description:分页查询药品收费项
@@ -41,5 +41,18 @@ public interface IMedicinePayDao extends CrudRepository<MedicinePay, String> {
 	 */
 	@Query("select count(*) from MedicinePay m")
 	public int getAllCount();
+	
+	/**
+	* @Title:findByUUID
+	* @Description:根据id查询药品收费项
+	* @param:@param id
+	* @param:@return
+	* @return:MedicinePay
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午11:20:45
+	 */
+	@Query("from MedicinePay m where m.medicinePayId = ?1")
+	public MedicinePay findByUUID(String id);
 	
 }
