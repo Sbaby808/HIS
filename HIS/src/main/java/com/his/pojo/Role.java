@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ public class Role implements Serializable {
 
 	//bi-directional many-to-one association to ChangeRole
 	@OneToMany(mappedBy="role")
+	@JSONField(serialize=false)
 	private List<ChangeRole> changeRoles;
 
 	//bi-directional many-to-one association to Department
@@ -45,10 +49,17 @@ public class Role implements Serializable {
 	private List<Function> functions;
 
 	//bi-directional many-to-one association to UserRole
+	@JSONField(serialize = false)
 	@OneToMany(mappedBy="role")
 	private List<UserRole> userRoles;
 
 	public Role() {
+	}
+       
+	public Role(String roleId, List<UserRole> userRoles) {
+		super();
+		this.roleId = roleId;
+		this.userRoles = userRoles;
 	}
 
 	public String getRoleId() {

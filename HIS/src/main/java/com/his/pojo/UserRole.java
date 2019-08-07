@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -27,6 +30,7 @@ public class UserRole implements Serializable {
 	private Date passDate;
 
 	//bi-directional many-to-one association to EmpInformation
+	@JSONField(serialize = false)
 	@ManyToOne
 	@JoinColumn(name="YGXH", insertable=false, updatable=false)
 	private EmpInformation empInformation;

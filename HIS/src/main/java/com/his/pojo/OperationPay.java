@@ -2,6 +2,10 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name="OPERATION_PAY")
 @NamedQuery(name="OperationPay.findAll", query="SELECT o FROM OperationPay o")
+@JsonIgnoreProperties(value= {"operPayRecords","opeNotices"})
 public class OperationPay implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -41,15 +46,23 @@ public class OperationPay implements Serializable {
 
 	//bi-directional many-to-one association to OperPayRecord
 	@OneToMany(mappedBy="operationPay")
+	@JSONField(serialize=false)
 	private List<OperPayRecord> operPayRecords;
 
 	//bi-directional many-to-one association to OpeNotice
 	@OneToMany(mappedBy="operationPay")
+	@JSONField(serialize=false)
 	private List<OpeNotice> opeNotices;
 
 	public OperationPay() {
 	}
-
+	/**
+	 * 只有手术名和金额的构造方法
+	 */
+    public OperationPay(String operPayName,BigDecimal operPayPrice) {
+    	this.operPayName=operPayName;
+    	this.operPayPrice=operPayPrice;
+	}
 	public String getOperPayId() {
 		return this.operPayId;
 	}

@@ -1,5 +1,9 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.EmpInformation;
@@ -12,5 +16,16 @@ import com.his.pojo.EmpInformation;
 *    
 */
 public interface IEmpInformationDao extends CrudRepository<EmpInformation, String>{
+	public EmpInformation findEmpInformationByYgGh(String yggh);
 
+	@Query("from EmpInformation e left outer join e.technicalPost t")
+	public List<EmpInformation> queryByPage(Pageable page);
+			
+	public List<EmpInformation> findByygGh(String ygGh);
+	
+	@Query("from EmpInformation e where e.ygName = ?1")
+	public List<EmpInformation> qureyByygName(String ygName);
+	
+	@Query("select e.ygxh,e.ygName from EmpInformation e")
+	public List<Object[]> queryAllForNameAndXH();
 }
