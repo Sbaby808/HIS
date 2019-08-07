@@ -48,6 +48,25 @@ public class SupplierService {
 	}
 	
 	/**
+	* @Title:updataSupplier
+	* @Description:修改供应商信息
+	* @param:@param editsupplier
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月7日 上午9:44:31
+	 */
+	public void updataSupplier(Supplier editsupplier) throws ServiceException{
+		try {
+			supplierdao.save(editsupplier);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("供应商信息修改失败");
+		}
+	}
+	
+	/**
 	* @Title:getAllSuppliers
 	* @Description:分页查找供应商
 	* @param:@param curpage

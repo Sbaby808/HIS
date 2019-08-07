@@ -39,6 +39,17 @@ public class SupplierController {
 	}
 	
 	@ResponseBody
+	@PostMapping("updata_supplier")
+	public Result updata_supplier(@RequestBody Supplier editsupplier) {
+		try {
+			supplierservice.updataSupplier(editsupplier);
+			return new Result();
+		} catch (Exception e) {
+			return new Result("供应商修改失败");
+		}
+	}
+	
+	@ResponseBody
 	@GetMapping("get_allsuplier_by_page")
 	public Map get_allsuplier_by_page(int curpage,int pageSize){
 		return supplierservice.getSupplierByPage(curpage, pageSize);
