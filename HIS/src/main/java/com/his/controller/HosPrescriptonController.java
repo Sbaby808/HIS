@@ -39,4 +39,21 @@ public class HosPrescriptonController {
 	public List <HosPrescription> getAllHosPrescription(){
 		return hosPrescriptionService.getAllHosPrescription();
 	}
+	
+	/**
+	 * 
+	* @Title:getHosPresByDiagId
+	* @Description:根据诊断记录id查询处方
+	* @param:@param diagId
+	* @param:@return
+	* @return:HosPrescription
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月7日 下午9:39:05
+	 */
+	@ResponseBody
+	@GetMapping("/get_hos_prescription_byDiagId")
+	public HosPrescription getHosPresByDiagId(String diagId){
+		return hosPrescriptionService.getHosPresByDiagId(diagId);
+	}
 }

@@ -83,7 +83,6 @@ public class DrugInformation implements Serializable {
 
 	//bi-directional one-to-one association to MedicinePay
 	@OneToOne(mappedBy="drugInformation")
-	@JSONField(serialize = false)
 	private MedicinePay medicinePay;
 
 	public DrugInformation() {

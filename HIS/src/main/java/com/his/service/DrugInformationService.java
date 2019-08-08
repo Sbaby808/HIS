@@ -52,4 +52,18 @@ public class DrugInformationService {
 		return drugInformationDao.findById(id).get();
 	}
 	
+	/**
+	 * 
+	* @Title:getAllDrugInformation
+	* @Description:查询所有药品信息
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月7日 下午9:17:51
+	 */
+	public List <DrugInformation> getAllDrugInformation(){
+		return drugInformationDao.getAllDrugInformation();
+	}
+	
 }

@@ -19,16 +19,16 @@ public interface IOperationRecordDao extends CrudRepository<OperationRecord, Str
 	/**
 	 * 
 	* @Title:getallOperationRecordbeans
-	* @Description:TODO查询所有手术记录
+	* @Description:TODO根据员工id查询所有手术记录
 	* @param:@return
 	* @return:List<OperationRecordbean>
 	* @throws
 	* @author:TRC
 	* @Date:2019年8月1日 下午5:19:25
 	 */
-	@Query(value="select new com.his.bean.OperationRecordbean(o.opeId,p.medicalCard.cardName,p.operationPay.operPayName, o.opeJg, o.opeStatus,o.opeTime,o.opeType,o.opeDiagnose) from OperPayRecord p,OperationRecord o where p.operationRecord = o.opeId and o.opeDiagnose like ?1")
-	public List<OperationRecordbean> getallOperationRecordbeans(String sou,Pageable page);
-	@Query(value="select count(*) from OperationRecord o where o.opeDiagnose like ?1")
-	public long getcount(String sou);
+	@Query(value="select new com.his.bean.OperationRecordbean(o.operationRecord.opeId,p.medicalCard.cardName,p.operationPay.operPayName, o.operationRecord.opeJg, o.operationRecord.opeStatus,o.operationRecord.opeTime,o.operationRecord.opeType,o.operationRecord.opeDiagnose) from OpeEmp o,OperPayRecord p where o.operationRecord.opeId=p.operationRecord.opeId and p.medicalCard.cardName like ?1 and o.empInformation.ygxh=?2")
+	public List<OperationRecordbean> getallOperationRecordbeans(String sou,String ygxh,Pageable page);
+	@Query(value="select count(*) from OpeEmp o,OperPayRecord p where o.operationRecord.opeId=p.operationRecord.opeId and p.medicalCard.cardName like ?1 and o.empInformation.ygxh=?2")
+	public long getcount(String sou,String ygxh);
 
 }

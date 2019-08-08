@@ -16,6 +16,7 @@ import com.his.pojo.EmpInformation;
 *    
 */
 public interface IEmpInformationDao extends CrudRepository<EmpInformation, String>{
+	public EmpInformation findEmpInformationByYgGh(String yggh);
 
 	@Query("from EmpInformation e left outer join e.technicalPost t")
 	public List<EmpInformation> queryByPage(Pageable page);

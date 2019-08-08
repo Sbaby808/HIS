@@ -27,6 +27,7 @@ public class Role implements Serializable {
 
 	//bi-directional many-to-one association to ChangeRole
 	@OneToMany(mappedBy="role")
+	@JSONField(serialize=false)
 	private List<ChangeRole> changeRoles;
 
 	//bi-directional many-to-one association to Department
@@ -53,6 +54,12 @@ public class Role implements Serializable {
 	private List<UserRole> userRoles;
 
 	public Role() {
+	}
+       
+	public Role(String roleId, List<UserRole> userRoles) {
+		super();
+		this.roleId = roleId;
+		this.userRoles = userRoles;
 	}
 
 	public String getRoleId() {
