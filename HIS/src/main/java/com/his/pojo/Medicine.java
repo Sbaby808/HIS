@@ -1,6 +1,8 @@
 package com.his.pojo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -22,7 +24,7 @@ public class Medicine implements Serializable {
 	private String medicineId;
 
 	@Column(name="MEDICINE_NAME")
-	private String medicineName;
+	private BigDecimal medicineName;
 
 	//bi-directional many-to-one association to BackDetail
 	@OneToMany(mappedBy="medicine")
@@ -75,11 +77,13 @@ public class Medicine implements Serializable {
 		this.medicineId = medicineId;
 	}
 
-	public String getMedicineName() {
-		return this.medicineName;
+
+
+	public BigDecimal getMedicineName() {
+		return medicineName;
 	}
 
-	public void setMedicineName(String medicineName) {
+	public void setMedicineName(BigDecimal medicineName) {
 		this.medicineName = medicineName;
 	}
 

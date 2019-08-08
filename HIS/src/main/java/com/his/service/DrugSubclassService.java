@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDrugSubclassDao;
 import com.his.pojo.DrugSubclass;
-import com.his.pojo.EmpInformation;
-import com.his.pojo.UserRole;
 import com.his.utils.ServiceException;
 
 /**  
@@ -116,6 +114,30 @@ public class DrugSubclassService {
 		map.put("total", total);
 		map.put("list", list);
 
+		return map;
+	}
+	
+	/**
+	* @Title:getAllSubclass
+	* @Description:获取所有药品小类以及相应的中类
+	* @param:@return
+	* @return:Map<String,List<DrugSubclass>>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月8日 下午2:56:40
+	 */
+	public Map<String, List<DrugSubclass>> getAllSubclass() {
+		List<DrugSubclass> list =  (List<DrugSubclass>) drugSubclassDao.findAll();
+		Map<String, List<DrugSubclass>> map = new HashMap<>();
+		for (DrugSubclass subclass : list) {
+			if(!map.containsKey(subclass.getDrugMinorDefect().getMinorDefectsName())) {
+				List<DrugSubclass> nlist = new ArrayList<>();
+				nlist.add(subclass);
+				map.put(subclass.getDrugMinorDefect().getMinorDefectsName(), nlist);
+			} else {
+				map.get(subclass.getDrugMinorDefect().getMinorDefectsName()).add(subclass);
+			}
+		}
 		return map;
 	}
 
