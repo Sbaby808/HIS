@@ -31,13 +31,13 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	/**
 	 * 
 	* @Title:getAllDrugInformation
-	* @Description:查询所有药品信息
+	* @Description:模糊查询
 	* @param:@return
 	* @return:List<DrugInformation>
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月7日 下午9:12:41
 	 */
-	@Query("from DrugInformation d")
-	public List <DrugInformation> getAllDrugInformation();
+	@Query("from DrugInformation d where d.ypName like ?1")
+	public List <DrugInformation> getDrugInformation(String ypName);
 }

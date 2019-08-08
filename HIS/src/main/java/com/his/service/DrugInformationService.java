@@ -62,8 +62,8 @@ public class DrugInformationService {
 	* @author:Hamster
 	* @Date:2019年8月7日 下午9:17:51
 	 */
-	public List <DrugInformation> getAllDrugInformation(){
-		return drugInformationDao.getAllDrugInformation();
+	public List <DrugInformation> getDrugInformation(String ypName){
+		return drugInformationDao.getDrugInformation(ypName);
 	}
 	
 }
