@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import com.his.dao.IDrugInformationDao;
 import com.his.dao.IMedicinePayDao;
 import com.his.pojo.DrugInformation;
 import com.his.pojo.MedicinePay;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: MedicinePayService  
@@ -107,6 +109,62 @@ public class MedicinePayService {
 		medicinePay.setDrugInformation(drugInformation);
 		drugInformationDao.save(drugInformation);
 		medicinePayDao.save(medicinePay);
+	}
+	
+	/**
+	* @Title:searchByPage
+	* @Description:分页搜索药品收费项
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param pageNum
+	* @param:@param pageName
+	* @param:@return
+	* @return:List<MedicinePay>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 下午5:08:59
+	 */
+	public List<MedicinePay> searchByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "medicinePayName");
+		return medicinePayDao.searchByPage(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchEmp) ? SimpleTools.addCharForSearch(searchEmp) : searchEmp, 
+				minPrice, maxPrice, 
+				page);
+	}
+	
+	/**
+	* @Title:searchCount
+	* @Description:查询符合搜素条件的记录条数
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchEmp
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月8日 上午8:41:58
+	 */
+	public int searchCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		return medicinePayDao.searchCount(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchEmp) ? SimpleTools.addCharForSearch(searchEmp) : searchEmp, 
+				minPrice, maxPrice
+				);
 	}
 	
 }

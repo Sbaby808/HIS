@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ public class DrugMinorDefect implements Serializable {
 
 	//bi-directional many-to-one association to DrugSubclass
 	@OneToMany(mappedBy="drugMinorDefect")
+	@JSONField(serialize = false)
 	private List<DrugSubclass> drugSubclasses;
 
 	public DrugMinorDefect() {

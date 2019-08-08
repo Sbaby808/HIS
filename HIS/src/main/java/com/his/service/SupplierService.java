@@ -85,4 +85,17 @@ public class SupplierService {
 		map.put("total", total);
 		return map;
 	}
+	
+	/**
+	* @Title:getAll
+	* @Description:查询所有供应商
+	* @param:@return
+	* @return:List<Supplier>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 下午3:46:19
+	 */
+	public List<Supplier> getAll() {
+		return (List<Supplier>) supplierdao.findAll();
+	}
 }

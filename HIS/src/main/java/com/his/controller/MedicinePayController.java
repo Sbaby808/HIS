@@ -1,5 +1,7 @@
 package com.his.controller;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -138,6 +140,67 @@ public class MedicinePayController {
 		JsonResult result = new JsonResult();
 		try {
 			medicinePayService.setForDrug(drugId, medicinePayId);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:searchMedicinePay
+	* @Description:分页搜索药品收费项
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param pageNum
+	* @param:@param pageName
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 下午5:08:03
+	 */
+	@GetMapping("/search_medicine_pay_by_page")
+	@ResponseBody
+	public JsonResult searchMedicinePay(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicinePayService.searchByPage(searchKey, searchType, searchSubclass, searchGys, searchEmp, minPrice, maxPrice, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:searchMedicinePayCount
+	* @Description:查询符合搜索条件的记录条数
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchEmp
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月8日 上午8:41:24
+	 */
+	@GetMapping("/search_medicine_pay_count")
+	@ResponseBody
+	public JsonResult searchMedicinePayCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicinePayService.searchCount(searchKey, searchType, searchSubclass, searchGys, searchEmp, minPrice, maxPrice));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
