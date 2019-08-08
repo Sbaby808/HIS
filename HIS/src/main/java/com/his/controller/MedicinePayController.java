@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.JsonResult;
 import com.his.pojo.MedicinePay;
 import com.his.service.MedicinePayService;
@@ -28,7 +30,7 @@ public class MedicinePayController {
 	
 	/**
 	* @Title:getAllMedicinePay
-	* @Description:查询所有药品划价项
+	* @Description:查询所有具有药品收费项的药品信息
 	* @param:@return
 	* @return:JsonResult
 	* @throws
@@ -201,6 +203,30 @@ public class MedicinePayController {
 		JsonResult result = new JsonResult();
 		try {
 			result.setResult(medicinePayService.searchCount(searchKey, searchType, searchSubclass, searchGys, searchEmp, minPrice, maxPrice));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:updateMedicinePay
+	* @Description:修改药品划价项
+	* @param:@param medicinePay
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月8日 下午3:14:23
+	 */
+	@GetMapping("/update_medicine_pay")
+	@ResponseBody
+	public JsonResult updateMedicinePay(String ygxh, String medicinePayId, BigDecimal price) {
+		JsonResult result = new JsonResult();
+		try {
+			medicinePayService.update(medicinePayId, price, ygxh);
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

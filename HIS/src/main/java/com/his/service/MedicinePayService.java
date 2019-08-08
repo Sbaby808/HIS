@@ -1,7 +1,6 @@
 package com.his.service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDrugInformationDao;
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IMedicinePayDao;
 import com.his.pojo.DrugInformation;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.MedicinePay;
 import com.his.utils.SimpleTools;
 
@@ -34,6 +35,8 @@ public class MedicinePayService {
 	private DrugInformationService drugInformationService;
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	/**
 	* @Title:getAll
@@ -44,8 +47,10 @@ public class MedicinePayService {
 	* @author:Sbaby
 	* @Date:2019年8月6日 下午5:05:26
 	 */
-	public List<MedicinePay> getAll() {
-		return (List<MedicinePay>) medicinePayDao.findAll();
+	public List<DrugInformation> getAll() {
+//		return (List<MedicinePay>) medicinePayDao.findAll();
+		return drugInformationDao.getPrice();
+		
 	}
 	
 	/**
@@ -59,9 +64,11 @@ public class MedicinePayService {
 	* @author:Sbaby
 	* @Date:2019年8月6日 下午5:13:50
 	 */
-	public List<MedicinePay> getByPage(int pageNum, int pageSize) {
-		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "medicinePayName");
-		return medicinePayDao.getByPage(page);
+	public List<DrugInformation> getByPage(int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "ypName");
+//		return medicinePayDao.getByPage(page);
+		return drugInformationDao.getPriceByPage(page);
+		
 	}
 	
 	/**
@@ -126,10 +133,18 @@ public class MedicinePayService {
 	* @author:Sbaby
 	* @Date:2019年8月7日 下午5:08:59
 	 */
-	public List<MedicinePay> searchByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+	public List<DrugInformation> searchByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
 			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
-		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "medicinePayName");
-		return medicinePayDao.searchByPage(
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "ypName");
+//		return medicinePayDao.searchByPage(
+//				SimpleTools.addCharForSearch(searchKey), 
+//				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+//				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+//				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+//				"".equals(searchEmp) ? SimpleTools.addCharForSearch(searchEmp) : searchEmp, 
+//				minPrice, maxPrice, 
+//				page);
+		return drugInformationDao.searchPriceByPage(
 				SimpleTools.addCharForSearch(searchKey), 
 				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
 				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
@@ -157,7 +172,15 @@ public class MedicinePayService {
 	 */
 	public int searchCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
 			BigDecimal minPrice, BigDecimal maxPrice) {
-		return medicinePayDao.searchCount(
+//		return medicinePayDao.searchCount(
+//				SimpleTools.addCharForSearch(searchKey), 
+//				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+//				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+//				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+//				"".equals(searchEmp) ? SimpleTools.addCharForSearch(searchEmp) : searchEmp, 
+//				minPrice, maxPrice
+//				);
+		return drugInformationDao.searchPriceCount(
 				SimpleTools.addCharForSearch(searchKey), 
 				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
 				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
@@ -165,6 +188,23 @@ public class MedicinePayService {
 				"".equals(searchEmp) ? SimpleTools.addCharForSearch(searchEmp) : searchEmp, 
 				minPrice, maxPrice
 				);
+	}
+	
+	/**
+	* @Title:update
+	* @Description:修改药品收费项
+	* @param:@param medicinePay
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月8日 下午3:15:01
+	 */
+	public void update(String medicinePayId, BigDecimal price, String ygxh) {
+		EmpInformation emp = empInformationDao.findById(ygxh).get();
+		MedicinePay medicinePay = medicinePayDao.findById(medicinePayId).get();
+		medicinePay.setMedicinePayPrice(price);
+		medicinePay.setEmpInformation(emp);
+		medicinePayDao.save(medicinePay);
 	}
 	
 }

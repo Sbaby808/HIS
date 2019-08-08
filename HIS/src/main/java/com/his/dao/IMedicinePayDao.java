@@ -19,19 +19,6 @@ import com.his.pojo.MedicinePay;
 public interface IMedicinePayDao extends CrudRepository<MedicinePay, String> {
 	
 	/**
-	* @Title:getByPage
-	* @Description:分页查询药品收费项
-	* @param:@param pageable
-	* @param:@return
-	* @return:List<MedicinePay>
-	* @throws
-	* @author:Sbaby
-	* @Date:2019年8月6日 下午5:18:50
-	 */
-	@Query("from MedicinePay m")
-	public List<MedicinePay> getByPage(Pageable pageable);
-	
-	/**
 	* @Title:getAllCount
 	* @Description:查询药品划价项总记录条数
 	* @param:@return

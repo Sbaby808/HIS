@@ -31,6 +31,9 @@ public class DrugInformation implements Serializable {
 
 	@Column(name="YP_NAME")
 	private String ypName;
+	
+	@Column(name="VOCODE")
+	private String vocode;
 
 	@Column(name="YP_PRICE")
 	private BigDecimal ypPrice;
@@ -86,6 +89,14 @@ public class DrugInformation implements Serializable {
 	private MedicinePay medicinePay;
 
 	public DrugInformation() {
+	}
+
+	public String getVocode() {
+		return vocode;
+	}
+
+	public void setVocode(String vocode) {
+		this.vocode = vocode;
 	}
 
 	public String getYpId() {
