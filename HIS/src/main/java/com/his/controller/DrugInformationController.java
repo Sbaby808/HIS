@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.DrugInformation;
@@ -23,6 +25,31 @@ public class DrugInformationController {
 
 	@Autowired
 	private DrugInformationService drugInformationService;
+	
+	/**
+	* @Title:add_drugInformation_by_batch
+	* @Description:批量添加药品信息
+	* @param:@param drugInformation
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月8日 下午4:18:57
+	 */
+	@ResponseBody
+	@PostMapping("add_drugInformation_by_batch")
+	public JsonResult add_drugInformation_by_batch(@RequestBody List<DrugInformation> drugInformation) {
+		JsonResult result = new JsonResult();
+		try {
+			drugInformationService.addDrugInformationSByBatch(drugInformation);
+			result.setResult(drugInformation);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 	
 	/**
 	* @Title:getNoPrice

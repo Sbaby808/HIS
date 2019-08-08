@@ -31,6 +31,7 @@ public class DrugSubclass implements Serializable {
 	private List<DrugInformation> drugInformations;
 
 	//bi-directional many-to-one association to DrugMinorDefect
+	@JSONField(serialize = false)
 	@ManyToOne
 	@JoinColumn(name="MINOR_DEFECTS_ID")
 	private DrugMinorDefect drugMinorDefect;
