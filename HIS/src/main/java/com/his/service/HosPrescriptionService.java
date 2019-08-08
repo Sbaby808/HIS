@@ -60,4 +60,19 @@ public class HosPrescriptionService {
 	public List <HosPrescription> getAllHosPrescription(){
 		return hosPrescriptionDao.getAllHosPrescription();
 	}
+	
+	/**
+	 * 
+	* @Title:getHosPresByDiagId
+	* @Description:根据诊断记录id查询处方
+	* @param:@param diagId
+	* @param:@return
+	* @return:HosPrescription
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月7日 下午9:37:23
+	 */
+	public HosPrescription getHosPresByDiagId(String diagId){
+		return hosPrescriptionDao.getHosPresByDiagId(diagId);
+	}
 }

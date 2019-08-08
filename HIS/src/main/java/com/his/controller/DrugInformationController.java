@@ -1,10 +1,13 @@
 package com.his.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.pojo.DrugInformation;
 import com.his.pojo.JsonResult;
 import com.his.service.DrugInformationService;
 
@@ -67,6 +70,22 @@ public class DrugInformationController {
 			result.setStatus("error");
 		}
 		return result;
+	}
+	
+	/**
+	 * 
+	* @Title:getAllDrugInformation
+	* @Description:查询所有药品信息
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月7日 下午9:20:04
+	 */
+	@ResponseBody
+	@GetMapping("/get_all_drug_information")
+	public List <DrugInformation> getAllDrugInformation(){
+		return drugInformationService.getAllDrugInformation();
 	}
 	
 }
