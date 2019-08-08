@@ -27,7 +27,7 @@ public class DrugMinorDefect implements Serializable {
 
 	//bi-directional many-to-one association to DrugSubclass
 	@OneToMany(mappedBy="drugMinorDefect")
-	@JSONField(serialize = false)
+	@JSONField(serialize=false)
 	private List<DrugSubclass> drugSubclasses;
 
 	public DrugMinorDefect() {

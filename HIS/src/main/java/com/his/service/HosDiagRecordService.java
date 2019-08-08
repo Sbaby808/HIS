@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosDiagRecordDao;
 import com.his.dao.IHosDocAdviceDao;
+import com.his.dao.IHosPrescriptionDao;
 import com.his.dao.IMedicalRecordDao;
 import com.his.pojo.HosDiagnosticRecord;
 import com.his.pojo.HosDoctorAdvice;
+import com.his.pojo.HosPrescription;
 import com.his.pojo.MedicalRecord;
 
 /**
@@ -36,6 +38,8 @@ public class HosDiagRecordService {
 	private IHosDiagRecordDao hosDiagRecordDao;
 	@Autowired
 	private IHosDocAdviceDao hosDocAdviceDao;
+	@Autowired
+	private IHosPrescriptionDao hosPrescriptionDao;
 	
 	
 	/**
@@ -89,10 +93,15 @@ public class HosDiagRecordService {
 		advice.setHosDiagnosticRecord(record);
 		hosDocAdviceDao.save(advice);
 		
+		HosPrescription prescription = new HosPrescription();
+		prescription.setHosDiagnosticRecord(record);
+		hosPrescriptionDao.save(prescription);
+		
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
 		record.setHosDiagTime(dateFormat.parse(time));
 		record.setHosDcoId(advice.getHosDcoId());
+		record.setHosPreId(prescription.getHosPreId());
 		hosDiagRecordDao.save(record);	
 		
 	}
