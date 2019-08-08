@@ -1,6 +1,7 @@
 package com.his.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IDrugInformationDao;
 import com.his.pojo.DrugInformation;
 import com.his.pojo.MedicinePay;
+import com.his.utils.ServiceException;
 
 /**  
 * @ClassName: DrugInformationService  
@@ -24,6 +26,46 @@ public class DrugInformationService {
 
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
+	
+	/**
+	* @Title:addDrugInformation
+	* @Description:添加单个药品
+	* @param:@param drugInformation
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月8日 下午4:09:42
+	 */
+	public void addDrugInformation(DrugInformation drugInformation) throws ServiceException{
+		try {
+			drugInformationDao.save(drugInformation);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("添加药品失败");
+		}
+	}
+	
+	/**
+	* @Title:addDrugInformationSByBatch
+	* @Description:批量添加同类（小类）药品信息
+	* @param:@param list
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月8日 下午4:14:04
+	 */
+	public void addDrugInformationSByBatch(List<DrugInformation> list) throws ServiceException{
+		try {
+			for (DrugInformation drugInformation : list) {
+				drugInformation.setYpId(UUID.randomUUID().toString().replace("-", ""));
+				drugInformationDao.save(drugInformation);
+			} 
+		} catch (Exception e) {
+			throw new ServiceException("批量添加药品信息失败");
+		}
+	}
 	
 	/**
 	* @Title:getNoPrice
