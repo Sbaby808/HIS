@@ -26,6 +26,15 @@ public class DrugSubclassController {
 	@Autowired
 	private DrugSubclassService drugSubclassService;
 
+	/**
+	* @Title:getAllDrugSubclass
+	* @Description:获取所有药品小类以及相应的中类
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月8日 下午5:08:42
+	 */
 	@GetMapping("/get_all_subclass")
 	@ResponseBody
 	public JsonResult getAllDrugSubclass() {
