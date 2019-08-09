@@ -44,8 +44,8 @@ public class HisApplicationTests {
 	@Test
 	public void addTestEmp() {
 		EmpInformation admin = new EmpInformation();
-		admin.setYgxh("ADMINTST");
-		admin.setYgName("王富贵");
+		admin.setYgxh("sunwukong");
+		admin.setYgName("孙悟空");
 		admin.setYgSex("男");
 		admin.setYgPassword(MD5Tools.KL(MD5Tools.Md5("admin123")));
 		empInformationService.addTestEmp(admin);

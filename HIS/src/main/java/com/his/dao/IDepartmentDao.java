@@ -36,6 +36,19 @@ public interface IDepartmentDao extends CrudRepository<Department, String>{
 	public List <Department> getHosDepartments();
 	
 	/**
+	* @Title:getKSByOut
+	* @Description:根据部门查询科室
+	* @param:@param id
+	* @param:@return
+	* @return:List<Department>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 下午4:31:14
+	 */
+	@Query("from Department d where d.dept.deptId = ?1")
+	public List<Department> getKSByOut(String id);
+	
+	/**
 	 * 
 	* @Title:getDepartmentByDid
 	* @Description:根据id查询科室信息
