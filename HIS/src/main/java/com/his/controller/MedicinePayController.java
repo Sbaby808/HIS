@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -111,7 +112,7 @@ public class MedicinePayController {
 	 */
 	@PostMapping("/add_medicine_pay")
 	@ResponseBody
-	public JsonResult addMedicinePay(MedicinePay medicinePay) {
+	public JsonResult addMedicinePay(@RequestBody MedicinePay medicinePay) {
 		JsonResult result = new JsonResult();
 		try {
 			medicinePayService.addMedicinePay(medicinePay);
