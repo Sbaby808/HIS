@@ -1,8 +1,11 @@
 package com.his.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +29,13 @@ public class HosOutNoticeService {
 	* @author:Hamster
 	* @Date:2019年8月3日 上午11:32:51
 	 */
-	public List <HosOutNotice> getAllHosOutNotic(){
-		return hosOutNoticeDao.getAllHosOutNotic();
+	public Map getHosOutNoticeByPage(int curpage,int pagesize){
+		List <HosOutNotice> list = hosOutNoticeDao.getHosOutNoticeByPage(PageRequest.of(curpage-1, pagesize));
+		long total = hosOutNoticeDao.count();
+		Map map = new HashMap<>();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,12 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosDrugCostDao;
+import com.his.dao.IHosPatientDao;
 import com.his.dao.IHosPreDetailDao;
 import com.his.dao.IHosPrescriptionDao;
 import com.his.pojo.HosDrugCost;
 import com.his.pojo.HosPrescription;
 import com.his.pojo.HosPrescriptionDetail;
 import com.his.pojo.HosPrescriptionDetailPK;
+import com.his.pojo.HospitalizedPatient;
 
 /**
  * 
@@ -38,6 +41,8 @@ public class HosPrescriptionService {
 	private IHosPreDetailDao hosPreDetailDao;
 	@Autowired
 	private IHosDrugCostDao hosDrugCostDao;
+	@Autowired
+	private IHosPatientDao hosPatientDao;
 	
 	/**
 	 * 
@@ -122,6 +127,12 @@ public class HosPrescriptionService {
 			details.get(i).setId(pk);
 			hosPreDetailDao.save(details.get(i));
 		}
+		
+		HospitalizedPatient patient = hosPrescription.getHosDiagnosticRecord().getMedicalRecord().getHospitalizedPatient();
+		BigDecimal balance = patient.getBalance().subtract(hosPrescription.getHosPreMoney());
+		patient.setBalance(balance);
+		hosPatientDao.save(patient);
+		
 		
 	}
 }

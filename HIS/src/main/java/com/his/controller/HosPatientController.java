@@ -39,8 +39,8 @@ public class HosPatientController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_patients_byPage")
-	public List<HospitalizedPatient> getHosPatientsByPage(){
-		return hosPatientsService.getHosPatients();
+	public Map getHosPatientsByPage(int curpage,int pagesize){
+		return hosPatientsService.getHosPatientsByPage(curpage, pagesize);
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package com.his.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -21,7 +22,7 @@ public interface IHosOutNoticeDao extends CrudRepository<HosOutNotice, String>{
 	/**
 	 * 
 	* @Title:getAllHosOutNotic
-	* @Description:查询所有出院通知单
+	* @Description:分页查询所有出院通知单
 	* @param:@return
 	* @return:List<HosOutNotice>
 	* @throws
@@ -29,7 +30,7 @@ public interface IHosOutNoticeDao extends CrudRepository<HosOutNotice, String>{
 	* @Date:2019年8月3日 上午11:30:15
 	 */
 	@Query("from HosOutNotice h")
-	public List <HosOutNotice> getAllHosOutNotic();
+	public List <HosOutNotice> getHosOutNoticeByPage(Pageable page);
 	
 	
 }

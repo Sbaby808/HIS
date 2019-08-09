@@ -1,6 +1,7 @@
 package com.his.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,9 +40,9 @@ public class HosInNoticeController {
 	* @Date:2019年8月3日 上午10:51:22
 	 */
 	@ResponseBody
-	@GetMapping("/get_hos_in_notice")
-	public List <HospitalNotice> getAllHosInNotice(){
-		return hosInNoticeService.getAllHosInNotice();
+	@GetMapping("/get_hos_in_notice_byPage")
+	public Map getAHosInNoticeByPage(int curpage,int pagesize){
+		return hosInNoticeService.getHosInNoticeByPage(curpage, pagesize);
 	}
 	
 	@ResponseBody

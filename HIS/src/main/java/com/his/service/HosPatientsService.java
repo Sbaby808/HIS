@@ -41,27 +41,27 @@ public class HosPatientsService {
 	private IMedicalRecordDao medicalRecordDao;
 
 	
-	/*public Map getHosPatientsByPage(int curpage,int pagesize){
+	/**
+	 * 
+	* @Title:getHosPatientsByPage
+	* @Description:分页查询住院登记
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月9日 下午6:32:44
+	 */
+	public Map getHosPatientsByPage(int curpage,int pagesize){
 		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(PageRequest.of(curpage-1,pagesize));
 		long total = hosPatientDao.count();
 		Map map = new HashMap<>();
 		map.put("list", patients);
 		map.put("total", total);
 		return map;
-	}*/
-	/**
-	 * 
-	* @Title:getHosPatients
-	* @Description:查询所有住院患者
-	* @param:@return
-	* @return:List<HospitalizedPatient>
-	* @throws
-	* @author:Hamster
-	* @Date:2019年8月1日 下午8:01:33
-	 */
-	public List<HospitalizedPatient> getHosPatients(){
-		return hosPatientDao.getAllPatientsByPage();
 	}
+
 	
 	/**
 	 * 
