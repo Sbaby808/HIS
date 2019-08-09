@@ -86,7 +86,8 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	 */
 	@Query("select count(*) from DrugInformation d "
 			+ "where (d.ypName like ?1 "
-			+ "or d.medicinePay.medicinePayDesc like ?1 )"
+			+ "or d.medicinePay.medicinePayDesc like ?1 "
+			+ "or d.vocode like ?1)"
 			+ "and d.ypType like ?2 "
 			+ "and d.drugSubclass.subclassName like ?3 "
 			+ "and d.supplier.gysId like ?4 "
@@ -115,7 +116,8 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	 */
 	@Query("from DrugInformation d "
 			+ "where (d.ypName like ?1 "
-			+ "or d.medicinePay.medicinePayDesc like ?1 )"
+			+ "or d.medicinePay.medicinePayDesc like ?1 "
+			+ "or d.vocode like ?1)"
 			+ "and d.ypType like ?2 "
 			+ "and d.drugSubclass.subclassName like ?3 "
 			+ "and d.supplier.gysId like ?4 "
