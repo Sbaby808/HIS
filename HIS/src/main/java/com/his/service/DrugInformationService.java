@@ -1,9 +1,11 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +13,7 @@ import com.his.dao.IDrugInformationDao;
 import com.his.pojo.DrugInformation;
 import com.his.pojo.MedicinePay;
 import com.his.utils.ServiceException;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: DrugInformationService  
@@ -68,7 +71,9 @@ public class DrugInformationService {
 	}
 	
 	/**
-	* @Title:getNoPrice
+	* @param pageSize 
+	 * @param pageNum 
+	 * @Title:getNoPrice
 	* @Description:查询未划价的药品
 	* @param:@return
 	* @return:List<DrugInformation>
@@ -76,8 +81,75 @@ public class DrugInformationService {
 	* @author:Sbaby
 	* @Date:2019年8月7日 上午9:23:18
 	 */
-	public List<DrugInformation> getNoPrice() {
-		return drugInformationDao.getNoPrice();
+	public List<DrugInformation> getNoPrice(int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+		return drugInformationDao.getNoPrice(page);
+	}
+	
+	/**
+	* @Title:getNoPriceCount
+	* @Description:查询未划价药品的总记录条数
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午10:16:05
+	 */
+	public int getNoPriceCount() {
+		return drugInformationDao.getNoPriceCount();
+	}
+	
+	/**
+	* @Title:searchNoPriceCount
+	* @Description:模糊查询未划价药品的总记录条数
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchEmp
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:07:37
+	 */
+	public int searchNoPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		return drugInformationDao.searchNoPriceCount(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				minPrice, maxPrice
+				);
+	}
+	
+	/**
+	* @Title:searchNoPrice
+	* @Description:模糊查询未划价的药品信息
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:55:18
+	 */
+	public List<DrugInformation> searchNoPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		return drugInformationDao.searchNoPrice(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				minPrice, maxPrice
+				);
 	}
 	
 	/**

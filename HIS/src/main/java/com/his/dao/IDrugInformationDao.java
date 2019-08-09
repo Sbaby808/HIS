@@ -3,6 +3,7 @@ package com.his.dao;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,7 +20,8 @@ import com.his.pojo.DrugInformation;
 public interface IDrugInformationDao extends CrudRepository<DrugInformation, String>{
 
 	/**
-	* @Title:getNoPrice
+	* @param  
+	 * @Title:getNoPrice
 	* @Description:查询未划价的药品
 	* @param:@return
 	* @return:List<DrugInformation>
@@ -27,8 +29,20 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	* @author:Sbaby
 	* @Date:2019年8月7日 上午9:22:56
 	 */
-	@Query(value="select * from drug_information d where d.medicine_pay_id is null",nativeQuery=true)
-	public List<DrugInformation> getNoPrice();
+	@Query(value="select * from drug_information d where d.medicine_pay_id is null order by d.yp_name",nativeQuery=true)
+	public List<DrugInformation> getNoPrice(Pageable pageable);
+	
+	/**
+	* @Title:getNoPriceCount
+	* @Description:查询未划价药品的数量
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午10:17:06
+	 */
+	@Query(value="select count(*) from drug_information d where d.medicine_pay_id is null",nativeQuery=true)
+	public int getNoPriceCount();
 	
 	/**
 	* @Title:getPrice
@@ -52,7 +66,7 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	* @author:Sbaby
 	* @Date:2019年8月8日 上午10:21:03
 	 */
-	@Query("from DrugInformation d")
+	@Query(value="select * from drug_information d where d.medicine_pay_id is not null order by d.yp_name",nativeQuery=true)
 	public List<DrugInformation> getPriceByPage(Pageable pageable);
 	
 	/**
@@ -126,6 +140,45 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.medicinePay.medicinePayPrice <= ?7 ")
 	public List<DrugInformation> searchPriceByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
 			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+	
+	/**
+	* @Title:searchNoPriceCount
+	* @Description:模糊查询未划价药品的数量
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:14:29
+	 */
+	@Query(value = "select count(*) from drug_information d "
+			+ "where (d.yp_name like ?1 "
+			+ "or d.vocode like ?1 )"
+			+ "and d.yp_type like ?2 "
+			+ "and d.subclass_id like ?3 "
+			+ "and d.gys_id like ?4 "
+			+ "and d.yp_price >= ?5 "
+			+ "and d.yp_price <= ?6 "
+			+ "and d.medicine_pay_id is null", nativeQuery = true)
+	public int searchNoPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice);
+	
+	@Query(value = "select * from drug_information d "
+			+ "where (d.yp_name like ?1 "
+			+ "or d.vocode like ?1 )"
+			+ "and d.yp_type like ?2 "
+			+ "and d.subclass_id like ?3 "
+			+ "and d.gys_id like ?4 "
+			+ "and d.yp_price >= ?5 "
+			+ "and d.yp_price <= ?6 "
+			+ "and d.medicine_pay_id is null", nativeQuery = true)
+	public List<DrugInformation> searchNoPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice);
 	
 	/**
 	 * 

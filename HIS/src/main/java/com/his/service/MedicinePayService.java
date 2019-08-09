@@ -65,7 +65,7 @@ public class MedicinePayService {
 	* @Date:2019年8月6日 下午5:13:50
 	 */
 	public List<DrugInformation> getByPage(int pageNum, int pageSize) {
-		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.ASC, "ypName");
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
 //		return medicinePayDao.getByPage(page);
 		return drugInformationDao.getPriceByPage(page);
 		
@@ -95,6 +95,10 @@ public class MedicinePayService {
 	 */
 	public void addMedicinePay(MedicinePay medicinePay) {
 		medicinePay.setMedicinePayId(UUID.randomUUID().toString().replaceAll("-", ""));
+		DrugInformation drugInformation = medicinePay.getDrugInformation();
+		drugInformation.setMedicinePayId(medicinePay.getMedicinePayId());
+		drugInformation.setMedicinePay(medicinePay);
+		drugInformationDao.save(drugInformation);
 		medicinePayDao.save(medicinePay);
 	}
 	

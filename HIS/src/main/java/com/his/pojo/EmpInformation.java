@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -154,7 +155,7 @@ public class EmpInformation implements Serializable {
 	//bi-directional many-to-one association to MedicinePay
 	@OneToMany(mappedBy="empInformation")
 	@JSONField(serialize=false)
-	private List<MedicinePay> medicinePays;
+	private List<MedicinePay> medicinePays = new ArrayList<MedicinePay>();
 
 	//bi-directional many-to-one association to OperationPay
 	@OneToMany(mappedBy="empInformation")
