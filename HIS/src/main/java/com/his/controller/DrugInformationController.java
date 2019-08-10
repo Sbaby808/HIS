@@ -79,6 +79,33 @@ public class DrugInformationController {
 	}
 	
 	/**
+	* @Title:updata_drugInformation
+	* @Description:修改 药品信息
+	* @param:@param editDrugInfo
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午2:55:04
+	 */
+	@ResponseBody
+	@PostMapping("updata_drugInformation")
+	public JsonResult updata_drugInformation(@RequestBody DrugInformation editDrugInfo) {
+		System.out.println("---------------------------------------");
+		JsonResult jsonresult = new JsonResult();
+		try {
+			drugInformationService.updataDrugInformation(editDrugInfo);
+			jsonresult.setResult(editDrugInfo);
+			jsonresult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonresult.setResult(editDrugInfo);
+			jsonresult.setStatus("error");
+		}
+		return jsonresult;
+	}
+	
+	/**
 	* @Title:search_all_information_by_page
 	* @Description:分页查询搜索条件
 	* @param:@param searchKey

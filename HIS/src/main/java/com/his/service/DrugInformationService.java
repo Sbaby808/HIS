@@ -74,6 +74,25 @@ public class DrugInformationService {
 	}
 	
 	/**
+	* @Title:updataDrugInformation
+	* @Description:修改药品信息
+	* @param:@param editDrugInfo
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午2:52:17
+	 */
+	public void updataDrugInformation(DrugInformation editDrugInfo) throws ServiceException {
+		try {
+			drugInformationDao.save(editDrugInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改药品失败");
+		}
+	}
+	
+	/**
 	* @Title:searchAllInformationByPage
 	* @Description:查询药品的所有信息
 	* @param:@param searchKey

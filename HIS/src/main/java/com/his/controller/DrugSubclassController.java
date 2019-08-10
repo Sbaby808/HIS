@@ -49,12 +49,56 @@ public class DrugSubclassController {
 		return result;
 	}
 
+	/**
+	* @Title:drugSubclass_To_minor
+	* @Description:小类转中类
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午4:05:16
+	 */
+	@ResponseBody
+	@PostMapping("drugSubclass_To_minor")
+	public JsonResult drugSubclass_To_minor(@RequestBody DrugSubclass subTominor) {
+		JsonResult result = new JsonResult();
+		try {
+			drugSubclassService.drugSubclassTominor(subTominor);
+			result.setResult(subTominor);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult(subTominor);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:get_all_drugSubclass
+	* @Description:获取所有小类信息
+	* @param:@return
+	* @return:List<DrugSubclass>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午4:02:56
+	 */
 	@ResponseBody
 	@GetMapping("get_all_drugSubclass")
 	public List<DrugSubclass> get_all_drugSubclass() {
 		return drugSubclassService.queryAllDrugSubclass();
 	}
 
+	/**
+	* @Title:add_DrugSubclass
+	* @Description:添加一个小类
+	* @param:@param drugSubclass
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午4:03:27
+	 */
 	@ResponseBody
 	@PostMapping("add_DrugSubclass")
 	public JsonResult add_DrugSubclass(@RequestBody DrugSubclass drugSubclass) {
