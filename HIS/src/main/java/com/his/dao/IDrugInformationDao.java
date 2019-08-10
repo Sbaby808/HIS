@@ -105,10 +105,10 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.ypType like ?2 "
 			+ "and d.drugSubclass.subclassName like ?3 "
 			+ "and d.supplier.gysId like ?4 "
-			+ "and d.medicinePay.empInformation.ygGh like ?5 "
-			+ "and d.medicinePay.medicinePayPrice >= ?6 "
-			+ "and d.medicinePay.medicinePayPrice <= ?7 ")
-	public int  searchPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+//			+ "and d.medicinePay.empInformation.ygGh like ?5 "
+			+ "and d.medicinePay.medicinePayPrice >= ?5 "
+			+ "and d.medicinePay.medicinePayPrice <= ?6 ")
+	public int  searchPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice);
 	
 	/**
@@ -135,10 +135,10 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.ypType like ?2 "
 			+ "and d.drugSubclass.subclassName like ?3 "
 			+ "and d.supplier.gysId like ?4 "
-			+ "and d.medicinePay.empInformation.ygGh like ?5 "
-			+ "and d.medicinePay.medicinePayPrice >= ?6 "
-			+ "and d.medicinePay.medicinePayPrice <= ?7 ")
-	public List<DrugInformation> searchPriceByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+//			+ "and d.medicinePay.empInformation.ygGh like ?5 "
+			+ "and d.medicinePay.medicinePayPrice >= ?5 "
+			+ "and d.medicinePay.medicinePayPrice <= ?6 ")
+	public List<DrugInformation> searchPriceByPage(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 	
 	/**

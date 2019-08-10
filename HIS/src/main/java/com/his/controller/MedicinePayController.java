@@ -168,11 +168,11 @@ public class MedicinePayController {
 	 */
 	@GetMapping("/search_medicine_pay_by_page")
 	@ResponseBody
-	public JsonResult searchMedicinePay(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+	public JsonResult searchMedicinePay(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
 		JsonResult result = new JsonResult();
 		try {
-			result.setResult(medicinePayService.searchByPage(searchKey, searchType, searchSubclass, searchGys, searchEmp, minPrice, maxPrice, pageNum, pageSize));
+			result.setResult(medicinePayService.searchByPage(searchKey, searchType, searchSubclass, searchGys, minPrice, maxPrice, pageNum, pageSize));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -199,11 +199,11 @@ public class MedicinePayController {
 	 */
 	@GetMapping("/search_medicine_pay_count")
 	@ResponseBody
-	public JsonResult searchMedicinePayCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+	public JsonResult searchMedicinePayCount(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice) {
 		JsonResult result = new JsonResult();
 		try {
-			result.setResult(medicinePayService.searchCount(searchKey, searchType, searchSubclass, searchGys, searchEmp, minPrice, maxPrice));
+			result.setResult(medicinePayService.searchCount(searchKey, searchType, searchSubclass, searchGys, minPrice, maxPrice));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
