@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +42,7 @@ public class CheckPay implements Serializable {
 
 	//bi-directional many-to-one association to CheckNoticeForm
 	@OneToMany(mappedBy="checkPay")
+	@JSONField(serialize=false)
 	private List<CheckNoticeForm> checkNoticeForms;
 
 	//bi-directional many-to-one association to EmpInformation
@@ -48,6 +52,7 @@ public class CheckPay implements Serializable {
 
 	//bi-directional many-to-one association to CheckPayRecord
 	@OneToMany(mappedBy="checkPay")
+	@JSONField(serialize=false)
 	private List<CheckPayRecord> checkPayRecords;
 
 	public CheckPay() {

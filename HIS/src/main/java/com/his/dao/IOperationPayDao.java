@@ -31,4 +31,19 @@ public interface IOperationPayDao extends CrudRepository<OperationPay, String>{
 	public List<OperationPaybean> getall_ope_pays(String sou,Pageable page);
     @Query(value="select count(*) from OperationPay o where o.operPayName like ?1")
     public long getcount(String sou);
+    
+    /**
+     * 
+    * @Title:getAllOperationPay
+    * @Description:查询所有手术项
+    * @param:@return
+    * @return:List<OperationPay>
+    * @throws
+    * @author:Hamster
+    * @Date:2019年8月10日 下午1:42:24
+     */
+    @Query("from OperationPay o")
+    public List <OperationPay> getAllOperationPay();
+    
+    
 }

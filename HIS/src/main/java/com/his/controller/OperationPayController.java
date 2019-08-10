@@ -94,5 +94,22 @@ public class OperationPayController {
     public void deloperation(String operid) {
     	operationPayService.delOperationPay(operid);
     }
+
+	
+	/**
+	 * 
+	* @Title:getAllOperationPay
+	* @Description:查询所有手术项
+	* @param:@return
+	* @return:List<OperationPay>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月10日 下午1:44:43
+	 */
+	@ResponseBody
+	@GetMapping("/get_all_opreation_pay")
+	public List <OperationPay> getAllOperationPay(){
+		return operationPayService.getAllOperationPay();
+	}
    
 }

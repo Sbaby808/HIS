@@ -105,4 +105,18 @@ public class OperationPayService {
     public void delOperationPay(String id) {
     	iOperationPayDao.deleteById(id);
     }
+    
+    /**
+     * 
+    * @Title:getAllOperationPay
+    * @Description:查询所有手术项
+    * @param:@return
+    * @return:List<OperationPay>
+    * @throws
+    * @author:Hamster
+    * @Date:2019年8月10日 下午1:43:40
+     */
+    public List <OperationPay> getAllOperationPay(){
+    	return iOperationPayDao.getAllOperationPay();
+    }
 }

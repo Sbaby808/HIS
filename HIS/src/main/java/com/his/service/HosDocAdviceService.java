@@ -8,8 +8,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.his.dao.IHosCheckNoticeDao;
 import com.his.dao.IHosDocAdviceDao;
+import com.his.dao.IHosOutNoticeDao;
+import com.his.dao.IHosSurgeryNoticeDao;
+import com.his.pojo.HosCheckNotice;
 import com.his.pojo.HosDoctorAdvice;
+import com.his.pojo.HosOutNotice;
+import com.his.pojo.HosSurgeryNotice;
 
 /**
  * 
@@ -25,6 +32,12 @@ public class HosDocAdviceService {
 
 	@Autowired
 	private IHosDocAdviceDao hosDocAdviceDao;
+	@Autowired
+	private IHosCheckNoticeDao hosCheckNoticeDao;
+	@Autowired
+	private IHosSurgeryNoticeDao hosSurgeryNoticeDao;
+	@Autowired
+	private IHosOutNoticeDao hosOutNoticeDao;
 	
 	/**
 	 * 
@@ -71,6 +84,28 @@ public class HosDocAdviceService {
 		String time = dateFormat.format(new Date());
 		advice.setHosStartTime(dateFormat.parse(time));
 		hosDocAdviceDao.save(advice);
+		
+		List <HosCheckNotice> checkNotices = advice.getHosCheckNotices();
+		for(int i=0;i<checkNotices.size();i++){
+			checkNotices.get(i).setHosCheckNtime(dateFormat.parse(time));
+			checkNotices.get(i).setHosDoctorAdvice(advice);
+			hosCheckNoticeDao.save(checkNotices.get(i));
+		}
+		
+		List <HosSurgeryNotice> surgeryNotices = advice.getHosSurgeryNotices();
+		System.out.println(surgeryNotices.size());
+		for(int i=0;i<surgeryNotices.size();i++){
+			surgeryNotices.get(i).setHosSurTime(dateFormat.parse(time));
+			surgeryNotices.get(i).setHosDoctorAdvice(advice);
+			hosSurgeryNoticeDao.save(surgeryNotices.get(i));
+		}
+		
+		List <HosOutNotice> outNotices = advice.getHosOutNotices();
+		for(int i=0;i<outNotices.size();i++){
+			outNotices.get(i).setHosOutTime(dateFormat.parse(time));
+			outNotices.get(i).setHosDoctorAdvice(advice);
+			hosOutNoticeDao.save(outNotices.get(i));
+		}
 	}
 	
 	/**

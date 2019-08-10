@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.dialect.unique.DB2UniqueDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.ICheckPayDao;
 import com.his.pojo.CheckPay;
@@ -19,6 +20,7 @@ import com.sun.org.apache.xerces.internal.dom.DeepNodeListImpl;
 *    
 */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class CheckPayService {
 	@Autowired
 	private ICheckPayDao iCheckPayDao;
@@ -74,5 +76,19 @@ public class CheckPayService {
 	 */
 	public void DelCheckPay(String id) {
 		iCheckPayDao.deleteById(id);
+	}
+	
+	/**
+	 * 
+	* @Title:getAllCheckPay
+	* @Description:查询所有检查项
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月10日 上午11:05:49
+	 */
+	public List <CheckPay> getAllCheckPay(){
+		return iCheckPayDao.getAllCheckPay();
 	}
 }
