@@ -105,7 +105,60 @@ public class OutpatientRegistrationController {
 	@ResponseBody
 	public JsonResult getWorktime(String empId) {
 		JsonResult result = new JsonResult();
-		
+		try {
+			result.setResult(outpatientRegistrationService.getWorktimeByEmpid(empId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getRegistrationCount
+	* @Description:根据医生编号查询当日挂号人数
+	* @param:@param empId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午2:05:33
+	 */
+	@GetMapping("/get_registration_by_empId")
+	@ResponseBody
+	public JsonResult getRegistrationCount(String empId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.getRegistrationCount(empId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getOutpatientDoctorNum
+	* @Description:查询门诊各科室医生挂号详情
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午2:44:28
+	 */
+	@GetMapping("/get_outpatient_doctor_num")
+	@ResponseBody
+	public JsonResult getOutpatientDoctorNum() {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.getOutpatientDoctorCount());
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
 		return result;
 	}
 }
