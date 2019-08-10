@@ -66,7 +66,7 @@ public class SolveScheme implements Serializable {
 	private ObservationNotice observationNotice;
 
 	//bi-directional one-to-one association to History
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="HISTORY_ID")
 	private History history;
 

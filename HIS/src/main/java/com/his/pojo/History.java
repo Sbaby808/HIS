@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -31,9 +32,6 @@ public class History implements Serializable {
 	@Column(name="PRESCRIPTION_ID")
 	private String prescriptionId;
 
-	@Column(name="SCHE_ID")
-	private String scheId;
-
 	@Column(name="SYMPTOM_DESC")
 	private String symptomDesc;
 
@@ -52,9 +50,9 @@ public class History implements Serializable {
 	private Prescription prescription;
 
 	//bi-directional one-to-one association to SolveScheme
-	@OneToOne(mappedBy="history")
+	@OneToMany(mappedBy="history")
 	@JSONField(serialize=false)
-	private SolveScheme solveScheme;
+	private List<SolveScheme> solveScheme;
 
 	//bi-directional one-to-one association to OutpatientRegistration
 	@OneToOne
@@ -67,6 +65,17 @@ public class History implements Serializable {
 
 	public History() {
 	}
+
+	
+	public List<SolveScheme> getSolveScheme() {
+		return solveScheme;
+	}
+
+
+	public void setSolveScheme(List<SolveScheme> solveScheme) {
+		this.solveScheme = solveScheme;
+	}
+
 
 	public String getHistoryId() {
 		return this.historyId;
@@ -100,14 +109,6 @@ public class History implements Serializable {
 		this.prescriptionId = prescriptionId;
 	}
 
-	public String getScheId() {
-		return this.scheId;
-	}
-
-	public void setScheId(String scheId) {
-		this.scheId = scheId;
-	}
-
 	public String getSymptomDesc() {
 		return this.symptomDesc;
 	}
@@ -138,14 +139,6 @@ public class History implements Serializable {
 
 	public void setPrescription(Prescription prescription) {
 		this.prescription = prescription;
-	}
-
-	public SolveScheme getSolveScheme() {
-		return this.solveScheme;
-	}
-
-	public void setSolveScheme(SolveScheme solveScheme) {
-		this.solveScheme = solveScheme;
 	}
 
 	public OutpatientRegistration getOutpatientRegistration() {
