@@ -35,5 +35,5 @@ public interface ITechnicalPostDao extends CrudRepository<TechnicalPost, String>
        + "left outer join department d on r.ks_id = d.ks_id "
        + "where d.dept_id = ?1", nativeQuery = true)
 	public List<TechnicalPost> getByOut(String deptId);
-
+	
 }

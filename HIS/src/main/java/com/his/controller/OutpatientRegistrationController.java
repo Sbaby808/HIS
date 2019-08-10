@@ -66,4 +66,46 @@ public class OutpatientRegistrationController {
 		}
 		return result;
 	}
+	
+	/**
+	* @Title:getDocByKsAndTp
+	* @Description:根据科室和职称查询门诊医生
+	* @param:@param ks
+	* @param:@param tp
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 上午8:47:43
+	 */
+	@GetMapping("/get_doc_by_ks_and_tp")
+	@ResponseBody
+	public JsonResult getDocByKsAndTp(String ks, String tp) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.getDocByKsAndTp(ks, tp));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getWorktime
+	* @Description:根据医生编号查询排班时间
+	* @param:@param empId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 上午9:24:33
+	 */
+	@GetMapping("/get_worktime_by_empid")
+	@ResponseBody
+	public JsonResult getWorktime(String empId) {
+		JsonResult result = new JsonResult();
+		
+		return result;
+	}
 }
