@@ -28,10 +28,10 @@ public class HospitalizedPatient implements Serializable {
 	@Column(name="HOSP_ID")
 	private String hospId;
 
-	private Double balance;
+	private BigDecimal balance;
 
 	@Column(name="DEPOSIT_MONEY")
-	private Double depositMoney;
+	private BigDecimal depositMoney;
 
 	@Column(name="HOS_BID")
 	private String hosBid;
@@ -117,19 +117,19 @@ public class HospitalizedPatient implements Serializable {
 		this.hospId = hospId;
 	}
 
-	public Double getBalance() {
+	public BigDecimal getBalance() {
 		return this.balance;
 	}
 
-	public void setBalance(Double balance) {
+	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
 
-	public Double getDepositMoney() {
+	public BigDecimal getDepositMoney() {
 		return this.depositMoney;
 	}
 
-	public void setDepositMoney(Double depositMoney) {
+	public void setDepositMoney(BigDecimal depositMoney) {
 		this.depositMoney = depositMoney;
 	}
 

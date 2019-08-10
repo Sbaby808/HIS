@@ -21,6 +21,9 @@ public class CheckItem implements Serializable {
 
 	@Column(name="CHECK_ITEM_STD")
 	private String checkItemStd;
+	
+	@Column(name="ITEM_NAME")
+	private String itemName;
 
 	//bi-directional many-to-one association to CheckResultDetail
 	@OneToMany(mappedBy="checkItem")
@@ -31,6 +34,14 @@ public class CheckItem implements Serializable {
 
 	public String getCheckItemId() {
 		return this.checkItemId;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public void setCheckItemId(String checkItemId) {

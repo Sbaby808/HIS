@@ -1,10 +1,13 @@
 package com.his.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.HosPrescription;
@@ -55,5 +58,22 @@ public class HosPrescriptonController {
 	@GetMapping("/get_hos_prescription_byDiagId")
 	public HosPrescription getHosPresByDiagId(String diagId){
 		return hosPrescriptionService.getHosPresByDiagId(diagId);
+	}
+	
+	/**
+	 * 
+	* @Title:addHosPrescription
+	* @Description:新增住院处方
+	* @param:@param hosPrescription
+	* @param:@throws ParseException
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月8日 下午8:50:02
+	 */
+	@ResponseBody
+	@PostMapping("/add_hos_prescription")
+	public void addHosPrescription(@RequestBody HosPrescription hosPrescription) throws ParseException{
+		hosPrescriptionService.addHosPrescription(hosPrescription);
 	}
 }

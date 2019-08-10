@@ -1,6 +1,7 @@
 package com.his.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,9 +29,9 @@ public class HosOutNoticeController {
 	* @Date:2019年8月4日 上午10:00:00
 	 */
 	@ResponseBody
-	@GetMapping("/get_all_hos_out_notice")
-	public List <HosOutNotice> getAllHosOutNotic(){
-		return hosOutNoticeService.getAllHosOutNotic();
+	@GetMapping("/get_hos_out_notice_byPage")
+	public Map getHosOutNoticeByPage(int curpage,int pagesize){
+		return hosOutNoticeService.getHosOutNoticeByPage(curpage, pagesize);
 	}
 	
 	/**

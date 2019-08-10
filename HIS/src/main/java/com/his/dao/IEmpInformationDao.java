@@ -28,4 +28,22 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
 	
 	@Query("select e.ygxh,e.ygName from EmpInformation e")
 	public List<Object[]> queryAllForNameAndXH();
+	
+	/**
+	* @Title:getDocByKsAndTp
+	* @Description:根据科室与职称查询门诊医生
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 上午8:52:15
+	 */
+	@Query(value = "select e.* from (((technical_post t left outer join emp_information e on t.tp_id = e.tp_id )" 
+     + " left outer join user_role ur on e.ygxh = ur.ygxh) "
+     + " left outer join role r on ur.role_id = r.role_id) "
+     + " left outer join department d on r.ks_id = d.ks_id "
+     + " where d.dept_id = 'outpatient' "
+     + " and t.tp_id = ?1 "
+     + " and r.ks_id = ?2", nativeQuery = true)
+	public List<EmpInformation> getDocByKsAndTp(String tp, String ks);
 }

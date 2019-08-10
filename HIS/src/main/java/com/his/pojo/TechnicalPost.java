@@ -33,6 +33,7 @@ public class TechnicalPost implements Serializable {
 
 	//bi-directional many-to-one association to OutpatientRegistration
 	@OneToMany(mappedBy="technicalPost")
+	@JSONField(serialize = false)
 	private List<OutpatientRegistration> outpatientRegistrations;
 
 	public TechnicalPost() {

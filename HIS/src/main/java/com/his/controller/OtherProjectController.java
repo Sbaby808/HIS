@@ -39,7 +39,7 @@ public class OtherProjectController {
 	 */
 	@PostMapping("/add_other_project")
 	@ResponseBody
-	public JsonResult addOtherProject(OtherProject otherProject) {
+	public JsonResult addOtherProject(@RequestBody OtherProject otherProject) {
 //		System.out.println(otherProject.getProjectName());
 		JsonResult result = new JsonResult();
 		try {

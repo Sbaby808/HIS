@@ -1,6 +1,7 @@
 package com.his.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,12 @@ public class HosPreDetailController {
 	@GetMapping("/get_hos_pre_detail")
 	public List <HosPrescriptionDetail> getHosPreDetail(){
 		return hosPreDetailService.getHosPreDetail();
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_hos_pre_detail_byPage")
+	public Map getHosPreDetailByPage(int curpage,int pagesize){
+		return hosPreDetailService.getHosPreDetailByPage(curpage, pagesize);
 	}
 	
 	/**

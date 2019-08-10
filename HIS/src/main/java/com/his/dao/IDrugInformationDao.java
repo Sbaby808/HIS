@@ -102,10 +102,10 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.ypType like ?2 "
 			+ "and d.drugSubclass.subclassName like ?3 "
 			+ "and d.supplier.gysId like ?4 "
-			+ "and d.medicinePay.empInformation.ygGh like ?5 "
-			+ "and d.medicinePay.medicinePayPrice >= ?6 "
-			+ "and d.medicinePay.medicinePayPrice <= ?7 ")
-	public int  searchPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+//			+ "and d.medicinePay.empInformation.ygGh like ?5 "
+			+ "and d.medicinePay.medicinePayPrice >= ?5 "
+			+ "and d.medicinePay.medicinePayPrice <= ?6 ")
+	public int  searchPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice);
 	
 	/**
@@ -131,11 +131,62 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.ypType like ?2 "
 			+ "and d.drugSubclass.subclassName like ?3 "
 			+ "and d.supplier.gysId like ?4 "
-			+ "and d.medicinePay.empInformation.ygGh like ?5 "
-			+ "and d.medicinePay.medicinePayPrice >= ?6 "
-			+ "and d.medicinePay.medicinePayPrice <= ?7 ")
-	public List<DrugInformation> searchPriceByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
+//			+ "and d.medicinePay.empInformation.ygGh like ?5 "
+			+ "and d.medicinePay.medicinePayPrice >= ?5 "
+			+ "and d.medicinePay.medicinePayPrice <= ?6 ")
+	public List<DrugInformation> searchPriceByPage(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+/**
+	* @Title:searchNoPriceCount
+	* @Description:模糊查询未划价药品的数量
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:14:29
+	 */
+	@Query(value = "select count(*) from drug_information d "
+			+ "where (d.yp_name like ?1 "
+			+ "or d.vocode like ?1 )"
+			+ "and d.yp_type like ?2 "
+			+ "and d.subclass_id like ?3 "
+			+ "and d.gys_id like ?4 "
+			+ "and d.yp_price >= ?5 "
+			+ "and d.yp_price <= ?6 "
+			+ "and d.medicine_pay_id is null", nativeQuery = true)
+	public int searchNoPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice);
+	
+	@Query(value = "select * from drug_information d "
+			+ "where (d.yp_name like ?1 "
+			+ "or d.vocode like ?1 )"
+			+ "and d.yp_type like ?2 "
+			+ "and d.subclass_id like ?3 "
+			+ "and d.gys_id like ?4 "
+			+ "and d.yp_price >= ?5 "
+			+ "and d.yp_price <= ?6 "
+			+ "and d.medicine_pay_id is null", nativeQuery = true)
+	public List<DrugInformation> searchNoPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice);
+	
+	/**
+	 * 
+	* @Title:getAllDrugInformation
+	* @Description:模糊查询
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月7日 下午9:12:41
+	 */
+	@Query("from DrugInformation d where d.ypName like ?1")
+	public List <DrugInformation> getDrugInformation(String ypName);
 	
 	/**
 	* @Title:searchAllInformationByPage
@@ -195,5 +246,4 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 		+ "and d.ypPrice <= ?7 ")
 	public int searchAllInformationByPageCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
 			BigDecimal minPrice, BigDecimal maxPrice);
-	
 }

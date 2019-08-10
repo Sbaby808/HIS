@@ -26,7 +26,7 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	* @Date:2019年8月2日 下午10:37:25
 	 */
 	@Query("from HospitalizedPatient h")
-	public List<HospitalizedPatient> getAllPatientsByPage();
+	public List<HospitalizedPatient> getAllPatientsByPage(Pageable page);
 	
 	
 	/**
