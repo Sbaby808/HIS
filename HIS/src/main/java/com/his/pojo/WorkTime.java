@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +32,7 @@ public class WorkTime implements Serializable {
 
 	//bi-directional many-to-one association to WktimeEmp
 	@OneToMany(mappedBy="workTime")
+	@JSONField(serialize = false)
 	private List<WktimeEmp> wktimeEmps;
 
 	public WorkTime() {

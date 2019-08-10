@@ -31,6 +31,18 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	public List<DrugInformation> getNoPrice();
 	
 	/**
+	* @Title:getNoPriceCount
+	* @Description:查询未划价药品总记录条数
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午4:35:23
+	 */
+	@Query(value = "select count(*) from drug_information d where d.medicine_pay_id is null", nativeQuery = true)
+	public int getNoPriceCount();
+	
+	/**
 	* @Title:getPrice
 	* @Description:查询所有具有收费项的药品信息
 	* @param:@return
@@ -163,6 +175,21 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	public int searchNoPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice);
 	
+	/**
+	* @Title:searchNoPrice
+	* @Description:搜索未划价记录
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午4:33:45
+	 */
 	@Query(value = "select * from drug_information d "
 			+ "where (d.yp_name like ?1 "
 			+ "or d.vocode like ?1 )"
@@ -246,4 +273,18 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 		+ "and d.ypPrice <= ?7 ")
 	public int searchAllInformationByPageCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
 			BigDecimal minPrice, BigDecimal maxPrice);
+	
+	/**
+	* @param  
+	 * @Title:getNoPrice
+	* @Description:查询未划价的药品
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午9:22:56
+	 */
+	@Query(value="select * from drug_information d where d.medicine_pay_id is null order by d.yp_name",nativeQuery=true)
+	public List<DrugInformation> getNoPrice(Pageable pageable);
+
 }

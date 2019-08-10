@@ -46,4 +46,22 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
      + " and t.tp_id = ?1 "
      + " and r.ks_id = ?2", nativeQuery = true)
 	public List<EmpInformation> getDocByKsAndTp(String tp, String ks);
+	
+	/**
+	* @Title:getDoctorsByWkAndKs
+	* @Description:根据科室查询当日排班的医生
+	* @param:@param ksId
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午4:04:54
+	 */
+	@Query(value = "select e.* from ((((work_time wt left outer join wktime_emp wke on wt.pb_id = wke.pb_id) "
+       + " left outer join emp_information e on wke.ygxh = e.ygxh) "
+       + " left outer join user_role ur on ur.ygxh = e.ygxh) "
+       + " left outer join role ro on ro.role_id = ur.role_id) "
+       + " where to_char(wt.pb_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') "
+       + " and ro.ks_id = ?1", nativeQuery = true)
+	public List<EmpInformation> getDoctorsByWkAndKs(String ksId);
 }

@@ -1,6 +1,8 @@
 package com.his.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import com.his.dao.IDepartmentDao;
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutpatientRegistrationDao;
 import com.his.dao.ITechnicalPostDao;
+import com.his.dao.IWorkTimeDao;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.TechnicalPost;
@@ -34,6 +37,8 @@ public class OutpatientRegistrationService {
 	private ITechnicalPostDao technicalPostDao;
 	@Autowired
 	private IEmpInformationDao empInformationDao;
+	@Autowired
+	private IWorkTimeDao workTimeDao;
 	
 	/**
 	* @Title:getKSbyOut
@@ -86,7 +91,47 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月10日 上午9:25:32
 	 */
-//	public List<WorkTime> getWorktimeByEmpid(String empId) {
-//		
-//	}
+	public List<WorkTime> getWorktimeByEmpid(String empId) {
+		return workTimeDao.getDocById(empId);
+	}
+	
+	/**
+	* @Title:getRegistrationCount
+	* @Description:根据医生编号查询当日挂号总数
+	* @param:@param empId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午2:06:22
+	 */
+	public int getRegistrationCount(String empId) {
+		return outpatientRegistrationDao.getRegsitrationCountByEmpId(empId);
+	}
+	
+	/**
+	* @Title:getOutpatientDoctorCount
+	* @Description:查询门诊所有科室的医生挂号详情
+	* @param:@return
+	* @return:Map<String,Map<EmpInformation,Integer>>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午2:56:27
+	 */
+	public Map<String, Map<EmpInformation, Integer>> getOutpatientDoctorCount() {
+		Map<String, Map<EmpInformation, Integer>> map = new HashMap<String, Map<EmpInformation,Integer>>();
+		// 查询所有科室
+		List<Department> departments = getKSbyOut();
+		for (Department department : departments) {
+			// 查询该科室下今日排班的所有医生
+			Map<EmpInformation, Integer> mmmap = new HashMap<>();
+			List<EmpInformation> doctors = empInformationDao.getDoctorsByWkAndKs(department.getKsId());
+			for (EmpInformation empInformation : doctors) {
+				// 查询该医生今日已有的挂号数量
+				mmmap.put(empInformation, getRegistrationCount(empInformation.getYgxh()));
+			}
+			map.put(department.getKsId(), mmmap);
+		}
+		return map;
+	}
 }

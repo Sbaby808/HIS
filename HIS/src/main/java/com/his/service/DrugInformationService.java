@@ -74,22 +74,19 @@ public class DrugInformationService {
 	}
 	
 	/**
-	* @Title:updataDrugInformation
-	* @Description:修改药品信息
-	* @param:@param editDrugInfo
-	* @param:@throws ServiceException
-	* @return:void
+	* @param pageSize 
+	 * @param pageNum 
+	 * @Title:getNoPrice
+	* @Description:查询未划价的药品
+	* @param:@return
+	* @return:List<DrugInformation>
 	* @throws
-	* @author:crazy_long
-	* @Date:2019年8月10日 下午2:52:17
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午9:23:18
 	 */
-	public void updataDrugInformation(DrugInformation editDrugInfo) throws ServiceException {
-		try {
-			drugInformationDao.save(editDrugInfo);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new ServiceException("修改药品失败");
-		}
+	public List<DrugInformation> getNoPrice(int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+		return drugInformationDao.getNoPrice(page);
 	}
 	
 	/**
@@ -134,6 +131,24 @@ public class DrugInformationService {
 		return map;
 	}
 	
+	/**
+	* @Title:updataDrugInformation
+	* @Description:修改药品信息
+	* @param:@param editDrugInfo
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午2:52:17
+	 */
+	public void updataDrugInformation(DrugInformation editDrugInfo) throws ServiceException {
+		try {
+			drugInformationDao.save(editDrugInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改药品失败");
+		}
+	}
 	
 	/**
 	* @Title:getNoPrice
@@ -146,6 +161,72 @@ public class DrugInformationService {
 	 */
 	public List<DrugInformation> getNoPrice() {
 		return drugInformationDao.getNoPrice();
+	}
+	
+	/**
+	* @Title:searchNoPriceCount
+	* @Description:模糊查询未划价药品的总记录条数
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchEmp
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:07:37
+	 */
+	public int searchNoPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		return drugInformationDao.searchNoPriceCount(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				minPrice, maxPrice
+				);
+	}
+	
+	/**
+	* @Title:searchNoPrice
+	* @Description:模糊查询未划价的药品信息
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:55:18
+	 */
+	public List<DrugInformation> searchNoPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		return drugInformationDao.searchNoPrice(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				minPrice, maxPrice
+				);
+	}
+	
+	/**
+	* @Title:getNoPriceCount
+	* @Description:查询未划价药品数量
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午4:36:12
+	 */
+	public int getNoPriceCount() {
+		return drugInformationDao.getNoPriceCount();
 	}
 	
 	/**
@@ -187,6 +268,21 @@ public class DrugInformationService {
 	 */
 	public List<String> getAllDrugInformationType(){
 		return drugInformationDao.getAllYpType();
+	}
+
+	
+	/**
+	 * 
+	* @Title:getAllDrugInformation
+	* @Description:查询所有药品信息
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月7日 下午9:17:51
+	 */
+	public List <DrugInformation> getDrugInformation(String ypName){
+		return drugInformationDao.getDrugInformation(ypName);
 	}
 	
 }

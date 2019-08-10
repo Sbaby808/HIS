@@ -163,6 +163,107 @@ public class DrugInformationController {
 	}
 	
 	/**
+	* @Title:searchNoPriceDrugCount
+	* @Description:模糊查询未划价药品信息数量
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchEmp
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:04:03
+	 */
+	@GetMapping("/search_no_price_drug_count")
+	@ResponseBody
+	public JsonResult searchNoPriceDrugCount(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.searchNoPriceCount(searchKey, searchType, searchSubclass, searchGys, minPrice, maxPrice));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:searchNoPriceDrug
+	* @Description:模糊查询未划价的药品信息
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月9日 上午11:50:41
+	 */
+	@GetMapping("/search_no_price_drug")
+	@ResponseBody
+	public JsonResult searchNoPriceDrug(String searchKey, String searchType, String searchSubclass, String searchGys,
+			BigDecimal minPrice, BigDecimal maxPrice) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.searchNoPrice(searchKey, searchType, searchSubclass, searchGys, minPrice, maxPrice));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getNoPriceCount
+	* @Description:查询未划价药品的总记录条数
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午4:31:39
+	 */
+	@GetMapping("/get_no_price_count")
+	@ResponseBody
+	public JsonResult getNoPriceCount() {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.getNoPriceCount());
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getNoPrice
+	* @Description:分页查询未划价的药品
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午9:46:08
+	 */
+	@GetMapping("/get_no_price_drug_by_page")
+	@ResponseBody
+	public JsonResult getNoPrice(int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.getNoPrice(pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:getById
 	* @Description:根据id查询药品信息
 	* @param:@param id
@@ -187,6 +288,8 @@ public class DrugInformationController {
 		return result;
 	}
 	
+	
+	
 	/**
 	 * 
 	* @Title:getAllDrugInformation
@@ -208,5 +311,6 @@ public class DrugInformationController {
 	public List<String> get_all_drug_typeName(){
 		return drugInformationService.getAllDrugInformationType();
 	}
+
 	
 }
