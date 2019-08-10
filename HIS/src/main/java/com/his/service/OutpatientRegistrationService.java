@@ -10,6 +10,7 @@ import com.his.dao.IDepartmentDao;
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutpatientRegistrationDao;
 import com.his.dao.ITechnicalPostDao;
+import com.his.dao.IWorkTimeDao;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.TechnicalPost;
@@ -34,6 +35,8 @@ public class OutpatientRegistrationService {
 	private ITechnicalPostDao technicalPostDao;
 	@Autowired
 	private IEmpInformationDao empInformationDao;
+	@Autowired
+	private IWorkTimeDao workTimeDao;
 	
 	/**
 	* @Title:getKSbyOut
@@ -86,7 +89,7 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月10日 上午9:25:32
 	 */
-//	public List<WorkTime> getWorktimeByEmpid(String empId) {
-//		
-//	}
+	public List<WorkTime> getWorktimeByEmpid(String empId) {
+		return workTimeDao.getDocById(empId);
+	}
 }

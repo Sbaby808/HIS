@@ -105,7 +105,13 @@ public class OutpatientRegistrationController {
 	@ResponseBody
 	public JsonResult getWorktime(String empId) {
 		JsonResult result = new JsonResult();
-		
+		try {
+			result.setResult(outpatientRegistrationService.getWorktimeByEmpid(empId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
 		return result;
 	}
 }
