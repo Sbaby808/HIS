@@ -69,6 +69,18 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	public List <DrugInformation> getAllDrugInformation();
 	
 	/**
+	* @Title:getYpType
+	* @Description:获取药品大类
+	* @param:@return
+	* @return:List<String>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 上午12:19:54
+	 */
+	@Query("select d.ypType from DrugInformation d group by d.ypType")
+	public List<String> getAllYpType();
+	
+	/**
 	* @Title:searchPriceCount
 	* @Description:查询符合搜索条件的记录条数
 	* @param:@param searchKey
@@ -124,4 +136,64 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.medicinePay.medicinePayPrice <= ?7 ")
 	public List<DrugInformation> searchPriceByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchEmp,
 			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+	
+	/**
+	* @Title:searchAllInformationByPage
+	* @Description:查询药品的所有信息
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月9日 下午11:10:55
+	 */
+	@Query("from DrugInformation d "
+			+ "where (d.ypName like ?1 "
+			+ "or d.vocode like ?1 )"
+			+ "and d.ypType like ?2 "
+			+ "and d.drugSubclass.subclassId like ?3 "
+			+ "and d.supplier.gysName like ?4 "
+			+ "and d.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
+			+ "and d.ypPrice >= ?6 "
+			+ "and d.ypPrice <= ?7 ")
+	public List<DrugInformation> searchAllInformationByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+
+
+	/**
+	* @Title:searchAllInformationByPageCount
+	* @Description:查询符合搜索条件的条数
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param pageable
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 上午9:55:56
+	 */
+	@Query("select count(*) from DrugInformation d "
+		+ "where (d.ypName like ?1 "
+		+ "or d.vocode like ?1 )"
+		+ "and d.ypType like ?2 "
+		+ "and d.drugSubclass.subclassId like ?3 "
+		+ "and d.supplier.gysName like ?4 "
+		+ "and d.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
+		+ "and d.ypPrice >= ?6 "
+		+ "and d.ypPrice <= ?7 ")
+	public int searchAllInformationByPageCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice);
+	
 }

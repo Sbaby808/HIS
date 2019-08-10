@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,66 @@ public class DrugInformationController {
 		}
 		return result;
 	}
+	
+	/**
+	* @Title:add_rugInformation
+	* @Description:添加单个药品
+	* @param:@param singleDrug
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月9日 下午3:30:47
+	 */
+	@ResponseBody
+	@PostMapping("add_drugInformation")
+	public JsonResult add_rugInformation(@RequestBody DrugInformation singleDrug) {
+		System.out.println("-------------------------------");
+		JsonResult result = new JsonResult();
+		try {
+			drugInformationService.addDrugInformation(singleDrug);
+			result.setResult(singleDrug);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:search_all_information_by_page
+	* @Description:分页查询搜索条件
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月9日 下午11:27:29
+	 */
+	@ResponseBody
+	@GetMapping("search_all_information_by_page")
+	public JsonResult search_all_information_by_page(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.searchAllInformationByPage(searchKey, searchType, searchSubclass, searchGys, searchMinorDefect, minPrice, maxPrice, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
 	
 	/**
 	* @Title:getNoPrice
@@ -113,6 +174,12 @@ public class DrugInformationController {
 	@GetMapping("/get_all_drug_information")
 	public List <DrugInformation> getAllDrugInformation(){
 		return drugInformationService.getAllDrugInformation();
+	}
+	
+	@ResponseBody
+	@GetMapping("get_all_drug_typeName")
+	public List<String> get_all_drug_typeName(){
+		return drugInformationService.getAllDrugInformationType();
 	}
 	
 }
