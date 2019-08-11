@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,19 +119,27 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月10日 下午2:56:27
 	 */
-	public Map<String, Map<EmpInformation, Integer>> getOutpatientDoctorCount() {
-		Map<String, Map<EmpInformation, Integer>> map = new HashMap<String, Map<EmpInformation,Integer>>();
+	public Map<String, List<Map<String, String>>> getOutpatientDoctorCount() {
+		Map<String, List<Map<String, String>>> map = new HashMap<String, List<Map<String, String>>>();
 		// 查询所有科室
 		List<Department> departments = getKSbyOut();
 		for (Department department : departments) {
 			// 查询该科室下今日排班的所有医生
-			Map<EmpInformation, Integer> mmmap = new HashMap<>();
+			List<Map<String, String>> list = new ArrayList<>();
 			List<EmpInformation> doctors = empInformationDao.getDoctorsByWkAndKs(department.getKsId());
 			for (EmpInformation empInformation : doctors) {
 				// 查询该医生今日已有的挂号数量
-				mmmap.put(empInformation, getRegistrationCount(empInformation.getYgxh()));
+//				Object[] objs = {empInformation.getYgName(), 
+//						empInformation.getTechnicalPost().getTpId(), 
+//						getRegistrationCount(empInformation.getYgxh()),
+//						department.getKsId()};
+				Map<String, String> mmap = new HashMap<>();
+				mmap.put("ygName", empInformation.getYgName());
+				mmap.put("tpName", empInformation.getTechnicalPost().getTpName());
+				mmap.put("count", getRegistrationCount(empInformation.getYgxh()) + "");
+				list.add(mmap);
 			}
-			map.put(department.getKsId(), mmmap);
+			map.put(department.getKsName(), list);
 		}
 		return map;
 	}
