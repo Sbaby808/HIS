@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alipay.demo.trade.model.result.Result;
 import com.his.pojo.JsonResult;
 import com.his.pojo.MedicalCard;
 import com.his.service.MedicalCardService;
@@ -48,6 +49,31 @@ public class MedicalCardController {
 	@GetMapping("/get_medical_card_by_Cid")
 	public MedicalCard getCardByCid(String cardId){
 		return medicalCardService.getCardByCid(cardId);
+	}
+	
+	/**
+	 * 
+	* @Title:getCardByCid
+	* @Description:根据就诊卡id获取就诊卡信息
+	* @param:@param cardId
+	* @param:@return
+	* @return:MedicalCard
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月3日 上午10:37:43
+	 */
+	@GetMapping("/get_medical_card_by_cardid")
+	@ResponseBody
+	public JsonResult getCardByCardid(String cardId){
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicalCardService.getCardByCid(cardId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
 	}
 	
 	/**

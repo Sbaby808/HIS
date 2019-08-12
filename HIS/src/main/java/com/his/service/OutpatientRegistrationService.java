@@ -1,9 +1,11 @@
 package com.his.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,10 @@ import com.his.dao.ITechnicalPostDao;
 import com.his.dao.IWorkTimeDao;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.OutpatientRegistration;
 import com.his.pojo.TechnicalPost;
 import com.his.pojo.WorkTime;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: OutpatientRegistrationService  
@@ -69,7 +73,7 @@ public class OutpatientRegistrationService {
 	
 	/**
 	* @Title:getDocByKsAndTp
-	* @Description:根据科室和职称查询门诊医生
+	* @Description:根据日期、科室和职称查询门诊医生
 	* @param:@param ks
 	* @param:@param tp
 	* @param:@return
@@ -78,8 +82,25 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月10日 上午8:50:39
 	 */
-	public List<EmpInformation> getDocByKsAndTp(String ks, String tp) {
-		return empInformationDao.getDocByKsAndTp(tp, ks);
+	public List<EmpInformation> getDocByKsAndTp(String ks, String tp, Long doDate) {
+		return empInformationDao.getDocByKsAndTp(tp, ks, doDate);
+	}
+	
+	/**
+	* @Title:getRandomDocByKsAndTp
+	* @Description:根据日期、科室和职称查询门诊医生
+	* @param:@param ks
+	* @param:@param tp
+	* @param:@param doDate
+	* @param:@return
+	* @return:EmpInformation
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午2:59:48
+	 */
+	public EmpInformation getRandomDocByKsAndTp(String ks, String tp, Long doDate) {
+		List<EmpInformation> list = empInformationDao.getDocByKsAndTp(tp, ks, doDate);
+		return list.get((int)Math.floor(Math.random() * list.size()));
 	}
 	
 	/**
@@ -142,5 +163,40 @@ public class OutpatientRegistrationService {
 			map.put(department.getKsName(), list);
 		}
 		return map;
+	}
+	
+	/**
+	* @Title:addReg
+	* @Description:添加挂号信息
+	* @param:@param outpatientRegistration
+	* @param:@return
+	* @return:OutpatientRegistration
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 上午11:42:29
+	 */
+	public OutpatientRegistration addReg(OutpatientRegistration outpatientRegistration) {
+		outpatientRegistration.setRegId(UUID.randomUUID().toString().replaceAll("-", ""));
+		outpatientRegistration.setTimeType(SimpleTools.isToday(outpatientRegistration.getDoDate()) ? "当日" : "预约");
+		System.out.println(outpatientRegistration.getTimeType());
+		outpatientRegistration.setRegTime(new Date());
+		outpatientRegistration.setRegStatus("待缴费");
+		outpatientRegistrationDao.save(outpatientRegistration);
+		return outpatientRegistration;
+	}
+	
+	/**
+	* @Title:checkEmp
+	* @Description:检查医生是否与余号
+	* @param:@param ygxh
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午3:48:46
+	 */
+	public boolean checkEmp(String ygxh, int total) {
+		int num = outpatientRegistrationDao.checkEmp(ygxh);
+		return num < total ? true : false;
 	}
 }

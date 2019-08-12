@@ -23,12 +23,12 @@ public class RegEmp implements Serializable {
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
 	@JoinColumn(name="YGXH", insertable=false, updatable=false)
-	private EmpInformation empInformation;
+	private EmpInformation empInformation = null;
 
 	//bi-directional many-to-one association to OutpatientRegistration
 	@ManyToOne
 	@JoinColumn(name="REG_ID", insertable=false, updatable=false)
-	private OutpatientRegistration outpatientRegistration;
+	private OutpatientRegistration outpatientRegistration = null;
 
 	public RegEmp() {
 	}
