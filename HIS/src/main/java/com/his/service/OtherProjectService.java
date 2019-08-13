@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IOtherProjectDao;
 import com.his.pojo.OtherProject;
+import com.his.pojo.OutpatientRegistration;
 import com.his.utils.SimpleTools;
 
 /**  
@@ -152,5 +153,25 @@ public class OtherProjectService {
 		return otherProjectDao.searchCount(SimpleTools.addCharForSearch(key), min, max);
 	}
 	
+	/**
+	* @Title:getPriceByReg
+	* @Description:根据挂号对象获取门诊挂号费用
+	* @param:@param outpatientRegistration
+	* @param:@return
+	* @return:double
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月13日 下午2:21:44
+	 */
+	public OtherProject getPriceByReg(OutpatientRegistration outpatientRegistration) {
+		switch (outpatientRegistration.getTechnicalPost().getTpName()) {
+		case "主治医师":
+			return otherProjectDao.findById("4441811728e345d19a39c34aa98d5da9").get();
+		case "主任医师":
+			return otherProjectDao.findById("ece8e7313d414e09b9e9ceb43e95e1d5").get();
+		default:
+			return null;
+		}
+	}
 
 }

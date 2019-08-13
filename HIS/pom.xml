@@ -123,6 +123,20 @@
 		    <artifactId>poi-tl</artifactId>
 		    <version>1.6.0-beta1</version>
 		</dependency>
+		
+		<!-- 后端生成二维码 -->
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>javase</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>core</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		
 
 		
 	</dependencies>

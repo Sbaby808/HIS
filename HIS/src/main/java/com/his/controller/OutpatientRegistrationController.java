@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -265,8 +266,11 @@ public class OutpatientRegistrationController {
 	@GetMapping("/generator_reg_table")
 	@ResponseBody
 	public void generatorRegTable(HttpServletResponse res, String regId) throws UnsupportedEncodingException {
+		// 生成支付二维码
+		Map<String, String> map = outpatientRegistrationService.getCardQrCode(regId);
+		// 生成挂号单
 		String fileName = "挂号单-" + SimpleTools.formatDate(new Date(), "yyyy-MM-dd_HH_mm_ss") + ".docx";
-		res = outpatientRegistrationService.generatorRegTable(res, regId, fileName);
+		res = outpatientRegistrationService.generatorRegTable(res, regId, fileName, map);
 		res.setHeader("content-type", "application/octet-stream;charset=UTF-8");
 		res.setCharacterEncoding("utf-8");
         res.setContentType("application/octet-stream");

@@ -13,18 +13,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alipay.demo.trade.model.GoodsDetail;
+import com.deepoove.poi.data.PictureRenderData;
+import com.deepoove.poi.util.BytePictureUtils;
 import com.his.dao.IDepartmentDao;
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutpatientRegistrationDao;
 import com.his.dao.ITechnicalPostDao;
 import com.his.dao.IWorkTimeDao;
+import com.his.pojo.AliPayEntity;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.OtherProject;
 import com.his.pojo.OutpatientRegistration;
 import com.his.pojo.RegEmp;
 import com.his.pojo.TechnicalPost;
 import com.his.pojo.WorkTime;
+import com.his.utils.AliPay;
 import com.his.utils.GeneratorWord;
+import com.his.utils.QRCodeUtil;
 import com.his.utils.SimpleTools;
 
 import oracle.net.aso.e;
@@ -50,6 +57,8 @@ public class OutpatientRegistrationService {
 	private IEmpInformationDao empInformationDao;
 	@Autowired
 	private IWorkTimeDao workTimeDao;
+	@Autowired
+	private OtherProjectService otherProjectService;
 	
 	/**
 	* @Title:getKSbyOut
@@ -217,7 +226,7 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月12日 下午8:43:53
 	 */
-	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId, String fileName) {
+	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId, String fileName, Map<String, String> map) {
 		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
 		Map<String, Object> datas = new HashMap<>();
     	datas.put("type", "当日".equals(reg.getTimeType()) ? "" : "预约");
@@ -232,8 +241,12 @@ public class OutpatientRegistrationService {
     	datas.put("doctor", getDoctor(reg.getRegEmps(), "医生").getYgName());
     	datas.put("waitingRoom", getDoctor(reg.getRegEmps(), "医生").getWaitingRoom().getWaitingRoomName());
     	datas.put("regEmp", getDoctor(reg.getRegEmps(), "挂号员").getYgName());
-    	datas.put("regTime", SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd hh:mm:ss"));
-		
+    	datas.put("regTime", SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd HH:mm:ss"));
+    	// 生成二维码
+    	QRCodeUtil.zxingCodeCreate(map.get("code"), 160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg", "jpg");
+    	// 本地图片
+    	datas.put("payCode", new PictureRenderData(160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg"));
+    	
     	GeneratorWord.makeWord(datas, "D:\\HIS\\reg_table\\", "挂号单模版.docx", fileName);
     	
     	return response;
@@ -249,7 +262,7 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月12日 下午8:28:11
 	 */
-	public static EmpInformation getDoctor(List<RegEmp> list, String type) {
+	public EmpInformation getDoctor(List<RegEmp> list, String type) {
 		EmpInformation empInformation = new EmpInformation();
 		for (RegEmp regEmp : list) {
 			if(type.equals(regEmp.getRegDuty())){
@@ -258,5 +271,32 @@ public class OutpatientRegistrationService {
 			}
 		}
 		return empInformation;
+	}
+	
+	/**
+	* @Title:getCardQrCode
+	* @Description:获取挂号缴费二维码
+	* @param:@return
+	* @return:Map<String,String>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月13日 下午2:14:20
+	 */
+	public Map<String, String> getCardQrCode(String regId) {
+		// 获取挂号对象
+		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
+		Map<String, String> res = new HashMap<>();
+		AliPayEntity payEntity = new AliPayEntity();
+		payEntity.setOutTradeNo(UUID.randomUUID().toString().replace("-", ""));
+		OtherProject otherProject = otherProjectService.getPriceByReg(reg);
+		payEntity.setSubject(otherProject.getProjectName());
+		payEntity.setTotalAmount(otherProject.getProjectPrice() + "");
+		payEntity.setBody(otherProject.getProjectDesc());
+		List<GoodsDetail> goods = new ArrayList<>();
+		GoodsDetail good = GoodsDetail.newInstance(otherProject.getProjectId(), otherProject.getProjectName(), Long.parseLong(otherProject.getProjectPrice().toString()), 1);
+		goods.add(good);
+		res.put("code", AliPay.pay(payEntity, goods));
+		res.put("outTradeNo", payEntity.getOutTradeNo());
+		return res;
 	}
 }
