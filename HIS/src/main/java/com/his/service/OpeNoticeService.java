@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.his.bean.OpeNoticebean;
 import com.his.dao.IEmpInformationDao;
+import com.his.dao.IHosSurgeryNoticeDao;
 import com.his.dao.IMedicalCardDao;
 import com.his.dao.IOpeEmpDao;
 import com.his.dao.IOperPayRecordDao;
@@ -57,6 +58,8 @@ public class OpeNoticeService {
 	private  IRoleDao iRoleDao;
 	@Autowired
 	private IOpeEmpDao iOpeEmpDao;
+	@Autowired
+	private IHosSurgeryNoticeDao iHosSurgeryNoticeDao;
     public Map getNoticebeans(int curpage, int pagesize,String sou){
     	List<OpeNoticebean> list=iOperationNotice.getNoticebeans( sou,PageRequest.of(curpage - 1,
 		  pagesize));
@@ -134,5 +137,28 @@ public class OpeNoticeService {
     List<Role> list =  iRoleDao.getAll();
     System.out.println(list.size());
     return list;
+    }
+    public Map getzhuyuannotice(int curpage, int pagesize,String sou){
+    	List<OpeNoticebean> zhulist=iHosSurgeryNoticeDao.getzhuyuannotice(sou, PageRequest.of(curpage - 1,
+    			  pagesize));
+    	long zhutotal=iHosSurgeryNoticeDao.getcount(sou); 	
+    	Map map=new HashMap();
+    	map.put("zhulist", zhulist);
+    	map.put("zhutotal", zhutotal);
+    	return map;
+    }
+    public Map getbysou(int curpage, int pagesize,String sou) {
+    	List<OpeNoticebean> list=iOperationNotice.getNoticebeans( sou,PageRequest.of(curpage - 1,
+    			  pagesize));
+    	long total=iOperationNotice.getcountbysou(sou);
+    	List<OpeNoticebean> zhulist=iHosSurgeryNoticeDao.getzhuyuannotice(sou, PageRequest.of(curpage - 1,
+    			  pagesize));    	
+    	long zhutotal=iHosSurgeryNoticeDao.getcount(sou);
+    	Map map=new HashMap();
+    	map.put("list", list);
+    	map.put("total", total);
+    	map.put("zhulist", zhulist);
+    	map.put("zhutotal", zhutotal);
+    	return map;
     }
 }

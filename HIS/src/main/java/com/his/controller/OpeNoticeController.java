@@ -55,4 +55,14 @@ public class OpeNoticeController {
     public List<Role> getallRoles(){
     	return opeNoticeService.getallRoles();
     }
+@ResponseBody
+@GetMapping("get_zhuyuannotice")
+    public Map getzhuyuannotice(int curpage, int pagesize,String sou){
+    	return opeNoticeService.getzhuyuannotice(curpage,pagesize,sou);
+    }
+@ResponseBody
+@GetMapping("getbysou")
+    public Map getbysou(int curpage, int pagesize,String sou) {
+    	return opeNoticeService.getbysou(curpage, pagesize, sou);
+    } 
 }
