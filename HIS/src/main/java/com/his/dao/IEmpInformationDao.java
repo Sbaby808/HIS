@@ -50,7 +50,7 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
 		       + " left outer join user_role ur on ur.ygxh = e.ygxh) "
 		       + " left outer join role ro on ro.role_id = ur.role_id) "
 		       + " left outer join technical_post t on e.tp_id = t.tp_id) "
-		       + " where to_char(wt.pb_date, 'yyyy-mm-dd') = TO_CHAR(?3 / (1000 * 60 * 60 * 24) +TO_DATE('1970-01-02', 'YYYY-MM-DD'), 'YYYY-MM-DD') "
+		       + " where to_char(wt.pb_date, 'yyyy-mm-dd') = TO_CHAR(?3 / (1000 * 60 * 60 * 24) +TO_DATE('1970-01-01', 'YYYY-MM-DD'), 'YYYY-MM-DD') "
 		       + " and ro.ks_id = ?2 "
 		       + " and t.tp_id = ?1", nativeQuery = true)
 	public List<EmpInformation> getDocByKsAndTp(String tp, String ks, Long doDate);

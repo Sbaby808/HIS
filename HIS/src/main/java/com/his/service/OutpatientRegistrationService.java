@@ -217,7 +217,7 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月12日 下午8:43:53
 	 */
-	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId) {
+	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId, String fileName) {
 		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
 		Map<String, Object> datas = new HashMap<>();
     	datas.put("type", "当日".equals(reg.getTimeType()) ? "" : "预约");
@@ -234,10 +234,9 @@ public class OutpatientRegistrationService {
     	datas.put("regEmp", getDoctor(reg.getRegEmps(), "挂号员").getYgName());
     	datas.put("regTime", SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd hh:mm:ss"));
 		
-    	String fileName = "挂号单-" + SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd_HH_mm_ss") + ".docx";
-    	GeneratorWord.makeWord(datas, "D:\\HIS\\", "挂号单.docx", fileName);
+    	GeneratorWord.makeWord(datas, "D:\\HIS\\reg_table\\", "挂号单模版.docx", fileName);
     	
-    	return GeneratorWord.download(response, fileName);
+    	return response;
 	}
 	
 	/**

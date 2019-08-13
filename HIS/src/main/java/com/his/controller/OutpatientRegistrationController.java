@@ -1,5 +1,11 @@
 package com.his.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,10 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.his.pojo.EmpInformation;
 import com.his.pojo.JsonResult;
 import com.his.pojo.OutpatientRegistration;
 import com.his.service.OutpatientRegistrationService;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: OutpatientRegistrationController  
@@ -251,22 +257,47 @@ public class OutpatientRegistrationController {
 	* @param:@param regId
 	* @param:@return
 	* @return:JsonResult
+	 * @throws UnsupportedEncodingException 
 	* @throws
 	* @author:Sbaby
 	* @Date:2019年8月12日 下午8:43:06
 	 */
 	@GetMapping("/generator_reg_table")
 	@ResponseBody
-	public void generatorRegTable(HttpServletResponse response, String regId) {
-//		JsonResult result = new JsonResult();
-		try {
-			response = outpatientRegistrationService.generatorRegTable(response, regId);
-//			result.setResult(regId);
-//			result.setStatus("ok");
-		} catch (Exception e) {
-			e.printStackTrace();
-//			result.setStatus("error");
-		}
-//		return result;
+	public void generatorRegTable(HttpServletResponse res, String regId) throws UnsupportedEncodingException {
+		String fileName = "挂号单-" + SimpleTools.formatDate(new Date(), "yyyy-MM-dd_HH_mm_ss") + ".docx";
+		res = outpatientRegistrationService.generatorRegTable(res, regId, fileName);
+		res.setHeader("content-type", "application/octet-stream;charset=UTF-8");
+		res.setCharacterEncoding("utf-8");
+        res.setContentType("application/octet-stream");
+        res.setHeader("Content-Disposition", "attachment; filename=" +  java.net.URLEncoder.encode(fileName, "UTF-8"));
+        byte[] buff = new byte[1024];
+        BufferedInputStream bis = null;
+        OutputStream os = null;
+        FileInputStream input = null;
+     
+        try {
+          os = res.getOutputStream();
+          input = new FileInputStream(new File("d://HIS//reg_table//" + fileName ));
+          bis = new BufferedInputStream(input);
+          int i = bis.read(buff);
+     
+          while (i != -1) {
+            os.write(buff, 0, buff.length);
+            os.flush();
+            i = bis.read(buff);
+          }
+        } catch ( IOException e ) {
+          e.printStackTrace();
+        } finally {
+          if (bis != null) {
+            try {
+            	res.setHeader("Content-Length", String.valueOf(input.getChannel().size()));
+              bis.close();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
 	}
 }

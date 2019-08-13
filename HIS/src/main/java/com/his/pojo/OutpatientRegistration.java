@@ -42,7 +42,7 @@ public class OutpatientRegistration implements Serializable {
 	@Column(name="REG_STATUS")
 	private String regStatus;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	@Column(name="REG_TIME")
 	private Date regTime;
 
