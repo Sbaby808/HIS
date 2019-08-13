@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,13 +25,16 @@ import com.his.dao.IWorkTimeDao;
 import com.his.pojo.AliPayEntity;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.MedicalCard;
 import com.his.pojo.OtherProject;
+import com.his.pojo.OutpatientPay;
 import com.his.pojo.OutpatientRegistration;
 import com.his.pojo.RegEmp;
 import com.his.pojo.TechnicalPost;
 import com.his.pojo.WorkTime;
 import com.his.utils.AliPay;
 import com.his.utils.GeneratorWord;
+import com.his.utils.MD5Tools;
 import com.his.utils.QRCodeUtil;
 import com.his.utils.SimpleTools;
 
@@ -59,6 +63,10 @@ public class OutpatientRegistrationService {
 	private IWorkTimeDao workTimeDao;
 	@Autowired
 	private OtherProjectService otherProjectService;
+	@Autowired
+	private EmpInformationService empInformationService;
+	@Autowired
+	private OutpatientPayService outpatientPayService;
 	
 	/**
 	* @Title:getKSbyOut
@@ -226,7 +234,7 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月12日 下午8:43:53
 	 */
-	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId, String fileName, Map<String, String> map) {
+	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId, String fileName, Map<String, String> map, Map<String, String> checkMap) {
 		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
 		Map<String, Object> datas = new HashMap<>();
     	datas.put("type", "当日".equals(reg.getTimeType()) ? "" : "预约");
@@ -242,10 +250,13 @@ public class OutpatientRegistrationService {
     	datas.put("waitingRoom", getDoctor(reg.getRegEmps(), "医生").getWaitingRoom().getWaitingRoomName());
     	datas.put("regEmp", getDoctor(reg.getRegEmps(), "挂号员").getYgName());
     	datas.put("regTime", SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd HH:mm:ss"));
-    	// 生成二维码
+    	// 生成支付二维码
     	QRCodeUtil.zxingCodeCreate(map.get("code"), 160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg", "jpg");
+    	// 生成检查二维码
+    	QRCodeUtil.zxingCodeCreate(checkMap.get("code"), 160, 160, "D://his//reg_check_code//" + regId + ".jpg", "jpg");
     	// 本地图片
     	datas.put("payCode", new PictureRenderData(160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg"));
+    	datas.put("checkPay", new PictureRenderData(160, 160, "D://HIS//reg_check_code//" + regId + ".jpg"));
     	
     	GeneratorWord.makeWord(datas, "D:\\HIS\\reg_table\\", "挂号单模版.docx", fileName);
     	
@@ -298,5 +309,62 @@ public class OutpatientRegistrationService {
 		res.put("code", AliPay.pay(payEntity, goods));
 		res.put("outTradeNo", payEntity.getOutTradeNo());
 		return res;
+	}
+	
+	/**
+	* @Title:getCheckQrCode
+	* @Description:生成检查是否缴费二维码
+	* @param:@param regId
+	* @param:@param ygxh
+	* @param:@return
+	* @return:Map<String,String>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月13日 下午3:32:05
+	 */
+	public Map<String, String> getCheckQrCode(String outTradeNo, String ygxh, String regId) {
+		Map<String, String> res = new HashMap<>();
+		res.put("code", "http://localhost:8090/check_reg_pay?outTradeNo=" + outTradeNo + "&ygxh=" + ygxh + "&regId=" + regId);
+		return res;
+	}
+	
+	/**
+	* @Title:checkPay
+	* @Description:检查此挂号是否缴费
+	* @param:@param outTradeNo
+	* @param:@param ygxh
+	* @param:@param regId
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月13日 下午4:10:31
+	 */
+	public boolean checkPay(String outTradeNo, String ygxh, String regId) {
+		boolean flag = false;
+		OutpatientRegistration outpatientRegistration = outpatientRegistrationDao.findById(regId).get();
+		// 先查询是否人工缴费
+		if(outpatientPayService.checkRegPay(regId)) {
+			flag = true;
+		} else {
+			flag =  AliPay.query(outTradeNo);
+			if(flag) {
+				// 插入缴费记录
+				OutpatientPay pay = new OutpatientPay();
+				pay.setEmpInformation(empInformationService.getEmpInfoById(ygxh));
+				pay.setPayAmount(otherProjectService.getPriceByReg(outpatientRegistration).getProjectPrice());
+				pay.setPayType("支付宝");
+				pay.setActStatus("已缴费");
+				pay.setOutPayTime(new Date());
+				pay.setOutpatientRegistration(outpatientRegistration);
+				outpatientPayService.addOutPatientPay(pay);
+				// 修改挂号表
+				outpatientRegistration.setPayId(pay.getPayId());
+				outpatientRegistration.setOutpatientPay(pay);
+				outpatientRegistrationDao.save(outpatientRegistration);
+			}
+		}
+		
+		return flag;
 	}
 }

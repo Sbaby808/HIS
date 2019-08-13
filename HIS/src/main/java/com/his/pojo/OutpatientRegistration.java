@@ -86,7 +86,7 @@ public class OutpatientRegistration implements Serializable {
 	private Examination examination;
 
 	//bi-directional one-to-one association to OutpatientPay
-	@OneToOne(mappedBy="outpatientRegistration")
+	@OneToOne(mappedBy="outpatientRegistration", cascade = CascadeType.ALL)
 	private OutpatientPay outpatientPay;
 
 	public OutpatientRegistration() {

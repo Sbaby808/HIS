@@ -434,7 +434,7 @@ public class AliPay {
         extendParams.setSysServiceProviderId("2088100200300400500");
 
         // 支付超时，定义为120分钟
-        String timeoutExpress = "120m";
+        String timeoutExpress = "180m";
 
         // 商品明细列表，需填写购买商品详细信息，
 //        List<GoodsDetail> goodsDetailList = new ArrayList<GoodsDetail>();

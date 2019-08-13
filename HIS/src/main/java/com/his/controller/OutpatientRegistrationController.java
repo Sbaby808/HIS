@@ -265,12 +265,14 @@ public class OutpatientRegistrationController {
 	 */
 	@GetMapping("/generator_reg_table")
 	@ResponseBody
-	public void generatorRegTable(HttpServletResponse res, String regId) throws UnsupportedEncodingException {
+	public void generatorRegTable(HttpServletResponse res, String regId, String ygxh) throws UnsupportedEncodingException {
 		// 生成支付二维码
 		Map<String, String> map = outpatientRegistrationService.getCardQrCode(regId);
+		// 生成检查是否缴费二维码
+		Map<String, String> checkMap = outpatientRegistrationService.getCheckQrCode(map.get("outTradeNo"), ygxh, regId);
 		// 生成挂号单
 		String fileName = "挂号单-" + SimpleTools.formatDate(new Date(), "yyyy-MM-dd_HH_mm_ss") + ".docx";
-		res = outpatientRegistrationService.generatorRegTable(res, regId, fileName, map);
+		res = outpatientRegistrationService.generatorRegTable(res, regId, fileName, map, checkMap);
 		res.setHeader("content-type", "application/octet-stream;charset=UTF-8");
 		res.setCharacterEncoding("utf-8");
         res.setContentType("application/octet-stream");
@@ -303,5 +305,30 @@ public class OutpatientRegistrationController {
             }
           }
         }
+	}
+	
+	/**
+	* @Title:checkPay
+	* @Description:检查此挂号单是否已经缴费
+	* @param:@param tradeNo
+	* @param:@param ygxh
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月13日 下午3:45:48
+	 */
+	@GetMapping("/check_reg_pay")
+	@ResponseBody
+	public JsonResult checkPay(String outTradeNo, String regId, String ygxh) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.checkPay(outTradeNo, ygxh, regId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
 	}
 }
