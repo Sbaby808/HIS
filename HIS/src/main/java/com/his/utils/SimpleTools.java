@@ -85,4 +85,20 @@ public class SimpleTools {
 	        return false;
 	      }
 	}
+	
+	/**
+	* @Title:formatDate
+	* @Description:格式化日期
+	* @param:@param date
+	* @param:@param pattern
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午8:15:40
+	 */
+	public static String formatDate(Date date, String pattern) {
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		return sdf.format(date);
+	}
 }

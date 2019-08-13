@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +21,13 @@ import com.his.dao.IWorkTimeDao;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.OutpatientRegistration;
+import com.his.pojo.RegEmp;
 import com.his.pojo.TechnicalPost;
 import com.his.pojo.WorkTime;
+import com.his.utils.GeneratorWord;
 import com.his.utils.SimpleTools;
+
+import oracle.net.aso.e;
 
 /**  
 * @ClassName: OutpatientRegistrationService  
@@ -198,5 +204,60 @@ public class OutpatientRegistrationService {
 	public boolean checkEmp(String ygxh, int total) {
 		int num = outpatientRegistrationDao.checkEmp(ygxh);
 		return num < total ? true : false;
+	}
+	
+	/**
+	* @Title:generatorRegTable
+	* @Description:打印挂号单
+	* @param:@param response
+	* @param:@param regId
+	* @param:@return
+	* @return:HttpServletResponse
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午8:43:53
+	 */
+	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId) {
+		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
+		Map<String, Object> datas = new HashMap<>();
+    	datas.put("type", "当日".equals(reg.getTimeType()) ? "" : "预约");
+    	datas.put("cardName",reg.getMedicalCard().getCardName());
+    	datas.put("gender",  reg.getMedicalCard().getGender());
+    	datas.put("birthday", SimpleTools.formatDate(reg.getMedicalCard().getBirthday(), "yyyy-MM-dd"));
+    	datas.put("cardNum", reg.getMedicalCard().getPersonId());
+    	datas.put("regType", reg.getRegType());
+    	datas.put("regKs", reg.getDepartment().getKsName());
+    	datas.put("regTp", reg.getTechnicalPost().getTpName());
+    	datas.put("doDate", SimpleTools.formatDate(reg.getDoDate(), "yyyy-MM-dd"));
+    	datas.put("doctor", getDoctor(reg.getRegEmps(), "医生").getYgName());
+    	datas.put("waitingRoom", getDoctor(reg.getRegEmps(), "医生").getWaitingRoom().getWaitingRoomName());
+    	datas.put("regEmp", getDoctor(reg.getRegEmps(), "挂号员").getYgName());
+    	datas.put("regTime", SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd hh:mm:ss"));
+		
+    	String fileName = "挂号单-" + SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd_HH_mm_ss") + ".docx";
+    	GeneratorWord.makeWord(datas, "D:\\HIS\\", "挂号单.docx", fileName);
+    	
+    	return GeneratorWord.download(response, fileName);
+	}
+	
+	/**
+	* @Title:getDoctor
+	* @Description:从员工挂号表中获取医生
+	* @param:@param list
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午8:28:11
+	 */
+	public static EmpInformation getDoctor(List<RegEmp> list, String type) {
+		EmpInformation empInformation = new EmpInformation();
+		for (RegEmp regEmp : list) {
+			if(type.equals(regEmp.getRegDuty())){
+				empInformation =  regEmp.getEmpInformation();
+				break;
+			}
+		}
+		return empInformation;
 	}
 }

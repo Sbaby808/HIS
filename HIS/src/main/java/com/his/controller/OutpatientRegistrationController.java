@@ -2,6 +2,8 @@ package com.his.controller;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -241,5 +243,30 @@ public class OutpatientRegistrationController {
 		}
 		return result;
 	}
-	
+
+	/**
+	* @Title:generatorRegTable
+	* @Description:打印挂号单
+	* @param:@param response
+	* @param:@param regId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午8:43:06
+	 */
+	@GetMapping("/generator_reg_table")
+	@ResponseBody
+	public void generatorRegTable(HttpServletResponse response, String regId) {
+//		JsonResult result = new JsonResult();
+		try {
+			response = outpatientRegistrationService.generatorRegTable(response, regId);
+//			result.setResult(regId);
+//			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+//			result.setStatus("error");
+		}
+//		return result;
+	}
 }
