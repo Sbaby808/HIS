@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,7 +46,7 @@ public class HosOutNoticeController {
 	* @Date:2019年8月4日 上午10:00:17
 	 */
 	@ResponseBody
-	@GetMapping("/delete_hos_out_notice")
+	@PostMapping("/delete_hos_out_notice")
 	public void delHosOutNotice(@RequestBody HosOutNotice outNotice){
 		hosOutNoticeService.delHosOutNotice(outNotice);
 	}

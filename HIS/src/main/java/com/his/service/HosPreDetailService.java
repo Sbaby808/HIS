@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosPreDetailDao;
+import com.his.dao.IHosPrescriptionDao;
+import com.his.pojo.HosPrescription;
 import com.his.pojo.HosPrescriptionDetail;
 
 /**
@@ -26,6 +28,8 @@ public class HosPreDetailService {
 	
 	@Autowired
 	private IHosPreDetailDao hosPreDetailDao;
+	@Autowired
+	private IHosPrescriptionDao hosPrescriptionDao;
 	
 	/**
 	 * 
@@ -75,5 +79,11 @@ public class HosPreDetailService {
 	 */
 	public List <HosPrescriptionDetail> getHosPreDetailByPid(String pid){
 		return hosPreDetailDao.getHosPreDetailByPid(pid);
+	}
+	
+	public List <HosPrescriptionDetail> getHosPreDetailByDiagId(String diagId){
+		HosPrescription prescription = hosPrescriptionDao.getHosPresByDiagId(diagId);
+		List <HosPrescriptionDetail> list = hosPreDetailDao.getHosPreDetailByPid(prescription.getHosPreId());
+		return list;
 	}
 }

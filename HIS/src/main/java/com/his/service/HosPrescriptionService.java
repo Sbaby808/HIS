@@ -131,8 +131,6 @@ public class HosPrescriptionService {
 		HospitalizedPatient patient = hosPrescription.getHosDiagnosticRecord().getMedicalRecord().getHospitalizedPatient();
 		BigDecimal balance = patient.getBalance().subtract(hosPrescription.getHosPreMoney());
 		patient.setBalance(balance);
-		hosPatientDao.save(patient);
-		
 		
 	}
 }

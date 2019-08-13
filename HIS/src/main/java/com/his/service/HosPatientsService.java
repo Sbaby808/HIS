@@ -1,5 +1,7 @@
 package com.his.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.dao.IHosBedDao;
+import com.his.dao.IHosOutDao;
 import com.his.dao.IHosPatientDao;
 import com.his.dao.IMedicalRecordDao;
 import com.his.dao.IWardRoomDao;
 import com.his.pojo.HosBed;
 import com.his.pojo.HospitalizedPatient;
 import com.his.pojo.MedicalRecord;
+import com.his.pojo.OutHospitaiRecord;
 import com.his.pojo.WardRoom;
 /**
  * 住院登记
@@ -39,7 +43,8 @@ public class HosPatientsService {
 	private IWardRoomDao wardRoomDao;
 	@Autowired
 	private IMedicalRecordDao medicalRecordDao;
-
+	@Autowired
+	private IHosOutDao hosOutDao;
 	
 	/**
 	 * 
@@ -127,5 +132,48 @@ public class HosPatientsService {
 	 */
 	public HospitalizedPatient getPatientByBid(String bedId){
 		return hosPatientDao.getPatientByBid(bedId);
+	}
+	
+	/**
+	 * 
+	* @Title:outHosPatient
+	* @Description:出院记录
+	* @param:@param hospId
+	* @param:@throws ParseException
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月12日 下午10:28:48
+	 */
+	public void outHosPatient(String hospId) throws ParseException{
+		HospitalizedPatient patient = hosPatientDao.findById(hospId).get();
+		
+		OutHospitaiRecord outRecord = new OutHospitaiRecord();
+		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = dateFormat.format(new Date());
+		outRecord.setOutRecTime(dateFormat.parse(time));
+		outRecord.setHospitalizedPatient(patient);
+		hosOutDao.save(outRecord);
+		
+		MedicalRecord record = patient.getMedicalRecord();
+		record.setMedOutDept(patient.getHosBed().getWardRoom().getWard().getDepartment().getKsName());
+		record.setMedOutTime(dateFormat.parse(time));
+		medicalRecordDao.save(record);
+		
+		HosBed bed = patient.getHosBed();
+		bed.setHosBstate(null);
+		bed.setHospitalizedPatient(null);
+		hosBedDao.save(bed);
+		
+		WardRoom room = patient.getHosBed().getWardRoom();
+		room.setWNum(room.getWNum()-1);
+		wardRoomDao.save(room);
+			
+		patient.setHosBid(null);
+		patient.setOutRid(outRecord.getOutRid());
+		patient.setHospState("已出院");
+		hosPatientDao.save(patient);
+		
+		
 	}
 }

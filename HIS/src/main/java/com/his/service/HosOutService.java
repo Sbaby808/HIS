@@ -13,9 +13,12 @@ import com.his.dao.IHosOutDao;
 import com.his.pojo.OutHospitaiRecord;
 
 /**
- * 出院记录
- * @author dell
- *
+ * 
+* @ClassName: HosOutService  
+* @Description: 出院记录 
+* @author Hamster
+* @date 2019年8月12日  下午9:29:37
+*
  */
 @Service
 @Transactional(rollbackFor=Exception.class)

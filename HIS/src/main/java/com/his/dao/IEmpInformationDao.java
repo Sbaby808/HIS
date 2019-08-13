@@ -46,4 +46,6 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
      + " and t.tp_id = ?1 "
      + " and r.ks_id = ?2", nativeQuery = true)
 	public List<EmpInformation> getDocByKsAndTp(String tp, String ks);
+	
+	
 }

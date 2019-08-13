@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.HospitalizedPatient;
 import com.his.service.HosPatientsService;
+
+import oracle.jdbc.proxy.annotation.Post;
 
 /**
  * 
@@ -92,5 +95,11 @@ public class HosPatientController {
 	@GetMapping("/get_hos_patient_by_bedId")
 	public HospitalizedPatient getPatientByBid(String bedId){
 		return hosPatientsService.getPatientByBid(bedId);
+	}
+	
+	@ResponseBody
+	@GetMapping("/out_hos_patient")
+	public void outHosPatient(String hospId) throws ParseException{
+		hosPatientsService.outHosPatient(hospId);
 	}
 }

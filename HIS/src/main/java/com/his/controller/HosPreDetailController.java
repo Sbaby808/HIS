@@ -62,8 +62,13 @@ public class HosPreDetailController {
 	@ResponseBody
 	@GetMapping("/get_hos_pre_detail_byPid")
 	public List <HosPrescriptionDetail> getHosPreDetailByPid(String pid){
-		System.out.println(pid);
 		return hosPreDetailService.getHosPreDetailByPid(pid);
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_hos_pre_detail_byDiagId")
+	public List <HosPrescriptionDetail> getHosPreDetailByDiagId(String diagId){
+		return hosPreDetailService.getHosPreDetailByDiagId(diagId);
 	}
 	
 }
