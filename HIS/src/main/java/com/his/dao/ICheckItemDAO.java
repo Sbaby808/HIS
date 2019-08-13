@@ -1,5 +1,9 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.CheckItem;
@@ -12,5 +16,9 @@ import com.his.pojo.CheckItem;
 *    
 */
 public interface ICheckItemDAO extends CrudRepository<CheckItem, String>{
+	@Query(value="from CheckItem c where c.itemName like ?1")
+	public List<CheckItem> getallcheck(String sou,Pageable page);
+	@Query(value="select count(1) from CheckItem c where c.itemName like ?1")
+	public long getcount(String sou);
 
 }
