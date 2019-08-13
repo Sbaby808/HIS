@@ -285,4 +285,18 @@ public class DrugInformationService {
 		return drugInformationDao.getDrugInformation(ypName);
 	}
 	
+	/**
+	* @Title:getAllDrugBySubclassId
+	* @Description:根据小类id查询对应的所有药品
+	* @param:@param subclassId
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月12日 下午12:12:07
+	 */
+	public List <DrugInformation> getAllDrugBySubclassId(String subclassId) {
+		return drugInformationDao.queryAllBySubclassId(subclassId);
+	}
+	
 }

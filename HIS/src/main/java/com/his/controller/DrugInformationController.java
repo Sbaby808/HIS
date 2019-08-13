@@ -311,6 +311,31 @@ public class DrugInformationController {
 	public List<String> get_all_drug_typeName(){
 		return drugInformationService.getAllDrugInformationType();
 	}
+	
+	/**
+	* @Title:get_alldrug_by_subclassid
+	* @Description:根据小类id查找对应的所有药品信息
+	* @param:@param subclassid
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月12日 下午2:22:32
+	 */
+	@ResponseBody
+	@GetMapping("get_alldrug_by_subclassid")
+	public JsonResult get_alldrug_by_subclassid(String subclassid) {
+		JsonResult jsonresult = new JsonResult();
+		try {
+			jsonresult.setResult(drugInformationService.getAllDrugBySubclassId(subclassid));
+			jsonresult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonresult.setResult(subclassid);
+			jsonresult.setStatus("error");
+		}
+		return jsonresult;
+	}
 
 	
 }

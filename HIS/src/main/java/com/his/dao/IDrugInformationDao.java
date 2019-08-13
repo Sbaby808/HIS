@@ -286,5 +286,18 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	 */
 	@Query(value="select * from drug_information d where d.medicine_pay_id is null order by d.yp_name",nativeQuery=true)
 	public List<DrugInformation> getNoPrice(Pageable pageable);
+	
+	/**
+	* @Title:getAllDrugBySubclassId
+	* @Description:根据小类id查询对应的所有药品
+	* @param:@param subclassId
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月12日 下午12:09:07
+	 */
+	@Query(value="from DrugInformation d where d.drugSubclass.subclassId = ?1")
+	public List<DrugInformation> queryAllBySubclassId(String subclassId);
 
 }
