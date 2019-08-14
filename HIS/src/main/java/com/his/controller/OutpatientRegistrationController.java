@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.pojo.EmpInformation;
 import com.his.pojo.JsonResult;
 import com.his.pojo.OutpatientRegistration;
 import com.his.service.OutpatientRegistrationService;
 import com.his.utils.SimpleTools;
+
+import oracle.net.aso.e;
 
 /**  
 * @ClassName: OutpatientRegistrationController  
@@ -218,8 +221,13 @@ public class OutpatientRegistrationController {
 	public JsonResult getRandomDocByKsAndTp(String ks, String tp, Long doDate) {
 		JsonResult result = new JsonResult();
 		try {
-			result.setResult(outpatientRegistrationService.getRandomDocByKsAndTp(ks, tp, doDate));
-			result.setStatus("ok");
+			EmpInformation empInformation = outpatientRegistrationService.getRandomDocByKsAndTp(ks, tp, doDate);
+			if(empInformation == null) {
+				result.setStatus("error");
+			} else {
+				result.setResult(empInformation);
+				result.setStatus("ok");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus("error");
@@ -324,7 +332,7 @@ public class OutpatientRegistrationController {
 		JsonResult result = new JsonResult();
 		try {
 			result.setResult(outpatientRegistrationService.checkPay(outTradeNo, ygxh, regId));
-			result.setStatus("ok");
+			result.setStatus("ok"); 
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus("error");

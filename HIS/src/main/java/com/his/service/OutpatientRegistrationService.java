@@ -123,7 +123,11 @@ public class OutpatientRegistrationService {
 	 */
 	public EmpInformation getRandomDocByKsAndTp(String ks, String tp, Long doDate) {
 		List<EmpInformation> list = empInformationDao.getDocByKsAndTp(tp, ks, doDate);
-		return list.get((int)Math.floor(Math.random() * list.size()));
+		if(list.size() == 0) {
+			return null;
+		} else {
+			return list.get((int)Math.floor(Math.random() * list.size()));
+		}
 	}
 	
 	/**
@@ -361,6 +365,7 @@ public class OutpatientRegistrationService {
 				// 修改挂号表
 				outpatientRegistration.setPayId(pay.getPayId());
 				outpatientRegistration.setOutpatientPay(pay);
+				outpatientRegistration.setRegStatus("已缴费");
 				outpatientRegistrationDao.save(outpatientRegistration);
 			}
 		}
