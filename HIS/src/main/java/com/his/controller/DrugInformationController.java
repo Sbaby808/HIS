@@ -14,8 +14,6 @@ import com.his.pojo.DrugInformation;
 import com.his.pojo.JsonResult;
 import com.his.service.DrugInformationService;
 
-import net.bytebuddy.asm.Advice.Return;
-
 /**  
 * @ClassName: DrugInformationController  
 * @Description: 药品信息控制器
@@ -55,71 +53,110 @@ public class DrugInformationController {
 	}
 	
 	/**
+	* @Title:add_rugInformation
+	* @Description:添加单个药品
+	* @param:@param singleDrug
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月9日 下午3:30:47
+	 */
+	@ResponseBody
+	@PostMapping("add_drugInformation")
+	public JsonResult add_rugInformation(@RequestBody DrugInformation singleDrug) {
+		System.out.println("-------------------------------");
+		JsonResult result = new JsonResult();
+		try {
+			drugInformationService.addDrugInformation(singleDrug);
+			result.setResult(singleDrug);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:updata_drugInformation
+	* @Description:修改 药品信息
+	* @param:@param editDrugInfo
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午2:55:04
+	 */
+	@ResponseBody
+	@PostMapping("updata_drugInformation")
+	public JsonResult updata_drugInformation(@RequestBody DrugInformation editDrugInfo) {
+		System.out.println("---------------------------------------");
+		JsonResult jsonresult = new JsonResult();
+		try {
+			drugInformationService.updataDrugInformation(editDrugInfo);
+			jsonresult.setResult(editDrugInfo);
+			jsonresult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonresult.setResult(editDrugInfo);
+			jsonresult.setStatus("error");
+		}
+		return jsonresult;
+	}
+	
+	/**
+	* @Title:search_all_information_by_page
+	* @Description:分页查询搜索条件
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月9日 下午11:27:29
+	 */
+	@ResponseBody
+	@GetMapping("search_all_information_by_page")
+	public JsonResult search_all_information_by_page(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.searchAllInformationByPage(searchKey, searchType, searchSubclass, searchGys, searchMinorDefect, minPrice, maxPrice, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	
+	/**
 	* @Title:getNoPrice
-	* @Description:分页查询未划价的药品
+	* @Description:查询未划价的药品
 	* @param:@return
 	* @return:JsonResult
 	* @throws
 	* @author:Sbaby
 	* @Date:2019年8月7日 上午9:46:08
 	 */
-	@GetMapping("/get_no_price_drug_by_page")
+	@GetMapping("/get_no_price")
 	@ResponseBody
-	public JsonResult getNoPrice(int pageNum, int pageSize) {
+	public JsonResult getNoPrice() {
 		JsonResult result = new JsonResult();
 		try {
-			result.setResult(drugInformationService.getNoPrice(pageNum, pageSize));
+			result.setResult(drugInformationService.getNoPrice());
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.setStatus("error");
-		}
-		return result;
-	}
-	
-	/**
-	* @Title:getNoPriceCount
-	* @Description:获取未划价商品的总记录条数
-	* @param:@return
-	* @return:JsonResult
-	* @throws
-	* @author:Sbaby
-	* @Date:2019年8月9日 上午10:15:04
-	 */
-	@GetMapping("/get_no_price_count")
-	@ResponseBody
-	public JsonResult getNoPriceCount() {
-		JsonResult result = new JsonResult();
-		try {
-			result.setResult(drugInformationService.getNoPriceCount());
-			result.setStatus("ok");
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.setStatus("error");
-		}
-		return result;
-	}
-	
-	/**
-	* @Title:getById
-	* @Description:根据id查询药品信息
-	* @param:@param id
-	* @param:@return
-	* @return:JsonResult
-	* @throws
-	* @author:Sbaby
-	* @Date:2019年8月7日 上午10:01:21
-	 */
-	@GetMapping("/get_drug_information_by_id")
-	@ResponseBody
-	public JsonResult getById(String id) {
-		JsonResult result = new JsonResult();
-		try {
-			result.setResult(drugInformationService.getById(id));
-			result.setStatus("ok");
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.setResult(id);
 			result.setStatus("error");
 		}
 		return result;
@@ -181,6 +218,79 @@ public class DrugInformationController {
 	}
 	
 	/**
+	* @Title:getNoPriceCount
+	* @Description:查询未划价药品的总记录条数
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月10日 下午4:31:39
+	 */
+	@GetMapping("/get_no_price_count")
+	@ResponseBody
+	public JsonResult getNoPriceCount() {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.getNoPriceCount());
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getNoPrice
+	* @Description:分页查询未划价的药品
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午9:46:08
+	 */
+	@GetMapping("/get_no_price_drug_by_page")
+	@ResponseBody
+	public JsonResult getNoPrice(int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.getNoPrice(pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getById
+	* @Description:根据id查询药品信息
+	* @param:@param id
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月7日 上午10:01:21
+	 */
+	@GetMapping("/get_drug_information_by_id")
+	@ResponseBody
+	public JsonResult getById(String id) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.getById(id));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult(id);
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	
+	
+	/**
 	 * 
 	* @Title:getAllDrugInformation
 	* @Description:查询所有药品信息
@@ -192,9 +302,15 @@ public class DrugInformationController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_all_drug_information")
-	public List <DrugInformation> getADrugInformation(String ypName){
-		String name = "%"+ypName+"%";
-		return drugInformationService.getDrugInformation(name);
+	public List <DrugInformation> getAllDrugInformation(){
+		return drugInformationService.getAllDrugInformation();
 	}
+	
+	@ResponseBody
+	@GetMapping("get_all_drug_typeName")
+	public List<String> get_all_drug_typeName(){
+		return drugInformationService.getAllDrugInformationType();
+	}
+
 	
 }

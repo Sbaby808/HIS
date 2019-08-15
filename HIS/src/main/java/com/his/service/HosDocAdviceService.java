@@ -3,9 +3,12 @@ package com.his.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +54,27 @@ public class HosDocAdviceService {
 	 */
 	public List <HosDoctorAdvice> getHosDocAdvice(){
 		return hosDocAdviceDao.getHosDocAdvice();
+	}
+	
+	/**
+	 * 
+	* @Title:getHosDocAdviceByPage
+	* @Description:分页查询住院医嘱
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月13日 下午9:10:36
+	 */
+	public Map getHosDocAdviceByPage(int curpage,int pagesize){
+		List <HosDoctorAdvice> list = hosDocAdviceDao.getHosDocAdviceBypage(PageRequest.of(curpage-1, pagesize));
+		long total = hosCheckNoticeDao.count();
+		Map map = new HashMap<>();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
 	}
 	
 	/**
@@ -153,6 +177,20 @@ public class HosDocAdviceService {
 		String time = dateFormat.format(new Date());
 		advice.setHosEndTime(dateFormat.parse(time));
 		hosDocAdviceDao.save(advice);
+	}
+	
+	/**
+	 * 
+	* @Title:delHosDocAdvice
+	* @Description:删除住院医嘱
+	* @param:@param advice
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月13日 下午7:50:10
+	 */
+	public void delHosDocAdvice(HosDoctorAdvice advice){
+		hosDocAdviceDao.delete(advice);
 	}
 	
 	

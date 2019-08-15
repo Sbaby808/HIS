@@ -132,5 +132,7 @@
 		<class>com.his.pojo.WktimeEmpPK</class>
 		<class>com.his.pojo.WorkoverRecord</class>
 		<class>com.his.pojo.WorkTime</class>
+		<class>com.his.pojo.HosDrugDetail</class>
+		<class>com.his.pojo.HosDrugDetailPK</class>
 	</persistence-unit>
 </persistence>

@@ -83,6 +83,11 @@ public class DrugInformation implements Serializable {
 	@OneToMany(mappedBy="drugInformation")
 	@JSONField(serialize=false)
 	private List<ReqDetail> reqDetails;
+	
+	//bi-directional many-to-one association to HosDrugDetail
+	@OneToMany(mappedBy="drugInformation")
+	@JSONField(serialize=false)
+	private List<HosDrugDetail> hosDrugDetails;
 
 	//bi-directional one-to-one association to MedicinePay
 	@OneToOne(mappedBy="drugInformation")
@@ -302,7 +307,30 @@ public class DrugInformation implements Serializable {
 
 		return reqDetail;
 	}
+	
 
+	public List<HosDrugDetail> getHosDrugDetails() {
+		return hosDrugDetails;
+	}
+
+	public void setHosDrugDetails(List<HosDrugDetail> hosDrugDetails) {
+		this.hosDrugDetails = hosDrugDetails;
+	}
+
+	public HosDrugDetail addHosDrugDetail(HosDrugDetail hosDrugDetail) {
+		getHosDrugDetails().add(hosDrugDetail);
+		hosDrugDetail.setDrugInformation(this);
+
+		return hosDrugDetail;
+	}
+
+	public HosDrugDetail removeHosDrugDetail(HosDrugDetail hosDrugDetail) {
+		getHosDrugDetails().add(hosDrugDetail);
+		hosDrugDetail.setDrugInformation(null);
+
+		return hosDrugDetail;
+	}
+	
 	public MedicinePay getMedicinePay() {
 		return this.medicinePay;
 	}
@@ -310,5 +338,7 @@ public class DrugInformation implements Serializable {
 	public void setMedicinePay(MedicinePay medicinePay) {
 		this.medicinePay = medicinePay;
 	}
+	
+	
 
 }

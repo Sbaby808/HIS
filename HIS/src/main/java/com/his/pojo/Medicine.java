@@ -45,6 +45,8 @@ public class Medicine implements Serializable {
 	@OneToMany(mappedBy="medicine")
 	@JSONField(serialize=false)
 	private List<InjectionDetail> injectionDetails;
+	
+	
 
 	//bi-directional many-to-one association to Dept
 	@ManyToOne
@@ -101,6 +103,7 @@ public class Medicine implements Serializable {
 
 		return backDetail;
 	}
+
 
 	public BackDetail removeBackDetail(BackDetail backDetail) {
 		getBackDetails().remove(backDetail);
@@ -234,5 +237,6 @@ public class Medicine implements Serializable {
 
 		return phaInDetail;
 	}
+	
 
 }

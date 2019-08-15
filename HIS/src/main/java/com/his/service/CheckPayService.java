@@ -1,14 +1,25 @@
 package com.his.service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.dialect.unique.DB2UniqueDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.bean.OperationPaybean;
+import com.his.dao.ICheckItemDAO;
 import com.his.dao.ICheckPayDao;
+import com.his.dao.IEmpInformationDao;
+import com.his.pojo.CheckItem;
 import com.his.pojo.CheckPay;
+import com.his.utils.UUIDGenerator;
 import com.sun.org.apache.regexp.internal.recompile;
 import com.sun.org.apache.xerces.internal.dom.DeepNodeListImpl;
 
@@ -24,7 +35,10 @@ import com.sun.org.apache.xerces.internal.dom.DeepNodeListImpl;
 public class CheckPayService {
 	@Autowired
 	private ICheckPayDao iCheckPayDao;
-	
+	@Autowired
+	private ICheckItemDAO iCheckItemDAO;
+	@Autowired
+	private IEmpInformationDao iEmpInformationDao;
 /**
  * 
 * @Title:AddCheckPay
@@ -90,5 +104,74 @@ public class CheckPayService {
 	 */
 	public List <CheckPay> getAllCheckPay(){
 		return iCheckPayDao.getAllCheckPay();
+	}
+	/**
+	 * 
+	* @Title:getallcheckpay
+	* @Description:TODO获得所有检查缴费项
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:TRC
+	* @Date:2019年8月12日 上午10:46:26
+	 */
+	public Map getallcheckpay(int curpage, int pagesize,String sou){
+		List<CheckPay> list=iCheckPayDao.getcheckbysou(sou, PageRequest.of(curpage - 1,
+				  pagesize));
+		    	  long total=iCheckPayDao.getcount(sou);
+		    	  Map map = new HashMap();
+				  map.put("total", total);
+				  map.put("list", list);
+		return map;
+	}
+	public List<CheckItem> getitems(){
+	    	return (List<CheckItem>) iCheckItemDAO.findAll();
+	    }
+	public String getnamebyitemid(String str) {
+		String a[]=str.split(",");
+		String nameString="";
+		for (String string : a) {
+			nameString+=iCheckItemDAO.findById(string).get().getItemName()+",";
+		}
+		return nameString;
+	}
+	public void addcheckpay(String str,String cname,String cdesc,BigDecimal cprice,String ygxh,String checkid) {
+		if(checkid!=null) {
+			CheckPay checkPay=iCheckPayDao.findById(checkid).get();
+			checkPay.setCheckFormPath(str);
+			checkPay.setCheckPayMoney(cprice);
+			checkPay.setCheckPayName(cname);
+			checkPay.setCheckPayTime(new Date());
+			checkPay.setCheckPayDesc(cdesc);
+			checkPay.setEmpInformation(iEmpInformationDao.findById(ygxh).get());
+			iCheckPayDao.save(checkPay);
+		}
+		else {
+			CheckPay checkPay=new CheckPay();
+			checkPay.setCheckFormPath(str);
+			checkPay.setCheckPayMoney(cprice);
+			checkPay.setCheckPayName(cname);
+			checkPay.setCheckPayTime(new Date());
+			checkPay.setCheckPayDesc(cdesc);
+			checkPay.setEmpInformation(iEmpInformationDao.findById(ygxh).get());
+			UUIDGenerator uuid=new UUIDGenerator();
+			checkPay.setCheckId(uuid.getUUID());
+			iCheckPayDao.save(checkPay);
+		}
+		
+		
+	}
+	public List<CheckItem> getbycheck(String checkid){
+		CheckPay checkPay=iCheckPayDao.findById(checkid).get();
+		List<CheckItem> list=new ArrayList<CheckItem>();
+		String a=checkPay.getCheckFormPath();
+		String b[]=a.split(",");
+		for (String string : b) {
+			list.add(iCheckItemDAO.findById(string).get());
+		}
+		return list;
+	}
+	public void delcheck(String checkid) {
+		iCheckPayDao.deleteById(checkid);
 	}
 }

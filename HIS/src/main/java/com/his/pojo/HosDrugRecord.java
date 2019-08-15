@@ -9,6 +9,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -43,7 +44,12 @@ public class HosDrugRecord implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="HOS_PRE_ID")
 	private HosPrescription hosPrescription;
-
+	
+	//bi-directional many-to-one association to HosDrugRecord
+	@OneToMany(mappedBy="hosDrugRecord")
+	@JSONField(serialize=false)
+	private List<HosDrugDetail> hosDrugDetails  ;
+	
 	public HosDrugRecord() {
 	}
 
@@ -85,6 +91,28 @@ public class HosDrugRecord implements Serializable {
 
 	public void setHosPrescription(HosPrescription hosPrescription) {
 		this.hosPrescription = hosPrescription;
+	}
+
+	public List<HosDrugDetail> getHosDrugDetails() {
+		return hosDrugDetails;
+	}
+
+	public void setHosDrugDetails(List<HosDrugDetail> hosDrugDetails) {
+		this.hosDrugDetails = hosDrugDetails;
+	}
+	
+	public HosDrugDetail addHosDrugDetail(HosDrugDetail hosDrugDetail) {
+		getHosDrugDetails().add(hosDrugDetail);
+		hosDrugDetail.setHosDrugRecord(this);
+
+		return hosDrugDetail;
+	}
+
+	public HosDrugDetail removeHosDrugDetail(HosDrugDetail hosDrugDetail) {
+		getHosDrugDetails().add(hosDrugDetail);
+		hosDrugDetail.setHosDrugRecord(null);
+		
+		return hosDrugDetail;
 	}
 
 }

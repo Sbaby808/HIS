@@ -286,5 +286,20 @@ public class EmpInformationService {
 	public EmpInformation getEmpInfoById(String empId) {
 		return empInformationDao.findById(empId).get();
 	}
+	
+	/**
+	 * 
+	* @Title:getDoctorsByWkAndKs
+	* @Description:根据科室查询当日排班的医生
+	* @param:@param ksId
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月14日 上午9:20:12
+	 */
+	public List<EmpInformation> getDoctorsByWkAndKs(String ksId){
+		return empInformationDao.getDoctorsByWkAndKs(ksId);
+	}
 
 }

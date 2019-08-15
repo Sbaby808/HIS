@@ -2,6 +2,7 @@ package com.his.controller;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,12 @@ public class HosPrescriptonController {
 	@GetMapping("/get_hos_prescription")
 	public List <HosPrescription> getAllHosPrescription(){
 		return hosPrescriptionService.getAllHosPrescription();
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_hos_prescription_byPage")
+	public Map getHosPrescriptionByPage(int curpage,int pagesize){
+		return hosPrescriptionService.getHosPrescriptionByPage(curpage, pagesize);
 	}
 	
 	/**

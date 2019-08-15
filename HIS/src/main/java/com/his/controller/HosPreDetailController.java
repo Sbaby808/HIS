@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.HosPrescriptionDetail;
+import com.his.pojo.LastDrugDetail;
 import com.his.service.HosPreDetailService;
 
 /**
@@ -67,7 +68,7 @@ public class HosPreDetailController {
 	
 	@ResponseBody
 	@GetMapping("/get_hos_pre_detail_byDiagId")
-	public List <HosPrescriptionDetail> getHosPreDetailByDiagId(String diagId){
+	public List <LastDrugDetail> getHosPreDetailByDiagId(String diagId){
 		return hosPreDetailService.getHosPreDetailByDiagId(diagId);
 	}
 	

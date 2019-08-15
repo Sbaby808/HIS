@@ -28,7 +28,7 @@ public interface IHosPrescriptionDao extends CrudRepository<HosPrescription, Str
 	* @author:Hamster
 	* @Date:2019年8月5日 下午7:20:50
 	 */
-	@Query("from HosPrescription h")
+	@Query("from HosPrescription h where h.hosDiagnosticRecord.medicalRecord.medOutTime is null")
 	public List <HosPrescription> getAllHosPrescription();
 	
 	/**
@@ -42,7 +42,7 @@ public interface IHosPrescriptionDao extends CrudRepository<HosPrescription, Str
 	* @author:Hamster
 	* @Date:2019年8月5日 下午7:21:05
 	 */
-	@Query("from HosPrescription h")
+	@Query("from HosPrescription h where h.hosDiagnosticRecord.medicalRecord.medOutTime is null")
 	public List <HosPrescription> getHosPrescriptionByPage(Pageable page);
 	
 	/**

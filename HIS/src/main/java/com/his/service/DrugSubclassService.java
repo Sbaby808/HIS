@@ -50,6 +50,25 @@ public class DrugSubclassService {
 	}
 	
 	/**
+	* @Title:drugSubclassTominor
+	* @Description:小类转中类
+	* @param:@param subTominor
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月10日 下午4:02:02
+	 */
+	public void drugSubclassTominor(DrugSubclass subTominor) throws ServiceException{
+		try {
+			drugSubclassDao.save(subTominor);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("小类转中类失败");
+		}
+	}
+	
+	/**
 	* @Title:updataDrugSubclass
 	* @Description:修改小类药品信息
 	* @param:@param drugSubclass

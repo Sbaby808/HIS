@@ -103,7 +103,7 @@ public class HosPatientsService {
 		
 		patient.setHospState("在院");
 		patient.setMedRid(record.getMedRid());
-		patient.setHosBid(patient.getHosBid());
+		patient.setHosBid(patient.getHosBed().getHosBid());
 		patient.setRegisterTime(new Date());
 		patient.setBalance(patient.getDepositMoney());
 		hosPatientDao.save(patient);

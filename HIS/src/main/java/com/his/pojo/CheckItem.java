@@ -2,6 +2,10 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.List;
 
 
@@ -27,6 +31,7 @@ public class CheckItem implements Serializable {
 
 	//bi-directional many-to-one association to CheckResultDetail
 	@OneToMany(mappedBy="checkItem")
+	@JSONField(serialize=false)
 	private List<CheckResultDetail> checkResultDetails;
 
 	public CheckItem() {

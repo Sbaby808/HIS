@@ -2,6 +2,7 @@ package com.his.controller;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,6 +60,24 @@ public class HosDocAdviceController {
 	@GetMapping("/get_hos_advice_byDid")
 	public HosDoctorAdvice getHosDocAdviceByDid(String diagId){
 		return hosDocAdviceService.getHosDocAdviceByDid(diagId);
+	}
+	
+	/**
+	 * 
+	* @Title:getHosDocAdviceByPage
+	* @Description:分页查询住院医嘱
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月13日 下午9:15:27
+	 */
+	@ResponseBody
+	@GetMapping("/get_hos_advice_byPage")
+	public Map getHosDocAdviceByPage(int curpage,int pagesize){
+		return hosDocAdviceService.getHosDocAdviceByPage(curpage, pagesize);
 	}
 	
 	/**
@@ -126,6 +145,12 @@ public class HosDocAdviceController {
 	@PostMapping("/end_hos_doc_advice")
 	public void endHosDocAdvice(@RequestBody HosDoctorAdvice advice) throws ParseException{
 		hosDocAdviceService.endHosDocAdvice(advice);
+	}
+	
+	@ResponseBody
+	@PostMapping("/del_hos_doc_advice")
+	public void delHosDocAdvice(@RequestBody HosDoctorAdvice advice){
+		hosDocAdviceService.delHosDocAdvice(advice);
 	}
 	
 	

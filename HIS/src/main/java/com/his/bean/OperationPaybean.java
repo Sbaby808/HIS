@@ -3,9 +3,6 @@ package com.his.bean;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.his.pojo.EmpInformation;
-
 /**  
 * @ClassName: OperationPaybean  
 * @Description: TODO(这里用一句话描述这个类的作用)  

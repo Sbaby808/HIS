@@ -45,9 +45,4 @@ public class HosInNoticeController {
 		return hosInNoticeService.getHosInNoticeByPage(curpage, pagesize);
 	}
 	
-	@ResponseBody
-	@GetMapping("/delete_hos_inNotice")
-	public void delInNotice(@RequestBody HospitalNotice notice){
-		hosInNoticeService.delInNotice(notice);
-	}
 }

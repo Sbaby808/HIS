@@ -1,5 +1,6 @@
 package com.his.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -64,5 +65,40 @@ public class SimpleTools {
 		source = source == null ? "" : source;
 		String dest = "%" + source + "%";
 		return dest;
+	}
+	
+	/**
+	* @Title:isToday
+	* @Description:检查日期是否是今天
+	* @param:@param date
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午12:10:41
+	 */
+	public static boolean isToday(Date date) {
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd");
+	     if(fmt.format(date).toString().equals(fmt.format(new Date()).toString())){//格式化为相同格式
+	          return true;
+	      }else {
+	        return false;
+	      }
+	}
+	
+	/**
+	* @Title:formatDate
+	* @Description:格式化日期
+	* @param:@param date
+	* @param:@param pattern
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月12日 下午8:15:40
+	 */
+	public static String formatDate(Date date, String pattern) {
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		return sdf.format(date);
 	}
 }

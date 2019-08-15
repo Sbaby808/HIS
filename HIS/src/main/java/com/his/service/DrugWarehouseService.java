@@ -1,7 +1,10 @@
 package com.his.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.his.dao.IDrugWarehouseDao;
 
 /**  
 * @ClassName: DrugWarehouseService  
@@ -15,4 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor=Exception.class)
 public class DrugWarehouseService {
 
+	@Autowired
+	private IDrugWarehouseDao drugWarehouseDao;
+	
 }

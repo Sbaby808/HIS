@@ -74,5 +74,22 @@ public class EmpInformationController {
 		return empInformationService.queryEmpforNameAndXH();
 	}
 	
-
+	/**
+	 * 
+	* @Title:getDoctorsByWkAndKs
+	* @Description:根据科室查询当日排班的医生
+	* @param:@param ksId
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月14日 上午9:21:16
+	 */
+	@ResponseBody
+	@GetMapping("/get_doctors_by_ksId")
+	public List <EmpInformation> getDoctorsByWkAndKs(String ksId){
+		System.out.println(ksId);
+		return empInformationService.getDoctorsByWkAndKs(ksId);
+	}
+	
 }

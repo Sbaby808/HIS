@@ -28,7 +28,7 @@ public interface IHosDiagRecordDao extends CrudRepository<HosDiagnosticRecord, S
 	* @author:Hamster
 	* @Date:2019年8月5日 上午11:32:14
 	 */
-	@Query("from HosDiagnosticRecord h")
+	@Query("from HosDiagnosticRecord h where h.medicalRecord.medOutTime is null")
 	public List <HosDiagnosticRecord> getDiagRecord();
 	
 	/**
@@ -42,6 +42,6 @@ public interface IHosDiagRecordDao extends CrudRepository<HosDiagnosticRecord, S
 	* @author:Hamster
 	* @Date:2019年8月5日 上午11:32:33
 	 */
-	@Query("from HosDiagnosticRecord h")
+	@Query("from HosDiagnosticRecord h where h.medicalRecord.medOutTime is null")
 	public List <HosDiagnosticRecord> getDiagRecordByPage(Pageable page);
 }

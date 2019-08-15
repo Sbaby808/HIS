@@ -104,6 +104,25 @@
 		    <artifactId>gson</artifactId>
 		</dependency>
 		
+		<dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi</artifactId>
+		  <version>4.1.0</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi-ooxml</artifactId>
+		  <version>4.1.0</version>
+		</dependency>
+		
+		<!-- word模版填值 -->
+		<dependency>
+		    <groupId>com.deepoove</groupId>
+		    <artifactId>poi-tl</artifactId>
+		    <version>1.3.1</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
