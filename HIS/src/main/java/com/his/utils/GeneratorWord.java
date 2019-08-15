@@ -11,8 +11,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.xmlunit.builder.Input;
-
 import com.deepoove.poi.XWPFTemplate;
 
 /**  
@@ -24,6 +22,19 @@ import com.deepoove.poi.XWPFTemplate;
 */
 public class GeneratorWord {
 
+	/**
+	* @Title:makeWord
+	* @Description:生成挂号单
+	* @param:@param datas
+	* @param:@param wordPath
+	* @param:@param modelName
+	* @param:@param outputName
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月13日 下午2:07:38
+	 */
 	public static String makeWord(Map<String, Object> datas, String wordPath, String modelName, String outputName) {
 //        Map<String, Object> datas = new HashMap<String, Object>() {
 //            {
@@ -83,6 +94,17 @@ public class GeneratorWord {
         return wordPath + outputName;
 	}
 	
+	/**
+	* @Title:download
+	* @Description:下载挂号单
+	* @param:@param res
+	* @param:@param fileName
+	* @param:@return
+	* @return:HttpServletResponse
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月13日 下午2:07:56
+	 */
 	public static HttpServletResponse download(HttpServletResponse res, String fileName) {
 		res.setHeader("content-type", "application/octet-stream");
         res.setContentType("application/octet-stream");

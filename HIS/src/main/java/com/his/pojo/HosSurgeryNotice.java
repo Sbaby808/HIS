@@ -28,6 +28,9 @@ public class HosSurgeryNotice implements Serializable {
 
 	@Column(name="HOS_SUR_NOTE")
 	private String hosSurNote;
+	
+	@Column(name="PAYNOTE")
+	private String payNote;
 
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOS_SUR_TIME")

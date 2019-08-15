@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -34,13 +37,14 @@ public class OutpatientPay implements Serializable {
 	private String payType;
 
 	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="YGXH")
 	private EmpInformation empInformation;
 
 	//bi-directional one-to-one association to OutpatientRegistration
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="REG_ID")
+	@JSONField(serialize = false)
 	private OutpatientRegistration outpatientRegistration;
 
 	public OutpatientPay() {

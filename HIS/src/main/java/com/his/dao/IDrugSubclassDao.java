@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.DrugInformation;
 import com.his.pojo.DrugSubclass;
 
 /**  
@@ -19,5 +20,5 @@ public interface IDrugSubclassDao extends CrudRepository<DrugSubclass, String>{
 	
 	@Query("from DrugSubclass d")
 	public List<DrugSubclass> qeuryAllByPage(Pageable page);
-
+	
 }
