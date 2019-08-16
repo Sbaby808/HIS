@@ -24,8 +24,6 @@ import com.his.pojo.OutpatientRegistration;
 import com.his.service.OutpatientRegistrationService;
 import com.his.utils.SimpleTools;
 
-import oracle.net.aso.e;
-
 /**  
 * @ClassName: OutpatientRegistrationController  
 * @Description: 门诊挂号控制器
@@ -333,6 +331,78 @@ public class OutpatientRegistrationController {
 		try {
 			result.setResult(outpatientRegistrationService.checkPay(outTradeNo, ygxh, regId));
 			result.setStatus("ok"); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:testClosePay
+	* @Description:将支付二维码设置为失效
+	* @param:@param outTradeNo
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午12:09:08
+	 */
+	@GetMapping("/test_close_pay")
+	@ResponseBody
+	public JsonResult testClosePay(String outTradeNo) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.closeAliPay(outTradeNo));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getAllRegsCount
+	* @Description:根据就诊卡号查询所有挂号记录的数量
+	* @param:@param cardNum
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午4:04:26
+	 */
+	@GetMapping("/get_all_reg_count_by_cardnum")
+	@ResponseBody
+	public JsonResult getAllRegsCount(String cardNum) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.getAllRegsCount(cardNum));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getAllReg
+	* @Description:根据就诊卡号查询所有门诊挂号记录
+	* @param:@param cardNum
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午3:28:15
+	 */
+	@GetMapping("/get_all_reg_by_cardnum")
+	@ResponseBody
+	public JsonResult getAllReg(String cardNum, int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.getAllRegs(cardNum, pageNum, pageSize));
+			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setStatus("error");

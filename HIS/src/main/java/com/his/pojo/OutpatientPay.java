@@ -26,7 +26,7 @@ public class OutpatientPay implements Serializable {
 	@Column(name="ACT_STATUS")
 	private String actStatus;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	@Column(name="OUT_PAY_TIME")
 	private Date outPayTime;
 

@@ -10,8 +10,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
 import com.alipay.api.AlipayResponse;
+import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.TradeFundBill;
+import com.alipay.api.request.AlipayTradeCancelRequest;
+import com.alipay.api.response.AlipayTradeCancelResponse;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.MonitorHeartbeatSynResponse;
@@ -453,7 +458,7 @@ public class AliPay {
             .setUndiscountableAmount(undiscountableAmount).setSellerId(sellerId).setBody(body)
             .setOperatorId(operatorId).setStoreId(storeId).setExtendParams(extendParams)
             .setTimeoutExpress(timeoutExpress)
-            //                .setNotifyUrl("http://www.test-notify-url.com")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
+            .setNotifyUrl("http://2wd6211182.wicp.vip:45150/notify_pay")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
             .setGoodsDetailList(goods);
 
         AlipayF2FPrecreateResult result = tradeService.tradePrecreate(builder);
@@ -485,5 +490,28 @@ public class AliPay {
                 break;
         }
         return code;
+    }
+    
+    /**
+    * @Title:cancelTrade
+    * @Description:关闭交易订单
+    * @param:@param outTradeNo
+    * @param:@return
+    * @param:@throws AlipayApiException
+    * @return:boolean
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月14日 下午2:33:11
+     */
+    public static boolean cancelTrade(String outTradeNo) throws AlipayApiException {
+    	AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipaydev.com/gateway.do","2016092800612632","MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCIKsbJ7bdWZoB7+LORUpdhQx4lNlpSiYYnxB7/isQHtmpJ8loGA5wTDkLxq7xEzojUeZHhBAQGpxlV97bInam6txGGoK/sKcEag/vHcAPPW0yqFwG33x+ipaqIIr0xFExueW87ISDjkpIgdquA3dTdZMwgh7YMoYYsFEYGUylj0bOFgEIaLAp6gvk25vsW1Rhda2Ff1Kv/o4JpEZqtOlyHd7ugLPSHBG+aafdMjFQEd5jbP6YIKq+rGt5d+yPkblF6XaFPg3SGsQOioI4mLt6g9Xt4VLAEckP7qzNRqwzqfKONuYTEgaq/Qbrxl9N8nOSEJbolOfQNXUemlYfSE3ipAgMBAAECggEAbjbhjFRDD0YMPUwCXGATc4BWCBzEYwY5djqCNKjnHq8BvTTStQd67tmeSeqNisv5aLG16AHOGGxsT28fnaYv2ZeQMf4iJu9tA79MrhL2ooHtvca9d0y8WHPrYiFsLSuW6dyUsbGQ42KhsHEdRENJpqGNr87pBbQ/27HVNA1f9RB6n4v/NB1b0PQwQuBsGwBtNMzVyK4FNg5ONlIk9oNLNMP5uiVVzUe97AMKFHZ/39mJDGEb22iVN+afDCWRTqOf/cGxDmsCJgYGS1rnijIp9VuhTirYol8CCpBqYWC3W8Md6Ia1H0C3NmaKHGIpfaPZjrW+9/9jDrToF8IQ2mAtAQKBgQDFT6RQu3okXSci5fs7DNSAKgE40oKcQspIkLgJhp/V1uORGg2Z8EkLSgEnRvbWp4Bg52x0Qb78QlZyPR1r60Hy2MkiMRixJnTFxQIeDNbUaJYCDU3fqHwekAdbeEvMJP4OWiGQQI9O/EhLHgjXw/a70s5Yd2ckSl3UeeMTBTj9UQKBgQCwq0rDdG2yvE7PjfdsoReYIJpMvV6A4MkHUtKHgVm5VWGHgr045ASMV5X7xtfYd3kSflId+fDiv/5AqWZ7ACqhFpLQLQA7OEZzsqll8w5MQvGhnqAfVe5EpZGxXhnhasNsJz7l2DWe+QbZwyYYeb2RpVjmAlgmG6lK03atr90P2QKBgQC1Vh+WjuaPWwln2mONfpoh+/jJhzbAc+XC0TZCkvZ8qhTVO1N6wcnv1SDAP0kGOEUVSjtzkST8Y99c+Gv8zeb7UF9xzBt8W/J//DKY+YXLCx+qXR3PyuHfmNEaMLHAudK/z/f+wkay+ctbNgw8eH5fWjuINJyXTr1zVF3sEiWxMQKBgG/m34Ez8vPecLDoxEqrMs2qAPIQlJZfSxX3cOBhnxpUKWVy+zXYv8TBCYAjr74t1qNPHeZc1SZa48nDQuUv8tB8AtwXVOktuPo5tTCdJnZJhNGRLu0KOdSDZugIqa3tOQD9Tsq5CyW5qIwwHqYsHlXtfIScAYeJx85caPSUyxnpAoGAUL7F+T5I+NC4Gs6/3fyF2xmb6uFgipQRqzGgZeJoqPOQPe3yb+nbe5a8PGu2ikMrV/lMUZxSsQaiSQl2Y+kA6W13oxd+YRp7aUpjFML66eDBXEqUexG8eIdrOF7nb6K0lRB1MsKeRTK8ittYMZnOQvo4HojD3KOhN8IMj4QcZkA=",
+				"json","GBK","MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnNd2+vLvFFzVWQHhC6LJ+XOCVYdxWc6TzijuN5WPaN39+bd4I29h8eC1YdXvGnZ7iWJDpButq4qU+HqcBFWN2pqp5BHvdzCoi8syqoJXOEpd7O82Z45Mq4RhxCH2ZhwLyKSCMh3Yh3EA1+XA0iDSQp2XhvZGFZZ8ah8BuYCb0vet7I37wdh3MuDG/QOhT9EkuMdYwBvr3rkQkP4h4FVU5RuRZqieZpYKDg3MdEDfAi1rOz7/7DoDdJc+SRIIhTQz15X3UjXFYjtlsSUnp25XbQB4QZ1/Dx8VgrsXx49iJg7av6jd13LeWELMh49wrekNa3Z+X3QVeVLjfDj5EQpk5wIDAQAB","RSA2");
+		AlipayTradeCancelRequest request = new AlipayTradeCancelRequest();
+		request.setBizContent("{" +
+		"\"out_trade_no\":\""+ outTradeNo + "\"," +
+		"\"trade_no\":\"\"" +
+		"  }");
+		AlipayTradeCancelResponse response = alipayClient.execute(request);
+		return response.isSuccess();
     }
 }
