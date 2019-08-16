@@ -255,6 +255,7 @@ public class DrugInformationService {
 	* @Date:2019年8月7日 下午9:17:51
 	 */
 	public List <DrugInformation> getAllDrugInformation(){
+		// 查询已划价药品
 		return drugInformationDao.getAllDrugInformation();
 	}
 	
