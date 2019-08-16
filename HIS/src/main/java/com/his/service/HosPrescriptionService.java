@@ -13,15 +13,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IHosBedDao;
 import com.his.dao.IHosDrugCostDao;
 import com.his.dao.IHosPatientDao;
 import com.his.dao.IHosPreDetailDao;
 import com.his.dao.IHosPrescriptionDao;
+import com.his.dao.IMedicalRecordDao;
+import com.his.pojo.HosBed;
 import com.his.pojo.HosDrugCost;
 import com.his.pojo.HosPrescription;
 import com.his.pojo.HosPrescriptionDetail;
 import com.his.pojo.HosPrescriptionDetailPK;
 import com.his.pojo.HospitalizedPatient;
+import com.his.pojo.MedicalRecord;
 
 /**
  * 
@@ -43,6 +47,10 @@ public class HosPrescriptionService {
 	private IHosDrugCostDao hosDrugCostDao;
 	@Autowired
 	private IHosPatientDao hosPatientDao;
+	@Autowired
+	private IHosBedDao hosBedDao;
+	@Autowired
+	private IMedicalRecordDao medicalRecordDao;
 	
 	/**
 	 * 

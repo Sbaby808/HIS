@@ -37,8 +37,8 @@ public class HosInNoticeService {
 	* @author:Hamster
 	* @Date:2019年8月1日 下午8:00:36
 	 */
-	public Map getHosInNoticeByPage(int curpage,int pagesize){
-		List <HospitalNotice> list = hosInNoticeDao.getHosInNoticeByPage(PageRequest.of(curpage-1, pagesize));
+	public Map getHosInNoticeByPage(String hospName,String sourceText,String departText,int curpage,int pagesize){
+		List <HospitalNotice> list = hosInNoticeDao.getHosInNoticeByPage(hospName,sourceText,departText,PageRequest.of(curpage-1, pagesize));
 		long total = hosInNoticeDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);

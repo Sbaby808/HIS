@@ -42,8 +42,12 @@ public class HosPatientController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_patients_byPage")
-	public Map getHosPatientsByPage(int curpage,int pagesize){
-		return hosPatientsService.getHosPatientsByPage(curpage, pagesize);
+	public Map getHosPatientsByPage(String text1,String text2,String text3,String text4,int curpage,int pagesize){
+		String hospName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		String wardName = "%"+text3+"%";
+		String roomName = "%"+text4+"%";
+		return hosPatientsService.getHosPatientsByPage(hospName,ksName,wardName,roomName,curpage, pagesize);
 	}
 	
 	/**

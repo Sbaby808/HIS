@@ -25,9 +25,17 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	* @author:Hamster
 	* @Date:2019年8月2日 下午10:37:25
 	 */
-	@Query(value="select * from hospitalized_patients h where h.hosp_state != '已出院'",nativeQuery=true)
-	public List<HospitalizedPatient> getAllPatientsByPage(Pageable page);
+	@Query("from HospitalizedPatient h where "
+			+ " h.medicalCard.cardName like ?1 "
+			+ " and h.department.ksName like ?2 "
+			+ " and h.hosBed.wardRoom.ward.wardName like ?3 "
+			+ " and h.hosBed.wardRoom.wroomName like ?4 "
+			+ " and h.hospState !='已出院' ")
+	public List<HospitalizedPatient> getAllPatientsByPage(String hospName,String ksName,String wardName,String roomName,Pageable page);
 	
+	
+	@Query("from HospitalizedPatient h")
+	public List <HospitalizedPatient> HospitalizedPatient(Pageable page);
 	
 	/**
 	 * 

@@ -41,8 +41,11 @@ public class HosInNoticeController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_in_notice_byPage")
-	public Map getAHosInNoticeByPage(int curpage,int pagesize){
-		return hosInNoticeService.getHosInNoticeByPage(curpage, pagesize);
+	public Map getAHosInNoticeByPage(String text1,String text2,String text3,int curpage,int pagesize){
+		String hospName = "%"+text1+"%";
+		String sourceText = "%"+text2+"%";
+		String departText = "%"+text3+"%";
+		return hosInNoticeService.getHosInNoticeByPage(hospName,sourceText,departText,curpage, pagesize);
 	}
 	
 }

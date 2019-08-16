@@ -54,6 +54,20 @@ public class WardRoomService {
 	
 	/**
 	 * 
+	* @Title:getWardRooms
+	* @Description:无分页查询所有病房
+	* @param:@return
+	* @return:List<WardRoom>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月15日 下午7:24:47
+	 */
+	public List <WardRoom> getWardRooms(){
+		return wardRoomDao.getWardRooms();
+	}
+	
+	/**
+	 * 
 	* @Title:delWardRoom
 	* @Description:删除病房以及该病房的所有床位
 	* @param:@param wardRoom

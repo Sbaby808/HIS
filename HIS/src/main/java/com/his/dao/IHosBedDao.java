@@ -87,4 +87,6 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	@Query(value="select * from hos_beds h where h.wroom_id=?1",nativeQuery=true)
 	public List <HosBed> getBedsByRid(String rid);
 
+	@Query("from HosBed h where h.hospitalizedPatient.hospId=?1")
+	public HosBed getBedByhospId(String hospId);
 }

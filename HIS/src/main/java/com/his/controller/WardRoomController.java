@@ -45,6 +45,12 @@ public class WardRoomController {
 		return wardRoomService.getAllWardRoom(curpage, pagesize);
 	}
 	
+	@ResponseBody
+	@GetMapping("/get_ward_rooms")
+	public List <WardRoom> getWardRooms(){
+		return wardRoomService.getWardRooms();
+	}
+	
 	/**
 	 * 
 	* @Title:delWardRoom

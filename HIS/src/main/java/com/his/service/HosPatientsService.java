@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.dao.IHosBedDao;
+import com.his.dao.IHosEmpDao;
 import com.his.dao.IHosOutDao;
 import com.his.dao.IHosPatientDao;
 import com.his.dao.IMedicalRecordDao;
 import com.his.dao.IWardRoomDao;
 import com.his.pojo.HosBed;
+import com.his.pojo.HosEmp;
+import com.his.pojo.HosEmpPK;
 import com.his.pojo.HospitalizedPatient;
 import com.his.pojo.MedicalRecord;
 import com.his.pojo.OutHospitaiRecord;
@@ -45,6 +48,8 @@ public class HosPatientsService {
 	private IMedicalRecordDao medicalRecordDao;
 	@Autowired
 	private IHosOutDao hosOutDao;
+	@Autowired
+	private IHosEmpDao hosEmpDao;
 	
 	/**
 	 * 
@@ -58,8 +63,8 @@ public class HosPatientsService {
 	* @author:Hamster
 	* @Date:2019年8月9日 下午6:32:44
 	 */
-	public Map getHosPatientsByPage(int curpage,int pagesize){
-		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(PageRequest.of(curpage-1,pagesize));
+	public Map getHosPatientsByPage(String hospName,String ksName,String wardName,String roomName,int curpage,int pagesize){
+		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(hospName,ksName,wardName,roomName,PageRequest.of(curpage-1,pagesize));
 		long total = hosPatientDao.count();
 		Map map = new HashMap<>();
 		map.put("list", patients);
@@ -67,6 +72,7 @@ public class HosPatientsService {
 		return map;
 	}
 
+	
 	
 	/**
 	 * 
@@ -94,7 +100,7 @@ public class HosPatientsService {
 	* @Date:2019年8月1日 下午8:03:05
 	 */
 	public void addHosPatient(HospitalizedPatient patient){
-		
+			
 		MedicalRecord record = new MedicalRecord();
 		record.setMedInDept(patient.getDepartment().getKsName());
 		record.setMedInTime(new Date());
@@ -112,10 +118,19 @@ public class HosPatientsService {
 		hosBed.setHosBstate("已入住");
 		hosBed.setHospitalizedPatient(patient);
 		hosBedDao.save(hosBed);
-			
+		
 		WardRoom room = patient.getHosBed().getWardRoom();
 		room.setWNum(room.getWNum()+1);
 		wardRoomDao.save(room);
+		
+		List <HosEmp> emps = patient.getHosEmps();
+		for(int i=0;i<emps.size();i++){
+			HosEmpPK pk = new HosEmpPK();
+			pk.setHospId(patient.getHospId());
+			pk.setYgxh(emps.get(i).getEmpInformation().getYgxh());
+			emps.get(i).setId(pk);
+			hosEmpDao.save(emps.get(i));
+		}
 			
 	}
 	
@@ -171,6 +186,8 @@ public class HosPatientsService {
 			
 		patient.setHosBid(null);
 		patient.setOutRid(outRecord.getOutRid());
+		patient.setHosBed(null);
+		patient.setOutHospitaiRecord(outRecord);
 		patient.setHospState("已出院");
 		hosPatientDao.save(patient);
 		

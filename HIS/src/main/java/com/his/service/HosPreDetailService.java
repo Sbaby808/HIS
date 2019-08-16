@@ -98,7 +98,7 @@ public class HosPreDetailService {
 	/**
 	 * 
 	* @Title:getHosPreDetailByDiagId
-	* @Description:根据诊断记录id获取处方明细
+	* @Description:根据诊断记录id获取处方明细(此处明细集合已减去用药明细)
 	* @param:@param diagId
 	* @param:@return
 	* @return:List<HosPrescriptionDetail>
