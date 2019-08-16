@@ -206,14 +206,15 @@ public class DrugInformationService {
 	* @Date:2019年8月9日 上午11:55:18
 	 */
 	public List<DrugInformation> searchNoPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
-			BigDecimal minPrice, BigDecimal maxPrice) {
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
 		return drugInformationDao.searchNoPrice(
 				SimpleTools.addCharForSearch(searchKey), 
 				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
 				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
 				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
-				minPrice, maxPrice
-				);
+				minPrice, maxPrice,
+				page);
 	}
 	
 	/**

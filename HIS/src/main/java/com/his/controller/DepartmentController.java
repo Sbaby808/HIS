@@ -35,7 +35,13 @@ public class DepartmentController {
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月15日 上午11:25:21
-	 */	
+	 */
+	@ResponseBody
+	@GetMapping("/get_hos_department")
+	public List <Department> getHosDepartMent(){
+		return departmentService.getHosDepartments();
+	}
+	
 	@ResponseBody
 	@GetMapping("/findaDepartments")
 	public List <Department> finDepartments(String name,int currentpage){

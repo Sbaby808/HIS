@@ -200,7 +200,7 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.yp_price <= ?6 "
 			+ "and d.medicine_pay_id is null", nativeQuery = true)
 	public List<DrugInformation> searchNoPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
-			BigDecimal minPrice, BigDecimal maxPrice);
+			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 	
 	/**
 	 * 

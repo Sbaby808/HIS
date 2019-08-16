@@ -32,7 +32,7 @@ public interface IDepartmentDao extends CrudRepository<Department, String>{
 	* @author:Hamster
 	* @Date:2019年8月2日 下午9:27:01
 	 */
-	@Query(value="select * from department d where d.dept_id = 'cccccccc'",nativeQuery=true)
+	@Query(value="select * from department d where d.dept_id = 'inpatient'",nativeQuery=true)
 	public List <Department> getHosDepartments();
 	
 	/**

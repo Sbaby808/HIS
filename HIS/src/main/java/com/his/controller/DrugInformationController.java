@@ -205,10 +205,10 @@ public class DrugInformationController {
 	@GetMapping("/search_no_price_drug")
 	@ResponseBody
 	public JsonResult searchNoPriceDrug(String searchKey, String searchType, String searchSubclass, String searchGys,
-			BigDecimal minPrice, BigDecimal maxPrice) {
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
 		JsonResult result = new JsonResult();
 		try {
-			result.setResult(drugInformationService.searchNoPrice(searchKey, searchType, searchSubclass, searchGys, minPrice, maxPrice));
+			result.setResult(drugInformationService.searchNoPrice(searchKey, searchType, searchSubclass, searchGys, minPrice, maxPrice, pageNum, pageSize));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

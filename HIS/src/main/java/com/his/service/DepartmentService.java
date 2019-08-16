@@ -24,6 +24,12 @@ public class DepartmentService {
 	private DepartmentDAO departmentDAO;
 	@Autowired
 	private DeptDAO deptDAO;
+	@Autowired
+	private IDepartmentDao departmentDao2;
+	
+	public List <Department> getHosDepartments(){
+		return departmentDao2.getHosDepartments();
+	}
 	
 	public List<Department> finDepartments(String ksname,int currentpage){
 		PageRequest pageRequest = PageRequest.of(currentpage-1, 5);
@@ -48,5 +54,9 @@ public class DepartmentService {
 	}
 	public void deleteDepartment(String ksid) {
 		departmentDAO.deleteById(ksid);
+	}
+	
+	public List<Department> getHosDepartment(){
+		return departmentDao2.getHosDepartments();
 	}
 }

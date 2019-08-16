@@ -202,7 +202,6 @@ public class OutpatientRegistrationService {
 	public OutpatientRegistration addReg(OutpatientRegistration outpatientRegistration) {
 		outpatientRegistration.setRegId(UUID.randomUUID().toString().replaceAll("-", ""));
 		outpatientRegistration.setTimeType(SimpleTools.isToday(outpatientRegistration.getDoDate()) ? "当日" : "预约");
-		System.out.println(outpatientRegistration.getTimeType());
 		outpatientRegistration.setRegTime(new Date());
 		outpatientRegistration.setRegStatus("待缴费");
 		outpatientRegistrationDao.save(outpatientRegistration);
