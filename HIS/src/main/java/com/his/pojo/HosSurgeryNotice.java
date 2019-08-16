@@ -47,6 +47,15 @@ public class HosSurgeryNotice implements Serializable {
 	public String getHosSurId() {
 		return this.hosSurId;
 	}
+     
+	
+	public String getPayNote() {
+		return payNote;
+	}
+
+	public void setPayNote(String payNote) {
+		this.payNote = payNote;
+	}
 
 	public void setHosSurId(String hosSurId) {
 		this.hosSurId = hosSurId;
