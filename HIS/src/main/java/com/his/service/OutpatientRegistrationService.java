@@ -1,6 +1,5 @@
 package com.his.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,12 +10,14 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.demo.trade.model.GoodsDetail;
 import com.deepoove.poi.data.PictureRenderData;
-import com.deepoove.poi.util.BytePictureUtils;
 import com.his.dao.IDepartmentDao;
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutpatientRegistrationDao;
@@ -25,7 +26,6 @@ import com.his.dao.IWorkTimeDao;
 import com.his.pojo.AliPayEntity;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
-import com.his.pojo.MedicalCard;
 import com.his.pojo.OtherProject;
 import com.his.pojo.OutpatientPay;
 import com.his.pojo.OutpatientRegistration;
@@ -34,11 +34,8 @@ import com.his.pojo.TechnicalPost;
 import com.his.pojo.WorkTime;
 import com.his.utils.AliPay;
 import com.his.utils.GeneratorWord;
-import com.his.utils.MD5Tools;
 import com.his.utils.QRCodeUtil;
 import com.his.utils.SimpleTools;
-
-import oracle.net.aso.e;
 
 /**  
 * @ClassName: OutpatientRegistrationService  
@@ -302,16 +299,17 @@ public class OutpatientRegistrationService {
 		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
 		Map<String, String> res = new HashMap<>();
 		AliPayEntity payEntity = new AliPayEntity();
-		payEntity.setOutTradeNo(UUID.randomUUID().toString().replace("-", ""));
+		payEntity.setOutTradeNo(regId);
 		OtherProject otherProject = otherProjectService.getPriceByReg(reg);
 		payEntity.setSubject(otherProject.getProjectName());
 		payEntity.setTotalAmount(otherProject.getProjectPrice() + "");
 		payEntity.setBody(otherProject.getProjectDesc());
 		List<GoodsDetail> goods = new ArrayList<>();
-		GoodsDetail good = GoodsDetail.newInstance(otherProject.getProjectId(), otherProject.getProjectName(), Long.parseLong(otherProject.getProjectPrice().toString()), 1);
+		GoodsDetail good = GoodsDetail.newInstance(otherProject.getProjectId(), otherProject.getProjectName(), otherProject.getProjectPrice().longValue(), 1);
 		goods.add(good);
 		res.put("code", AliPay.pay(payEntity, goods));
 		res.put("outTradeNo", payEntity.getOutTradeNo());
+		System.out.println(payEntity.getOutTradeNo());
 		return res;
 	}
 	
@@ -328,7 +326,7 @@ public class OutpatientRegistrationService {
 	 */
 	public Map<String, String> getCheckQrCode(String outTradeNo, String ygxh, String regId) {
 		Map<String, String> res = new HashMap<>();
-		res.put("code", "http://localhost:8090/check_reg_pay?outTradeNo=" + outTradeNo + "&ygxh=" + ygxh + "&regId=" + regId);
+		res.put("code", "http://localhost:8089/check_reg_pay?outTradeNo=" + outTradeNo + "&ygxh=" + ygxh + "&regId=" + regId);
 		return res;
 	}
 	
@@ -371,5 +369,49 @@ public class OutpatientRegistrationService {
 		}
 		
 		return flag;
+	}
+	
+	/**
+	* @Title:closeAliPay
+	* @Description:关闭订单
+	* @param:@param outTradeNo
+	* @param:@return
+	* @param:@throws AlipayApiException
+	* @return:boolean
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午2:34:53
+	 */
+	public boolean closeAliPay(String outTradeNo) throws AlipayApiException {
+		return AliPay.cancelTrade(outTradeNo);
+	}
+	
+	/**
+	* @Title:getAllRegs
+	* @Description:根据就诊卡号查询所有门诊挂号记录
+	* @param:@param cardNum
+	* @param:@return
+	* @return:List<OutpatientRegistration>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午3:26:49
+	 */
+	public List<OutpatientRegistration> getAllRegs(String cardNum, int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize, Direction.DESC, "doDate", "regTime");
+		return outpatientRegistrationDao.getAllRegsByCardNum(cardNum, page);
+	}
+	
+	/**
+	* @Title:getAllRegsCount
+	* @Description:根据就诊卡号查询所有挂号的数量
+	* @param:@param cardNum
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午4:05:21
+	 */
+	public int getAllRegsCount(String cardNum) {
+		return outpatientRegistrationDao.getAllRegsByCardNumCount(cardNum);
 	}
 }

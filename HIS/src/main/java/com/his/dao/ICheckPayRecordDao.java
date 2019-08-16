@@ -1,5 +1,8 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.CheckPayRecord;
@@ -12,5 +15,7 @@ import com.his.pojo.CheckPayRecord;
 *    
 */
 public interface ICheckPayRecordDao extends CrudRepository<CheckPayRecord, String>{
+	@Query(value="from CheckPayRecord c where c.medicalCard.cardId=?1 and c.checkPay.checkId=?2 and c.checkResultForm.checkResultId=null")
+	public CheckPayRecord getPayRecord(String card_id,String cheid);
 
 }

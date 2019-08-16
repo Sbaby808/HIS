@@ -73,6 +73,7 @@ public class OpeDrugDetailsService {
 	* @Date:2019年8月9日 下午3:49:00
 	 */
     public List<Medicinebean> getMedicinebeans(){
+    	/**
     	List<String []> list=iMedicineDao.getMedicinebeans();
     	for(int i=0;i<list.size();i++) {
     		int num=0;
@@ -93,6 +94,13 @@ public class OpeDrugDetailsService {
 			listme.add(medicinebean);
     		}
 			
+		}
+    	*/
+    	List<Medicinebean> listme=new ArrayList<Medicinebean>();
+    	List<String []> list=iMedicineDao.getMedicinebeans();
+    	for (String[] strings : list) {
+			Medicinebean medicinebean=new Medicinebean(strings[0]+"/"+strings[1]+" _批次号:"+strings[2],strings[2]);
+			listme.add(medicinebean);
 		}
     	
     	return listme;

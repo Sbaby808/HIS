@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +25,9 @@ public class Purchase implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="CG_TIME")
 	private Date cgTime;
+	
+	@Column(name="STATE")
+	private String state;
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -29,7 +35,8 @@ public class Purchase implements Serializable {
 	private EmpInformation empInformation;
 
 	//bi-directional many-to-one association to PurchaseDetail
-	@OneToMany(mappedBy="purchase")
+	@JSONField(serialize = false)
+	@OneToMany(mappedBy="purchase",cascade=CascadeType.REMOVE)
 	private List<PurchaseDetail> purchaseDetails;
 
 	public Purchase() {
@@ -49,6 +56,14 @@ public class Purchase implements Serializable {
 
 	public void setCgTime(Date cgTime) {
 		this.cgTime = cgTime;
+	}
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public EmpInformation getEmpInformation() {

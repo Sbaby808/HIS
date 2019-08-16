@@ -1,5 +1,8 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -45,4 +48,29 @@ public interface IOutpatientRegistrationDao extends CrudRepository<OutpatientReg
        + " and re.reg_duty = '医生'", nativeQuery = true)
 	public int checkEmp(String ygxh);
 	
+	/**
+	* @Title:getAllRegsByCardNum
+	* @Description:分页查询就诊卡的挂号记录
+	* @param:@param cardNum
+	* @param:@return
+	* @return:List<OutpatientRegistration>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午3:39:24
+	 */
+	@Query("from OutpatientRegistration ore where ore.medicalCard.cardId = ?1")
+	public List<OutpatientRegistration> getAllRegsByCardNum(String cardNum, Pageable pageable);
+	
+	/**
+	* @Title:getAllRegsByCardNumCount
+	* @Description:根据就诊卡编号查询所有挂号记录的数量
+	* @param:@param cardNum
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月14日 下午4:06:51
+	 */
+	@Query("select count(*) from OutpatientRegistration ore where ore.medicalCard.cardId = ?1")
+	public int getAllRegsByCardNumCount(String cardNum);
 }

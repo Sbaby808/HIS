@@ -28,5 +28,6 @@ public interface IOperationNoticeDao extends CrudRepository<OpeNotice, String>{
     public long getcount();
 	@Query(value="select new com.his.pojo.OperationPay(o.operPayName,o.operPayPrice) from OperationPay o where o.operPayId=?1")
 	public OperationPay getPaybyid(String id);
-	
+	@Query(value="from OpeNotice o where o.moperId=?1")
+	public List<OpeNotice> getbyid(String id);
 }

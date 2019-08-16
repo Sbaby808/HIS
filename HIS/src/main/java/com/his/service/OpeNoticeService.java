@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.his.bean.OpeNoticebean;
 import com.his.dao.IEmpInformationDao;
@@ -21,6 +22,7 @@ import com.his.dao.IOperationPayDao;
 import com.his.dao.IOperationRecordDao;
 import com.his.dao.IRoleDao;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.HosSurgeryNotice;
 import com.his.pojo.OpeEmp;
 import com.his.pojo.OpeEmpPK;
 import com.his.pojo.OpeNotice;
@@ -41,6 +43,7 @@ import oracle.net.aso.e;
 *    
 */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class OpeNoticeService {
 	@Autowired
 	private IOperationNoticeDao iOperationNotice;
@@ -125,9 +128,17 @@ public class OpeNoticeService {
     	operPayRecord.setEmpInformation(iEmpInformationDao.findById(ygxh).get());
     	operPayRecord.setOperJfTime(new Date());
     	iOperPayRecordDao.save(operPayRecord);
-    	OpeNotice opeNotice=iOperationNotice.findById(noticeid).get();
-    	opeNotice.setMoperComment("已处理");
-    	iOperationNotice.save(opeNotice);
+    	List<OpeNotice> opeNotice=iOperationNotice.getbyid(noticeid);
+    	if(!opeNotice.isEmpty()) {
+    		opeNotice.get(0).setMoperComment("已处理");
+        	iOperationNotice.save(opeNotice.get(0));
+    	}
+    	else {
+    		HosSurgeryNotice hosnotice=iHosSurgeryNoticeDao.findById(noticeid).get();
+    		hosnotice.setPayNote("已处理");
+    		iHosSurgeryNoticeDao.save(hosnotice);
+    	}
+    	
     	
     }
     public List<OperationPay> getn(){

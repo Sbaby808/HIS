@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -36,9 +37,26 @@ public class DepartmentController {
 	* @Date:2019年8月15日 上午11:25:21
 	 */	
 	@ResponseBody
-	@GetMapping("/get_hos_department")
-	public List <Department> getHosDepartMent(){
-		return departmentService.getHosDepartments();
+	@GetMapping("/findaDepartments")
+	public List <Department> finDepartments(String name,int currentpage){
+		return departmentService.finDepartments(name,currentpage);
 	}
 	
+	@ResponseBody
+	@GetMapping("/deleteDepartment")
+	public void deleteDepartment(String ksid) {
+		departmentService.deleteDepartment(ksid);
+	}
+	
+	@ResponseBody
+	@PostMapping("/addDepartment")
+	public void addDepartment(Department department) {
+		departmentService.addorupdateDepartment(department);
+	}
+	
+	@ResponseBody
+	@PostMapping("/updateDepartment")
+	public void updateDepartment(Department department) {
+		departmentService.addorupdateDepartment(department);
+	}
 }
