@@ -48,4 +48,10 @@ public class HosInNoticeController {
 		return hosInNoticeService.getHosInNoticeByPage(hospName,sourceText,departText,curpage, pagesize);
 	}
 	
+	@ResponseBody
+	@GetMapping("/change_in_notice")
+	public void changeInNotice(String id){
+		hosInNoticeService.changeInNotice(id);
+	}
+	
 }

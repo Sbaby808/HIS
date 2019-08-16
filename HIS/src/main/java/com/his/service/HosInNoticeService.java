@@ -61,4 +61,10 @@ public class HosInNoticeService {
 		hosInNoticeDao.delete(notice);
 	}
 	
+	public void changeInNotice(String id){
+		HospitalNotice notice = hosInNoticeDao.findById(id).get();
+		notice.setRyNote("已处理");
+		hosInNoticeDao.save(notice);
+	}
+	
 }
