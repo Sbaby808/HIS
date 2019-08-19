@@ -29,7 +29,7 @@ public class HosOutNotice implements Serializable {
 	@Column(name="HOS_OUT_NOTE")
 	private String hosOutNote;
 
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="HOS_OUT_TIME")
 	private Date hosOutTime;
 

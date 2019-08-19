@@ -111,25 +111,32 @@ public class HosDocAdviceService {
 		
 		List <HosCheckNotice> checkNotices = advice.getHosCheckNotices();
 		for(int i=0;i<checkNotices.size();i++){
-			checkNotices.get(i).setHosCheckNtime(dateFormat.parse(time));
-			checkNotices.get(i).setHosDoctorAdvice(advice);
-			hosCheckNoticeDao.save(checkNotices.get(i));
+			String checkNote = checkNotices.get(i).getHosCheckNote();
+			if(checkNote.length() != 0 && checkNote != null){
+				checkNotices.get(i).setHosCheckNtime(dateFormat.parse(time));
+				checkNotices.get(i).setHosDoctorAdvice(advice);
+				hosCheckNoticeDao.save(checkNotices.get(i));
+			}
 		}
 		
 		List <HosSurgeryNotice> surgeryNotices = advice.getHosSurgeryNotices();
-		System.out.println(surgeryNotices.size());
 		for(int i=0;i<surgeryNotices.size();i++){
-			surgeryNotices.get(i).setHosSurTime(dateFormat.parse(time));
-			surgeryNotices.get(i).setHosDoctorAdvice(advice);
-			hosSurgeryNoticeDao.save(surgeryNotices.get(i));
+			String surgeryNote = surgeryNotices.get(i).getHosSurNote();
+			if(surgeryNote.length() != 0 && surgeryNote != null){
+				surgeryNotices.get(i).setHosSurTime(dateFormat.parse(time));
+				surgeryNotices.get(i).setHosDoctorAdvice(advice);
+				hosSurgeryNoticeDao.save(surgeryNotices.get(i));
+			}
 		}
 		
 		List <HosOutNotice> outNotices = advice.getHosOutNotices();
 		for(int i=0;i<outNotices.size();i++){
-			outNotices.get(i).setHosOutTime(dateFormat.parse(time));
-			outNotices.get(i).setHosDoctorAdvice(advice);
-			hosOutNoticeDao.save(outNotices.get(i));
+			if(outNotices.get(i).getHosOutTime()!=null){
+				outNotices.get(i).setHosDoctorAdvice(advice);
+				hosOutNoticeDao.save(outNotices.get(i));
+			}
 		}
+			
 	}
 	
 	/**

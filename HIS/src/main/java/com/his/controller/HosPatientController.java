@@ -101,6 +101,17 @@ public class HosPatientController {
 		return hosPatientsService.getPatientByBid(bedId);
 	}
 	
+	/**
+	 * 
+	* @Title:outHosPatient
+	* @Description:出院登记
+	* @param:@param hospId
+	* @param:@throws ParseException
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月19日 下午7:30:14
+	 */
 	@ResponseBody
 	@GetMapping("/out_hos_patient")
 	public void outHosPatient(String hospId) throws ParseException{

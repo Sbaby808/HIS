@@ -101,25 +101,31 @@ public class HosPatientsService {
 	 */
 	public void addHosPatient(HospitalizedPatient patient){
 			
-		MedicalRecord record = new MedicalRecord();
-		record.setMedInDept(patient.getDepartment().getKsName());
-		record.setMedInTime(new Date());
-		record.setHospitalizedPatient(patient);
-		medicalRecordDao.save(record);
-		
+	    MedicalRecord record = newMedicalRecord();
+	   	
 		patient.setHospState("在院");
 		patient.setMedRid(record.getMedRid());
+		patient.setMedicalRecord(record);
 		patient.setHosBid(patient.getHosBed().getHosBid());
+		patient.setHosBed(patient.getHosBed());
 		patient.setRegisterTime(new Date());
 		patient.setBalance(patient.getDepositMoney());
 		hosPatientDao.save(patient);
 		
-		HosBed hosBed = patient.getHosBed();
+		
+		String bedId = patient.getHosBed().getHosBid();
+		HosBed hosBed = hosBedDao.findById(bedId).get();
 		hosBed.setHosBstate("已入住");
 		hosBed.setHospitalizedPatient(patient);
 		hosBedDao.save(hosBed);
 		
-		WardRoom room = patient.getHosBed().getWardRoom();
+		record.setMedInDept(patient.getDepartment().getKsName());
+		record.setHospitalizedPatient(patient);
+		medicalRecordDao.save(record);
+		
+		
+		String roomId = patient.getHosBed().getWardRoom().getWroomId();
+		WardRoom room = wardRoomDao.findById(roomId).get();
 		room.setWNum(room.getWNum()+1);
 		wardRoomDao.save(room);
 		
@@ -133,6 +139,24 @@ public class HosPatientsService {
 		}
 			
 	}
+	
+	/**
+	 * 
+	* @Title:newMedicalRecord
+	* @Description:新增病案
+	* @param:@return
+	* @return:MedicalRecord
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月17日 上午8:57:23
+	 */
+	public MedicalRecord newMedicalRecord(){	
+		MedicalRecord record = new MedicalRecord();
+		record.setMedInTime(new Date());
+		medicalRecordDao.save(record);
+		return record;
+	}
+	
 	
 	/**
 	 * 
@@ -185,8 +209,9 @@ public class HosPatientsService {
 		wardRoomDao.save(room);
 			
 		patient.setHosBid(null);
-		patient.setOutRid(outRecord.getOutRid());
 		patient.setHosBed(null);
+		patient.setOutRid(outRecord.getOutRid());
+		patient.setOutHospitaiRecord(outRecord);
 		patient.setOutHospitaiRecord(outRecord);
 		patient.setHospState("已出院");
 		hosPatientDao.save(patient);

@@ -64,4 +64,7 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	 */
 	@Query(value="select * from hospitalized_patients h where h.hos_bid=?1",nativeQuery=true)
 	public HospitalizedPatient getPatientByBid(String bedId);
+	
+	/*@Query("from HospitalizedPatient h ")
+	public HospitalizedPatient getPatientBypreId(String preId);*/
 }

@@ -26,6 +26,8 @@ public class CheckPayController {
 	@Autowired
 	private CheckPayService checkPayService;
 	
+	
+	
 	@ResponseBody
 	@GetMapping("/getall_checkpay")
 	public Map getAllCheckPay(int curpage, int pagesize,String sou){
@@ -55,5 +57,21 @@ public class CheckPayController {
 	@GetMapping("del_check")
 	public void delcheck(String checkid) {
 		checkPayService.delcheck(checkid);
+	}
+	
+	/**
+	 * 
+	* @Title:getAllCheckPay
+	* @Description:无分页查询所有检查项目
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月19日 上午8:33:29
+	 */
+	@ResponseBody
+	@GetMapping("/get_all_check_pay")
+	public List <CheckPay> getAllCheckPay(){
+		return checkPayService.getAllCheckPay();
 	}
 }

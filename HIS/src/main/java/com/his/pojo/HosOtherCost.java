@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -19,7 +22,7 @@ public class HosOtherCost implements Serializable {
 	@Column(name="HOS_OID")
 	private String hosOid;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOS_OTIME")
 	private Date hosOtime;
 

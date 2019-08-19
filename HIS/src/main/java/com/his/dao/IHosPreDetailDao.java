@@ -29,8 +29,10 @@ public interface IHosPreDetailDao extends CrudRepository<HosPrescriptionDetail, 
 	* @author:Hamster
 	* @Date:2019年8月6日 上午10:49:01
 	 */
-	@Query("from HosPrescriptionDetail h")
-	public List <HosPrescriptionDetail> getHosPreDetailsByPage(Pageable page);
+	@Query("from HosPrescriptionDetail h where "
+			+ " h.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1"
+			+ " or h.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1")
+	public List <HosPrescriptionDetail> getHosPreDetailsByPage(String cardName,Pageable page);
 	
 	/**
 	 * 
