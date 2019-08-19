@@ -1,5 +1,6 @@
 package com.his;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.demo.trade.model.GoodsDetail;
 import com.his.pojo.AliPayEntity;
 import com.his.pojo.EmpInformation;
 import com.his.service.EmpInformationService;
 import com.his.service.MedicalCardService;
 import com.his.utils.AliPay;
+import com.his.utils.ImageBase64Utils;
 import com.his.utils.MD5Tools;
 
 @RunWith(SpringRunner.class)
@@ -139,6 +142,40 @@ public class HisApplicationTests {
 	@Test
 	public void testAliPayQuery() {
 //		AliPay.query("8a0b782638f14f43aa3046b2a0370253");
+	}
+	
+	/**
+	* @Title:testBase64ToImage
+	* @Description:测试将base64编码转换成图片
+	* @param:
+	* @return:void
+	 * @throws IOException 
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月17日 下午2:54:11
+	 */
+	@Test
+	public void testBase64ToImage() throws IOException {
+		// data:image/png;base64,
+		String base64 = "";
+		ImageBase64Utils.base64ToImageFile(base64, "D://HIS//test.png");
+//		ImageBase64Utils.GenerateImage(base64);
+	}
+	
+	/**
+	* @Title:testStringToJson
+	* @Description:测试String转Json
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月19日 上午11:32:05
+	 */
+	@Test
+	public void testStringToJson() {
+		String str = "{\"outTradeNo\":\"69169713f6b34088920d1c43485b8177\",\"ygxh\":\"ADMINTST\",\"regId\":\"69169713f6b34088920d1c43485b8177\"}";
+		JSONObject obj = JSONObject.parseObject(str);
+		System.out.println(obj.get("outTradeNo"));
 	}
 
 }

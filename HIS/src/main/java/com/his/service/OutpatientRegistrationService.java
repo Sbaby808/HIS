@@ -325,7 +325,8 @@ public class OutpatientRegistrationService {
 	 */
 	public Map<String, String> getCheckQrCode(String outTradeNo, String ygxh, String regId) {
 		Map<String, String> res = new HashMap<>();
-		res.put("code", "http://localhost:8089/check_reg_pay?outTradeNo=" + outTradeNo + "&ygxh=" + ygxh + "&regId=" + regId);
+		res.put("code", "{\"outTradeNo\":\"" + outTradeNo + "\",\"ygxh\":\"" + ygxh + "\",\"regId\":\"" + regId + "\"}");
+		System.out.println(res.get("code"));
 		return res;
 	}
 	

@@ -73,7 +73,7 @@ public class OutpatientRegistration implements Serializable {
 	private List<RegEmp> regEmps;
 
 	//bi-directional one-to-one association to OutMedicalRecord
-	@OneToOne(mappedBy="outpatientRegistration")
+	@OneToOne(mappedBy="outpatientRegistration", cascade = CascadeType.ALL)
 	private OutMedicalRecord outMedicalRecord;
 
 	//bi-directional one-to-one association to History

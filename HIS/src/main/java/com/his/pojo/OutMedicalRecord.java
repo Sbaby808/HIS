@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -20,7 +23,7 @@ public class OutMedicalRecord implements Serializable {
 	@Column(name="OUT_MID")
 	private String outMid;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd")
 	@Column(name="OUT_MTIME")
 	private Date outMtime;
 
@@ -31,7 +34,7 @@ public class OutMedicalRecord implements Serializable {
 	private String regId;
 
 	//bi-directional one-to-one association to OutpatientRegistration
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="OUT_MID", referencedColumnName="CARD_ID")
 	private OutpatientRegistration outpatientRegistration;
 
