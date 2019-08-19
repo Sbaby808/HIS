@@ -22,6 +22,17 @@ public class OutMedicalRecordController {
     @Autowired
     private OutMedicalRecordService outMedicalRecordService;
 
+    /**
+    * @Title:checkForCode
+    * @Description:候诊排队检查
+    * @param:@param file
+    * @param:@param waitingRoomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月19日 下午3:11:18
+     */
     @RequestMapping("/check_for_out_wait_code")
     @ResponseBody
     public JsonResult checkForCode(@RequestParam("file") MultipartFile file, String waitingRoomId) {
