@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.his.bean.Checknoticebean;
 import com.his.pojo.CheckNoticeForm;
 import com.his.pojo.CheckPay;
+import com.his.pojo.CheckResultForm;
 import com.his.service.CheckNoticeService;
 
 /**  
@@ -75,13 +76,18 @@ public class CheckNoticeController {
 	}
 	@ResponseBody
 	@GetMapping("fuzhi")
-	public List<Integer> fuzhi(int changdu){
-		return checkNoticeService.fuzhi(changdu);
+	public Map fuzhi(int changdu,String cheitemid){
+		return checkNoticeService.fuzhi(changdu,cheitemid);
 	}
 	@ResponseBody
 	@GetMapping("Addcheckrecord")
-	public void addcheckrecord(String card_id,String cheid,String itemid,String itemval,String advice,String ygxh) {
-		checkNoticeService.addcheckrecord(card_id, cheid, itemid, itemval, advice, ygxh);
+	public void addcheckrecord(String card_id,String cheid,String itemid,String itemval,String beizhu,String ygxh) {
+		checkNoticeService.addcheckrecord(card_id, cheid, itemid, itemval, beizhu, ygxh);
+	}
+	@ResponseBody
+	@GetMapping("kkkk")
+	public List<CheckResultForm> getform(){
+		return checkNoticeService.getform();
 	}
   
 }

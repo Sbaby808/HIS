@@ -56,4 +56,10 @@ public class CheckPayController {
 	public void delcheck(String checkid) {
 		checkPayService.delcheck(checkid);
 	}
+	@ResponseBody
+	@GetMapping("getcheckpayrecord")
+	public Map getcheckpayrecord(int curpage, int pagesize,String sou) {
+		return checkPayService.getcheckayrecord(curpage, pagesize, "%"+sou+"%");
+		
+	}
 }
