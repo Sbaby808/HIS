@@ -414,4 +414,8 @@ public class OutpatientRegistrationService {
 	public int getAllRegsCount(String cardNum) {
 		return outpatientRegistrationDao.getAllRegsByCardNumCount(cardNum);
 	}
+
+	public void removeReg(String regId) {
+		outpatientRegistrationDao.deleteById(regId);
+	}
 }

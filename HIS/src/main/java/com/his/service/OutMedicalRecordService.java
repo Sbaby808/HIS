@@ -3,25 +3,22 @@ package com.his.service;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+import com.his.dao.IWaitingRoomDao;
+import com.his.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.his.dao.IOutMedicalRecordDao;
 import com.his.dao.IOutpatientRegistrationDao;
-import com.his.pojo.JsonResult;
-import com.his.pojo.OutMedicalRecord;
-import com.his.pojo.OutpatientRegistration;
-import com.his.pojo.RegEmp;
-import com.his.utils.AliPay;
 import com.his.utils.QRCodeUtil;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @Author Sbaby
@@ -37,6 +34,8 @@ public class OutMedicalRecordService {
     private IOutMedicalRecordDao outMedicalRecordDao;
     @Autowired
     private IOutpatientRegistrationDao outpatientRegistrationDao;
+    @Autowired
+    private IWaitingRoomDao waitingRoomDao;
 
     /**
     * @Title:checkForCode
@@ -105,6 +104,13 @@ public class OutMedicalRecordService {
         		result.setStatus("error");
         		return result;
         	}
+
+            // 确认此人是否已经排队
+            if(outMedicalRecordDao.checkForQueue(outpatientRegistration.getRegId()) != 0) {
+                result.setResult("此挂号已经排队，无需重复排队！");
+                result.setStatus("error");
+                return result;
+            }
         	
         	// 加入排队
         	this.addOutMedicalRecord(outpatientRegistration);
@@ -128,11 +134,13 @@ public class OutMedicalRecordService {
     	outMedicalRecord.setOutpatientRegistration(outpatientRegistration);
     	outMedicalRecord.setOutMtime(new Date());
     	outMedicalRecord.setOutTimes(new BigDecimal(0));
-    	outMedicalRecord.setRegId(outpatientRegistration.getRegId());
+    	outMedicalRecord.setOutStatus("候诊");
+//    	outMedicalRecord.setRegId(outpatientRegistration.getRegId());
     	
     	outMedicalRecordDao.save(outMedicalRecord);
     	
     	outpatientRegistration.setOutMedicalRecord(outMedicalRecord);
+    	outpatientRegistration.setOutMid(outMedicalRecord.getOutMid());
     	outpatientRegistrationDao.save(outpatientRegistration);
     }
     
@@ -202,5 +210,61 @@ public class OutMedicalRecordService {
     public boolean checkRegStatus(OutpatientRegistration outpatientRegistration) {
     	return "已缴费".equals(outpatientRegistration.getRegStatus());
     }
+    
+    /**
+    * @Title:getQueueByRoomId
+    * @Description:根据候诊厅id查询排队队列
+    * @param:@param roomId
+    * @param:@return
+    * @return:List<OutMedicalRecord>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月19日 下午3:15:17
+     */
+    public List<OutMedicalRecord> getQueueByRoomId(String roomId) {
+		PageRequest page = PageRequest.of(0, 10);
+    	List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId, page);
+    	return list;
+    }
+
+    public List<OutMedicalRecord> callPatient(String roomId) {
+		PageRequest page = PageRequest.of(0, 4);
+		// 先检查呼叫的患者是否在就诊
+		OutMedicalRecord outMedicalRecord = outMedicalRecordDao.checkCallPatient(roomId);
+		// 如果不在就诊，将患者设置成候诊
+		if(outMedicalRecord != null) {
+			if(outMedicalRecord.getOutTimes().compareTo(new BigDecimal(3)) >= 0) {
+				outMedicalRecord.setOutStatus("挂号作废");
+			} else {
+				outMedicalRecord.setOutStatus("候诊");
+			}
+			outMedicalRecordDao.save(outMedicalRecord);
+			// 查询前四位患者
+			List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId, page);
+			// 叫号下一位患者
+			for (OutMedicalRecord omr :	list) {
+				if(!omr.getOutMid().equals(outMedicalRecord.getOutMid())) {
+					omr.setOutTimes(omr.getOutTimes().add(new BigDecimal(1)));
+					omr.setOutStatus("正在叫号");
+					outMedicalRecordDao.save(omr);
+				}
+			}
+		}
+		return this.getQueueByRoomId(roomId);
+	}
+
+
+	public void callNext(String roomId) {
+    	PageRequest page = PageRequest.of(0, 4);
+    	List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId, page);
+    	OutMedicalRecord outMedicalRecord = list.get(0);
+    	outMedicalRecord.setOutStatus("正在叫号");
+    	outMedicalRecord.setOutTimes(outMedicalRecord.getOutTimes().add(new BigDecimal(1)));
+    	outMedicalRecordDao.save(outMedicalRecord);
+	}
+
+	public boolean checkCall(String roomId) {
+		return outMedicalRecordDao.checkCall(roomId) > 0 ? true : false;
+	}
 
 }

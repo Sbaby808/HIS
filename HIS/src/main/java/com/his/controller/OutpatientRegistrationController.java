@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.his.pojo.EmpInformation;
 import com.his.pojo.JsonResult;
@@ -402,6 +399,21 @@ public class OutpatientRegistrationController {
 		JsonResult result = new JsonResult();
 		try {
 			result.setResult(outpatientRegistrationService.getAllRegs(cardNum, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+
+
+	@DeleteMapping("/remove_out_reg")
+	@ResponseBody
+	public JsonResult removeOutReg(String regId) {
+		JsonResult result = new JsonResult();
+		try {
+			outpatientRegistrationService.removeReg(regId);
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

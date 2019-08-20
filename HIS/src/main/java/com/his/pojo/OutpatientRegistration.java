@@ -74,6 +74,7 @@ public class OutpatientRegistration implements Serializable {
 
 	//bi-directional one-to-one association to OutMedicalRecord
 	@OneToOne(mappedBy="outpatientRegistration", cascade = CascadeType.ALL)
+	@JSONField(serialize = false)
 	private OutMedicalRecord outMedicalRecord;
 
 	//bi-directional one-to-one association to History
