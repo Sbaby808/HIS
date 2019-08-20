@@ -28,6 +28,9 @@ public class HosCheckNotice implements Serializable {
 
 	@Column(name="HOS_CHECK_NOTE")
 	private String hosCheckNote;
+	
+	@Column(name="state")
+	private String state;
 
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOS_CHECK_NTIME")
@@ -71,6 +74,13 @@ public class HosCheckNotice implements Serializable {
 
 	public void setHosDoctorAdvice(HosDoctorAdvice hosDoctorAdvice) {
 		this.hosDoctorAdvice = hosDoctorAdvice;
+	}
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 }

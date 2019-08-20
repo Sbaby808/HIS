@@ -3,7 +3,7 @@ package com.his.service;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.math.BigDecimal;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import com.his.pojo.CheckResultDetailPK;
 import com.his.pojo.CheckResultForm;
 import com.his.utils.UUIDGenerator;
 
+import oracle.net.aso.l;
 import oracle.net.aso.p;
 
 /**  
@@ -85,9 +86,16 @@ public class CheckNoticeService {
 		    cList.add(cbean);
 		}
 		long total=iCheckNoticeDao.getcount(sou);
+		String name=iMedicalCardDao.findById(sou).get().getCardName();
+		System.out.println(name);
 		Map map=new HashMap();
 		map.put("list", cList);
 		map.put("total", total);
+		map.put("name", name);
+		return map;
+	}
+	public Map getcheckzhuyuan() {
+		Map map=new HashMap();
 		return map;
 	}
 	public BigDecimal getmoneybyid(String checkpayid) {
@@ -161,10 +169,12 @@ public class CheckNoticeService {
 			    listid.add(checkItem.getCheckItemId());
 			}
 			String name=iMedicalCardDao.findById(card_id).get().getCardName();
+			String chename=iCheckPayDao.findById(cheid).get().getCheckPayName();
 			Map map=new HashMap();
 			map.put("list", list);
 			map.put("listid", listid);
 			map.put("name", name);
+			map.put("chename", chename);
 			return map;
 		}
 		else {
@@ -172,26 +182,51 @@ public class CheckNoticeService {
 		}
 		
 	}
-	public List<Integer> fuzhi(int changdu){
-		List<Integer>  list=new ArrayList<Integer>();
+	public Map fuzhi(int changdu,String cheitemid){
+		List<String> itemlist=new ArrayList<String>();
+		String a[]=cheitemid.split(",");
+		for (String string : a) {
+			String cItem=iCheckItemDAO.findById(string).get().getCheckItemStd();
+			itemlist.add(cItem);
+			System.out.println(cItem);
+		}
+		List<Double>  list=new ArrayList<Double>();
+		List<Integer>  pandua=new ArrayList<Integer>();
 		for(int i=0;i<changdu;i++) {
-			Integer cInteger=(int) (1+Math.random()*(20-1+1));
+			Double nocInteger=(Double) (1+Math.random()*(20-1+1));
+			DecimalFormat dcmFmt = new DecimalFormat("0.0");
+			Double cInteger=Double.parseDouble(dcmFmt.format(nocInteger));
+			String zhi[]=itemlist.get(i).split(" ");
+			String zhongji[]=zhi[0].split("~");
+			if(cInteger<Double.parseDouble(zhongji[0])) {
+				pandua.add(1);
+			}
+			else if(cInteger>Double.parseDouble(zhongji[1])){
+				pandua.add(2);
+			}
+			else {
+				pandua.add(3);
+			}
 			list.add(cInteger);
 		}
-		return list;
+		Map map=new HashMap();
+		map.put("zhilist", list);
+		map.put("panduanlist", pandua);
+		return map;
 	}
-	public void addcheckrecord(String card_id,String cheid,String itemid,String itemval,String advice,String ygxh) {
+	public void addcheckrecord(String card_id,String cheid,String itemid,String itemval,String beizhu,String ygxh) {
 		CheckPayRecord cRecord=iCheckPayRecordDao.getPayRecord(card_id, cheid);
 		UUIDGenerator uuid=new UUIDGenerator();
 		String crecordid=uuid.getUUID();
 		CheckResultForm cForm=new CheckResultForm();
-		cForm.setCheckComment(advice);
+		cForm.setCheckComment(beizhu);
 	    cForm.setCheckResultId(crecordid);
 	    cForm.setCheckTime(new Date());
 	    cForm.setEmpInformation(iEmpInformationDao.findById(ygxh).get());
 	    iCheckResultFormDao.save(cForm);
 	    CheckResultForm ccForm=iCheckResultFormDao.findById(crecordid).get();
 	    cRecord.setCheckResultForm(ccForm);
+	    ccForm.setCheckJfId(cRecord.getCheckJfId());
 	    iCheckPayRecordDao.save(cRecord);
 	    String a[]=itemid.split(",");
 	    String b[]=itemval.split(",");
@@ -206,6 +241,9 @@ public class CheckNoticeService {
 	    	iCheckResultDetailDao.save(cDetail);
 	    }
 	    
+	}
+	public List<CheckResultForm> getform(){
+		return (List<CheckResultForm>) iCheckResultFormDao.findAll();
 	}
  
 }

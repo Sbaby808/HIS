@@ -33,8 +33,7 @@ public class HisApplication {
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
 		fastJsonConfig.setSerializerFeatures(
 				SerializerFeature.PrettyFormat, 
-				SerializerFeature.DisableCircularReferenceDetect, 
-				SerializerFeature.IgnoreNonFieldGetter);
+				SerializerFeature.DisableCircularReferenceDetect);
 		
 		// 3. 在converter中添加配置信息
 		fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
