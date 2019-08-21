@@ -222,15 +222,26 @@ public class OutMedicalRecordService {
     * @Date:2019年8月19日 下午3:15:17
      */
     public List<OutMedicalRecord> getQueueByRoomId(String roomId) {
-		PageRequest page = PageRequest.of(0, 10);
-    	List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId, page);
+//		PageRequest page = PageRequest.of(0, 10);
+    	List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId);
     	return list;
     }
 
+    /**
+    * @Title:callPatient
+    * @Description:刷新候诊室排队信息
+    * @param:@param roomId
+    * @param:@return
+    * @return:List<OutMedicalRecord>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:10:41
+     */
     public List<OutMedicalRecord> callPatient(String roomId) {
-		PageRequest page = PageRequest.of(0, 4);
 		// 先检查呼叫的患者是否在就诊
 		OutMedicalRecord outMedicalRecord = outMedicalRecordDao.checkCallPatient(roomId);
+		// 查询前四位患者
+    	List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId);
 		// 如果不在就诊，将患者设置成候诊
 		if(outMedicalRecord != null) {
 			if(outMedicalRecord.getOutTimes().compareTo(new BigDecimal(3)) >= 0) {
@@ -239,30 +250,74 @@ public class OutMedicalRecordService {
 				outMedicalRecord.setOutStatus("候诊");
 			}
 			outMedicalRecordDao.save(outMedicalRecord);
-			// 查询前四位患者
-			List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId, page);
+			
 			// 叫号下一位患者
+			boolean flag = false;
+			boolean isChange = false;
 			for (OutMedicalRecord omr :	list) {
-				if(!omr.getOutMid().equals(outMedicalRecord.getOutMid())) {
+				System.out.println(omr.getOutpatientRegistration().getMedicalCard().getCardName());
+				if(flag) {
 					omr.setOutTimes(omr.getOutTimes().add(new BigDecimal(1)));
 					omr.setOutStatus("正在叫号");
 					outMedicalRecordDao.save(omr);
+					isChange = true;
+					break;
 				}
+				if(outMedicalRecord == omr) {
+					flag = true;
+				}
+//				if(!omr.getOutMid().equals(outMedicalRecord.getOutMid())) {
+//					omr.setOutTimes(omr.getOutTimes().add(new BigDecimal(1)));
+//					omr.setOutStatus("正在叫号");
+//					outMedicalRecordDao.save(omr);
+//					break;
+//				}
+			}
+			if(!isChange && list.size() > 1) {
+				OutMedicalRecord omr = list.get(0);
+				omr.setOutTimes(omr.getOutTimes().add(new BigDecimal(1)));
+				omr.setOutStatus("正在叫号");
+				outMedicalRecordDao.save(omr);
 			}
 		}
 		return this.getQueueByRoomId(roomId);
 	}
 
 
-	public void callNext(String roomId) {
+    /**
+    * @Title:callNext
+    * @Description:医生呼叫下一位患者
+    * @param:@param roomId
+    * @param:@return
+    * @return:boolean
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:10:58
+     */
+	public boolean callNext(String roomId) {
     	PageRequest page = PageRequest.of(0, 4);
-    	List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId, page);
-    	OutMedicalRecord outMedicalRecord = list.get(0);
-    	outMedicalRecord.setOutStatus("正在叫号");
-    	outMedicalRecord.setOutTimes(outMedicalRecord.getOutTimes().add(new BigDecimal(1)));
-    	outMedicalRecordDao.save(outMedicalRecord);
+    	List<OutMedicalRecord> list = outMedicalRecordDao.getQueueByRoomId(roomId);
+    	if(list.size() == 0) {
+    		return false;
+    	} else {
+    		OutMedicalRecord outMedicalRecord = list.get(0);
+        	outMedicalRecord.setOutStatus("正在叫号");
+        	outMedicalRecord.setOutTimes(outMedicalRecord.getOutTimes().add(new BigDecimal(1)));
+        	outMedicalRecordDao.save(outMedicalRecord);
+        	return true;
+    	}
 	}
 
+	/**
+	* @Title:checkCall
+	* @Description:检查当前是否有患者正在就着或叫号
+	* @param:@param roomId
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 上午11:11:12
+	 */
 	public boolean checkCall(String roomId) {
 		return outMedicalRecordDao.checkCall(roomId) > 0 ? true : false;
 	}

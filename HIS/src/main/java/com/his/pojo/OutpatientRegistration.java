@@ -30,8 +30,8 @@ public class OutpatientRegistration implements Serializable {
 	@Column(name="EXAM_ID")
 	private String examId;
 
-	@Column(name="HISTORY_ID")
-	private String historyId;
+//	@Column(name="HISTORY_ID")
+//	private String historyId;
 
 	@Column(name="OUT_MID")
 	private String outMid;
@@ -78,8 +78,9 @@ public class OutpatientRegistration implements Serializable {
 	private OutMedicalRecord outMedicalRecord;
 
 	//bi-directional one-to-one association to History
-	@OneToOne(mappedBy="outpatientRegistration")
+	@OneToOne(mappedBy="outpatientRegistration", cascade = CascadeType.ALL)
 	@JSONField(serialize=false)
+	@JoinColumn(name="HISTORY_ID")
 	private History history;
 
 	//bi-directional one-to-one association to Examination
@@ -117,13 +118,13 @@ public class OutpatientRegistration implements Serializable {
 		this.examId = examId;
 	}
 
-	public String getHistoryId() {
-		return this.historyId;
-	}
-
-	public void setHistoryId(String historyId) {
-		this.historyId = historyId;
-	}
+//	public String getHistoryId() {
+//		return this.historyId;
+//	}
+//
+//	public void setHistoryId(String historyId) {
+//		this.historyId = historyId;
+//	}
 
 	public String getOutMid() {
 		return this.outMid;

@@ -33,8 +33,8 @@ public interface IOutMedicalRecordDao extends CrudRepository<OutMedicalRecord, S
             "       where re.reg_duty = '医生' and wr.waiting_room_id = ?1" +
 			"		and to_char(sysdate, 'yyyy-MM-dd') = to_char(ore.do_date, 'yyyy-MM-dd') " +
 			"		and omr.out_status != '已就诊' and omr.out_status != '挂号作废'" +
-			"		order by omr.out_mtime, omr.out_times ", nativeQuery = true)
-	public List<OutMedicalRecord> getQueueByRoomId(String roomId, Pageable pageable);
+			"		order by omr.out_mtime ", nativeQuery = true)
+	public List<OutMedicalRecord> getQueueByRoomId(String roomId);
 
     /**
      * @Title:checkForQueue
@@ -61,6 +61,16 @@ public interface IOutMedicalRecordDao extends CrudRepository<OutMedicalRecord, S
 			"       and omr.out_status = '正在叫号'", nativeQuery = true)
 	public int checkCall(String roomId);
 
+	/**
+	* @Title:checkCallPatient
+	* @Description:查询当前正在叫号的患者
+	* @param:@param roomId
+	* @param:@return
+	* @return:OutMedicalRecord
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午2:09:09
+	 */
 	@Query(value = "select omr.* from out_medical_records omr left outer join outpatient_registration ore on omr.reg_id = ore.reg_id " +
 			"       left outer join reg_emp re on ore.reg_id = re.reg_id " +
 			"       left outer join emp_information emp on re.ygxh = emp.ygxh " +
@@ -69,5 +79,24 @@ public interface IOutMedicalRecordDao extends CrudRepository<OutMedicalRecord, S
 			"       and to_char(ore.do_date, 'yyyy-MM-dd') = to_char(sysdate, 'yyyy-MM-dd') " +
 			"       and omr.out_status = '正在叫号'", nativeQuery = true)
 	public OutMedicalRecord checkCallPatient(String roomId);
+	
+	/**
+	* @Title:getDiagnosePatient
+	* @Description:查询当前正在就诊的患者信息
+	* @param:@param roomId
+	* @param:@return
+	* @return:OutMedicalRecord
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午2:10:12
+	 */
+	@Query(value = "select omr.* from out_medical_records omr left outer join outpatient_registration ore on omr.reg_id = ore.reg_id " +
+			"       left outer join reg_emp re on ore.reg_id = re.reg_id " +
+			"       left outer join emp_information emp on re.ygxh = emp.ygxh " +
+			"       left outer join waiting_room wr on emp.waiting_room_id = wr.waiting_room_id " +
+			"       where wr.waiting_room_id = ?1 " +
+			"       and to_char(ore.do_date, 'yyyy-MM-dd') = to_char(sysdate, 'yyyy-MM-dd') " +
+			"       and omr.out_status = '正在就诊'", nativeQuery = true)
+	public OutMedicalRecord getDiagnosePatient(String roomId);
 
 }

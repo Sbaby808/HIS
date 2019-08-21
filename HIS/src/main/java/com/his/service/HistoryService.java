@@ -1,9 +1,12 @@
 package com.his.service;
 
 import com.his.dao.IHistoryDao;
+import com.his.dao.IOutMedicalRecordDao;
 import com.his.dao.IOutpatientRegistrationDao;
 import com.his.pojo.History;
+import com.his.pojo.JsonResult;
 import com.his.pojo.MedicalCard;
+import com.his.pojo.OutMedicalRecord;
 import com.his.pojo.OutpatientRegistration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +27,69 @@ public class HistoryService {
     private IHistoryDao historyDao;
     @Autowired
     private IOutpatientRegistrationDao outpatientRegistrationDao;
+    @Autowired
+    private IOutMedicalRecordDao outMedicalRecordDao;
 
-    public OutpatientRegistration initHistory(String regId) {
-        OutpatientRegistration outpatientRegistration = outpatientRegistrationDao.findById(regId).get();
-        History history = new History();
-        history.setHistoryId(UUID.randomUUID().toString().replaceAll("-", ""));
-        historyDao.save(history);
-        return outpatientRegistration;
+    /**
+    * @Title:initHistory
+    * @Description:创建病历，返回挂号信息
+    * @param:@param regId
+    * @param:@return
+    * @return:OutpatientRegistration
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:25:46
+     */
+    public JsonResult initHistory(String cardNum, String roomId) {
+    	JsonResult result = new JsonResult();
+    	// 先根据就诊卡号与候诊厅编号查询就诊卡是否是呼叫的患者，并获取挂号信息
+    	OutMedicalRecord omr = outMedicalRecordDao.checkCallPatient(roomId);
+    	if(omr != null) {
+    		if(omr.getOutpatientRegistration().getMedicalCard().getCardId().equals(cardNum)) {
+    			OutpatientRegistration outpatientRegistration = omr.getOutpatientRegistration();
+    	        History history = new History();
+    	        history.setHistoryId(UUID.randomUUID().toString().replaceAll("-", ""));
+    	        history.setOutpatientRegistration(outpatientRegistration);
+    	        historyDao.save(history);
+    	        outpatientRegistration.setHistory(history);
+    	        outpatientRegistrationDao.save(outpatientRegistration);
+    	        // 修改排队状态
+    	        omr.setOutStatus("正在就诊");
+    	        outMedicalRecordDao.save(omr);
+    	        result.setResult(history);
+    	        result.setStatus("ok");
+    		} else {
+    			result.setResult("请在叫号时进行就诊！");
+        		result.setStatus("error");
+    		}
+    	} else {
+    		result.setResult("当前无叫号患者！");
+    		result.setStatus("error");
+    	}
+    	return result;
+    }
+    
+    /**
+    * @Title:checkDiagnose
+    * @Description:检查当前是否在诊断患者
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 下午2:07:59
+     */
+    public JsonResult checkDiagnose(String roomId) {
+    	JsonResult result = new JsonResult();
+    	OutMedicalRecord outMedicalRecord = outMedicalRecordDao.getDiagnosePatient(roomId);
+    	if(outMedicalRecord != null) {
+    		result.setResult(outMedicalRecord.getOutpatientRegistration().getHistory());
+    		result.setStatus("ok");
+    	} else {
+    		result.setResult("当前无患者就诊！");
+    		result.setStatus("error");
+    	}
+    	return result;
     }
 
 

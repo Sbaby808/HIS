@@ -82,6 +82,16 @@ public class OutMedicalRecordController {
     	return result;
     }
 
+    /**
+    * @Title:callPatient
+    * @Description:刷新就诊室排队信息
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:09:39
+     */
     @GetMapping("/call_patient_by_roomId")
     @ResponseBody
     public JsonResult callPatient(String roomId) {
@@ -96,12 +106,22 @@ public class OutMedicalRecordController {
         return result;  
     }
 
+    /**
+    * @Title:callNext
+    * @Description:医生呼叫下一位患者
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:09:58
+     */
     @GetMapping("/call_next")
     @ResponseBody
     public JsonResult callNext(String roomId) {
         JsonResult result = new JsonResult();
         try {
-            outMedicalRecordService.callNext(roomId);
+            result.setResult(outMedicalRecordService.callNext(roomId));
             result.setStatus("ok");
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,6 +130,16 @@ public class OutMedicalRecordController {
         return result;
     }
 
+    /**
+    * @Title:checkCall
+    * @Description:检查当前是否有患者正在就诊或叫号
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:10:13
+     */
     @GetMapping("/check_call")
     @ResponseBody
     public JsonResult checkCall(String roomId) {

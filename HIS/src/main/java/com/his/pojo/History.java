@@ -55,7 +55,7 @@ public class History implements Serializable {
 	private List<SolveScheme> solveScheme;
 
 	//bi-directional one-to-one association to OutpatientRegistration
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="REG_ID")
 	private OutpatientRegistration outpatientRegistration;
 
