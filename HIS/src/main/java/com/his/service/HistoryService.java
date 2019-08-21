@@ -1,18 +1,21 @@
 package com.his.service;
 
-import com.his.dao.IHistoryDao;
-import com.his.dao.IOutMedicalRecordDao;
-import com.his.dao.IOutpatientRegistrationDao;
-import com.his.pojo.History;
-import com.his.pojo.JsonResult;
-import com.his.pojo.MedicalCard;
-import com.his.pojo.OutMedicalRecord;
-import com.his.pojo.OutpatientRegistration;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import com.his.dao.IHistoryDao;
+import com.his.dao.IIllnessDao;
+import com.his.dao.IOutMedicalRecordDao;
+import com.his.dao.IOutpatientRegistrationDao;
+import com.his.pojo.History;
+import com.his.pojo.Illness;
+import com.his.pojo.JsonResult;
+import com.his.pojo.OutMedicalRecord;
+import com.his.pojo.OutpatientRegistration;
 
 /**
  * @Author Sbaby
@@ -29,6 +32,8 @@ public class HistoryService {
     private IOutpatientRegistrationDao outpatientRegistrationDao;
     @Autowired
     private IOutMedicalRecordDao outMedicalRecordDao;
+    @Autowired
+    private IIllnessDao illnessDao;
 
     /**
     * @Title:initHistory
@@ -90,6 +95,20 @@ public class HistoryService {
     		result.setStatus("error");
     	}
     	return result;
+    }
+    
+    /**
+    * @Title:searchIllness
+    * @Description:搜索疾病疾病
+    * @param:@param searchKey
+    * @param:@return
+    * @return:List<Illness>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 下午3:36:41
+     */
+    public List<Illness> searchIllness(String searchKey) {
+    	return illnessDao.searchByKey(searchKey);
     }
 
 

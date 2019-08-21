@@ -67,5 +67,30 @@ public class HistoryController {
     	return result;
     }
     
+    /**
+    * @Title:searchIllness
+    * @Description:搜索疾病
+    * @param:@param searchKey
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 下午3:41:36
+     */
+    @GetMapping("/search_illness")
+    @ResponseBody
+    public JsonResult searchIllness(String searchKey) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.searchIllness(searchKey));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult(searchKey);
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
 
 }
