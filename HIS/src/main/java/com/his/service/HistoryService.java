@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import com.his.pojo.Illness;
 import com.his.pojo.JsonResult;
 import com.his.pojo.OutMedicalRecord;
 import com.his.pojo.OutpatientRegistration;
+import com.his.utils.SimpleTools;
 
 /**
  * @Author Sbaby
@@ -108,7 +110,8 @@ public class HistoryService {
     * @Date:2019年8月21日 下午3:36:41
      */
     public List<Illness> searchIllness(String searchKey) {
-    	return illnessDao.searchByKey(searchKey);
+    	PageRequest page = PageRequest.of(0, 10);
+    	return illnessDao.searchByKey(SimpleTools.addCharForSearch(searchKey.toUpperCase()), page);
     }
 
 

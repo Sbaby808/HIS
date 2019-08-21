@@ -176,6 +176,28 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			BigDecimal minPrice, BigDecimal maxPrice);
 	
 	/**
+	* @Title:searchPriceCount
+	* @Description:搜索已经划价的药品
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午5:15:23
+	 */
+	@Query(value = "select count(*) from drug_information d "
+			+ "where (d.yp_name like ?1 "
+			+ "or d.vocode like ?1 )"
+			+ "and d.yp_type like ?2 "
+			+ "and d.subclass_id like ?3 "
+			+ "and d.gys_id like ?4 "
+			+ "and d.medicine_pay_id is not null", nativeQuery = true)
+	public int searchPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys);
+	
+	/**
 	* @Title:searchNoPrice
 	* @Description:搜索未划价记录
 	* @param:@param searchKey
@@ -201,6 +223,30 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "and d.medicine_pay_id is null", nativeQuery = true)
 	public List<DrugInformation> searchNoPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
 			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+	
+	/**
+	* @Title:searchNoPrice
+	* @Description:分页搜索已划价药品的信息
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午5:19:28
+	 */
+	@Query(value = "select * from drug_information d "
+			+ "where (d.yp_name like ?1 "
+			+ "or d.vocode like ?1 )"
+			+ "and d.yp_type like ?2 "
+			+ "and d.subclass_id like ?3 "
+			+ "and d.gys_id like ?4 "
+			+ "and d.medicine_pay_id is not null", nativeQuery = true)
+	public List<DrugInformation> searchPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
+			Pageable pageable);
 	
 	/**
 	 * 

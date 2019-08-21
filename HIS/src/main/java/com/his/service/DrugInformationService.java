@@ -191,6 +191,28 @@ public class DrugInformationService {
 	}
 	
 	/**
+	* @Title:searchPriceCount
+	* @Description:搜索已划价的药品数量
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午5:14:37
+	 */
+	public int searchPriceCount(String searchKey, String searchType, String searchSubclass, String searchGys) {
+		return drugInformationDao.searchPriceCount(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys
+				);
+	}
+	
+	/**
 	* @Title:searchNoPrice
 	* @Description:模糊查询未划价的药品信息
 	* @param:@param searchKey
@@ -214,6 +236,32 @@ public class DrugInformationService {
 				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
 				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
 				minPrice, maxPrice,
+				page);
+	}
+	
+	/**
+	* @Title:searchPrice
+	* @Description: 分页搜索
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:List<DrugInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午5:18:41
+	 */
+	public List<DrugInformation> searchPrice(String searchKey, String searchType, String searchSubclass, String searchGys,
+			int pageNum, int pageSize) {
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+		return drugInformationDao.searchPrice(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
 				page);
 	}
 	

@@ -2,6 +2,7 @@ package com.his.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -30,6 +31,6 @@ public interface IIllnessDao extends CrudRepository<Illness, String> {
 			+ "or i.deputyCode like ?1 "
 			+ "or i.illName like ?1 "
 			+ "or i.illVocode like ?1 ")
-	public List<Illness> searchByKey(String searchKey);
+	public List<Illness> searchByKey(String searchKey, Pageable pageable);
 	
 }
