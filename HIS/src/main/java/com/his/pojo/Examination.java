@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -19,7 +22,7 @@ public class Examination implements Serializable {
 	@Column(name="EXAM_ID")
 	private String examId;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd")
 	@Column(name="EXAM_TIME")
 	private Date examTime;
 
@@ -28,6 +31,16 @@ public class Examination implements Serializable {
 	private BigDecimal pressure;
 
 	private BigDecimal sphygmus;
+	
+	private BigDecimal pressureH;
+
+	public BigDecimal getPressureH() {
+		return pressureH;
+	}
+
+	public void setPressureH(BigDecimal pressureH) {
+		this.pressureH = pressureH;
+	}
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -35,7 +48,7 @@ public class Examination implements Serializable {
 	private EmpInformation empInformation;
 
 	//bi-directional one-to-one association to OutpatientRegistration
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="REG_ID")
 	private OutpatientRegistration outpatientRegistration;
 

@@ -39,7 +39,7 @@ public class OutPreItem implements Serializable {
 	private DrugInformation drugInformation;
 
 	//bi-directional many-to-one association to Prescription
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="PRESCRIPTION_ID", insertable=false, updatable=false)
 	private Prescription prescription;
 

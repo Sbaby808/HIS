@@ -1,0 +1,94 @@
+package com.his.service;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.his.dao.IExaminationDao;
+import com.his.dao.IOutMedicalRecordDao;
+import com.his.dao.IOutpatientRegistrationDao;
+import com.his.pojo.Examination;
+import com.his.pojo.History;
+import com.his.pojo.JsonResult;
+import com.his.pojo.OutMedicalRecord;
+import com.his.pojo.OutpatientRegistration;
+import com.his.pojo.Prescription;
+
+/**  
+* @ClassName: ExaminationService  
+* @Description: 体检Service
+* @author Sbaby
+* @date 2019年8月22日  上午11:21:51
+*    
+*/
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class ExaminationService {
+
+	@Autowired
+	private IExaminationDao examinationDao;
+	@Autowired
+	private IOutMedicalRecordDao outMedicalRecordDao;
+	@Autowired
+	private IOutpatientRegistrationDao outpatientRegistrationDao;
+	
+	/**
+	* @Title:initExamination
+	* @Description:初始化体检表
+	* @param:@param cardNum
+	* @param:@param roomId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月22日 上午11:49:39
+	 */
+	public JsonResult initExamination(String cardNum, String roomId) {
+		JsonResult result = new JsonResult();
+    	// 先根据就诊卡号与候诊厅编号查询就诊卡是否是今日咋当前候诊厅的患者，并获取挂号信息
+    	OutMedicalRecord omr = outMedicalRecordDao.getOutMedicalRecord(cardNum, roomId);
+    	if(omr != null) {
+			OutpatientRegistration outpatientRegistration = omr.getOutpatientRegistration();
+			if(outpatientRegistration.getExamination() != null) {
+				result.setResult(outpatientRegistration.getExamination());
+				result.setStatus("ok");
+			} else {
+				Examination examination = new Examination();
+				examination.setExamId(UUID.randomUUID().toString().replaceAll("-", ""));
+				examination.setOutpatientRegistration(outpatientRegistration);
+				examination.setHeat(new BigDecimal(0));
+				examination.setPressure(new BigDecimal(0));
+				examination.setSphygmus(new BigDecimal(0));
+				examination.setPressureH(new BigDecimal(0));
+				examinationDao.save(examination);
+				outpatientRegistration.setExamination(examination);
+				outpatientRegistrationDao.save(outpatientRegistration);
+		        result.setResult(examination);
+		        result.setStatus("ok");
+			}
+    	} else {
+    		result.setResult("此患者未排队！");
+    		result.setStatus("error");
+    	}
+    	return result;
+	}
+	
+	/**
+	* @Title:takeExam
+	* @Description:做检查，填入检查数据
+	* @param:@param examination
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月22日 下午2:11:14
+	 */
+	public void takeExam(Examination examination) {
+		System.out.println(examination.getExamId());
+		examination.setExamTime(new Date());
+		examinationDao.save(examination);
+	}
+}

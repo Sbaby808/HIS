@@ -81,6 +81,26 @@ public interface IOutMedicalRecordDao extends CrudRepository<OutMedicalRecord, S
 	public OutMedicalRecord checkCallPatient(String roomId);
 	
 	/**
+	* @Title:getOutMedicalRecord
+	* @Description:根据就诊卡查询排队记录
+	* @param:@param cardNum
+	* @param:@param roomId
+	* @param:@return
+	* @return:OutMedicalRecord
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月22日 上午11:46:41
+	 */
+	@Query(value = "select omr.* from out_medical_records omr left outer join outpatient_registration ore on omr.reg_id = ore.reg_id " +
+			"       left outer join reg_emp re on ore.reg_id = re.reg_id " +
+			"       left outer join emp_information emp on re.ygxh = emp.ygxh " +
+			"       left outer join waiting_room wr on emp.waiting_room_id = wr.waiting_room_id " +
+			"       where wr.waiting_room_id = ?2 " +
+			"       and to_char(ore.do_date, 'yyyy-MM-dd') = to_char(sysdate, 'yyyy-MM-dd') " + 
+			"		and ore.card_id = ?1 order by out_mtime desc", nativeQuery = true)
+	public OutMedicalRecord getOutMedicalRecord(String cardNum, String roomId);
+	
+	/**
 	* @Title:getDiagnosePatient
 	* @Description:查询当前正在就诊的患者信息
 	* @param:@param roomId
