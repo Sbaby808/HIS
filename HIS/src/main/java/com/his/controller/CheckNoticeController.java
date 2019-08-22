@@ -89,5 +89,20 @@ public class CheckNoticeController {
 	public List<CheckResultForm> getform(){
 		return checkNoticeService.getform();
 	}
+	@ResponseBody
+	@GetMapping("getall_zhuchecknotice")
+	public Map getzhuyuanchecknotice(int curpage, int pagesize,String sou) {
+		return checkNoticeService.getZhuyuanchecknotices(curpage,pagesize,sou);
+	}
+	@ResponseBody
+	@GetMapping("get_twoweima")
+	public Map gettwoweima(String checkpayid) {
+		return checkNoticeService.gettwoeima(checkpayid);
+	}
+	@ResponseBody
+	@GetMapping("pandinpay")
+	public boolean whetherpay(String outTradeNo) {
+		return checkNoticeService.whetherpay(outTradeNo);
+	}
   
 }

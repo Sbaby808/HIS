@@ -20,7 +20,7 @@ public class Checknoticebean {
     public Checknoticebean() {
     	
     }
-	public Checknoticebean(String noticeid, String brname, String brid, String checkname, String checkid, String beizhu,
+	public Checknoticebean(String noticeid,String brname, String brid,String checkname ,String checkid,   String beizhu,
 			Date noticetime) {
 		super();
 		this.noticeid = noticeid;

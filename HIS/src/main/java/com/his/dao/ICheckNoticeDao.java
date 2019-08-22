@@ -23,4 +23,6 @@ public interface ICheckNoticeDao extends CrudRepository<CheckNoticeForm, String>
     public List<CheckNoticeForm> getbysoufenye(String sou,Pageable page);
 	@Query(value="select count(1) from CheckNoticeForm c where c.solveScheme.history.outpatientRegistration.medicalCard.cardId=?1 and c.mcheckComment!='已处理'")
 	public long getcount(String sou);
+	@Query(value="from CheckNoticeForm c where c.mcheckId=?1")
+	public List<CheckNoticeForm> getbyid(String id);
 }
