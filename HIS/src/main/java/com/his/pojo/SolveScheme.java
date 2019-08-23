@@ -57,6 +57,7 @@ public class SolveScheme implements Serializable {
 
 	//bi-directional one-to-one association to ObservationNotice
 	@OneToOne(mappedBy="solveScheme")
+	@JSONField(serialize = false)
 	private ObservationNotice observationNotice;
 
 	//bi-directional one-to-one association to History

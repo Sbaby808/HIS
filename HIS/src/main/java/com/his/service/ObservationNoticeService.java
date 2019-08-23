@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IObservationNoticeDao;
+import com.his.dao.ISolveSchemeDao;
 import com.his.pojo.ObservationNotice;
+import com.his.pojo.SolveScheme;
 
 /**  
 * @ClassName: ObservationNoticeService  
@@ -22,6 +24,8 @@ public class ObservationNoticeService {
 
 	@Autowired
 	private IObservationNoticeDao observationNoticeDao;
+	@Autowired
+	private ISolveSchemeDao schemeDao;
 	
 	/**
 	* @Title:addObs
@@ -37,8 +41,23 @@ public class ObservationNoticeService {
 		if(observationNotice.getObservaId() == null) {
 			observationNotice.setObservaId(UUID.randomUUID().toString().replaceAll("-", ""));
 		}
+		SolveScheme scheme = schemeDao.findById(observationNotice.getSolveScheme().getScheId()).get();
+		observationNotice.setSolveScheme(scheme);
 		observationNoticeDao.save(observationNotice);
 		return observationNotice;
+	}
+	
+	/**
+	* @Title:delObsById
+	* @Description:根据id删除留观建议
+	* @param:@param id
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午4:57:59
+	 */
+	public void delObsById(String id) {
+		observationNoticeDao.deleteById(id);
 	}
 	
 }
