@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import com.his.dao.IHistoryDao;
 import com.his.dao.IIllnessDao;
 import com.his.dao.IOutMedicalRecordDao;
 import com.his.dao.IOutpatientRegistrationDao;
+import com.his.dao.ISolveSchemeDao;
 import com.his.pojo.History;
 import com.his.pojo.Illness;
 import com.his.pojo.JsonResult;
@@ -37,6 +39,8 @@ public class HistoryService {
     private IOutMedicalRecordDao outMedicalRecordDao;
     @Autowired
     private IIllnessDao illnessDao;
+    @Autowired
+    private ISolveSchemeDao solveSchemeDao;
 
     /**
     * @Title:initHistory
@@ -60,12 +64,16 @@ public class HistoryService {
     	        history.setHistoryId(UUID.randomUUID().toString().replaceAll("-", ""));
     	        history.setOutpatientRegistration(outpatientRegistration);
     	        historyDao.save(history);
+    	        outpatientRegistration.setHistory(history);
+    	        outpatientRegistrationDao.save(outpatientRegistration);
     	        // 创建医嘱
     			SolveScheme solveScheme = new SolveScheme();
     			solveScheme.setScheId(UUID.randomUUID().toString().replaceAll("-", ""));
-    			
-    	        outpatientRegistration.setHistory(history);
-    	        outpatientRegistrationDao.save(outpatientRegistration);
+    			solveScheme.setHistory(history);
+    			solveSchemeDao.save(solveScheme);
+    			List<SolveScheme> solveSchemes = new ArrayList<SolveScheme>();
+    			solveSchemes.add(solveScheme);
+    			history.setSolveScheme(solveSchemes);
     	        // 修改排队状态
     	        omr.setOutStatus("正在就诊");
     	        outMedicalRecordDao.save(omr);

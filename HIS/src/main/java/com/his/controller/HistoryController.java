@@ -35,6 +35,7 @@ public class HistoryController {
         JsonResult result = new JsonResult();
         try {
             result = historyService.initHistory(cardNum, roomId);
+            System.out.println(result.getResult());
         } catch (Exception e) {
             e.printStackTrace();
             result.setResult("获取挂号信息失败！");

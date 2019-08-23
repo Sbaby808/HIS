@@ -3,6 +3,8 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.apache.commons.collections4.functors.FalsePredicate;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
@@ -59,6 +61,7 @@ public class SolveScheme implements Serializable {
 
 	//bi-directional one-to-one association to History
 	@ManyToOne
+	@JSONField(serialize = false)
 	@JoinColumn(name="HISTORY_ID")
 	private History history;
 

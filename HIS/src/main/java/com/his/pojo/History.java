@@ -51,7 +51,6 @@ public class History implements Serializable {
 
 	//bi-directional one-to-one association to SolveScheme
 	@OneToMany(mappedBy="history")
-	@JSONField(serialize=false)
 	private List<SolveScheme> solveScheme;
 
 	//bi-directional one-to-one association to OutpatientRegistration
