@@ -59,5 +59,19 @@ public class ObservationNoticeService {
 	public void delObsById(String id) {
 		observationNoticeDao.deleteById(id);
 	}
+
+	/**
+	* @Title:findBySolveId
+	* @Description:根据医嘱查询留观通知单
+	* @param:@param solveId
+	* @param:@return
+	* @return:ObservationNotice
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午5:08:44
+	 */
+	public ObservationNotice findBySolveId(String solveId) {
+		return observationNoticeDao.getBySolveId(solveId);
+	}
 	
 }

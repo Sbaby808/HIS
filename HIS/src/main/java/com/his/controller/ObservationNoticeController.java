@@ -71,4 +71,28 @@ public class ObservationNoticeController {
 		}
 		return result;
 	}
+	
+	/**
+	* @Title:findBySolveId
+	* @Description:根据医嘱编号查询留观通知
+	* @param:@param solveId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午5:13:14
+	 */
+	@GetMapping("/find_obs_by_solve_id")
+	@ResponseBody
+	public JsonResult findBySolveId(String solveId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(observationNoticeService.findBySolveId(solveId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 }
