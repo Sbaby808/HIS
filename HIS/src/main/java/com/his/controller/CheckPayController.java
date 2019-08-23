@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.CheckItem;
 import com.his.pojo.CheckPay;
+import com.his.pojo.JsonResult;
 import com.his.service.CheckPayService;
 
 /**  
@@ -60,6 +61,29 @@ public class CheckPayController {
 	@GetMapping("getcheckpayrecord")
 	public Map getcheckpayrecord(int curpage, int pagesize,String sou) {
 		return checkPayService.getcheckayrecord(curpage, pagesize, "%"+sou+"%");
-		
+	}
+	
+	/**
+	* @Title:searchCheckPay
+	* @Description:模糊查询检查项
+	* @param:@param key
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午9:27:45
+	 */
+	@GetMapping("/search_check_pay")
+	@ResponseBody
+	public JsonResult searchCheckPay(String key) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(checkPayService.searchCheckPay(key));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
 	}
 }

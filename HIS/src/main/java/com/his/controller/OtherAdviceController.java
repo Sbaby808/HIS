@@ -25,6 +25,16 @@ public class OtherAdviceController {
 	@Autowired
 	private OtherAdviceService otherAdviceService;
 	
+	/**
+	* @Title:addOtherAdvice
+	* @Description:添加其他建议
+	* @param:@param otherAdvice
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午11:40:38
+	 */
 	@PostMapping("/add_otheradvice")
 	@ResponseBody
 	public JsonResult addOtherAdvice(@RequestBody OtherAdvice otherAdvice) {
@@ -39,6 +49,16 @@ public class OtherAdviceController {
 		return result;
 	}
 	
+	/**
+	* @Title:findAllAdvice
+	* @Description:查询所有其他建议
+	* @param:@param solveScheId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午11:40:47
+	 */
 	@GetMapping("/find_all_advice")
 	@ResponseBody
 	public JsonResult findAllAdvice(String solveScheId) {
@@ -53,6 +73,16 @@ public class OtherAdviceController {
 		return result;
 	}
 	
+	/**
+	* @Title:delAdviceById
+	* @Description:根据Id删除其他建议
+	* @param:@param advId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午11:41:00
+	 */
 	@GetMapping("/del_adv_by_id")
 	@ResponseBody
 	public JsonResult delAdviceById(String advId) {

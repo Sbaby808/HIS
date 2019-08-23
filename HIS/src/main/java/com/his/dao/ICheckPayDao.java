@@ -33,4 +33,17 @@ public interface ICheckPayDao extends CrudRepository<CheckPay, String>{
 	public List<CheckPay> getcheckbysou(String sou,Pageable page);
 	@Query(value="select count(1) from CheckPay c where c.checkPayName like?1")
 	public long getcount(String sou);
+	
+	/**
+	* @Title:searchCheck
+	* @Description:模糊查询检查项
+	* @param:@param key
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午9:30:23
+	 */
+	@Query("from CheckPay c where c.checkPayName like ?1 or c.checkPayDesc like ?1")
+	public List<CheckPay> searchCheck(String key, Pageable pageable);
 }

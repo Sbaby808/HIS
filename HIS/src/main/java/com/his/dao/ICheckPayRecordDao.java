@@ -23,5 +23,5 @@ public interface ICheckPayRecordDao extends CrudRepository<CheckPayRecord, Strin
 	public List<CheckPayRecord> getpayrecord(String sou,Pageable page);
 	@Query(value="select count(1) from CheckPayRecord c where c.medicalCard.cardName like?1")
 	public long getgount(String sou);
-
+	
 }

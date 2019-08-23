@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alipay.demo.trade.model.GoodsDetail;
 import com.his.bean.Checknoticebean;
@@ -37,6 +39,8 @@ import com.his.pojo.CheckResultDetail;
 import com.his.pojo.CheckResultDetailPK;
 import com.his.pojo.CheckResultForm;
 import com.his.pojo.HosCheckNotice;
+import com.his.pojo.OtherAdvice;
+import com.his.pojo.SolveScheme;
 import com.his.utils.AliPay;
 import com.his.utils.UUIDGenerator;
 
@@ -292,5 +296,65 @@ public class CheckNoticeService {
 		flag =  AliPay.query(outTradeNo);
 		return flag;
 	}
+	
+	/**
+	* @Title:getAllCheckPay
+	* @Description:查询所有检查
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午5:47:49
+	 */
+	public List<CheckPay> getAllCheckPay() {
+		return (List<CheckPay>) iCheckPayDao.findAll();
+	}
  
+	/**
+	* @Title:getAllCheckNotice
+	* @Description:查询所有检查通知项
+	* @param:@param solveId
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午11:41:37
+	 */
+	public List<CheckNoticeForm> getAllCheckNotice(String solveId) {
+		return iCheckNoticeDao.getAll(solveId);
+	}
+	
+	/**
+	* @Title:addCheckNotice
+	* @Description:添加检查通知项
+	* @param:@param checkNoticeForm
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午11:44:02
+	 */
+	public List<CheckNoticeForm> addCheckNotice(@RequestBody CheckNoticeForm checkNoticeForm) {
+		checkNoticeForm.setMcheckId(UUID.randomUUID().toString().replaceAll("-", ""));
+		iCheckNoticeDao.save(checkNoticeForm);
+		return this.getAllCheckNotice(checkNoticeForm.getSolveScheme().getScheId());
+	}
+	
+	/**
+	* @Title:delCheckNotice
+	* @Description:删除检查通知项
+	* @param:@param checkNoticeId
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月24日 上午12:07:56
+	 */
+	public List<CheckNoticeForm> delCheckNotice(String checkNoticeId) {
+		CheckNoticeForm checkNoticeForm = iCheckNoticeDao.findById(checkNoticeId).get();
+		SolveScheme scheme = checkNoticeForm.getSolveScheme();
+		iCheckNoticeDao.delete(checkNoticeForm);
+		return this.getAllCheckNotice(scheme.getScheId());
+	}
+	
 }

@@ -21,6 +21,7 @@ import com.his.dao.IEmpInformationDao;
 import com.his.pojo.CheckItem;
 import com.his.pojo.CheckPay;
 import com.his.pojo.CheckPayRecord;
+import com.his.utils.SimpleTools;
 import com.his.utils.UUIDGenerator;
 import com.sun.org.apache.regexp.internal.recompile;
 import com.sun.org.apache.xerces.internal.dom.DeepNodeListImpl;
@@ -187,5 +188,20 @@ public class CheckPayService {
 		map.put("list", list);;
 		map.put("total", total);
 		return map;
+	}
+	
+	/**
+	* @Title:searchCheckPay
+	* @Description:模糊查询检查项
+	* @param:@param key
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午9:28:22
+	 */
+	public List<CheckPay> searchCheckPay(String key) {
+		PageRequest page = PageRequest.of(0, 6);
+		return iCheckPayDao.searchCheck(SimpleTools.addCharForSearch(key), page);
 	}
 }
