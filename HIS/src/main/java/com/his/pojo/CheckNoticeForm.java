@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -22,9 +25,17 @@ public class CheckNoticeForm implements Serializable {
 	@Column(name="MCHECK_COMMENT")
 	private String mcheckComment;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="MCHECK_TIME")
 	private Date mcheckTime;
+	
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="CHECK_START_TIME")
+	private Date checkStartTime;
+	
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="CHECK_END_TIME")
+	private Date checkEndTime;
 
 	//bi-directional many-to-one association to CheckPay
 	@ManyToOne
@@ -37,6 +48,22 @@ public class CheckNoticeForm implements Serializable {
 	private SolveScheme solveScheme;
 
 	public CheckNoticeForm() {
+	}
+
+	public Date getCheckStartTime() {
+		return checkStartTime;
+	}
+
+	public void setCheckStartTime(Date checkStartTime) {
+		this.checkStartTime = checkStartTime;
+	}
+
+	public Date getCheckEndTime() {
+		return checkEndTime;
+	}
+
+	public void setCheckEndTime(Date checkEndTime) {
+		this.checkEndTime = checkEndTime;
 	}
 
 	public String getMcheckId() {

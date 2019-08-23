@@ -24,9 +24,16 @@ public class HospitalNotice implements Serializable {
 
 	@Column(name="RY_NOTE")
 	private String ryNote;
+	
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="HOS_NOTE_START_TIME")
+	private Date hosNoteStartTime;
+	
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="HOS_NOTE_END_TIME")
+	private Date hosNoteEndTime;
 
 	@JSONField(format="yyyy-MM-dd")
-	@Temporal(TemporalType.DATE)
 	@Column(name="RY_TIME")
 	private Date ryTime;
 
@@ -41,6 +48,22 @@ public class HospitalNotice implements Serializable {
 	private SolveScheme solveScheme;
 
 	public HospitalNotice() {
+	}
+
+	public Date getHosNoteStartTime() {
+		return hosNoteStartTime;
+	}
+
+	public void setHosNoteStartTime(Date hosNoteStartTime) {
+		this.hosNoteStartTime = hosNoteStartTime;
+	}
+
+	public Date getHosNoteEndTime() {
+		return hosNoteEndTime;
+	}
+
+	public void setHosNoteEndTime(Date hosNoteEndTime) {
+		this.hosNoteEndTime = hosNoteEndTime;
 	}
 
 	public String getRytzId() {

@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -26,6 +29,14 @@ public class OpeNotice implements Serializable {
 	@Column(name="MOPER_TIME")
 	private Date moperTime;
 
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="OPE_START_TIME")
+	private Date opeStartTime;
+	
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="OPE_END_TIME")
+	private Date opeEndTime;
+	
 	//bi-directional many-to-one association to OperationPay
 	@ManyToOne
 	@JoinColumn(name="OPER_PAY_ID")
@@ -37,6 +48,22 @@ public class OpeNotice implements Serializable {
 	private SolveScheme solveScheme;
 
 	public OpeNotice() {
+	}
+
+	public Date getOpeStartTime() {
+		return opeStartTime;
+	}
+
+	public void setOpeStartTime(Date opeStartTime) {
+		this.opeStartTime = opeStartTime;
+	}
+
+	public Date getOpeEndTime() {
+		return opeEndTime;
+	}
+
+	public void setOpeEndTime(Date opeEndTime) {
+		this.opeEndTime = opeEndTime;
 	}
 
 	public String getMoperId() {

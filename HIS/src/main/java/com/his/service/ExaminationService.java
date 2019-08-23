@@ -8,15 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IExaminationDao;
 import com.his.dao.IOutMedicalRecordDao;
 import com.his.dao.IOutpatientRegistrationDao;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.Examination;
 import com.his.pojo.History;
 import com.his.pojo.JsonResult;
 import com.his.pojo.OutMedicalRecord;
 import com.his.pojo.OutpatientRegistration;
 import com.his.pojo.Prescription;
+
+import oracle.net.aso.e;
 
 /**  
 * @ClassName: ExaminationService  
@@ -35,6 +39,8 @@ public class ExaminationService {
 	private IOutMedicalRecordDao outMedicalRecordDao;
 	@Autowired
 	private IOutpatientRegistrationDao outpatientRegistrationDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	/**
 	* @Title:initExamination
@@ -47,7 +53,7 @@ public class ExaminationService {
 	* @author:Sbaby
 	* @Date:2019年8月22日 上午11:49:39
 	 */
-	public JsonResult initExamination(String cardNum, String roomId) {
+	public JsonResult initExamination(String cardNum, String roomId, String ygxh) {
 		JsonResult result = new JsonResult();
     	// 先根据就诊卡号与候诊厅编号查询就诊卡是否是今日咋当前候诊厅的患者，并获取挂号信息
     	OutMedicalRecord omr = outMedicalRecordDao.getOutMedicalRecord(cardNum, roomId);
@@ -57,6 +63,7 @@ public class ExaminationService {
 				result.setResult(outpatientRegistration.getExamination());
 				result.setStatus("ok");
 			} else {
+				EmpInformation empInformation = empInformationDao.findById(ygxh).get();
 				Examination examination = new Examination();
 				examination.setExamId(UUID.randomUUID().toString().replaceAll("-", ""));
 				examination.setOutpatientRegistration(outpatientRegistration);
@@ -64,6 +71,7 @@ public class ExaminationService {
 				examination.setPressure(new BigDecimal(0));
 				examination.setSphygmus(new BigDecimal(0));
 				examination.setPressureH(new BigDecimal(0));
+				examination.setEmpInformation(empInformation);
 				examinationDao.save(examination);
 				outpatientRegistration.setExamination(examination);
 				outpatientRegistrationDao.save(outpatientRegistration);
@@ -90,5 +98,19 @@ public class ExaminationService {
 		System.out.println(examination.getExamId());
 		examination.setExamTime(new Date());
 		examinationDao.save(examination);
+	}
+	
+	/**
+	* @Title:getExamByRegId
+	* @Description:根据挂号id查询体检
+	* @param:@param regId
+	* @param:@return
+	* @return:Examination
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月22日 下午3:26:03
+	 */
+	public Examination getExamByRegId(String regId) {
+		return examinationDao.getExamByRegId(regId);
 	}
 }

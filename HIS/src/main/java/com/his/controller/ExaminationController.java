@@ -37,13 +37,37 @@ public class ExaminationController {
 	 */
 	@GetMapping("/init_examination")
 	@ResponseBody
-	public JsonResult initExamination(String cardNum, String roomId) {
+	public JsonResult initExamination(String cardNum, String roomId, String ygxh) {
 		JsonResult result = new JsonResult();
 		try {
-			result = examinationService.initExamination(cardNum, roomId);
+			result = examinationService.initExamination(cardNum, roomId, ygxh);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setResult("生成体检单错误！");
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:getExamByReg
+	* @Description:根据挂号id查询体检信息
+	* @param:@param regId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月22日 下午3:23:47
+	 */
+	@GetMapping("/get_exam_by_regId")
+	@ResponseBody
+	public JsonResult getExamByReg(String regId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(examinationService.getExamByRegId(regId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
 			result.setStatus("error");
 		}
 		return result;

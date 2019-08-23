@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -25,9 +28,17 @@ public class ObservationNotice implements Serializable {
 	@Column(name="OBSER_NOTE")
 	private String obserNote;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="OBSER_TIME")
 	private Date obserTime;
+	
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="OBS_NOTE_START_TIME")
+	private Date obsNoteStartTime;
+	
+	@JSONField(format="yyyy-MM-dd")
+	@Column(name="OBS_NOTE_END_TIME")
+	private Date obsNoteEndTime;
 
 	//bi-directional one-to-one association to SolveScheme
 	@OneToOne
@@ -39,6 +50,22 @@ public class ObservationNotice implements Serializable {
 	private ObservationOut observationOut;
 
 	public ObservationNotice() {
+	}
+
+	public Date getObsNoteStartTime() {
+		return obsNoteStartTime;
+	}
+
+	public void setObsNoteStartTime(Date obsNoteStartTime) {
+		this.obsNoteStartTime = obsNoteStartTime;
+	}
+
+	public Date getObsNoteEndTime() {
+		return obsNoteEndTime;
+	}
+
+	public void setObsNoteEndTime(Date obsNoteEndTime) {
+		this.obsNoteEndTime = obsNoteEndTime;
 	}
 
 	public String getObservaId() {

@@ -29,15 +29,7 @@ public class SolveScheme implements Serializable {
 	@Column(name="RYTZ_ID")
 	private String rytzId;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="SCHE_END_TIME")
-	private Date scheEndTime;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="SCHE_START_TIME")
-	private Date scheStartTime;
-
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd")
 	@Column(name="SCHE_TIME")
 	private Date scheTime;
 
@@ -95,22 +87,6 @@ public class SolveScheme implements Serializable {
 
 	public void setRytzId(String rytzId) {
 		this.rytzId = rytzId;
-	}
-
-	public Date getScheEndTime() {
-		return this.scheEndTime;
-	}
-
-	public void setScheEndTime(Date scheEndTime) {
-		this.scheEndTime = scheEndTime;
-	}
-
-	public Date getScheStartTime() {
-		return this.scheStartTime;
-	}
-
-	public void setScheStartTime(Date scheStartTime) {
-		this.scheStartTime = scheStartTime;
 	}
 
 	public Date getScheTime() {

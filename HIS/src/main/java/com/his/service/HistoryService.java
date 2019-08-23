@@ -17,6 +17,7 @@ import com.his.pojo.Illness;
 import com.his.pojo.JsonResult;
 import com.his.pojo.OutMedicalRecord;
 import com.his.pojo.OutpatientRegistration;
+import com.his.pojo.SolveScheme;
 import com.his.utils.SimpleTools;
 
 /**
@@ -54,10 +55,15 @@ public class HistoryService {
     	if(omr != null) {
     		if(omr.getOutpatientRegistration().getMedicalCard().getCardId().equals(cardNum)) {
     			OutpatientRegistration outpatientRegistration = omr.getOutpatientRegistration();
+    			// 创建诊断记录
     	        History history = new History();
     	        history.setHistoryId(UUID.randomUUID().toString().replaceAll("-", ""));
     	        history.setOutpatientRegistration(outpatientRegistration);
     	        historyDao.save(history);
+    	        // 创建医嘱
+    			SolveScheme solveScheme = new SolveScheme();
+    			solveScheme.setScheId(UUID.randomUUID().toString().replaceAll("-", ""));
+    			
     	        outpatientRegistration.setHistory(history);
     	        outpatientRegistrationDao.save(outpatientRegistration);
     	        // 修改排队状态
