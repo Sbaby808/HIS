@@ -51,7 +51,7 @@ public class SolveScheme implements Serializable {
 	private List<OtherAdvice> otherAdvices;
 
 	//bi-directional one-to-one association to HospitalNotice
-	@OneToOne(mappedBy="solveScheme")
+	@OneToOne(mappedBy="solveScheme", cascade = CascadeType.MERGE)
 	@JSONField(serialize=false)
 	private HospitalNotice hospitalNotice;
 

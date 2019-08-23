@@ -2,9 +2,11 @@ package com.his.service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,9 +57,11 @@ public class ExaminationService {
 	 */
 	public JsonResult initExamination(String cardNum, String roomId, String ygxh) {
 		JsonResult result = new JsonResult();
+		PageRequest page = PageRequest.of(0, 1);
     	// 先根据就诊卡号与候诊厅编号查询就诊卡是否是今日咋当前候诊厅的患者，并获取挂号信息
-    	OutMedicalRecord omr = outMedicalRecordDao.getOutMedicalRecord(cardNum, roomId);
-    	if(omr != null) {
+    	List<OutMedicalRecord> omrs = outMedicalRecordDao.getOutMedicalRecord(cardNum, roomId, page);
+    	if(omrs.size() > 0) {
+    		OutMedicalRecord omr = omrs.get(0);
 			OutpatientRegistration outpatientRegistration = omr.getOutpatientRegistration();
 			if(outpatientRegistration.getExamination() != null) {
 				result.setResult(outpatientRegistration.getExamination());

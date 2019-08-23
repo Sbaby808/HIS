@@ -98,7 +98,7 @@ public interface IOutMedicalRecordDao extends CrudRepository<OutMedicalRecord, S
 			"       where wr.waiting_room_id = ?2 " +
 			"       and to_char(ore.do_date, 'yyyy-MM-dd') = to_char(sysdate, 'yyyy-MM-dd') " + 
 			"		and ore.card_id = ?1 order by out_mtime desc", nativeQuery = true)
-	public OutMedicalRecord getOutMedicalRecord(String cardNum, String roomId);
+	public List<OutMedicalRecord> getOutMedicalRecord(String cardNum, String roomId, Pageable pageable);
 	
 	/**
 	* @Title:getDiagnosePatient

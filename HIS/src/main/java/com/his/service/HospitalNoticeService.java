@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDepartmentDao;
 import com.his.dao.IHosInNoticeDao;
+import com.his.dao.ISolveSchemeDao;
 import com.his.pojo.Department;
 import com.his.pojo.HospitalNotice;
+import com.his.pojo.SolveScheme;
 
 /**  
 * @ClassName: HospitalNoticeService  
@@ -27,6 +29,8 @@ public class HospitalNoticeService {
 	private IHosInNoticeDao hosInNoticeDao;
 	@Autowired
 	private IDepartmentDao departmentDao;
+	@Autowired
+	private ISolveSchemeDao schemeDao;
 	
 	/**
 	* @Title:getAllHosDepartment
@@ -55,6 +59,8 @@ public class HospitalNoticeService {
 		if(notice.getRytzId() == null) {
 			notice.setRytzId(UUID.randomUUID().toString().replaceAll("-", ""));
 		}
+		SolveScheme scheme = schemeDao.findById(notice.getSolveScheme().getScheId()).get();
+		notice.setSolveScheme(scheme);
 		hosInNoticeDao.save(notice);
 		return notice;
 	}

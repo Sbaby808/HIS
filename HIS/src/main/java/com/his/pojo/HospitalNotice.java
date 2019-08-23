@@ -43,7 +43,7 @@ public class HospitalNotice implements Serializable {
 	private Department department;
 
 	//bi-directional one-to-one association to SolveScheme
-	@OneToOne
+	@OneToOne(cascade  =CascadeType.MERGE)
 	@JoinColumn(name="SCHE_ID")
 	private SolveScheme solveScheme;
 
