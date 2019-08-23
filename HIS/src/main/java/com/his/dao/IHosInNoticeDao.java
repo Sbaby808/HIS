@@ -25,4 +25,17 @@ public interface IHosInNoticeDao extends CrudRepository<HospitalNotice,String>{
 			+ " and h.department.ksName like ?3 ")
 	public List <HospitalNotice> getHosInNoticeByPage(String hospName,String sourceText,String departText,Pageable page);
 	
+	/**
+	* @Title:getHosNoticeBySolveId
+	* @Description:根据医嘱编号查询入院通知
+	* @param:@param solveId
+	* @param:@return
+	* @return:HospitalNotice
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午2:04:02
+	 */
+	@Query("from HospitalNotice h where h.solveScheme.scheId = ?1")
+	public HospitalNotice getHosNoticeBySolveId(String solveId);
+	
 }
