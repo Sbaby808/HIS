@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IOtherAdviceDao;
 import com.his.pojo.OtherAdvice;
 import com.his.pojo.SolveScheme;
-import com.sun.xml.xsom.impl.WildcardImpl.Other;
 
 /**  
 * @ClassName: OtherAdviceService  
