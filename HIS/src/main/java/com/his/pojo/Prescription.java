@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +26,11 @@ public class Prescription implements Serializable {
 	@Column(name="INJ_ID")
 	private String injId;
 
-	@Column(name="OUT_PRE_PAY_ID")
-	private String outPrePayId;
+//	@Column(name="OUT_PRE_PAY_ID")
+//	private String outPrePayId;
 
-	@Temporal(TemporalType.DATE)
+//	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd")
 	@Column(name="PRES_TIME")
 	private Date presTime;
 
@@ -46,11 +50,13 @@ public class Prescription implements Serializable {
 
 	//bi-directional one-to-one association to History
 	@OneToOne
+	@JSONField(serialize = false)
 	@JoinColumn(name="HISTORY_ID")
 	private History history;
 
 	//bi-directional one-to-one association to OutPrePay
 	@OneToOne(mappedBy="prescription")
+	@JoinColumn(name="OUT_PRE_PAY_ID")
 	private OutPrePay outPrePay;
 
 	//bi-directional one-to-one association to UseDrugRecord
@@ -76,13 +82,13 @@ public class Prescription implements Serializable {
 		this.injId = injId;
 	}
 
-	public String getOutPrePayId() {
-		return this.outPrePayId;
-	}
-
-	public void setOutPrePayId(String outPrePayId) {
-		this.outPrePayId = outPrePayId;
-	}
+//	public String getOutPrePayId() {
+//		return this.outPrePayId;
+//	}
+//
+//	public void setOutPrePayId(String outPrePayId) {
+//		this.outPrePayId = outPrePayId;
+//	}
 
 	public Date getPresTime() {
 		return this.presTime;

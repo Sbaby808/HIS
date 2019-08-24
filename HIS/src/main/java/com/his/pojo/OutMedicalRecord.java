@@ -30,12 +30,23 @@ public class OutMedicalRecord implements Serializable {
 	@Column(name="OUT_TIMES")
 	private BigDecimal outTimes;
 
-	@Column(name="REG_ID")
-	private String regId;
+	@Column(name="OUT_STATUS")
+	private String outStatus;
+
+//	@Column(name="REG_ID")
+
+	public String getOutStatus() {
+		return outStatus;
+	}
+
+	public void setOutStatus(String outStatus) {
+		this.outStatus = outStatus;
+	}
+//	private String regId;
 
 	//bi-directional one-to-one association to OutpatientRegistration
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="OUT_MID", referencedColumnName="CARD_ID")
+	@JoinColumn(name="REG_ID")
 	private OutpatientRegistration outpatientRegistration;
 
 	public OutMedicalRecord() {
@@ -65,13 +76,13 @@ public class OutMedicalRecord implements Serializable {
 		this.outTimes = outTimes;
 	}
 
-	public String getRegId() {
-		return this.regId;
-	}
-
-	public void setRegId(String regId) {
-		this.regId = regId;
-	}
+//	public String getRegId() {
+//		return this.regId;
+//	}
+//
+//	public void setRegId(String regId) {
+//		this.regId = regId;
+//	}
 
 	public OutpatientRegistration getOutpatientRegistration() {
 		return this.outpatientRegistration;

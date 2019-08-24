@@ -15,6 +15,7 @@ import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOperationPayDao;
 
 import com.his.pojo.OperationPay;
+import com.his.utils.SimpleTools;
 import com.his.utils.UUIDGenerator;
 
 
@@ -118,5 +119,20 @@ public class OperationPayService {
      */
     public List <OperationPay> getAllOperationPay(){
     	return iOperationPayDao.getAllOperationPay();
+    }
+    
+    /**
+    * @Title:searchByKey
+    * @Description:模糊查询手术项
+    * @param:@param key
+    * @param:@return
+    * @return:List<OperationPay>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午9:42:10
+     */
+    public List<OperationPay> searchByKey(String key) {
+    	PageRequest page = PageRequest.of(0, 6);
+    	return iOperationPayDao.searchByKey(SimpleTools.addCharForSearch(key), page);
     }
 }

@@ -1,5 +1,6 @@
 package com.his.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,22 @@ import com.his.pojo.DrugWarehouse;
 *    
 */
 public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>{
+	
+	/**
+	* @Title:batchIsExist
+	* @Description:List的长度判断药品批次是否存在
+	* @param:@param ypid
+	* @param:@param ypProduceDate
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月17日 下午3:31:15
+	 */
+	@Query("from DrugWarehouse d where d.drugInformation.ypId = ?1 and d.produceDate = ?2")
+	public List<DrugWarehouse> batchIsExist(String ypid,Date ypProduceDate);
+	
+	
 	/**
 	 * 
 	* @Title:getname

@@ -31,6 +31,12 @@ spring:
       maxOpenPreparedStatements: 20
       
   jpa:
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        event:
+          merge:
+            entity_copy_observer: allow
     database: oracle
     database-platform: org.hibernate.dialect.Oracle10gDialect
     show-sql: true

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.EmpInformation;
 import com.his.pojo.Role;
 
 /**  
@@ -28,6 +29,9 @@ public interface IRoleDao extends CrudRepository<Role, String>{
 	 */
 	@Query(value="from Role r where r.rolePosition=?1")
 	public Role getRole(String role_position);
+	
+	@Query(value="select u.empInformation  from Role r,UserRole u where r.roleId=u.role.roleId and r.department.ksId=?1")
+	public List<EmpInformation> getallemp(String ksid);
     
 	@Query("from Role r")
 	public List<Role> getAll();

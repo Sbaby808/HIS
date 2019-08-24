@@ -1,9 +1,12 @@
 package com.his.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,28 @@ public class PurCheDetailsService {
 	private IPurchaseCheckDao purchaseCheckDao;
 	@Autowired
 	private IPurCheDetailsDao purCheDetailsDao;
+	
+	
+	/**
+	* @Title:getOnePurchaseCheckNoputById
+	* @Description:根据id分页获取未入库的采购验收及其明细
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@param checkId
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月17日 上午9:39:08
+	 */
+	public Map getOnePurchaseCheckNoputById(int curPage,int pageSize,String checkId) {
+		List<PurCheDetail> list = purCheDetailsDao.getOneCheckAndDetial(checkId, PageRequest.of(curPage-1, pageSize));
+		int total = purCheDetailsDao.getOneCheckNoputCount(checkId);
+		Map map = new HashMap();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:addPurcheDetail

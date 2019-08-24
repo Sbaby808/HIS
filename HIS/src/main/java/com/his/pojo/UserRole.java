@@ -30,7 +30,7 @@ public class UserRole implements Serializable {
 	private Date passDate;
 
 	//bi-directional many-to-one association to EmpInformation
-	@JSONField(serialize = false)
+	
 	@ManyToOne
 	@JoinColumn(name="YGXH", insertable=false, updatable=false)
 	private EmpInformation empInformation;

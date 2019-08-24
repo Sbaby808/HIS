@@ -2,6 +2,7 @@ package com.his.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.his.pojo.JsonResult;
 import com.his.service.OutMedicalRecordService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @Author Sbaby
@@ -51,6 +55,103 @@ public class OutMedicalRecordController {
             result.setStatus("error");
         }
         return result;
+    }
+    
+    /**
+    * @Title:getWaitingQueue
+    * @Description:根据候诊厅编号查询排队队列
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月19日 下午3:13:33
+     */
+    @GetMapping("get_queue_by_room_id")
+    @ResponseBody
+    public JsonResult getWaitingQueue(String roomId) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(outMedicalRecordService.getQueueByRoomId(roomId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult(roomId);
+			result.setStatus("error");
+		}
+    	return result;
+    }
+
+    /**
+    * @Title:callPatient
+    * @Description:刷新就诊室排队信息
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:09:39
+     */
+    @GetMapping("/call_patient_by_roomId")
+    @ResponseBody
+    public JsonResult callPatient(String roomId) {
+        JsonResult result = new JsonResult();
+        try {
+            result.setResult(outMedicalRecordService.callPatient(roomId));
+            result.setStatus("ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatus("error");
+        }
+        return result;  
+    }
+
+    /**
+    * @Title:callNext
+    * @Description:医生呼叫下一位患者
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:09:58
+     */
+    @GetMapping("/call_next")
+    @ResponseBody
+    public JsonResult callNext(String roomId) {
+        JsonResult result = new JsonResult();
+        try {
+            result.setResult(outMedicalRecordService.callNext(roomId));
+            result.setStatus("ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatus("error");
+        }
+        return result;
+    }
+
+    /**
+    * @Title:checkCall
+    * @Description:检查当前是否有患者正在就诊或叫号
+    * @param:@param roomId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月21日 上午11:10:13
+     */
+    @GetMapping("/check_call")
+    @ResponseBody
+    public JsonResult checkCall(String roomId) {
+        JsonResult result = new JsonResult();
+        try {
+            result.setResult(outMedicalRecordService.checkCall(roomId));
+            result.setStatus("ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatus("error");
+        }
+        return  result;
     }
 
 }

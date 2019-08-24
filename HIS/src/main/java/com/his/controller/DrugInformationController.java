@@ -194,6 +194,33 @@ public class DrugInformationController {
 	}
 	
 	/**
+	* @Title:searchPriceDrugCount
+	* @Description:搜索已划价药品的数量
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午5:16:22
+	 */
+	@GetMapping("/search_price_drug_count")
+	@ResponseBody
+	public JsonResult searchPriceDrugCount(String searchKey, String searchType, String searchSubclass, String searchGys) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.searchPriceCount(searchKey, searchType, searchSubclass, searchGys));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:searchNoPriceDrug
 	* @Description:模糊查询未划价的药品信息
 	* @param:@return
@@ -209,6 +236,36 @@ public class DrugInformationController {
 		JsonResult result = new JsonResult();
 		try {
 			result.setResult(drugInformationService.searchNoPrice(searchKey, searchType, searchSubclass, searchGys, minPrice, maxPrice, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:searchNoPriceDrug
+	* @Description:分页搜索已划价的药品
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月21日 下午5:18:01
+	 */
+	@GetMapping("/search_price_drug")
+	@ResponseBody
+	public JsonResult searchNoPriceDrug(String searchKey, String searchType, String searchSubclass, String searchGys,
+			int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugInformationService.searchPrice(searchKey, searchType, searchSubclass, searchGys, pageNum, pageSize));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

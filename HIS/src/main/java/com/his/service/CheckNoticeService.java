@@ -9,14 +9,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alipay.demo.trade.model.GoodsDetail;
 import com.his.bean.Checknoticebean;
+import com.his.bean.Zhuyuanchecknotice;
 import com.his.dao.ICheckItemDAO;
 import com.his.dao.ICheckNoticeDao;
 import com.his.dao.ICheckPayDao;
@@ -24,7 +28,9 @@ import com.his.dao.ICheckPayRecordDao;
 import com.his.dao.ICheckResultDetailDao;
 import com.his.dao.ICheckResultFormDao;
 import com.his.dao.IEmpInformationDao;
+import com.his.dao.IHosCheckNoticeDao;
 import com.his.dao.IMedicalCardDao;
+import com.his.pojo.AliPayEntity;
 import com.his.pojo.CheckItem;
 import com.his.pojo.CheckNoticeForm;
 import com.his.pojo.CheckPay;
@@ -32,6 +38,10 @@ import com.his.pojo.CheckPayRecord;
 import com.his.pojo.CheckResultDetail;
 import com.his.pojo.CheckResultDetailPK;
 import com.his.pojo.CheckResultForm;
+import com.his.pojo.HosCheckNotice;
+import com.his.pojo.OtherAdvice;
+import com.his.pojo.SolveScheme;
+import com.his.utils.AliPay;
 import com.his.utils.UUIDGenerator;
 
 import oracle.net.aso.l;
@@ -63,6 +73,8 @@ public class CheckNoticeService {
 	private ICheckResultFormDao iCheckResultFormDao;
 	@Autowired
 	private ICheckResultDetailDao iCheckResultDetailDao;
+	@Autowired
+	private IHosCheckNoticeDao iHosCheckNoticeDao;
 	/**
 	 * 
 	* @Title:get
@@ -92,10 +104,6 @@ public class CheckNoticeService {
 		map.put("list", cList);
 		map.put("total", total);
 		map.put("name", name);
-		return map;
-	}
-	public Map getcheckzhuyuan() {
-		Map map=new HashMap();
 		return map;
 	}
 	public BigDecimal getmoneybyid(String checkpayid) {
@@ -131,9 +139,16 @@ public class CheckNoticeService {
 		pRecord.setEmpInformation(iEmpInformationDao.findById(ygxh).get());
 		pRecord.setMedicalCard(iMedicalCardDao.findById(brcard_id).get());
         iCheckPayRecordDao.save(pRecord);
-        CheckNoticeForm cForm=iCheckNoticeDao.findById(noticeid).get();
-        cForm.setMcheckComment("已处理");
-        iCheckNoticeDao.save(cForm);
+        List<CheckNoticeForm> cForm=iCheckNoticeDao.getbyid(noticeid);
+        if(!cForm.isEmpty()) {
+        	 cForm.get(0).setMcheckComment("已处理");
+             iCheckNoticeDao.save(cForm.get(0));
+        }
+        else {
+        	HosCheckNotice hCheckNotice=iHosCheckNoticeDao.findById(noticeid).get();
+        	hCheckNotice.setState("已处理");
+        	iHosCheckNoticeDao.save(hCheckNotice);
+        }
 	}
 	public void picheckfun(String brcard_id,String checkpayid,String noticeid,String ygxh) {
 		String a[]=checkpayid.split(",");
@@ -149,16 +164,23 @@ public class CheckNoticeService {
 		}
 		String b[]=noticeid.split(",");
 		for (String stringb : b) {
-			CheckNoticeForm cForm=iCheckNoticeDao.findById(stringb).get();
-			cForm.setMcheckComment("已处理");
-			iCheckNoticeDao.save(cForm);
+			List<CheckNoticeForm> cForm=iCheckNoticeDao.getbyid(stringb);
+			if(!cForm.isEmpty()) {
+				cForm.get(0).setMcheckComment("已处理");
+				iCheckNoticeDao.save(cForm.get(0));
+			}
+			else {
+				HosCheckNotice hCheckNotice=iHosCheckNoticeDao.findById(stringb).get();
+				hCheckNotice.setState("已处理");
+				iHosCheckNoticeDao.save(hCheckNotice);
+			}
 		}
 	}
 	public List<CheckPay> getPays(){
 		return (List<CheckPay>) iCheckPayDao.findAll();
 	}
 	public Map getcheckresult(String card_id,String cheid){
-		CheckPayRecord cRecord=iCheckPayRecordDao.getPayRecord(card_id, cheid);
+		CheckPayRecord cRecord=iCheckPayRecordDao.getPayRecord(card_id, cheid).get(0);
 		if(cRecord!=null) {
 			List<String> list=new ArrayList<String>();
 			List<String> listid=new ArrayList<String>();
@@ -215,7 +237,7 @@ public class CheckNoticeService {
 		return map;
 	}
 	public void addcheckrecord(String card_id,String cheid,String itemid,String itemval,String beizhu,String ygxh) {
-		CheckPayRecord cRecord=iCheckPayRecordDao.getPayRecord(card_id, cheid);
+		CheckPayRecord cRecord=iCheckPayRecordDao.getPayRecord(card_id, cheid).get(0);
 		UUIDGenerator uuid=new UUIDGenerator();
 		String crecordid=uuid.getUUID();
 		CheckResultForm cForm=new CheckResultForm();
@@ -245,5 +267,94 @@ public class CheckNoticeService {
 	public List<CheckResultForm> getform(){
 		return (List<CheckResultForm>) iCheckResultFormDao.findAll();
 	}
+	public Map getZhuyuanchecknotices(int curpage, int pagesize,String sou){
+		List<Checknoticebean> list=iHosCheckNoticeDao.getZhuyuanchecknotices(sou, PageRequest.of(curpage - 1,
+				  pagesize));
+		long total=iHosCheckNoticeDao.getcount(sou);
+		Map map=new HashMap();
+		map.put("zhuyualist", list);
+		map.put("zhuyuantotal", total);
+		return map;
+	}
+	public Map gettwoeima(String checkpayid) {
+		Map res = new HashMap<>();
+		AliPayEntity payEntity = new AliPayEntity();
+		payEntity.setOutTradeNo(UUID.randomUUID().toString().replace("-", ""));
+		CheckPay cPay=iCheckPayDao.findById(checkpayid).get();
+		payEntity.setSubject(cPay.getCheckPayName());
+		payEntity.setTotalAmount(cPay.getCheckPayMoney() + "");
+		payEntity.setBody(cPay.getCheckPayDesc());
+		List<GoodsDetail> goods = new ArrayList<>();
+		GoodsDetail good = GoodsDetail.newInstance(cPay.getCheckId(), cPay.getCheckPayName(), Long.parseLong(cPay.getCheckPayMoney().toString()), 1);
+		goods.add(good);
+		res.put("code", AliPay.pay(payEntity, goods));
+		res.put("outTradeNo", payEntity.getOutTradeNo());
+		return res;
+	}
+	public boolean whetherpay(String outTradeNo) {
+		boolean flag = false;
+		flag =  AliPay.query(outTradeNo);
+		return flag;
+	}
+	
+	/**
+	* @Title:getAllCheckPay
+	* @Description:查询所有检查
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午5:47:49
+	 */
+	public List<CheckPay> getAllCheckPay() {
+		return (List<CheckPay>) iCheckPayDao.findAll();
+	}
  
+	/**
+	* @Title:getAllCheckNotice
+	* @Description:查询所有检查通知项
+	* @param:@param solveId
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午11:41:37
+	 */
+	public List<CheckNoticeForm> getAllCheckNotice(String solveId) {
+		return iCheckNoticeDao.getAll(solveId);
+	}
+	
+	/**
+	* @Title:addCheckNotice
+	* @Description:添加检查通知项
+	* @param:@param checkNoticeForm
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午11:44:02
+	 */
+	public List<CheckNoticeForm> addCheckNotice(CheckNoticeForm checkNoticeForm) {
+		checkNoticeForm.setMcheckId(UUID.randomUUID().toString().replaceAll("-", ""));
+		iCheckNoticeDao.save(checkNoticeForm);
+		return this.getAllCheckNotice(checkNoticeForm.getSolveScheme().getScheId());
+	}
+	
+	/**
+	* @Title:delCheckNotice
+	* @Description:删除检查通知项
+	* @param:@param checkNoticeId
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月24日 上午12:07:56
+	 */
+	public List<CheckNoticeForm> delCheckNotice(String checkNoticeId) {
+		CheckNoticeForm checkNoticeForm = iCheckNoticeDao.findById(checkNoticeId).get();
+		SolveScheme scheme = checkNoticeForm.getSolveScheme();
+		iCheckNoticeDao.delete(checkNoticeForm);
+		return this.getAllCheckNotice(scheme.getScheId());
+	}
+	
 }

@@ -73,4 +73,24 @@ public interface IOutpatientRegistrationDao extends CrudRepository<OutpatientReg
 	 */
 	@Query("select count(*) from OutpatientRegistration ore where ore.medicalCard.cardId = ?1")
 	public int getAllRegsByCardNumCount(String cardNum);
+	
+	/**
+	* @Title:getLastOutReg
+	* @Description:查询最新挂号记录
+	* @param:@param cardNum
+	* @param:@param roomId
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<OutpatientRegistration>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月24日 下午3:30:50
+	 */
+	@Query(value = "select * from outpatient_registration ore left outer join reg_emp re on ore.reg_id = re.reg_id "
+       + "left outer join Emp_Information emp on re.ygxh = emp.ygxh "
+       + "left outer join waiting_room wr on emp.waiting_room_id = wr.waiting_room_id "
+       + "where ore.card_id = ?1 "
+       + "and wr.waiting_room_id = ?2 "
+       + "order by ore.reg_time desc", nativeQuery = true)
+	public List<OutpatientRegistration> getLastOutReg(String cardNum, String roomId, Pageable pageable);
 }

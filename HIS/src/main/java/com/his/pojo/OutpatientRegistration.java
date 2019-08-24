@@ -3,6 +3,8 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.apache.commons.collections4.functors.FalsePredicate;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
@@ -27,11 +29,11 @@ public class OutpatientRegistration implements Serializable {
 	@Column(name="DO_DATE")
 	private Date doDate;
 
-	@Column(name="EXAM_ID")
-	private String examId;
+//	@Column(name="EXAM_ID")
+//	private String examId;
 
-	@Column(name="HISTORY_ID")
-	private String historyId;
+//	@Column(name="HISTORY_ID")
+//	private String historyId;
 
 	@Column(name="OUT_MID")
 	private String outMid;
@@ -74,15 +76,18 @@ public class OutpatientRegistration implements Serializable {
 
 	//bi-directional one-to-one association to OutMedicalRecord
 	@OneToOne(mappedBy="outpatientRegistration", cascade = CascadeType.ALL)
+	@JSONField(serialize = false)
 	private OutMedicalRecord outMedicalRecord;
 
 	//bi-directional one-to-one association to History
-	@OneToOne(mappedBy="outpatientRegistration")
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JSONField(serialize=false)
+	@JoinColumn(name="HISTORY_ID")
 	private History history;
 
 	//bi-directional one-to-one association to Examination
-	@OneToOne(mappedBy="outpatientRegistration")
+	@OneToOne(cascade=CascadeType.MERGE)
+	@JoinColumn(name = "EXAM_ID")
 	private Examination examination;
 
 	//bi-directional one-to-one association to OutpatientPay
@@ -108,21 +113,21 @@ public class OutpatientRegistration implements Serializable {
 		this.doDate = doDate;
 	}
 
-	public String getExamId() {
-		return this.examId;
-	}
+//	public String getExamId() {
+//		return this.examId;
+//	}
+//
+//	public void setExamId(String examId) {
+//		this.examId = examId;
+//	}
 
-	public void setExamId(String examId) {
-		this.examId = examId;
-	}
-
-	public String getHistoryId() {
-		return this.historyId;
-	}
-
-	public void setHistoryId(String historyId) {
-		this.historyId = historyId;
-	}
+//	public String getHistoryId() {
+//		return this.historyId;
+//	}
+//
+//	public void setHistoryId(String historyId) {
+//		this.historyId = historyId;
+//	}
 
 	public String getOutMid() {
 		return this.outMid;
