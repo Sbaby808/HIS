@@ -1,10 +1,13 @@
 package com.his.controller;
 
+import com.his.pojo.History;
 import com.his.pojo.JsonResult;
 import com.his.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -93,5 +96,28 @@ public class HistoryController {
     	return result;
     }
     
+    /**
+    * @Title:addHistory
+    * @Description:诊断结束
+    * @param:@param history
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午11:20:02
+     */
+    @PostMapping("/add_history")
+    @ResponseBody
+    public JsonResult addHistory(@RequestBody History history) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.addHistory(history));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
 
 }

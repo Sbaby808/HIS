@@ -80,14 +80,13 @@ public class OutpatientRegistration implements Serializable {
 	private OutMedicalRecord outMedicalRecord;
 
 	//bi-directional one-to-one association to History
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JSONField(serialize=false)
 	@JoinColumn(name="HISTORY_ID")
 	private History history;
 
 	//bi-directional one-to-one association to Examination
-	@OneToOne(cascade = CascadeType.ALL)
-	@JSONField(serialize = false)
+	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name = "EXAM_ID")
 	private Examination examination;
 

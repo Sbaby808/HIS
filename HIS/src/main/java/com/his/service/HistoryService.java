@@ -1,6 +1,7 @@
 package com.his.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,13 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IHistoryDao;
 import com.his.dao.IIllnessDao;
 import com.his.dao.IOutMedicalRecordDao;
+import com.his.dao.IOutPreItemDao;
 import com.his.dao.IOutpatientRegistrationDao;
+import com.his.dao.IPrescriptionDao;
 import com.his.dao.ISolveSchemeDao;
 import com.his.pojo.History;
 import com.his.pojo.Illness;
 import com.his.pojo.JsonResult;
 import com.his.pojo.OutMedicalRecord;
+import com.his.pojo.OutPreItem;
+import com.his.pojo.OutPreItemPK;
 import com.his.pojo.OutpatientRegistration;
+import com.his.pojo.Prescription;
 import com.his.pojo.SolveScheme;
 import com.his.utils.SimpleTools;
 
@@ -41,7 +47,11 @@ public class HistoryService {
     private IIllnessDao illnessDao;
     @Autowired
     private ISolveSchemeDao solveSchemeDao;
-
+    @Autowired
+    private IPrescriptionDao prescriptionDao;
+    @Autowired
+    private IOutPreItemDao outPreItemDao;
+    
     /**
     * @Title:initHistory
     * @Description:创建病历，返回挂号信息
@@ -126,6 +136,46 @@ public class HistoryService {
     public List<Illness> searchIllness(String searchKey) {
     	PageRequest page = PageRequest.of(0, 10);
     	return illnessDao.searchByKey(SimpleTools.addCharForSearch(searchKey.toUpperCase()), page);
+    }
+    
+    /**
+    * @Title:addHistory
+    * @Description:诊断结束
+    * @param:@param history
+    * @return:void
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午11:20:37
+     */
+    public History addHistory(History history) {
+    	OutpatientRegistration outpatientRegistration = history.getOutpatientRegistration();
+    	// 处方单
+    	Prescription prescription = history.getPrescription();
+    	prescription.setPrescriptionId(UUID.randomUUID().toString().replaceAll("-", ""));
+    	prescription.setHistory(history);
+    	prescription.setPresTime(new Date());
+    	prescriptionDao.save(prescription);
+    	// 处方明细
+    	List<OutPreItem> outPreItems  = prescription.getOutPreItems();
+    	for (OutPreItem outPreItem : outPreItems) {
+			OutPreItemPK PK = new OutPreItemPK();
+			PK.setPrescriptionId(prescription.getPrescriptionId());
+			PK.setYpId(outPreItem.getDrugInformation().getYpId());
+			outPreItem.setId(PK);
+			outPreItem.setPrescription(prescription);
+			outPreItemDao.save(outPreItem);
+		}
+    	history.setPrescriptionId(prescription.getPrescriptionId());
+    	history.setHisTime(new Date());
+    	history.setDepartment(history.getOutpatientRegistration().getDepartment());
+    	historyDao.save(history);
+    	outpatientRegistration.setHistory(history);
+    	outpatientRegistration.setExamination(outpatientRegistration.getExamination());
+    	outpatientRegistrationDao.save(outpatientRegistration);
+    	OutMedicalRecord outMedicalRecord = outMedicalRecordDao.findById(outpatientRegistration.getOutMid()).get();
+    	outMedicalRecord.setOutStatus("已就诊");
+    	outMedicalRecordDao.save(outMedicalRecord);
+    	return history;
     }
 
 

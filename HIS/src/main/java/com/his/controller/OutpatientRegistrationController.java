@@ -421,4 +421,29 @@ public class OutpatientRegistrationController {
 		}
 		return result;
 	}
+	
+	/**
+	* @Title:getLastOutReg
+	* @Description:获取最新的挂号记录
+	* @param:@param cardId
+	* @param:@param roomId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月24日 下午3:23:07
+	 */
+	@GetMapping("/get_last_out_reg")
+	@ResponseBody
+	public JsonResult getLastOutReg(String cardId, String roomId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.getLastOutReg(cardId, roomId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 }

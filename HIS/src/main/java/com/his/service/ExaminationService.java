@@ -99,9 +99,11 @@ public class ExaminationService {
 	* @Date:2019年8月22日 下午2:11:14
 	 */
 	public void takeExam(Examination examination) {
-		System.out.println(examination.getExamId());
 		examination.setExamTime(new Date());
 		examinationDao.save(examination);
+		OutpatientRegistration outpatientRegistration = examination.getOutpatientRegistration();
+		outpatientRegistration.setExamination(examination);
+		outpatientRegistrationDao.save(outpatientRegistration);
 	}
 	
 	/**
