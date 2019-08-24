@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.bean.OpeNoticebean;
+import com.his.pojo.JsonResult;
 import com.his.pojo.OpeNotice;
 import com.his.pojo.OperationPay;
 
@@ -30,4 +31,18 @@ public interface IOperationNoticeDao extends CrudRepository<OpeNotice, String>{
 	public OperationPay getPaybyid(String id);
 	@Query(value="from OpeNotice o where o.moperId=?1")
 	public List<OpeNotice> getbyid(String id);
+	
+	/**
+	* @Title:getAllBySolveId
+	* @Description:根据医嘱编号查询手术通知项
+	* @param:@param solveId
+	* @param:@return
+	* @return:List<OpeNotice>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月24日 上午9:56:12
+	 */
+	@Query("from OpeNotice o where o.solveScheme.scheId = ?1")
+	public List<OpeNotice> getAllBySolveId(String solveId);
+	
 }

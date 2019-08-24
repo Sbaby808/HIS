@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import com.his.dao.IOperationNoticeDao;
 import com.his.dao.IOperationPayDao;
 import com.his.dao.IOperationRecordDao;
 import com.his.dao.IRoleDao;
+import com.his.pojo.CheckNoticeForm;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.HosSurgeryNotice;
 import com.his.pojo.OpeEmp;
@@ -30,10 +32,12 @@ import com.his.pojo.OperPayRecord;
 import com.his.pojo.OperationPay;
 import com.his.pojo.OperationRecord;
 import com.his.pojo.Role;
+import com.his.pojo.SolveScheme;
 import com.his.pojo.UserRole;
 import com.his.utils.UUIDGenerator;
 
 import oracle.net.aso.e;
+import oracle.net.aso.s;
 
 /**  
 * @ClassName: OpeNoticeService  
@@ -172,4 +176,52 @@ public class OpeNoticeService {
     	map.put("zhutotal", zhutotal);
     	return map;
     }
+    
+    /**
+    * @Title:getAllOpeNotice
+    * @Description:根据医嘱编号查询手术通知项
+    * @param:@param solveId
+    * @param:@return
+    * @return:List<OpeNotice>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午9:56:54
+     */
+    public List<OpeNotice> getAllOpeNotice(String solveId) {
+    	return iOperationNotice.getAllBySolveId(solveId);
+    }
+    
+    /**
+    * @Title:addOpeNotice
+    * @Description:添加手术通知项
+    * @param:@param opeNotice
+    * @param:@return
+    * @return:List<OpeNotice>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午9:57:43
+     */
+    public List<OpeNotice> addOpeNotice(OpeNotice opeNotice) {
+    	opeNotice.setMoperId(UUID.randomUUID().toString().replaceAll("-", ""));
+    	iOperationNotice.save(opeNotice);
+    	return iOperationNotice.getAllBySolveId(opeNotice.getSolveScheme().getScheId());
+    }
+    
+    /**
+    * @Title:delById
+    * @Description:根据编号删除手术通知项
+    * @param:@param id
+    * @param:@return
+    * @return:List<OpeNotice>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午10:12:20
+     */
+    public List<OpeNotice> delById(String id) {
+    	OpeNotice opeNotice = iOperationNotice.findById(id).get();
+    	SolveScheme scheme = opeNotice.getSolveScheme();
+    	iOperationNotice.delete(opeNotice);
+    	return this.getAllOpeNotice(scheme.getScheId());
+    }
+ 
 }
