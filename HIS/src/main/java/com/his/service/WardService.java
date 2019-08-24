@@ -38,8 +38,8 @@ public class WardService {
 	* @author:Hamster
 	* @Date:2019年7月30日 下午5:12:33
 	 */
-	public Map getAllWardByPage(int curpage,int pagesize){
-		List <Ward> list = wardDao.getAllWardByPage(PageRequest.of(curpage-1, pagesize));
+	public Map getAllWardByPage(String wardName,String ksName,int curpage,int pagesize){
+		List <Ward> list = wardDao.getAllWardByPage(wardName,ksName,PageRequest.of(curpage-1, pagesize));
 		long total = wardDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);

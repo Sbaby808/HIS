@@ -42,8 +42,8 @@ public class WardRoomService {
 	* @author:Hamster
 	* @Date:2019年7月30日 下午4:56:39
 	 */
-	public Map getAllWardRoom(int curpage,int pagesize){
-		List <WardRoom> list = wardRoomDao.getAllWardRoom(PageRequest.of(curpage-1, pagesize));
+	public Map getAllWardRoom(String roomName,String ksName,int curpage,int pagesize){
+		List <WardRoom> list = wardRoomDao.getAllWardRoom(roomName,ksName,PageRequest.of(curpage-1, pagesize));
 		long total = wardRoomDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);

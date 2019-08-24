@@ -25,8 +25,10 @@ public interface IWardRoomDao extends CrudRepository<WardRoom, String>{
 	* @author:Hamster
 	* @Date:2019年8月2日 下午9:33:37
 	 */
-	@Query("from WardRoom w")
-	public List <WardRoom> getAllWardRoom(Pageable page);
+	@Query("from WardRoom w where "
+			+ " w.wroomName like ?1 "
+			+ " and w.ward.department.ksName like ?2")
+	public List <WardRoom> getAllWardRoom(String roomName,String ksName,Pageable page);
 	
 	@Query("from WardRoom w")
 	public List <WardRoom> getWardRooms();

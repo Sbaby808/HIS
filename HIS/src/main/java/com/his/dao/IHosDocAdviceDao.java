@@ -73,7 +73,14 @@ public interface IHosDocAdviceDao extends CrudRepository<HosDoctorAdvice, String
 	* @author:Hamster
 	* @Date:2019年8月13日 下午9:08:28
 	 */
-	@Query("from HosDoctorAdvice h where h.hosDiagnosticRecord.medicalRecord.medOutTime is null")
-	public List <HosDoctorAdvice> getHosDocAdviceBypage(Pageable page);
+	@Query("from HosDoctorAdvice h where "
+			+ " h.hosDiagnosticRecord.medicalRecord.medOutTime is null "
+			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2")
+	public List <HosDoctorAdvice> getHosDocAdviceBypage(String cardName,String ksName,Pageable page);
+	
+	@Query("select count(*) from HosDoctorAdvice h where h.hosDiagnosticRecord.medicalRecord.medOutTime is null")
+	public Long countInDoc();
 	
 }

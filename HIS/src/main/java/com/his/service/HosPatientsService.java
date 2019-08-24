@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,12 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IHosBedDao;
 import com.his.dao.IHosEmpDao;
 import com.his.dao.IHosOutDao;
 import com.his.dao.IHosPatientDao;
 import com.his.dao.IMedicalRecordDao;
 import com.his.dao.IWardRoomDao;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.HosBed;
 import com.his.pojo.HosEmp;
 import com.his.pojo.HosEmpPK;
@@ -50,6 +53,8 @@ public class HosPatientsService {
 	private IHosOutDao hosOutDao;
 	@Autowired
 	private IHosEmpDao hosEmpDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	/**
 	 * 
@@ -65,7 +70,7 @@ public class HosPatientsService {
 	 */
 	public Map getHosPatientsByPage(String hospName,String ksName,String wardName,String roomName,int curpage,int pagesize){
 		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(hospName,ksName,wardName,roomName,PageRequest.of(curpage-1,pagesize));
-		long total = hosPatientDao.count();
+		long total = hosPatientDao.countInPatient();
 		Map map = new HashMap<>();
 		map.put("list", patients);
 		map.put("total", total);
@@ -184,14 +189,16 @@ public class HosPatientsService {
 	* @author:Hamster
 	* @Date:2019年8月12日 下午10:28:48
 	 */
-	public void outHosPatient(String hospId) throws ParseException{
+	public void outHosPatient(String hospId,String empId) throws ParseException{
 		HospitalizedPatient patient = hosPatientDao.findById(hospId).get();
+		EmpInformation emp = empInformationDao.findById(empId).get();
 		
 		OutHospitaiRecord outRecord = new OutHospitaiRecord();
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
-		outRecord.setOutRecTime(dateFormat.parse(time));
+		outRecord.setOutRecTime(new Date());
 		outRecord.setHospitalizedPatient(patient);
+		outRecord.setEmpInformation(emp);
 		hosOutDao.save(outRecord);
 		
 		MedicalRecord record = patient.getMedicalRecord();
@@ -214,8 +221,10 @@ public class HosPatientsService {
 		patient.setOutHospitaiRecord(outRecord);
 		patient.setOutHospitaiRecord(outRecord);
 		patient.setHospState("已出院");
+		patient.setBalance(new BigDecimal(0));
 		hosPatientDao.save(patient);
 		
 		
 	}
+	
 }

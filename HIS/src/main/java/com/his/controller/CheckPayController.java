@@ -62,4 +62,20 @@ public class CheckPayController {
 		return checkPayService.getcheckayrecord(curpage, pagesize, "%"+sou+"%");
 		
 	}
+	
+	/**
+	 * 
+	* @Title:getAllCheckPay
+	* @Description:查询所有检查项
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月20日 上午8:42:49
+	 */
+	@ResponseBody
+	@GetMapping("/get_all_check_pay")
+	public List <CheckPay> getAllCheckPay(){
+		return checkPayService.getAllCheckPay();
+	}
 }

@@ -3,6 +3,8 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.math.BigDecimal;

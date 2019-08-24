@@ -92,8 +92,11 @@ public class HosBedController {
 	 */
 	@ResponseBody
 	@GetMapping("get_hos_beds_byPage")
-	public Map getAllBedsByPage(int curpage,int pagesize){
-		return hosBedService.getAllBedsByPage(curpage, pagesize);
+	public Map getAllBedsByPage(String text1,String text2,String text3,int curpage,int pagesize){
+		String ksName = "%"+text1+"%";
+		String wardName = "%"+text2+"%";
+		String roomName = "%"+text3+"%";
+		return hosBedService.getAllBedsByPage(ksName,wardName,roomName,curpage, pagesize);
 	}
 	
 	/**
@@ -125,7 +128,6 @@ public class HosBedController {
 	@ResponseBody
 	@PostMapping("/del_hos_bed")
 	public void delHosBed(@RequestBody HosBed hosBed){
-		System.out.println(hosBed.getHosBid());
 		hosBedService.delHosBed(hosBed);
 	}
 	
