@@ -36,14 +36,9 @@ public class Supplier implements Serializable {
 	private List<DrugInformation> drugInformations;
 
 	//bi-directional many-to-one association to PutstockBack
-	@OneToMany(mappedBy="supplier1")
+	@OneToMany(mappedBy="supplier")
 	@JSONField(serialize = false)
-	private List<PutstockBack> putstockBacks1;
-
-	//bi-directional many-to-one association to PutstockBack
-	@OneToMany(mappedBy="supplier2")
-	@JSONField(serialize = false)
-	private List<PutstockBack> putstockBacks2;
+	private List<PutstockBack> putstockBacks;
 
 	public Supplier() {
 	}
@@ -103,11 +98,11 @@ public class Supplier implements Serializable {
 	}
 
 	public List<PutstockBack> getPutstockBacks1() {
-		return this.putstockBacks1;
+		return this.putstockBacks;
 	}
 
 	public void setPutstockBacks1(List<PutstockBack> putstockBacks1) {
-		this.putstockBacks1 = putstockBacks1;
+		this.putstockBacks = putstockBacks1;
 	}
 
 	public PutstockBack addPutstockBacks1(PutstockBack putstockBacks1) {
@@ -122,28 +117,6 @@ public class Supplier implements Serializable {
 		putstockBacks1.setSupplier1(null);
 
 		return putstockBacks1;
-	}
-
-	public List<PutstockBack> getPutstockBacks2() {
-		return this.putstockBacks2;
-	}
-
-	public void setPutstockBacks2(List<PutstockBack> putstockBacks2) {
-		this.putstockBacks2 = putstockBacks2;
-	}
-
-	public PutstockBack addPutstockBacks2(PutstockBack putstockBacks2) {
-		getPutstockBacks2().add(putstockBacks2);
-		putstockBacks2.setSupplier2(this);
-
-		return putstockBacks2;
-	}
-
-	public PutstockBack removePutstockBacks2(PutstockBack putstockBacks2) {
-		getPutstockBacks2().remove(putstockBacks2);
-		putstockBacks2.setSupplier2(null);
-
-		return putstockBacks2;
 	}
 
 }

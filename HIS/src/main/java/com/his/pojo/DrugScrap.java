@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +44,7 @@ public class DrugScrap implements Serializable {
 
 	//bi-directional many-to-one association to DrugScrapDetail
 	@OneToMany(mappedBy="drugScrap")
+	@JSONField(serialize = false)
 	private List<DrugScrapDetail> drugScrapDetails;
 
 	public DrugScrap() {

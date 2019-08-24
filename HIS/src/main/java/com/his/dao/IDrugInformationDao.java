@@ -283,7 +283,7 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 			+ "or d.vocode like ?1 )"
 			+ "and d.ypType like ?2 "
 			+ "and d.drugSubclass.subclassId like ?3 "
-			+ "and d.supplier.gysName like ?4 "
+			+ "and d.supplier.gysId like ?4 "
 			+ "and d.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
 			+ "and d.ypPrice >= ?6 "
 			+ "and d.ypPrice <= ?7 ")
@@ -313,7 +313,7 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 		+ "or d.vocode like ?1 )"
 		+ "and d.ypType like ?2 "
 		+ "and d.drugSubclass.subclassId like ?3 "
-		+ "and d.supplier.gysName like ?4 "
+		+ "and d.supplier.gysId like ?4 "
 		+ "and d.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
 		+ "and d.ypPrice >= ?6 "
 		+ "and d.ypPrice <= ?7 ")
