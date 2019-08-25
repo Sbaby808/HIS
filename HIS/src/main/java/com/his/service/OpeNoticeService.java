@@ -192,6 +192,20 @@ public class OpeNoticeService {
     }
     
     /**
+    * @Title:getAllOpeNoticeByHistoryId
+    * @Description:根据诊断记录编号查询手术通知项
+    * @param:@param historyId
+    * @param:@return
+    * @return:List<OpeNotice>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月25日 下午2:32:09
+     */
+    public List<OpeNotice> getAllOpeNoticeByHistoryId(String historyId) {
+    	return iOperationNotice.getAllOpeNoticeByHistoryId(historyId);
+    }
+    
+    /**
     * @Title:addOpeNotice
     * @Description:添加手术通知项
     * @param:@param opeNotice

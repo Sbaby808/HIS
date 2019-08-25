@@ -29,4 +29,16 @@ public interface IOtherAdviceDao extends CrudRepository<OtherAdvice, String> {
 	@Query("from OtherAdvice o where o.solveScheme.scheId = ?1")
 	public List<OtherAdvice> findAllOtherAdvice(String solveSchemeId);
 	
+	/**
+	* @Title:findOtherAdivceByHistoryId
+	* @Description:根据诊断记录编号查询常规医嘱
+	* @param:@param historyId
+	* @param:@return
+	* @return:List<OtherAdvice>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:03:26
+	 */
+	@Query("from OtherAdvice o where o.solveScheme.history.historyId = ?1")
+	public List<OtherAdvice> findOtherAdivceByHistoryId(String historyId);
 }

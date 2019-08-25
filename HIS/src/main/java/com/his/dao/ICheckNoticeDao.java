@@ -43,4 +43,17 @@ public interface ICheckNoticeDao extends CrudRepository<CheckNoticeForm, String>
 	 */
 	@Query("from CheckNoticeForm c where c.solveScheme.scheId = ?1")
 	public List<CheckNoticeForm> getAll(String solveId);
+	
+	/**
+	* @Title:getByHistoryId
+	* @Description:根据诊断记录编号查询检查通知项
+	* @param:@param hostoryId
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:51:44
+	 */
+	@Query("from CheckNoticeForm c where c.solveScheme.history.historyId = ?1")
+	public List<CheckNoticeForm> getByHistoryId(String hostoryId);
 }

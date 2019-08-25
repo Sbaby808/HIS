@@ -325,6 +325,20 @@ public class CheckNoticeService {
 	}
 	
 	/**
+	* @Title:getAllCheckNoticeByHistoryId
+	* @Description:根据诊断记录编号查询检查通知项
+	* @param:@param historyId
+	* @param:@return
+	* @return:List<CheckNoticeForm>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:50:18
+	 */
+	public List<CheckNoticeForm> getAllCheckNoticeByHistoryId(String historyId) {
+		return iCheckNoticeDao.getByHistoryId(historyId);
+	}
+	
+	/**
 	* @Title:addCheckNotice
 	* @Description:添加检查通知项
 	* @param:@param checkNoticeForm
