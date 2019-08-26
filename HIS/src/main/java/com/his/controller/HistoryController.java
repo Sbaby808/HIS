@@ -228,5 +228,29 @@ public class HistoryController {
 		}
     	return result;
     }
+    
+    /**
+    * @Title:getSolveSchemeByHistoryId
+    * @Description:根据诊断记录编号查询医嘱
+    * @param:@param historyId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月26日 上午9:47:39
+     */
+    @GetMapping("/get_solve_scheme_by_historyId")
+    @ResponseBody
+    public JsonResult getSolveSchemeByHistoryId(String historyId) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.getSolveSchemeByHistoryId(historyId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
 
 }

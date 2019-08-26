@@ -62,7 +62,6 @@ public class SolveScheme implements Serializable {
 
 	//bi-directional one-to-one association to History
 	@ManyToOne
-	@JSONField(serialize = false)
 	@JoinColumn(name="HISTORY_ID")
 	private History history;
 
