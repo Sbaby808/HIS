@@ -2,6 +2,7 @@ package com.his.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,11 +24,27 @@ public class PrescriptionController {
 	@Autowired
 	private PrescriptionService prescriptionService;
 	
-	@PostMapping("/add_outpatient_prescription")
+	/**
+	* @Title:addPrePay
+	* @Description:添加处方缴费项
+	* @param:@param prescriptionId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月26日 下午4:24:43
+	 */
+	@GetMapping("/add_pre_pay")
 	@ResponseBody
-	public JsonResult addPrescription(@RequestBody Prescription prescription) {
+	public JsonResult addPrePay(String prescriptionId, String ygxh) {
 		JsonResult result = new JsonResult();
-		
+		try {
+			prescriptionService.addPrePay(prescriptionId, ygxh);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
 		return result;
 	}
 	

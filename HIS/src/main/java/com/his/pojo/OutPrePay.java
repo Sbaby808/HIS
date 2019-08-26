@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -19,7 +22,7 @@ public class OutPrePay implements Serializable {
 	@Column(name="OUT_PRE_PAY_ID")
 	private String outPrePayId;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="OUT_PRE_PAY_TIME")
 	private Date outPrePayTime;
 
@@ -29,7 +32,8 @@ public class OutPrePay implements Serializable {
 	private EmpInformation empInformation;
 
 	//bi-directional one-to-one association to Prescription
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JSONField(serialize=false)
 	@JoinColumn(name="PRESCRIPTION_ID")
 	private Prescription prescription;
 

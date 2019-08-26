@@ -1,19 +1,19 @@
 package com.his.service;
 
-import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutPreItemDao;
+import com.his.dao.IOutPrePayDao;
 import com.his.dao.IPrescriptionDao;
-import com.his.pojo.OutPreItem;
-import com.his.pojo.OutPreItemPK;
+import com.his.pojo.EmpInformation;
+import com.his.pojo.OutPrePay;
 import com.his.pojo.Prescription;
-
-import oracle.net.aso.e;
 
 /**  
 * @ClassName: PrescriptionService  
@@ -30,24 +30,31 @@ public class PrescriptionService {
 	private IPrescriptionDao prescriptionDao;
 	@Autowired
 	private IOutPreItemDao outPreItemDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
+	@Autowired
+	private IOutPrePayDao outPrePayDao;
 	
 	/**
-	* @Title:addPrescription
-	* @Description:创建处方单，添加处方明细
-	* @param:@param prescription
+	* @Title:addPrePay
+	* @Description:添加处方缴费项
+	* @param:@param prescriptionId
 	* @return:void
 	* @throws
 	* @author:Sbaby
-	* @Date:2019年8月22日 上午11:08:25
+	* @Date:2019年8月26日 下午4:26:50
 	 */
-	public void addPrescription(Prescription prescription) {
-//		prescription.setPrescriptionId(UUID.randomUUID().toString().replaceAll("-", ""));
-//		BigDecimal totalMoney = new BigDecimal(0);
-//		for (OutPreItem	item : prescription.getOutPreItems()) {
-//			totalMoney.add(item.getOutItemPay());
-//			OutPreItemPK pk = new OutPreItemPK();
-//		}
-		
+	public void addPrePay(String prescriptionId, String ygxh) {
+		Prescription prescription = prescriptionDao.findById(prescriptionId).get();
+		EmpInformation empInformation = empInformationDao.findById(ygxh).get();
+		OutPrePay outPrePay = new OutPrePay();
+		outPrePay.setOutPrePayId(UUID.randomUUID().toString().replaceAll("-", ""));
+		outPrePay.setEmpInformation(empInformation);
+		outPrePay.setOutPrePayTime(new Date());
+		outPrePay.setPrescription(prescription);
+		outPrePayDao.save(outPrePay);
+		prescription.setOutPrePay(outPrePay);
+		prescriptionDao.save(prescription);
 	}
 	
 }
