@@ -50,6 +50,7 @@ public class Prescription implements Serializable {
 
 	//bi-directional one-to-one association to History
 	@OneToOne
+	@JSONField(serialize = false)
 	@JoinColumn(name="HISTORY_ID")
 	private History history;
 

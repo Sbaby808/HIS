@@ -58,8 +58,10 @@ public class HosDiagRecordController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_diag_record_byPage")
-	public Map getDiagRecordByPage(int curpage,int pagesize){
-		return hosDiagRecordService.getDiagRecordByPage(curpage, pagesize);
+	public Map getDiagRecordByPage(String text1,String text2,int curpage,int pagesize){
+		String cardName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		return hosDiagRecordService.getDiagRecordByPage(cardName,ksName,curpage, pagesize);
 	}
 	
 	/**
@@ -110,5 +112,11 @@ public class HosDiagRecordController {
 	@PostMapping("/del_hos_diag_record")
 	public void delHosDiagRecord(@RequestBody HosDiagnosticRecord record){
 		hosDiagRecordService.delHosDiagRecord(record);
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_diag_record_byMid")
+	public List <HosDiagnosticRecord> getDiagRecordbyMid(String medRid){
+		return hosDiagRecordService.getDiagRecordbyMid(medRid);
 	}
 }

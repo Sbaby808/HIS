@@ -42,6 +42,16 @@ public interface IHosDiagRecordDao extends CrudRepository<HosDiagnosticRecord, S
 	* @author:Hamster
 	* @Date:2019年8月5日 上午11:32:33
 	 */
-	@Query("from HosDiagnosticRecord h where h.medicalRecord.medOutTime is null")
-	public List <HosDiagnosticRecord> getDiagRecordByPage(Pageable page);
+	@Query("from HosDiagnosticRecord h where "
+			+ " h.medicalRecord.medOutTime is null "
+			+ " and (h.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1"
+			+ " or h.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
+			+ " and h.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 ")
+	public List <HosDiagnosticRecord> getDiagRecordByPage(String cardName,String ksName,Pageable page);
+	
+	@Query("select count(*) from HosDiagnosticRecord h where h.medicalRecord.medOutTime is null")
+	public Long countInDiag();
+	
+	@Query("from HosDiagnosticRecord h where h.medicalRecord.medRid = ?1")
+	public List <HosDiagnosticRecord> getDiagRecordbyMid(String medRid);
 }

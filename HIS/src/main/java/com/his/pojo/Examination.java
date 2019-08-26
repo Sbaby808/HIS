@@ -4,7 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.alibaba.fastjson.annotation.JSONField;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -48,7 +47,8 @@ public class Examination implements Serializable {
 	private EmpInformation empInformation;
 
 	//bi-directional one-to-one association to OutpatientRegistration
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
+	@JSONField(serialize=false)
 	@JoinColumn(name="REG_ID")
 	private OutpatientRegistration outpatientRegistration;
 

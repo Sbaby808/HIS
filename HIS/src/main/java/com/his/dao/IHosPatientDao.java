@@ -9,9 +9,12 @@ import org.springframework.data.repository.CrudRepository;
 import com.his.pojo.HospitalizedPatient;
 
 /**
- * 入院记录
- * @author dell
- *
+ * 
+* @ClassName: IHosPatientDao  
+* @Description: 入院登记  
+* @author Hamster
+* @date 2019年8月20日  下午7:28:53
+*
  */
 public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, String>{
 	
@@ -35,7 +38,10 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	
 	
 	@Query("from HospitalizedPatient h")
-	public List <HospitalizedPatient> HospitalizedPatient(Pageable page);
+	public List <HospitalizedPatient> getHospitalizedPatient(Pageable page);
+	
+	@Query(value="select count(*) from hospitalized_patients h where h.hosp_state!='已出院' ",nativeQuery=true)
+	public Long countInPatient();
 	
 	/**
 	 * 
@@ -65,6 +71,17 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	@Query(value="select * from hospitalized_patients h where h.hos_bid=?1",nativeQuery=true)
 	public HospitalizedPatient getPatientByBid(String bedId);
 	
-	/*@Query("from HospitalizedPatient h ")
-	public HospitalizedPatient getPatientBypreId(String preId);*/
+	/**
+	 * 
+	* @Title:getPatientBypreId
+	* @Description:查询所有在院患者
+	* @param:@param preId
+	* @param:@return
+	* @return:HospitalizedPatient
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月20日 上午8:55:52
+	 */
+	@Query("from HospitalizedPatient h where h.hospState !='已出院' ")
+	public List <HospitalizedPatient> getHosInPatient();
 }

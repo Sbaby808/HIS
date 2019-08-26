@@ -64,7 +64,7 @@ public class HosPreDetailService {
 	 */
 	public Map getHosPreDetailByPage(String cardName,int curpage,int pagesize){
 		List <HosPrescriptionDetail> list = hosPreDetailDao.getHosPreDetailsByPage(cardName,PageRequest.of(curpage-1, pagesize));
-		long total = hosPreDetailDao.count();
+		long total = hosPreDetailDao.countInDrugCost();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

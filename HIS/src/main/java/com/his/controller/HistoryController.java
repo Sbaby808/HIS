@@ -1,10 +1,18 @@
 package com.his.controller;
 
+import com.his.pojo.History;
 import com.his.pojo.JsonResult;
 import com.his.service.HistoryService;
+
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -93,5 +101,132 @@ public class HistoryController {
     	return result;
     }
     
+    /**
+    * @Title:getOwnHistory
+    * @Description:查询员工的诊断记录
+    * @param:@param ygxh
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 下午5:04:03
+     */
+    @GetMapping("/get_history_by_ygxh")
+    @ResponseBody
+    public JsonResult getOwnHistory(String ygxh, int pageNum, int pageSize) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.getHistoryByYgxh(ygxh, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:getOwnHistoryCount
+    * @Description： 查询员工诊断记录的条数
+    * @param:@param ygxh
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 下午5:19:16
+     */
+    @GetMapping("/get_own_history_count")
+    @ResponseBody
+    public JsonResult getOwnHistoryCount(String ygxh) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.getHistoryCountByYgxh(ygxh));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:addHistory
+    * @Description:诊断结束
+    * @param:@param history
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午11:20:02
+     */
+    @PostMapping("/add_history")
+    @ResponseBody
+    public JsonResult addHistory(@RequestBody History history) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.addHistory(history));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:searchHistoryCount
+    * @Description:搜索诊断记录条数
+    * @param:@param ygxh
+    * @param:@param illnessKey
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月25日 下午2:51:09
+     */
+    @GetMapping("/search_history_count")
+    @ResponseBody
+    public JsonResult searchHistoryCount(String ygxh, String illnessKey, String searchStartTime, String searchEndTime) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.searchHistoryCount(ygxh, illnessKey, searchStartTime, searchEndTime));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:searchHistoryCount
+    * @Description:搜索诊断记录
+    * @param:@param ygxh
+    * @param:@param illnessKey
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@param pageNum
+    * @param:@param pageSize
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月25日 下午3:14:48
+     */
+    @GetMapping("/search_history")
+    @ResponseBody
+    public JsonResult searchHistoryCount(String ygxh, String illnessKey, String searchStartTime, String searchEndTime, int pageNum, int pageSize) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.searchHistory(ygxh, illnessKey, searchStartTime, searchEndTime, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
 
 }

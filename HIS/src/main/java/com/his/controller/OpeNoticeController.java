@@ -145,6 +145,30 @@ public class OpeNoticeController {
 	}
 	
 	/**
+	* @Title:getAllOpeNoticeByHistoryNotice
+	* @Description:根据诊断记录编号查询手术通知项
+	* @param:@param historyId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午2:31:14
+	 */
+	@GetMapping("/get_all_ope_notice_by_historyId")
+	@ResponseBody
+	public JsonResult getAllOpeNoticeByHistoryNotice(String historyId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(opeNoticeService.getAllOpeNoticeByHistoryId(historyId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("ok");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:delOpeNoticeById
 	* @Description:根据id删除手术通知
 	* @param:@param id

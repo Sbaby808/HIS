@@ -76,8 +76,10 @@ public class HosDocAdviceController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_advice_byPage")
-	public Map getHosDocAdviceByPage(int curpage,int pagesize){
-		return hosDocAdviceService.getHosDocAdviceByPage(curpage, pagesize);
+	public Map getHosDocAdviceByPage(String text1,String text2,int curpage,int pagesize){
+		String cardName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		return hosDocAdviceService.getHosDocAdviceByPage(cardName,ksName,curpage, pagesize);
 	}
 	
 	/**
@@ -125,9 +127,9 @@ public class HosDocAdviceController {
 	* @Date:2019年8月7日 下午12:01:30
 	 */
 	@ResponseBody
-	@PostMapping("/change_hos_doc_advice")
-	public void changeHosDocAdvice(@RequestBody HosDoctorAdvice advice){
-		hosDocAdviceService.changeHosDocAdvice(advice);
+	@GetMapping("/change_hos_doc_advice")
+	public void changeHosDocAdvice(String docId,String docText){
+		hosDocAdviceService.changeHosDocAdvice(docId,docText);
 	}
 	
 	/**
@@ -143,14 +145,8 @@ public class HosDocAdviceController {
 	 */
 	@ResponseBody
 	@PostMapping("/end_hos_doc_advice")
-	public void endHosDocAdvice(@RequestBody HosDoctorAdvice advice) throws ParseException{
-		hosDocAdviceService.endHosDocAdvice(advice);
-	}
-	
-	@ResponseBody
-	@PostMapping("/del_hos_doc_advice")
-	public void delHosDocAdvice(@RequestBody HosDoctorAdvice advice){
-		hosDocAdviceService.delHosDocAdvice(advice);
+	public void endHosDocAdvice(String docId) throws ParseException{
+		hosDocAdviceService.endHosDocAdvice(docId);
 	}
 	
 	

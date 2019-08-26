@@ -9,14 +9,24 @@ import org.springframework.data.repository.CrudRepository;
 import com.his.pojo.HosOtherCost;
 
 /**
- * 住院其他扣费记录
- * @author dell
- *
+ * 
+* @ClassName: IHosOtherCostDao  
+* @Description: 住院其他扣费记录 
+* @author Hamster
+* @date 2019年8月20日  上午9:38:14
+*
  */
 public interface IHosOtherCostDao extends CrudRepository<HosOtherCost, String>{
 	
-	@Query("from HosOtherCost h")
-	public List <HosOtherCost> getAllOtherCostByPage(Pageable page);
+	@Query("from HosOtherCost h where "
+			+ " (h.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or h.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
+			+ " and h.medicalRecord.hospitalizedPatient.hosBed.hosBid !=null ")
+	public List <HosOtherCost> getAllOtherCostByPage(String cardName,Pageable page);
+	
+	@Query("select count(*) from HosOtherCost h where"
+			+ " h.medicalRecord.hospitalizedPatient.hosBed.hosBid !=null ")
+	public Long countInOtherCost();
 	
 	@Query("from HosOtherCost h")
 	public List <HosOtherCost> getHosOtherCost();

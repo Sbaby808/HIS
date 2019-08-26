@@ -37,8 +37,8 @@ public class HosBedService {
 	* @author:Hamster
 	* @Date:2019年8月4日 上午10:46:15
 	 */
-	public Map getAllBedsByPage(int curpage,int pagesize){
-		List <HosBed> list = hosBedDao.getAllBedsByPage(PageRequest.of(curpage-1, pagesize));
+	public Map getAllBedsByPage(String ksName,String wardName,String roomName,int curpage,int pagesize){
+		List <HosBed> list = hosBedDao.getAllBedsByPage(ksName,wardName,roomName,PageRequest.of(curpage-1, pagesize));
 		long total  = hosBedDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);

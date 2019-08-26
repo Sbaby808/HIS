@@ -68,9 +68,9 @@ public class HosDocAdviceService {
 	* @author:Hamster
 	* @Date:2019年8月13日 下午9:10:36
 	 */
-	public Map getHosDocAdviceByPage(int curpage,int pagesize){
-		List <HosDoctorAdvice> list = hosDocAdviceDao.getHosDocAdviceBypage(PageRequest.of(curpage-1, pagesize));
-		long total = hosCheckNoticeDao.count();
+	public Map getHosDocAdviceByPage(String cardName,String ksName,int curpage,int pagesize){
+		List <HosDoctorAdvice> list = hosDocAdviceDao.getHosDocAdviceBypage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
+		long total = hosDocAdviceDao.countInDoc();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -164,7 +164,9 @@ public class HosDocAdviceService {
 	* @author:Hamster
 	* @Date:2019年8月7日 下午12:00:16
 	 */
-	public void changeHosDocAdvice(HosDoctorAdvice advice){
+	public void changeHosDocAdvice(String docId,String docText){
+		HosDoctorAdvice advice = hosDocAdviceDao.findById(docId).get();
+		advice.setHosContent(docText);
 		hosDocAdviceDao.save(advice);
 	}
 	
@@ -179,9 +181,11 @@ public class HosDocAdviceService {
 	* @author:Hamster
 	* @Date:2019年8月7日 下午6:58:50
 	 */
-	public void endHosDocAdvice(HosDoctorAdvice advice) throws ParseException{
+	public void endHosDocAdvice(String docId) throws ParseException{
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
+		
+		HosDoctorAdvice advice = hosDocAdviceDao.findById(docId).get();
 		advice.setHosEndTime(dateFormat.parse(time));
 		hosDocAdviceDao.save(advice);
 	}

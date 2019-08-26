@@ -38,4 +38,17 @@ public interface IHosInNoticeDao extends CrudRepository<HospitalNotice,String>{
 	@Query("from HospitalNotice h where h.solveScheme.scheId = ?1")
 	public HospitalNotice getHosNoticeBySolveId(String solveId);
 	
+	/**
+	* @Title:getHospitalNoticeByHistoryId
+	* @Description:根据诊断记录编号查询入院通知单
+	* @param:@param historyId
+	* @param:@return
+	* @return:HospitalNotice
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:15:56
+	 */
+	@Query("from HospitalNotice h where h.solveScheme.history.historyId = ?1")
+	public HospitalNotice getHospitalNoticeByHistoryId(String historyId);
+	
 }

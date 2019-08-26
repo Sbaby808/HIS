@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 
 
@@ -40,6 +43,7 @@ public class OutPreItem implements Serializable {
 
 	//bi-directional many-to-one association to Prescription
 	@ManyToOne(cascade = CascadeType.ALL)
+	@JSONField(serialize = false)
 	@JoinColumn(name="PRESCRIPTION_ID", insertable=false, updatable=false)
 	private Prescription prescription;
 

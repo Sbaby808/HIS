@@ -183,6 +183,30 @@ public class CheckNoticeController {
 	}
 	
 	/**
+	* @Title:getAllCheckNoticeByHistoryId
+	* @Description:根据诊断记录编号查询检查通知项
+	* @param:@param historyId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:49:23
+	 */
+	@GetMapping("/get_all_checkNotice_by_historyId")
+	@ResponseBody
+	public JsonResult getAllCheckNoticeByHistoryId(String historyId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(checkNoticeService.getAllCheckNoticeByHistoryId(historyId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:delCheckNotice
 	* @Description:删除检查通知项
 	* @param:@param checkNoticeId

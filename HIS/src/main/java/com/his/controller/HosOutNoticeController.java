@@ -32,8 +32,10 @@ public class HosOutNoticeController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_out_notice_byPage")
-	public Map getHosOutNoticeByPage(int curpage,int pagesize){
-		return hosOutNoticeService.getHosOutNoticeByPage(curpage, pagesize);
+	public Map getHosOutNoticeByPage(String text1,String text2,int curpage,int pagesize){
+		String cardName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		return hosOutNoticeService.getHosOutNoticeByPage(cardName,ksName,curpage, pagesize);
 	}
 	
 	/**

@@ -95,4 +95,28 @@ public class ObservationNoticeController {
 		}
 		return result;
 	}
+	
+	/**
+	* @Title:findByHistoryId
+	* @Description:根据诊断记录编号查询留观通知
+	* @param:@param historyId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:32:59
+	 */
+	@GetMapping("/find_bos_by_history_id")
+	@ResponseBody
+	public JsonResult findByHistoryId(String historyId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(observationNoticeService.findByHistoryId(historyId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 }

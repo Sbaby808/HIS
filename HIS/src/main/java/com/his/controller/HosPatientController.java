@@ -114,7 +114,7 @@ public class HosPatientController {
 	 */
 	@ResponseBody
 	@GetMapping("/out_hos_patient")
-	public void outHosPatient(String hospId) throws ParseException{
-		hosPatientsService.outHosPatient(hospId);
+	public void outHosPatient(String hospId,String empId) throws ParseException{
+		hosPatientsService.outHosPatient(hospId,empId);
 	}
 }

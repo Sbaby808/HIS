@@ -41,8 +41,10 @@ public class MedicalRecordController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_medical_record_byPage")
-	public Map getAllMedicalRecordByPage(int curpage,int pagesize){
-		return  medicalRecordService.getAllMedicalRecordByPage(curpage, pagesize);
+	public Map getAllMedicalRecordByPage(String text1,String text2,int curpage,int pagesize){
+		String cardName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		return  medicalRecordService.getAllMedicalRecordByPage(cardName,ksName,curpage, pagesize);
 	}
 	
 	

@@ -27,8 +27,11 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 	* @author:Hamster
 	* @Date:2019年8月1日 上午9:37:08
 	 */
-	@Query("from HosBed h")
-	public List <HosBed> getAllBedsByPage(Pageable page);
+	@Query("from HosBed h where "
+			+ " h.wardRoom.ward.department.ksName like ?1 "
+			+ " and h.wardRoom.ward.wardName like ?2 "
+			+ " and h.wardRoom.wroomName like ?3 ")
+	public List <HosBed> getAllBedsByPage(String ksName,String wardName,String roomName,Pageable page);
 	
 	/**
 	 * 

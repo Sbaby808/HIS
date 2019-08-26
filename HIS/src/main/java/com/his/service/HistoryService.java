@@ -1,24 +1,38 @@
 package com.his.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHistoryDao;
 import com.his.dao.IIllnessDao;
 import com.his.dao.IOutMedicalRecordDao;
+import com.his.dao.IOutPreItemDao;
 import com.his.dao.IOutpatientRegistrationDao;
+import com.his.dao.IPrescriptionDao;
 import com.his.dao.ISolveSchemeDao;
 import com.his.pojo.History;
 import com.his.pojo.Illness;
 import com.his.pojo.JsonResult;
 import com.his.pojo.OutMedicalRecord;
+import com.his.pojo.OutPreItem;
+import com.his.pojo.OutPreItemPK;
 import com.his.pojo.OutpatientRegistration;
+import com.his.pojo.Prescription;
 import com.his.pojo.SolveScheme;
 import com.his.utils.SimpleTools;
 
@@ -41,7 +55,11 @@ public class HistoryService {
     private IIllnessDao illnessDao;
     @Autowired
     private ISolveSchemeDao solveSchemeDao;
-
+    @Autowired
+    private IPrescriptionDao prescriptionDao;
+    @Autowired
+    private IOutPreItemDao outPreItemDao;
+    
     /**
     * @Title:initHistory
     * @Description:创建病历，返回挂号信息
@@ -126,6 +144,120 @@ public class HistoryService {
     public List<Illness> searchIllness(String searchKey) {
     	PageRequest page = PageRequest.of(0, 10);
     	return illnessDao.searchByKey(SimpleTools.addCharForSearch(searchKey.toUpperCase()), page);
+    }
+    
+    /**
+    * @Title:addHistory
+    * @Description:诊断结束
+    * @param:@param history
+    * @return:void
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午11:20:37
+     */
+    public History addHistory(History history) {
+    	OutpatientRegistration outpatientRegistration = history.getOutpatientRegistration();
+    	// 处方单
+    	Prescription prescription = history.getPrescription();
+    	prescription.setPrescriptionId(UUID.randomUUID().toString().replaceAll("-", ""));
+    	prescription.setHistory(history);
+    	prescription.setPresTime(new Date());
+    	prescriptionDao.save(prescription);
+    	// 处方明细
+    	List<OutPreItem> outPreItems  = prescription.getOutPreItems();
+    	for (OutPreItem outPreItem : outPreItems) {
+			OutPreItemPK PK = new OutPreItemPK();
+			PK.setPrescriptionId(prescription.getPrescriptionId());
+			PK.setYpId(outPreItem.getDrugInformation().getYpId());
+			outPreItem.setId(PK);
+			outPreItem.setPrescription(prescription);
+			outPreItemDao.save(outPreItem);
+		}
+    	history.setPrescriptionId(prescription.getPrescriptionId());
+    	history.setHisTime(new Date());
+    	history.setDepartment(history.getOutpatientRegistration().getDepartment());
+    	historyDao.save(history);
+    	outpatientRegistration.setHistory(history);
+    	outpatientRegistration.setExamination(outpatientRegistration.getExamination());
+    	outpatientRegistrationDao.save(outpatientRegistration);
+    	OutMedicalRecord outMedicalRecord = outMedicalRecordDao.findById(outpatientRegistration.getOutMid()).get();
+    	outMedicalRecord.setOutStatus("已就诊");
+    	outMedicalRecordDao.save(outMedicalRecord);
+    	return history;
+    }
+    
+    /**
+    * @Title:getHistoryByYgxh
+    * @Description:查询员工的诊断记录
+    * @param:@param ygxh
+    * @param:@return
+    * @return:List<History>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 下午5:04:48
+     */
+    public List<History> getHistoryByYgxh(String ygxh, int pageNum, int pageSize) {
+    	PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+    	return historyDao.getHistoryByYgxh(ygxh, page);
+    }
+    
+    /**
+    * @Title:getHistoryCountByYgxh
+    * @Description:查询员工的诊断记录数量
+    * @param:@param ygxh
+    * @param:@return
+    * @return:int
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 下午5:37:18
+     */
+    public int getHistoryCountByYgxh(String ygxh) {
+    	return historyDao.getHisotryByYgxhCount(ygxh);
+    }
+    
+    /**
+    * @Title:searchHistoryCount
+    * @Description:搜索诊断记录条数
+    * @param:@param ygxh
+    * @param:@param illnessKey
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @return:int
+     * @throws ParseException 
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月25日 下午2:53:26
+     */
+    public int searchHistoryCount(String ygxh, String illnessKey, String searchStartTime, String searchEndTime) throws ParseException {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1970-00-00 00:00:00" : searchStartTime);
+    	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
+        return historyDao.searchHistoryCount(ygxh, SimpleTools.addCharForSearch(illnessKey), startTime, endTime);
+    }
+    
+    /**
+    * @Title:searchHistory
+    * @Description:搜索诊断记录
+    * @param:@param ygxh
+    * @param:@param illnessKey
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@param pageNum
+    * @param:@param pageSize
+    * @param:@return
+    * @return:List<History>
+     * @throws ParseException 
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月25日 下午3:19:02
+     */
+    public List<History> searchHistory(String ygxh, String illnessKey, String searchStartTime, String searchEndTime, int pageNum, int pageSize) throws ParseException {
+    	PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1970-00-00 00:00:00" : searchStartTime);
+    	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
+        return historyDao.searchHistory(ygxh, SimpleTools.addCharForSearch(illnessKey), startTime, endTime, page);
     }
 
 

@@ -39,8 +39,8 @@ public class HosOutNoticeService {
 	* @author:Hamster
 	* @Date:2019年8月3日 上午11:32:51
 	 */
-	public Map getHosOutNoticeByPage(int curpage,int pagesize){
-		List <HosOutNotice> list = hosOutNoticeDao.getHosOutNoticeByPage(PageRequest.of(curpage-1, pagesize));
+	public Map getHosOutNoticeByPage(String cardName,String ksName,int curpage,int pagesize){
+		List <HosOutNotice> list = hosOutNoticeDao.getHosOutNoticeByPage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
 		long total = hosOutNoticeDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
