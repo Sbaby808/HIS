@@ -39,7 +39,7 @@ public class PutstockBack implements Serializable {
 	//bi-directional many-to-one association to Supplier
 	@ManyToOne
 	@JoinColumn(name="GYS_ID")
-	private Supplier supplier;
+	private Supplier supplier1;
 
 	public PutstockBack() {
 	}
@@ -99,11 +99,11 @@ public class PutstockBack implements Serializable {
 	}
 
 	public Supplier getSupplier1() {
-		return this.supplier;
+		return this.supplier1;
 	}
 
 	public void setSupplier1(Supplier supplier1) {
-		this.supplier = supplier1;
+		this.supplier1 = supplier1;
 	}
 
 }

@@ -45,5 +45,19 @@ public interface IOperationPayDao extends CrudRepository<OperationPay, String>{
     @Query("from OperationPay o")
     public List <OperationPay> getAllOperationPay();
     
+    /**
+    * @Title:searchByKey
+    * @Description:模糊查询手术项
+    * @param:@param key
+    * @param:@param pageable
+    * @param:@return
+    * @return:List<OperationPay>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月24日 上午9:43:55
+     */
+    @Query("from OperationPay o where o.operPayName like ?1")
+    public List<OperationPay> searchByKey(String key, Pageable pageable);
+    
     
 }

@@ -36,9 +36,9 @@ public class Supplier implements Serializable {
 	private List<DrugInformation> drugInformations;
 
 	//bi-directional many-to-one association to PutstockBack
-	@OneToMany(mappedBy="supplier")
+	@OneToMany(mappedBy="supplier1")
 	@JSONField(serialize = false)
-	private List<PutstockBack> putstockBacks;
+	private List<PutstockBack> putstockBacks1;
 
 	public Supplier() {
 	}
@@ -98,11 +98,11 @@ public class Supplier implements Serializable {
 	}
 
 	public List<PutstockBack> getPutstockBacks1() {
-		return this.putstockBacks;
+		return this.putstockBacks1;
 	}
 
 	public void setPutstockBacks1(List<PutstockBack> putstockBacks1) {
-		this.putstockBacks = putstockBacks1;
+		this.putstockBacks1 = putstockBacks1;
 	}
 
 	public PutstockBack addPutstockBacks1(PutstockBack putstockBacks1) {
@@ -118,5 +118,6 @@ public class Supplier implements Serializable {
 
 		return putstockBacks1;
 	}
+
 
 }

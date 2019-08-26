@@ -334,7 +334,7 @@ public class CheckNoticeService {
 	* @author:Sbaby
 	* @Date:2019年8月23日 下午11:44:02
 	 */
-	public List<CheckNoticeForm> addCheckNotice(@RequestBody CheckNoticeForm checkNoticeForm) {
+	public List<CheckNoticeForm> addCheckNotice(CheckNoticeForm checkNoticeForm) {
 		checkNoticeForm.setMcheckId(UUID.randomUUID().toString().replaceAll("-", ""));
 		iCheckNoticeDao.save(checkNoticeForm);
 		return this.getAllCheckNotice(checkNoticeForm.getSolveScheme().getScheId());
