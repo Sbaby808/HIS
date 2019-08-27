@@ -22,7 +22,7 @@ public class History implements Serializable {
 	@Column(name="HISTORY_ID")
 	private String historyId;
 
-	@JSONField(format = "yyyy-MM-dd")
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	@Column(name="HIS_TIME")
 	private Date hisTime;
 
@@ -51,6 +51,7 @@ public class History implements Serializable {
 
 	//bi-directional one-to-one association to SolveScheme
 	@OneToMany(mappedBy="history")
+	@JSONField(serialize=false)
 	private List<SolveScheme> solveScheme;
 
 	//bi-directional one-to-one association to OutpatientRegistration

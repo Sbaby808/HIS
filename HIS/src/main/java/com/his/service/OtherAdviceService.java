@@ -56,6 +56,20 @@ public class OtherAdviceService {
 	}
 	
 	/**
+	* @Title:findOtherAdviceByHistoryId
+	* @Description:根据诊断记录编号查询常规医嘱
+	* @param:@param historyId
+	* @param:@return
+	* @return:List<OtherAdvice>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:01:28
+	 */
+	public List<OtherAdvice> findOtherAdviceByHistoryId(String historyId) {
+		return otherAdviceDao.findOtherAdivceByHistoryId(historyId);
+	}
+	
+	/**
 	* @Title:delAdviceById
 	* @Description:根据Id删除医嘱其他建议
 	* @param:@param advId

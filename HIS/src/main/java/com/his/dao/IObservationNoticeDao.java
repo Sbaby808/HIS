@@ -27,4 +27,16 @@ public interface IObservationNoticeDao extends CrudRepository<ObservationNotice,
 	@Query("from ObservationNotice o where o.solveScheme.scheId = ?1")
 	public ObservationNotice getBySolveId(String id);
 	
+	/**
+	* @Title:getByHistoryId
+	* @Description:根据诊断记录编号查询留观通知单
+	* @param:@param historyId
+	* @param:@return
+	* @return:ObservationNotice
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:37:04
+	 */
+	@Query("from ObservationNotice o where o.solveScheme.history.historyId = ?1")
+	public ObservationNotice getByHistoryId(String historyId);
 }

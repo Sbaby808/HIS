@@ -74,4 +74,18 @@ public class ObservationNoticeService {
 		return observationNoticeDao.getBySolveId(solveId);
 	}
 	
+	/**
+	* @Title:findByHistoryId
+	* @Description:根据诊断记录变化查询留观通知单
+	* @param:@param historyId
+	* @param:@return
+	* @return:ObservationNotice
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:35:55
+	 */
+	public ObservationNotice findByHistoryId(String historyId) {
+		return observationNoticeDao.getByHistoryId(historyId);
+	}
+	
 }

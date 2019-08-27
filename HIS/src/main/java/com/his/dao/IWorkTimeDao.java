@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.EmpInformation;
 import com.his.pojo.WktimeEmp;
 import com.his.pojo.WorkTime;
 
@@ -36,5 +37,11 @@ public interface IWorkTimeDao extends CrudRepository<WorkTime, String>{
 	public String getksid(String empid);
 	@Query(value="from WorkTime w where w.pbType=?1 and w.pbDate=?2")
 	public List<WorkTime> getbydateandtype(String type,Date date);
+	@Query(value="select w.empInformation from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3 and w.wktimeDuty=?4")
+	public List<EmpInformation> getemps(String ksid,Date date,String type,String duty);
+	@Query(value="select w from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3")
+	public List<WktimeEmp> getwkemps(String ksid,Date date,String type);
+	@Query(value="select w.workTime.pbId from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3")
+	public String getpbid(String ksid,Date date,String type);
 	
 }

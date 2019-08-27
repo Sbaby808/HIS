@@ -96,6 +96,30 @@ public class HospitalNoticeController {
 	}
 	
 	/**
+	* @Title:getHospitalNoticeByHistoryId
+	* @Description:根据诊断记录编号查询入院通知
+	* @param:@param historyId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:13:55
+	 */
+	@GetMapping("/get_hospital_notice_by_history_id")
+	@ResponseBody
+	public JsonResult getHospitalNoticeByHistoryId(String historyId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(HospitalNoticeService.getHospitalNoticeByHistoryId(historyId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:delHosNoticeById
 	* @Description:删除入院通知
 	* @param:@param hosId

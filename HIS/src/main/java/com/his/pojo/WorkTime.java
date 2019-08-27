@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class WorkTime implements Serializable {
 	//bi-directional many-to-one association to WktimeEmp
 	@OneToMany(mappedBy="workTime")
 	@JSONField(serialize = false)
-	private List<WktimeEmp> wktimeEmps;
+	private List<WktimeEmp> wktimeEmps=new ArrayList<WktimeEmp>();
 
 	public WorkTime() {
 	}

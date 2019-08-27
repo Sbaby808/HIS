@@ -74,6 +74,30 @@ public class OtherAdviceController {
 	}
 	
 	/**
+	* @Title:findOtherAdviceByHistoryId
+	* @Description:根据诊断记录id查询常规医嘱
+	* @param:@param historyId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午1:00:45
+	 */
+	@GetMapping("/get_other_advice_by_history")
+	@ResponseBody
+	public JsonResult findOtherAdviceByHistoryId(String historyId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(otherAdviceService.findOtherAdviceByHistoryId(historyId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:delAdviceById
 	* @Description:根据Id删除其他建议
 	* @param:@param advId

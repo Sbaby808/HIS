@@ -45,4 +45,17 @@ public interface IOperationNoticeDao extends CrudRepository<OpeNotice, String>{
 	@Query("from OpeNotice o where o.solveScheme.scheId = ?1")
 	public List<OpeNotice> getAllBySolveId(String solveId);
 	
+	/**
+	* @Title:getAllOpeNoticeByHistoryId
+	* @Description:根据诊断记录编号查询手术通知项
+	* @param:@param historyId
+	* @param:@return
+	* @return:List<OpeNotice>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月25日 下午2:33:13
+	 */
+	@Query("from OpeNotice o where o.solveScheme.history.historyId = ?1")
+	public List<OpeNotice> getAllOpeNoticeByHistoryId(String historyId);
+	
 }
