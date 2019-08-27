@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * The persistent class for the USER_ROLE database table.
- * 
+ * 用户角色中间表
  */
 @Entity
 @Table(name="USER_ROLE")
@@ -30,7 +30,6 @@ public class UserRole implements Serializable {
 	private Date passDate;
 
 	//bi-directional many-to-one association to EmpInformation
-	@JSONField(serialize = false)
 	@ManyToOne
 	@JoinColumn(name="YGXH", insertable=false, updatable=false)
 	private EmpInformation empInformation;

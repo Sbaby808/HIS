@@ -2,9 +2,12 @@ package com.his.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.Dept;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.Role;
 
 /**  
@@ -31,4 +34,22 @@ public interface IRoleDao extends CrudRepository<Role, String>{
     
 	@Query("from Role r")
 	public List<Role> getAll();
+	
+	//通过职位id查找该职位的所有员工名字
+	@Query("select e.ygName from UserRole u left outer join EmpInformation e on u.empInformation.ygxh=e.ygxh where u.role.roleId=?1")
+	public List<String> findEmpInformationsbyroleid(String roleid);
+	@Query("select e from UserRole u left outer join EmpInformation e on u.empInformation.ygxh=e.ygxh where u.role.roleId=?1")
+	public List<EmpInformation> findempssss(String roleid);
+	
+	
+	@Query("from Role t where t.rolePosition like ?1")
+	public List<Role> findroless(String rolePosition,Pageable pageable);
+	
+	@Query("select count(*) from Role t where t.rolePosition like ?1")
+	public long countnames(String rolePosition);
+	@Query("select count(*) from Role t where t.rolePosition = ?1" )
+	public long countnamesss(String rolePosition);
+	//通过roleid找到所有该职位员工的id
+	@Query("select u.empInformation.ygxh from UserRole u where u.role.roleId = ?1")
+	public List<String> findempygxhs(String roleid);
 }

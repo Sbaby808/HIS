@@ -25,18 +25,20 @@ public class DepartmentService {
 	@Autowired
 	private DeptDAO deptDAO;
 	
+	public List<Department> findallDepartments(){
+		return (List<Department>) departmentDAO.findAll();
+	}
+	
 	public List<Department> finDepartments(String ksname,int currentpage){
 		PageRequest pageRequest = PageRequest.of(currentpage-1, 5);
 		ksname="%"+ksname+"%";
 		return departmentDAO.findDepartments(ksname, pageRequest);
 	}
-	//添加或者修改的时候
+	//添加的时候
 	public void addorupdateDepartment(Department department) {
-		    Dept dept = new Dept();
+		//根据部门名字查询部门
+		Dept dept=deptDAO.finddept(department.getDept().getDeptName());
 		   String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-		   String uuid1 = UUID.randomUUID().toString().replaceAll("-", "");
-		   dept.setDeptId(uuid1);
-		    dept.setDeptName("good");
 		    deptDAO.save(dept);
 		    department.setDept(dept);
 		   department.setKsId(uuid);
@@ -48,5 +50,17 @@ public class DepartmentService {
 	}
 	public void deleteDepartment(String ksid) {
 		departmentDAO.deleteById(ksid);
+	}
+	public long findcount(String ksname) {
+		ksname="%"+ksname+"%";
+		return departmentDAO.countnames(ksname);
+	}
+	
+	public long countbyname(String name) {
+		return departmentDAO.countbynames(name);
+	}
+	//修改ks
+	public void updateks(Department department) {
+		departmentDAO.save(department);
 	}
 }

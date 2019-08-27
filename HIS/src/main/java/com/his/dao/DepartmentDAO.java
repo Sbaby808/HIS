@@ -83,4 +83,12 @@ public interface DepartmentDAO extends CrudRepository<Department, String>{
 	 */
 	@Query("from Department t where t.ksName like ?1")
 	public List<Department> findDepartments(String ksName,Pageable pageable);
+	
+		@Query("select count(*) from Department t where t.ksName like ?1")
+		public long countnames(String departmentName);
+		@Query("select count(*) from Department t where t.ksName = ?1")
+		public long countbynames(String name);
+		
+		
+		
 }

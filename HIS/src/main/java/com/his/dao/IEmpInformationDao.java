@@ -72,5 +72,16 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
        + " where to_char(wt.pb_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') "
        + " and ro.ks_id = ?1", nativeQuery = true)
 	public List<EmpInformation> getDoctorsByWkAndKs(String ksId);
-
+	/**
+	 * 
+	* @Title:getsijibyempid
+	* @Description:查询所有的司机
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:jack
+	* @Date:2019年8月26日 上午9:54:45
+	 */
+	@Query("select ur.empInformation from UserRole ur where ur.role.rolePosition = '司机' ")
+	public List<EmpInformation> getsijibyempid();
 }

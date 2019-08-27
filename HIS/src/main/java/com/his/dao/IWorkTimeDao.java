@@ -31,4 +31,7 @@ public interface IWorkTimeDao extends CrudRepository<WorkTime, String>{
        + " and w.pb_date >  trunc(SYSDATE-1) and w.pb_date < trunc(sysdate + 2)", nativeQuery = true)
 	public List<WorkTime> getDocById(String empId);
 	
+	//通过员工序号 找到该员工的排班时间
+	@Query("select we.workTime from WktimeEmp we where we.empInformation.ygxh=?1")
+	public WorkTime findpbid(String ygxh);
 }
