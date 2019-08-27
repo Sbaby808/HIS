@@ -30,7 +30,7 @@ public class CheckNoticeForm implements Serializable {
 	private Date mcheckTime;
 	
 	@JSONField(format="yyyy-MM-dd")
-	@Column(name="CHECK_START_TIME")
+	@Column(name="check_start_time")
 	private Date checkStartTime;
 	
 	@JSONField(format="yyyy-MM-dd")

@@ -31,6 +31,7 @@ public class Examination implements Serializable {
 
 	private BigDecimal sphygmus;
 	
+	@Column(name="PRESSURE_H")
 	private BigDecimal pressureH;
 
 	public BigDecimal getPressureH() {

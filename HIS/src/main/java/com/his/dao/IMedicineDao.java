@@ -43,4 +43,17 @@ public interface IMedicineDao extends CrudRepository<Medicine, String> {
 	@Query(value="select m.medicineId from Medicine m where m.drugWarehouse.pckcId=?1")
 	public String[] getmid(String pcid);
 
+	/**
+	 * 
+	* @Title:getMedBypcId
+	* @Description:根据批次id查询住院部门的药品信息
+	* @param:@param pcId
+	* @param:@return
+	* @return:Medicine
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月26日 下午3:09:13
+	 */
+	@Query("from Medicine m where m.dept.deptId='cccccccc' and m.drugWarehouse.pckcId=?1")
+	public Medicine getMedBypcId(String pcId);
 }

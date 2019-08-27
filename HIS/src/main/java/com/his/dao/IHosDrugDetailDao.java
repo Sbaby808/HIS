@@ -22,8 +22,10 @@ public interface IHosDrugDetailDao extends CrudRepository<HosDrugDetail, String>
 	@Query("from HosDrugDetail h where "
 			+ " h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.medOutTime is null "
 			+ " and( h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
-			+ " or h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) ")
-	public List <HosDrugDetail> getHosDrugDetailbyPage(String cardName,Pageable page);
+			+ " or h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
+			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
+			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
+	public List <HosDrugDetail> getHosDrugDetailbyPage(String cardName,String ksName,String roomName,Pageable page);
 	
 	@Query("select count(*) from HosDrugDetail h where h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.medOutTime is null")
 	public Long countInDrugDetail();

@@ -32,8 +32,9 @@ public interface IHosOutNoticeDao extends CrudRepository<HosOutNotice, String>{
 	@Query("from HosOutNotice h where"
 			+ " (h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1"
 			+ " or h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1 )"
-			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 ")
-	public List <HosOutNotice> getHosOutNoticeByPage(String cardName,String ksName,Pageable page);
+			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
+			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
+	public List <HosOutNotice> getHosOutNoticeByPage(String cardName,String ksName,String roomName,Pageable page);
 	
 	
 }

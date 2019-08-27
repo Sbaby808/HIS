@@ -31,10 +31,9 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	@Query("from HospitalizedPatient h where "
 			+ " h.medicalCard.cardName like ?1 "
 			+ " and h.department.ksName like ?2 "
-			+ " and h.hosBed.wardRoom.ward.wardName like ?3 "
-			+ " and h.hosBed.wardRoom.wroomName like ?4 "
+			+ " and h.hosBed.wardRoom.wroomName like ?3 "
 			+ " and h.hospState !='已出院' ")
-	public List<HospitalizedPatient> getAllPatientsByPage(String hospName,String ksName,String wardName,String roomName,Pageable page);
+	public List<HospitalizedPatient> getAllPatientsByPage(String hospName,String ksName,String roomName,Pageable page);
 	
 	
 	@Query("from HospitalizedPatient h")

@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,11 +13,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IDrugWarehouseDao;
 import com.his.dao.IHosDrugDetailDao;
 import com.his.dao.IHosDrugRecordDao;
+import com.his.dao.IMedicineDao;
+import com.his.pojo.DrugWarehouse;
 import com.his.pojo.HosDrugDetail;
 import com.his.pojo.HosDrugDetailPK;
 import com.his.pojo.HosDrugRecord;
+import com.his.pojo.Medicine;
 
 /**
  * 
@@ -34,6 +39,10 @@ public class HosDrugRecordService {
 	private IHosDrugRecordDao hosDrugRecordDao;
 	@Autowired
 	private IHosDrugDetailDao hosDrugDetailDao;
+	@Autowired
+	private IDrugWarehouseDao drugWarehouseDao;
+	@Autowired
+	private IMedicineDao medicineDao;
 	
 	public Map getAllDrugRecords(int curpage,int pagesize){
 		List <HosDrugRecord> list = hosDrugRecordDao.getAllDrugRecords(PageRequest.of(curpage-1, pagesize));
@@ -69,6 +78,15 @@ public class HosDrugRecordService {
 			pk.setYpId(details.get(i).getDrugInformation().getYpId());
 			details.get(i).setId(pk);
 			hosDrugDetailDao.save(details.get(i));
+			
+			String ypId = details.get(i).getDrugInformation().getYpId();
+			List <DrugWarehouse> list = drugWarehouseDao.getDrugsOrderByExpireDate(ypId);
+			String pcId = list.get(0).getPckcId();
+			Medicine medicine = medicineDao.getMedBypcId(pcId);
+			BigDecimal num1 = medicine.getMedicineName();
+			BigDecimal num2 = details.get(i).getDrugUseNum();
+			medicine.setMedicineName(num1.subtract(num2));
+			medicineDao.save(medicine);
 		}
 		
 	}

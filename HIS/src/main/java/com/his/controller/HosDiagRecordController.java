@@ -58,10 +58,11 @@ public class HosDiagRecordController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_diag_record_byPage")
-	public Map getDiagRecordByPage(String text1,String text2,int curpage,int pagesize){
+	public Map getDiagRecordByPage(String text1,String text2,String text3,int curpage,int pagesize){
 		String cardName = "%"+text1+"%";
 		String ksName = "%"+text2+"%";
-		return hosDiagRecordService.getDiagRecordByPage(cardName,ksName,curpage, pagesize);
+		String roomName = "%"+text3+"%";
+		return hosDiagRecordService.getDiagRecordByPage(cardName,ksName,roomName,curpage, pagesize);
 	}
 	
 	/**
