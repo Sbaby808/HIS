@@ -69,10 +69,30 @@ public interface IHistoryDao extends CrudRepository<History, String> {
 	@Query("select count(*) from RegEmp re "
 			+ "where re.empInformation.ygxh = ?1 "
 			+ "and re.regDuty = '医生' "
-			+ "and re.outpatientRegistration.history.illness.illName like ?2 "
-			+ "and re.outpatientRegistration.history.hisTime between ?3 and ?4 "
+			+ "and re.outpatientRegistration.medicalCard.cardName like ?2 "
+			+ "and re.outpatientRegistration.history.illness.illName like ?3 "
+			+ "and re.outpatientRegistration.history.hisTime between ?4 and ?5 "
 			+ "order by re.outpatientRegistration.history.hisTime desc")
-	public int searchHistoryCount(String ygxh, String illnessKey, Date startTime, Date endTime);
+	public int searchHistoryCount(String ygxh, String nameKey, String illnessKey, Date startTime, Date endTime);
+	
+	/**
+	* @Title:searchHistoryCountByCardId
+	* @Description:根据就诊卡号查询诊断记录条数
+	* @param:@param cardId
+	* @param:@param startTime
+	* @param:@param endTime
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月26日 下午3:34:18
+	 */
+	@Query("select count(*) from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.prescription.outPrePay is null "
+			+ "and h.hisTime between ?2 and ?3 "
+			+ "order by h.hisTime desc")
+	public int searchHistoryCountByCardId(String cardId, Date startTime, Date endTime);
 	
 	/**
 	* @Title:searchHistory
@@ -90,7 +110,29 @@ public interface IHistoryDao extends CrudRepository<History, String> {
 	@Query("select re.outpatientRegistration.history from RegEmp re "
 			+ "where re.empInformation.ygxh = ?1 "
 			+ "and re.regDuty = '医生' "
-			+ "and re.outpatientRegistration.history.illness.illName like ?2 "
+			+ "and re.outpatientRegistration.medicalCard.cardName like ?2 "
+			+ "and re.outpatientRegistration.history.illness.illName like ?3 "
+			+ "and re.outpatientRegistration.history.hisTime between ?4 and ?5 "
 			+ "order by re.outpatientRegistration.history.hisTime desc")
-	public List<History> searchHistory(String ygxh, String illnessKey, Date startTime, Date endTime, Pageable pageable);
+	public List<History> searchHistory(String ygxh, String nameKey, String illnessKey, Date startTime, Date endTime, Pageable pageable);
+	
+	/**
+	* @Title:searchHistoryByCardId
+	* @Description:根据就诊卡编号查询诊断记录
+	* @param:@param cardId
+	* @param:@param startTime
+	* @param:@param endTime
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<History>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月26日 下午3:37:15
+	 */
+	@Query(" from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.prescription.outPrePay is null "
+			+ "and h.hisTime between ?2 and ?3 "
+			+ "order by h.hisTime desc")
+	public List<History> searchHistoryByCardId(String cardId, Date startTime, Date endTime, Pageable pageable);
 }

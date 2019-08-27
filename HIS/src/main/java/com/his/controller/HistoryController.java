@@ -188,10 +188,64 @@ public class HistoryController {
      */
     @GetMapping("/search_history_count")
     @ResponseBody
-    public JsonResult searchHistoryCount(String ygxh, String illnessKey, String searchStartTime, String searchEndTime) {
+    public JsonResult searchHistoryCount(String ygxh, String nameKey, String illnessKey, String searchStartTime, String searchEndTime) {
     	JsonResult result = new JsonResult();
     	try {
-			result.setResult(historyService.searchHistoryCount(ygxh, illnessKey, searchStartTime, searchEndTime));
+			result.setResult(historyService.searchHistoryCount(ygxh, nameKey, illnessKey, searchStartTime, searchEndTime));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:searchHistoryCountByCardId
+    * @Description:根据就诊卡编号查询诊断记录条数
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月26日 下午3:29:28
+     */
+    @GetMapping("/search_history_count_by_cardId")
+    @ResponseBody
+    public JsonResult searchHistoryCountByCardId(String cardId, String searchStartTime, String searchEndTime) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.searchHistoryCountByCardId(cardId, searchStartTime, searchEndTime));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:searchHistoryByCardId
+    * @Description:根据就诊卡编号查询诊断记录
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@param pageNum
+    * @param:@param pageSize
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月26日 下午3:30:13
+     */
+    @GetMapping("/search_history_by_cardId")
+    @ResponseBody
+    public JsonResult searchHistoryByCardId(String cardId, String searchStartTime, String searchEndTime, int pageNum, int pageSize) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.searchHistoryByCardId(cardId, searchStartTime, searchEndTime, pageNum, pageSize));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -217,10 +271,34 @@ public class HistoryController {
      */
     @GetMapping("/search_history")
     @ResponseBody
-    public JsonResult searchHistoryCount(String ygxh, String illnessKey, String searchStartTime, String searchEndTime, int pageNum, int pageSize) {
+    public JsonResult searchHistoryCount(String ygxh, String nameKey, String illnessKey, String searchStartTime, String searchEndTime, int pageNum, int pageSize) {
     	JsonResult result = new JsonResult();
     	try {
-			result.setResult(historyService.searchHistory(ygxh, illnessKey, searchStartTime, searchEndTime, pageNum, pageSize));
+			result.setResult(historyService.searchHistory(ygxh, nameKey, illnessKey, searchStartTime, searchEndTime, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:getSolveSchemeByHistoryId
+    * @Description:根据诊断记录编号查询医嘱
+    * @param:@param historyId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月26日 上午9:47:39
+     */
+    @GetMapping("/get_solve_scheme_by_historyId")
+    @ResponseBody
+    public JsonResult getSolveSchemeByHistoryId(String historyId) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.getSolveSchemeByHistoryId(historyId));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -82,8 +82,6 @@ public class HistoryService {
     	        history.setHistoryId(UUID.randomUUID().toString().replaceAll("-", ""));
     	        history.setOutpatientRegistration(outpatientRegistration);
     	        historyDao.save(history);
-    	        outpatientRegistration.setHistory(history);
-    	        outpatientRegistrationDao.save(outpatientRegistration);
     	        // 创建医嘱
     			SolveScheme solveScheme = new SolveScheme();
     			solveScheme.setScheId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -95,6 +93,8 @@ public class HistoryService {
     	        // 修改排队状态
     	        omr.setOutStatus("正在就诊");
     	        outMedicalRecordDao.save(omr);
+    	        outpatientRegistration.setHistory(history);
+    	        outpatientRegistrationDao.save(outpatientRegistration);
     	        result.setResult(history);
     	        result.setStatus("ok");
     		} else {
@@ -229,11 +229,31 @@ public class HistoryService {
     * @author:Sbaby
     * @Date:2019年8月25日 下午2:53:26
      */
-    public int searchHistoryCount(String ygxh, String illnessKey, String searchStartTime, String searchEndTime) throws ParseException {
+    public int searchHistoryCount(String ygxh, String nameKey, String illnessKey, String searchStartTime, String searchEndTime) throws ParseException {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1970-00-00 00:00:00" : searchStartTime);
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1900-00-00 00:00:00" : searchStartTime);
     	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
-        return historyDao.searchHistoryCount(ygxh, SimpleTools.addCharForSearch(illnessKey), startTime, endTime);
+        return historyDao.searchHistoryCount(ygxh, SimpleTools.addCharForSearch(nameKey), SimpleTools.addCharForSearch(illnessKey), startTime, endTime);
+    }
+    
+    /**
+    * @Title:searchHistoryCountByCardId
+    * @Description:根据就诊卡号查询诊断记录条数
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @param:@throws ParseException
+    * @return:int
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月26日 下午3:31:34
+     */
+    public int searchHistoryCountByCardId(String cardId, String searchStartTime, String searchEndTime) throws ParseException {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1900-00-00 00:00:00" : searchStartTime);
+    	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
+    	return historyDao.searchHistoryCountByCardId(cardId, startTime, endTime);
     }
     
     /**
@@ -252,12 +272,49 @@ public class HistoryService {
     * @author:Sbaby
     * @Date:2019年8月25日 下午3:19:02
      */
-    public List<History> searchHistory(String ygxh, String illnessKey, String searchStartTime, String searchEndTime, int pageNum, int pageSize) throws ParseException {
+    public List<History> searchHistory(String ygxh, String nameKey, String illnessKey, String searchStartTime, String searchEndTime, int pageNum, int pageSize) throws ParseException {
     	PageRequest page = PageRequest.of(pageNum - 1, pageSize);
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1970-00-00 00:00:00" : searchStartTime);
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1900-00-00 00:00:00" : searchStartTime);
     	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
-        return historyDao.searchHistory(ygxh, SimpleTools.addCharForSearch(illnessKey), startTime, endTime, page);
+        return historyDao.searchHistory(ygxh, SimpleTools.addCharForSearch(nameKey), SimpleTools.addCharForSearch(illnessKey), startTime, endTime, page);
+    }
+    
+    /**
+    * @Title:searchHistoryByCardId
+    * @Description:根据就诊卡编号查询诊断记录
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@param pageNum
+    * @param:@param pageSize
+    * @param:@return
+    * @param:@throws ParseException
+    * @return:List<History>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月26日 下午3:37:46
+     */
+    public List<History> searchHistoryByCardId(String cardId, String searchStartTime, String searchEndTime, int pageNum, int pageSize) throws ParseException {
+    	PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1900-00-00 00:00:00" : searchStartTime);
+    	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
+    	return historyDao.searchHistoryByCardId(cardId, startTime, endTime, page);
+    }
+    
+    /**
+    * @Title:getSolveSchemeByHistoryId
+    * @Description:根据诊断记录编号查询医嘱
+    * @param:@param historyId
+    * @param:@return
+    * @return:SolveScheme
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年8月26日 上午9:48:35
+     */
+    public SolveScheme getSolveSchemeByHistoryId(String historyId) {
+    	return solveSchemeDao.getByHistoryId(historyId);
     }
 
 

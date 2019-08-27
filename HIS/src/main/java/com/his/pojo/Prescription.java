@@ -30,7 +30,7 @@ public class Prescription implements Serializable {
 //	private String outPrePayId;
 
 //	@Temporal(TemporalType.DATE)
-	@JSONField(format = "yyyy-MM-dd")
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	@Column(name="PRES_TIME")
 	private Date presTime;
 
@@ -55,7 +55,7 @@ public class Prescription implements Serializable {
 	private History history;
 
 	//bi-directional one-to-one association to OutPrePay
-	@OneToOne(mappedBy="prescription")
+	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="OUT_PRE_PAY_ID")
 	private OutPrePay outPrePay;
 
