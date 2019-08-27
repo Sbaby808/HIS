@@ -42,8 +42,8 @@ public class MedicalRecordService {
 	* @author:Hamster
 	* @Date:2019年8月4日 下午5:20:55
 	 */
-	public Map getAllMedicalRecordByPage(int curpage,int pagesize){
-		List <MedicalRecord> list = medicalRecordDao.getAllMedicalRecordByPage(PageRequest.of(curpage-1, pagesize));
+	public Map getAllMedicalRecordByPage(String cardName,String ksName,int curpage,int pagesize){
+		List <MedicalRecord> list = medicalRecordDao.getAllMedicalRecordByPage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
 		long total = medicalRecordDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);

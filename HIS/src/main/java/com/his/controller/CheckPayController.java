@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.CheckItem;
 import com.his.pojo.CheckPay;
+import com.his.pojo.JsonResult;
 import com.his.service.CheckPayService;
 
 /**  
@@ -55,5 +56,50 @@ public class CheckPayController {
 	@GetMapping("del_check")
 	public void delcheck(String checkid) {
 		checkPayService.delcheck(checkid);
+	}
+	@ResponseBody
+	@GetMapping("getcheckpayrecord")
+	public Map getcheckpayrecord(int curpage, int pagesize,String sou) {
+		return checkPayService.getcheckayrecord(curpage, pagesize, "%"+sou+"%");
+	}
+	
+	/**
+	* @Title:searchCheckPay
+	* @Description:模糊查询检查项
+	* @param:@param key
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午9:27:45
+	 */
+	@GetMapping("/search_check_pay")
+	@ResponseBody
+	public JsonResult searchCheckPay(String key) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(checkPayService.searchCheckPay(key));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	* @Title:getAllCheckPay
+	* @Description:查询所有检查项
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月20日 上午8:42:49
+	 */
+	@ResponseBody
+	@GetMapping("/get_all_check_pay")
+	public List <CheckPay> getAllCheckPay(){
+		return checkPayService.getAllCheckPay();
 	}
 }

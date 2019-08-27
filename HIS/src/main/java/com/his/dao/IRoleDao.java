@@ -32,6 +32,10 @@ public interface IRoleDao extends CrudRepository<Role, String>{
 	@Query(value="from Role r where r.rolePosition=?1")
 	public Role getRole(String role_position);
     
+	@Query(value="select u.empInformation  from Role r,UserRole u where r.roleId=u.role.roleId and r.department.ksId=?1")
+	public List<EmpInformation> getallemp(String ksid);
+
+	
 	@Query("from Role r")
 	public List<Role> getAll();
 	
@@ -47,6 +51,7 @@ public interface IRoleDao extends CrudRepository<Role, String>{
 	
 	@Query("select count(*) from Role t where t.rolePosition like ?1")
 	public long countnames(String rolePosition);
+	
 	@Query("select count(*) from Role t where t.rolePosition = ?1" )
 	public long countnamesss(String rolePosition);
 	//通过roleid找到所有该职位员工的id

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.pojo.HosOutNotice;
 import com.his.pojo.HosPrescriptionDetail;
 import com.his.pojo.LastDrugDetail;
 import com.his.service.HosPreDetailService;
@@ -45,8 +47,9 @@ public class HosPreDetailController {
 	
 	@ResponseBody
 	@GetMapping("/get_hos_pre_detail_byPage")
-	public Map getHosPreDetailByPage(int curpage,int pagesize){
-		return hosPreDetailService.getHosPreDetailByPage(curpage, pagesize);
+	public Map getHosPreDetailByPage(String text1,int curpage,int pagesize){
+		String cardName = "%"+text1+"%";
+		return hosPreDetailService.getHosPreDetailByPage(cardName,curpage, pagesize);
 	}
 	
 	/**
@@ -66,10 +69,28 @@ public class HosPreDetailController {
 		return hosPreDetailService.getHosPreDetailByPid(pid);
 	}
 	
+	/**
+	 * 
+	* @Title:getHosPreDetailByDiagId
+	* @Description:根据诊断记录查询处方明细
+	* @param:@param diagId
+	* @param:@return
+	* @return:List<LastDrugDetail>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月19日 上午11:00:17
+	 */
 	@ResponseBody
 	@GetMapping("/get_hos_pre_detail_byDiagId")
 	public List <LastDrugDetail> getHosPreDetailByDiagId(String diagId){
 		return hosPreDetailService.getHosPreDetailByDiagId(diagId);
 	}
+	
+	@ResponseBody
+	@PostMapping("/get_all_hos_pre_details")
+	public List <HosPrescriptionDetail> getAllHosPreDetails(@RequestBody HosOutNotice outNotice){
+		return hosPreDetailService.getAllHosPreDetails(outNotice);
+	}
+	
 	
 }

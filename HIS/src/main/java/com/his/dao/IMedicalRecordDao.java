@@ -32,8 +32,11 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 	@Query("from MedicalRecord m")
 	public List <MedicalRecord> getAllMedicalRecord();
 	
-	@Query("from MedicalRecord m")
-	public List <MedicalRecord> getAllMedicalRecordByPage(Pageable page);
+	@Query("from MedicalRecord m where "
+			+ " (m.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or m.hospitalizedPatient.medicalCard.personId like ?1)"
+			+ " and m.medInDept like ?2 ")
+	public List <MedicalRecord> getAllMedicalRecordByPage(String cardName,String ksName,Pageable page);
 	
 	/**
 	 * 

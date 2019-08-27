@@ -16,9 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.bean.OperationPaybean;
 import com.his.dao.ICheckItemDAO;
 import com.his.dao.ICheckPayDao;
+import com.his.dao.ICheckPayRecordDao;
 import com.his.dao.IEmpInformationDao;
 import com.his.pojo.CheckItem;
 import com.his.pojo.CheckPay;
+import com.his.pojo.CheckPayRecord;
+import com.his.utils.SimpleTools;
 import com.his.utils.UUIDGenerator;
 import com.sun.org.apache.regexp.internal.recompile;
 import com.sun.org.apache.xerces.internal.dom.DeepNodeListImpl;
@@ -39,6 +42,8 @@ public class CheckPayService {
 	private ICheckItemDAO iCheckItemDAO;
 	@Autowired
 	private IEmpInformationDao iEmpInformationDao;
+	@Autowired
+	private ICheckPayRecordDao iCheckPayRecordDao;
 /**
  * 
 * @Title:AddCheckPay
@@ -173,5 +178,30 @@ public class CheckPayService {
 	}
 	public void delcheck(String checkid) {
 		iCheckPayDao.deleteById(checkid);
+	}
+	public Map getcheckayrecord(int curpage, int pagesize,String sou) {
+		List<CheckPayRecord> list=iCheckPayRecordDao.getpayrecord(sou, PageRequest.of(curpage - 1,
+		  pagesize));
+		
+		long total=iCheckPayRecordDao.getgount(sou);
+		Map map=new HashMap();
+		map.put("list", list);;
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	* @Title:searchCheckPay
+	* @Description:模糊查询检查项
+	* @param:@param key
+	* @param:@return
+	* @return:List<CheckPay>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月23日 下午9:28:22
+	 */
+	public List<CheckPay> searchCheckPay(String key) {
+		PageRequest page = PageRequest.of(0, 6);
+		return iCheckPayDao.searchCheck(SimpleTools.addCharForSearch(key), page);
 	}
 }

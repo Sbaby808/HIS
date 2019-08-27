@@ -1,5 +1,10 @@
 package com.his.dao;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.PutStock;
@@ -12,5 +17,17 @@ import com.his.pojo.PutStock;
 *    
 */
 public interface IPutStockDao extends CrudRepository<PutStock, String>{
+	
+	/**
+	* @Title:queryAllPutTime
+	* @Description:获取所有入库信息
+	* @param:@return
+	* @return:List<PutStock>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月19日 上午10:47:03
+	 */
+	@Query("from PutStock p order by p.rkTime desc")
+	public List<PutStock> queryAllPutTime();
 
 }

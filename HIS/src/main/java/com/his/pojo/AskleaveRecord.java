@@ -20,16 +20,12 @@ public class AskleaveRecord implements Serializable {
 	@Column(name="OFF_ID")
 	private String offId;
 
-	@Column(name="OFF_DAYS")
-	private BigDecimal offDays;
-
 	@Temporal(TemporalType.DATE)
-	@Column(name="OFF_END_TIME")
-	private Date offEndTime;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="OFF_START_TIME")
-	private Date offStartTime;
+	@Column(name="askleave_time")
+	private Date askLeaveTime;
+	
+	@Column(name="askleave_type")
+	private String askLeaveType;
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -47,28 +43,22 @@ public class AskleaveRecord implements Serializable {
 		this.offId = offId;
 	}
 
-	public BigDecimal getOffDays() {
-		return this.offDays;
+	
+
+	public Date getAskLeaveTime() {
+		return askLeaveTime;
 	}
 
-	public void setOffDays(BigDecimal offDays) {
-		this.offDays = offDays;
+	public void setAskLeaveTime(Date askLeaveTime) {
+		this.askLeaveTime = askLeaveTime;
 	}
 
-	public Date getOffEndTime() {
-		return this.offEndTime;
+	public String getAskLeaveType() {
+		return askLeaveType;
 	}
 
-	public void setOffEndTime(Date offEndTime) {
-		this.offEndTime = offEndTime;
-	}
-
-	public Date getOffStartTime() {
-		return this.offStartTime;
-	}
-
-	public void setOffStartTime(Date offStartTime) {
-		this.offStartTime = offStartTime;
+	public void setAskLeaveType(String askLeaveType) {
+		this.askLeaveType = askLeaveType;
 	}
 
 	public EmpInformation getEmpInformation() {

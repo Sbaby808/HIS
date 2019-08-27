@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -20,19 +23,30 @@ public class OutMedicalRecord implements Serializable {
 	@Column(name="OUT_MID")
 	private String outMid;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd")
 	@Column(name="OUT_MTIME")
 	private Date outMtime;
 
 	@Column(name="OUT_TIMES")
 	private BigDecimal outTimes;
 
-	@Column(name="REG_ID")
-	private String regId;
+	@Column(name="OUT_STATUS")
+	private String outStatus;
+
+//	@Column(name="REG_ID")
+
+	public String getOutStatus() {
+		return outStatus;
+	}
+
+	public void setOutStatus(String outStatus) {
+		this.outStatus = outStatus;
+	}
+//	private String regId;
 
 	//bi-directional one-to-one association to OutpatientRegistration
-	@OneToOne
-	@JoinColumn(name="OUT_MID", referencedColumnName="CARD_ID")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="REG_ID")
 	private OutpatientRegistration outpatientRegistration;
 
 	public OutMedicalRecord() {
@@ -62,13 +76,13 @@ public class OutMedicalRecord implements Serializable {
 		this.outTimes = outTimes;
 	}
 
-	public String getRegId() {
-		return this.regId;
-	}
-
-	public void setRegId(String regId) {
-		this.regId = regId;
-	}
+//	public String getRegId() {
+//		return this.regId;
+//	}
+//
+//	public void setRegId(String regId) {
+//		this.regId = regId;
+//	}
 
 	public OutpatientRegistration getOutpatientRegistration() {
 		return this.outpatientRegistration;

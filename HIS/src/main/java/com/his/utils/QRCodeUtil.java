@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Binarizer;
 import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -100,11 +101,44 @@ public class QRCodeUtil {
             Result result = formatReader.decode(binaryBitmap, hints); 
             resultStr = result.getText();
         } catch (NotFoundException e) {  
-            e.printStackTrace();  
+            e.printStackTrace();
         }    
         System.out.println(resultStr);
         return resultStr;  
     }  
+    
+    /** 
+     * 解析二维码 
+     * @param imagePath 二维码图片存放路径(含文件名) 
+     * @param charset   解码二维码内容时采用的字符集(传null时默认采用UTF-8编码) 
+     * @return 解析成功后返回二维码文本,否则返回空字符串 
+     */  
+    public static String decodeQRCodeImage(String imagePath, String charset) {  
+        BufferedImage image = null;  
+        try {  
+            image = ImageIO.read(new File(imagePath));  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+            return "";  
+        }  
+        if(null == image){  
+            System.out.println("Could not decode QRCodeImage");  
+            return "";  
+        }  
+        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(image)));  
+        Map<DecodeHintType, String> hints = new HashMap<DecodeHintType, String>();  
+        hints.put(DecodeHintType.CHARACTER_SET, charset==null ? "UTF-8" : charset);  
+        Result result = null;  
+        try {  
+            result = new MultiFormatReader().decode(bitmap, hints);  
+            return result.getText();  
+        } catch (NotFoundException e) {  
+            System.out.println("二维码图片[" + imagePath + "]解析失败,堆栈轨迹如下");  
+            e.printStackTrace();  
+            return "";  
+        }  
+    }
+
       
 
 }

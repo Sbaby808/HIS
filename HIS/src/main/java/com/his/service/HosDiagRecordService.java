@@ -68,9 +68,9 @@ public class HosDiagRecordService {
 	* @author:Hamster
 	* @Date:2019年8月5日 上午11:35:35
 	 */
-	public Map getDiagRecordByPage(int curpage,int pagesize){
-		List <HosDiagnosticRecord> list = hosDiagRecordDao.getDiagRecordByPage(PageRequest.of(curpage-1, pagesize));
-		long total = hosDiagRecordDao.count();
+	public Map getDiagRecordByPage(String cardName,String ksName,String roomName,int curpage,int pagesize){
+		List <HosDiagnosticRecord> list = hosDiagRecordDao.getDiagRecordByPage(cardName,ksName,roomName,PageRequest.of(curpage-1, pagesize));
+		long total = hosDiagRecordDao.countInDiag();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -119,5 +119,10 @@ public class HosDiagRecordService {
 	 */
 	public void delHosDiagRecord(HosDiagnosticRecord record){
 		hosDiagRecordDao.delete(record);
+	}
+	
+	public List <HosDiagnosticRecord> getDiagRecordbyMid(String medRid){
+		List <HosDiagnosticRecord> list = hosDiagRecordDao.getDiagRecordbyMid(medRid);
+		return list;
 	}
 }

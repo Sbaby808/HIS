@@ -26,7 +26,7 @@ public class OutHospitaiRecord implements Serializable {
 	@Column(name="OUT_RID")
 	private String outRid;
 
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	@Column(name="OUT_REC_TIME")
 	private Date outRecTime;
 

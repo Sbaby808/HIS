@@ -13,15 +13,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IHosBedDao;
 import com.his.dao.IHosDrugCostDao;
 import com.his.dao.IHosPatientDao;
 import com.his.dao.IHosPreDetailDao;
 import com.his.dao.IHosPrescriptionDao;
+import com.his.dao.IMedicalRecordDao;
+import com.his.pojo.HosBed;
 import com.his.pojo.HosDrugCost;
 import com.his.pojo.HosPrescription;
 import com.his.pojo.HosPrescriptionDetail;
 import com.his.pojo.HosPrescriptionDetailPK;
 import com.his.pojo.HospitalizedPatient;
+import com.his.pojo.MedicalRecord;
 
 /**
  * 
@@ -43,6 +47,10 @@ public class HosPrescriptionService {
 	private IHosDrugCostDao hosDrugCostDao;
 	@Autowired
 	private IHosPatientDao hosPatientDao;
+	@Autowired
+	private IHosBedDao hosBedDao;
+	@Autowired
+	private IMedicalRecordDao medicalRecordDao;
 	
 	/**
 	 * 
@@ -56,9 +64,11 @@ public class HosPrescriptionService {
 	* @author:Hamster
 	* @Date:2019年8月5日 下午7:21:52
 	 */
-	public Map getHosPrescriptionByPage(int curpage,int pagesize){
-		List <HosPrescription> list =hosPrescriptionDao.getHosPrescriptionByPage(PageRequest.of(curpage-1, pagesize));
-		long total = hosPrescriptionDao.count();
+	public Map getHosPrescriptionByPage(String cardName,String ksName,int curpage,int pagesize){
+		List <HosPrescription> list =hosPrescriptionDao.getHosPrescriptionByPage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
+		System.out.println("list:"+list.size());
+		long total = hosPrescriptionDao.countInPres();
+		System.out.println(total);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -109,14 +119,13 @@ public class HosPrescriptionService {
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
 		
-		HosDrugCost hosDrugCost = new HosDrugCost();
-		hosDrugCost.setHosPrescription(hosPrescription);
-		hosDrugCost.setHostCtime(dateFormat.parse(time));
-		hosDrugCostDao.save(hosDrugCost);
+		HosDrugCost hosDrugCost = newDrugCost();
 		
 		hosPrescription.setHosCid(hosDrugCost.getHosCid());
 		hosPrescription.setHosPreTime(dateFormat.parse(time));
 		hosPrescriptionDao.save(hosPrescription);
+		
+		hosDrugCost.setHosPrescription(hosPrescription);
 		
 		
 		List <HosPrescriptionDetail> details = hosPrescription.getHosPrescriptionDetails();
@@ -128,9 +137,31 @@ public class HosPrescriptionService {
 			hosPreDetailDao.save(details.get(i));
 		}
 		
-		HospitalizedPatient patient = hosPrescription.getHosDiagnosticRecord().getMedicalRecord().getHospitalizedPatient();
+		String patientId = hosPrescription.getHosDiagnosticRecord().getMedicalRecord().getHospitalizedPatient().getHospId();
+		HospitalizedPatient patient = hosPatientDao.findById(patientId).get();
+		
 		BigDecimal balance = patient.getBalance().subtract(hosPrescription.getHosPreMoney());
 		patient.setBalance(balance);
-		
+		hosPatientDao.save(patient);
+	}
+	
+	/**
+	 * 
+	* @Title:newDrugCost
+	* @Description:新增住院药品扣费记录
+	* @param:@return
+	* @param:@throws ParseException
+	* @return:HosDrugCost
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月17日 上午9:11:07
+	 */
+	public HosDrugCost newDrugCost() throws ParseException{
+		HosDrugCost hosDrugCost = new HosDrugCost();
+		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = dateFormat.format(new Date());
+		hosDrugCost.setHostCtime(dateFormat.parse(time));
+		hosDrugCostDao.save(hosDrugCost);
+		return hosDrugCost;
 	}
 }

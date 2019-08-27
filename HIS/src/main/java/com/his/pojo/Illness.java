@@ -2,6 +2,10 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alipay.api.domain.FaceAbilityExtInfo;
+
 import java.util.List;
 
 
@@ -35,6 +39,7 @@ public class Illness implements Serializable {
 
 	//bi-directional many-to-one association to History
 	@OneToMany(mappedBy="illness")
+	@JSONField(serialize = false)
 	private List<History> histories;
 
 	public Illness() {

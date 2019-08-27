@@ -1,8 +1,11 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.validation.Payload;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosOutNoticeDao;
+import com.his.dao.IHosPatientDao;
+import com.his.pojo.HosDrugCost;
+import com.his.pojo.HosOtherCost;
 import com.his.pojo.HosOutNotice;
+import com.his.pojo.HosPrescription;
+import com.his.pojo.HospitalizedPatient;
 
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -18,6 +26,8 @@ public class HosOutNoticeService {
 
 	@Autowired
 	private IHosOutNoticeDao hosOutNoticeDao;
+	@Autowired
+	private IHosPatientDao hosPatientDao;
 	
 	/**
 	 * 
@@ -29,8 +39,8 @@ public class HosOutNoticeService {
 	* @author:Hamster
 	* @Date:2019年8月3日 上午11:32:51
 	 */
-	public Map getHosOutNoticeByPage(int curpage,int pagesize){
-		List <HosOutNotice> list = hosOutNoticeDao.getHosOutNoticeByPage(PageRequest.of(curpage-1, pagesize));
+	public Map getHosOutNoticeByPage(String cardName,String ksName,String roomName,int curpage,int pagesize){
+		List <HosOutNotice> list = hosOutNoticeDao.getHosOutNoticeByPage(cardName,ksName,roomName,PageRequest.of(curpage-1, pagesize));
 		long total = hosOutNoticeDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
@@ -50,5 +60,48 @@ public class HosOutNoticeService {
 	 */
 	public void delHosOutNotice(HosOutNotice outNotice){
 		hosOutNoticeDao.delete(outNotice);
+	}
+	
+	/**
+	 * 
+	* @Title:checkMoney
+	* @Description:出院对账
+	* @param:@param outNotice
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月19日 上午10:16:52
+	 */
+	
+	public boolean checkMoney(HosOutNotice outNotice){
+		
+		String hospId = outNotice.getHosDoctorAdvice().getHosDiagnosticRecord().getMedicalRecord().getHospitalizedPatient().getHospId();
+		HospitalizedPatient patient = hosPatientDao.findById(hospId).get();
+		BigDecimal depositMoney = patient.getDepositMoney();
+		BigDecimal balance  = patient.getBalance();
+		
+		BigDecimal drugCost = new BigDecimal("0") ;
+		for(int i=0;i<patient.getMedicalRecord().getHosDiagnosticRecords().size();i++){
+			HosPrescription prescriptions = patient.getMedicalRecord().getHosDiagnosticRecords().get(i).getHosPrescription();
+			if(prescriptions.getHosPreMoney()!=null){
+				drugCost = drugCost.add(prescriptions.getHosPreMoney());
+			}
+		}
+		
+		BigDecimal otherCost = new BigDecimal("0");
+		List <HosOtherCost> otherCosts = patient.getMedicalRecord().getHosOtherCosts();
+		for(int j=0;j<otherCosts.size();j++){
+			otherCost = otherCost.add(otherCosts.get(j).getOtherProject().getProjectPrice());
+		}
+		
+		BigDecimal totalCost = drugCost.add(otherCost);
+		
+		if(depositMoney.subtract(balance).compareTo(totalCost)==0){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

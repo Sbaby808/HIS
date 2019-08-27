@@ -40,11 +40,6 @@ public class Supplier implements Serializable {
 	@JSONField(serialize = false)
 	private List<PutstockBack> putstockBacks1;
 
-	//bi-directional many-to-one association to PutstockBack
-	@OneToMany(mappedBy="supplier2")
-	@JSONField(serialize = false)
-	private List<PutstockBack> putstockBacks2;
-
 	public Supplier() {
 	}
 
@@ -124,26 +119,5 @@ public class Supplier implements Serializable {
 		return putstockBacks1;
 	}
 
-	public List<PutstockBack> getPutstockBacks2() {
-		return this.putstockBacks2;
-	}
-
-	public void setPutstockBacks2(List<PutstockBack> putstockBacks2) {
-		this.putstockBacks2 = putstockBacks2;
-	}
-
-	public PutstockBack addPutstockBacks2(PutstockBack putstockBacks2) {
-		getPutstockBacks2().add(putstockBacks2);
-		putstockBacks2.setSupplier2(this);
-
-		return putstockBacks2;
-	}
-
-	public PutstockBack removePutstockBacks2(PutstockBack putstockBacks2) {
-		getPutstockBacks2().remove(putstockBacks2);
-		putstockBacks2.setSupplier2(null);
-
-		return putstockBacks2;
-	}
 
 }

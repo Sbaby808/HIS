@@ -14,12 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosDrugDetailDao;
 import com.his.dao.IHosDrugRecordDao;
+import com.his.dao.IHosPatientDao;
 import com.his.dao.IHosPreDetailDao;
 import com.his.dao.IHosPrescriptionDao;
 import com.his.pojo.HosDrugDetail;
 import com.his.pojo.HosDrugRecord;
+import com.his.pojo.HosOutNotice;
 import com.his.pojo.HosPrescription;
 import com.his.pojo.HosPrescriptionDetail;
+import com.his.pojo.HospitalizedPatient;
 import com.his.pojo.LastDrugDetail;
 
 import oracle.net.aso.i;
@@ -45,6 +48,8 @@ public class HosPreDetailService {
 	private IHosDrugRecordDao hosDrugRecordDao;
 	@Autowired
 	private IHosDrugDetailDao hosDrugDetailDao;
+	@Autowired
+	private IHosPatientDao hosPatientDao;
 	/**
 	 * 
 	* @Title:getHosPreDetailByPage
@@ -57,9 +62,9 @@ public class HosPreDetailService {
 	* @author:Hamster
 	* @Date:2019年8月6日 上午10:50:34
 	 */
-	public Map getHosPreDetailByPage(int curpage,int pagesize){
-		List <HosPrescriptionDetail> list = hosPreDetailDao.getHosPreDetailsByPage(PageRequest.of(curpage-1, pagesize));
-		long total = hosPreDetailDao.count();
+	public Map getHosPreDetailByPage(String cardName,int curpage,int pagesize){
+		List <HosPrescriptionDetail> list = hosPreDetailDao.getHosPreDetailsByPage(cardName,PageRequest.of(curpage-1, pagesize));
+		long total = hosPreDetailDao.countInDrugCost();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -98,7 +103,7 @@ public class HosPreDetailService {
 	/**
 	 * 
 	* @Title:getHosPreDetailByDiagId
-	* @Description:根据诊断记录id获取处方明细
+	* @Description:根据诊断记录id获取处方明细(此处明细集合已减去用药明细)
 	* @param:@param diagId
 	* @param:@return
 	* @return:List<HosPrescriptionDetail>
@@ -145,5 +150,35 @@ public class HosPreDetailService {
 		
 		return list;
 		
+	}
+	
+	/**
+	 * 
+	* @Title:getHosPreDetails
+	* @Description:获取住院患者的所有处方明细(用于对账)
+	* @param:@param outNotice
+	* @param:@return
+	* @return:List<HosPrescriptionDetail>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月19日 上午11:22:48
+	 */
+	
+	public List <HosPrescriptionDetail> getAllHosPreDetails(HosOutNotice outNotice){
+		
+		List <HosPrescriptionDetail> list = new ArrayList<>();
+		
+		String hospId = outNotice.getHosDoctorAdvice().getHosDiagnosticRecord().getMedicalRecord().getHospitalizedPatient().getHospId();
+		HospitalizedPatient patient = hosPatientDao.findById(hospId).get();
+		
+		for(int i=0;i<patient.getMedicalRecord().getHosDiagnosticRecords().size();i++){
+			HosPrescription prescription = patient.getMedicalRecord().getHosDiagnosticRecords().get(i).getHosPrescription();
+			List <HosPrescriptionDetail> details = prescription.getHosPrescriptionDetails();
+			for(int j=0;j<details.size();j++){
+				list.add(details.get(j));
+			}
+		}
+		
+		return list;
 	}
 }

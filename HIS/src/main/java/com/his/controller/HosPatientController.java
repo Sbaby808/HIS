@@ -42,8 +42,11 @@ public class HosPatientController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_patients_byPage")
-	public Map getHosPatientsByPage(int curpage,int pagesize){
-		return hosPatientsService.getHosPatientsByPage(curpage, pagesize);
+	public Map getHosPatientsByPage(String text1,String text2,String text3,int curpage,int pagesize){
+		String hospName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		String roomName = "%"+text3+"%";
+		return hosPatientsService.getHosPatientsByPage(hospName,ksName,roomName,curpage, pagesize);
 	}
 	
 	/**
@@ -97,9 +100,53 @@ public class HosPatientController {
 		return hosPatientsService.getPatientByBid(bedId);
 	}
 	
+	/**
+	 * 
+	* @Title:outHosPatient
+	* @Description:出院登记
+	* @param:@param hospId
+	* @param:@throws ParseException
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月19日 下午7:30:14
+	 */
 	@ResponseBody
 	@GetMapping("/out_hos_patient")
-	public void outHosPatient(String hospId) throws ParseException{
-		hosPatientsService.outHosPatient(hospId);
+	public void outHosPatient(String hospId,String empId) throws ParseException{
+		hosPatientsService.outHosPatient(hospId,empId);
+	}
+	
+	/**
+	 * 
+	* @Title:checkBalance
+	* @Description:定时检测账户余额
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月26日 上午11:27:09
+	 */
+	@ResponseBody
+	@GetMapping("/check_balance")
+	public void checkBalance(){
+		hosPatientsService.checkBalance();
+	}
+	
+	/**
+	 * 
+	* @Title:addDepositMoney
+	* @Description:缴纳预交款
+	* @param:@param hospId
+	* @param:@param money
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月26日 上午11:28:29
+	 */
+	@ResponseBody
+	@GetMapping("/add_deposit_money")
+	public void addDepositMoney(String hospId,String money){
+		hosPatientsService.addDepositMoney(hospId, money);
 	}
 }

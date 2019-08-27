@@ -37,6 +37,9 @@ public class DrugWarehouse implements Serializable {
 
 	@Column(name="PUT_NUMBER")
 	private BigDecimal putNumber;
+	
+	@Column(name="STATE")
+	private String state;
 
 	//bi-directional many-to-one association to DrugScrapDetail
 	@OneToMany(mappedBy="drugWarehouse")
@@ -114,6 +117,14 @@ public class DrugWarehouse implements Serializable {
 
 	public void setPutNumber(BigDecimal putNumber) {
 		this.putNumber = putNumber;
+	}
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public List<DrugScrapDetail> getDrugScrapDetails() {

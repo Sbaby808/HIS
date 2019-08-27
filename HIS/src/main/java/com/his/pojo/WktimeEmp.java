@@ -19,6 +19,9 @@ public class WktimeEmp implements Serializable {
 
 	@Column(name="WKTIME_DUTY")
 	private String wktimeDuty;
+	
+	@Column(name="state")
+	private String state;
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -64,5 +67,14 @@ public class WktimeEmp implements Serializable {
 	public void setWorkTime(WorkTime workTime) {
 		this.workTime = workTime;
 	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+	
 
 }

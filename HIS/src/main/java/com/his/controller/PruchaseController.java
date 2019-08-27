@@ -59,5 +59,122 @@ public class PruchaseController {
 		return jsonResult;
 	
 	}
+	
+	/**
+	* @Title:get_all_purchase_for_no
+	* @Description:查询所有未执行的采购计划
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月15日 上午11:44:56
+	 */
+	@ResponseBody
+	@GetMapping("get_all_purchase_for_nodo")
+	public JsonResult get_all_purchase_for_no() {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(purchaseService.getAllPurchaseForNoDo());
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:get_all_purchase_for_No
+	* @Description:分页查询一个未执行的采购计划
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月14日 上午10:06:17
+	 */
+	@ResponseBody
+	@GetMapping("get_all_purchase_for_No")
+	public JsonResult get_all_purchase_for_No(int pageSize,int pageNum){
+		JsonResult jsonresult = new JsonResult();
+		try {
+			jsonresult.setResult(purchaseService.getAllPurchaseForNo(pageSize,pageNum));
+			jsonresult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonresult.setStatus("error");
+		}
+		return jsonresult;
+	}
+	
+	/**
+	* @Title:get_all_purchase_for_No
+	* @Description:分页查询一个已执行的采购计划
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月14日 上午10:06:17
+	 */
+	@ResponseBody
+	@GetMapping("get_all_purchase_for_Yes")
+	public JsonResult get_all_purchase_for_Yes(int pageSize,int pageNum){
+		JsonResult jsonresult = new JsonResult();
+		try {
+			jsonresult.setResult(purchaseService.getAllPurchaseForYes(pageSize,pageNum));
+			jsonresult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonresult.setStatus("error");
+		}
+		return jsonresult;
+	}
+	
+	/**
+	* @Title:del_by_purchase_and_detail
+	* @Description:根据id删除一个采购计划及其明细
+	* @param:@param cgid
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月14日 上午11:48:54
+	 */
+	@ResponseBody
+	@GetMapping("del_by_purchase_and_detail")
+	public JsonResult del_by_purchase_and_detail(String cgid) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			purchaseService.delPurchaseByCascade(cgid);
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:updata_state_by_id
+	* @Description:修改状态
+	* @param:@param cgid
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月14日 下午2:45:12
+	 */
+	@ResponseBody
+	@GetMapping("updata_state_by_id")
+	public JsonResult updata_state_by_id(String cgid) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			purchaseService.updataForState(cgid);;
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
 
 }

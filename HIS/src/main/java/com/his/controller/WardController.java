@@ -41,8 +41,10 @@ public class WardController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_all_wards_byPage")
-	public Map getAllWardByPage(int curpage,int pagesize){
-		return wardService.getAllWardByPage(curpage, pagesize);
+	public Map getAllWardByPage(String text1,String text2,int curpage,int pagesize){
+		String wardName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		return wardService.getAllWardByPage(wardName,ksName,curpage, pagesize);
 	}
 	
 	/**

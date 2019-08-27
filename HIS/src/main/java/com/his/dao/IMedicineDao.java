@@ -1,12 +1,12 @@
 package com.his.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.his.bean.Medicinebean;
-import com.his.pojo.MedicalCard;
 import com.his.pojo.Medicine;
 
 /**
@@ -17,6 +17,37 @@ import com.his.pojo.Medicine;
  * 
  */
 public interface IMedicineDao extends CrudRepository<Medicine, String> {
+	
+	/**
+	* @Title:queryByNowNumber
+	* @Description:根据药房药品库存段查找对应的药品
+	* @param:@param minNuber
+	* @param:@param maxNumber
+	* @param:@param page
+	* @param:@return
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月26日 下午4:28:07
+	 */
+	@Query("from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.drugWarehouse.state = '否'")
+	public List<Medicine> queryNowNumber(BigDecimal minNuber,BigDecimal maxNumber);
+	
+	/**
+	* @Title:queryNowNumberByPage
+	* @Description:根据药房药品库存段查找对应的药品的数量
+	* @param:@param minNuber
+	* @param:@param maxNumber
+	* @param:@param page
+	* @param:@return
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月26日 下午4:42:42
+	 */
+	@Query("select count(*) from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.drugWarehouse.state = '否'")
+	public int queryNowNumberCount(BigDecimal minNuber,BigDecimal maxNumber);
+	
 	/**
 	 * 
 	* @Title:getMedicinebeans
@@ -43,4 +74,17 @@ public interface IMedicineDao extends CrudRepository<Medicine, String> {
 	@Query(value="select m.medicineId from Medicine m where m.drugWarehouse.pckcId=?1")
 	public String[] getmid(String pcid);
 
+	/**
+	 * 
+	* @Title:getMedBypcId
+	* @Description:根据批次id查询住院部门的药品信息
+	* @param:@param pcId
+	* @param:@return
+	* @return:Medicine
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月26日 下午3:09:13
+	 */
+	@Query("from Medicine m where m.dept.deptId='cccccccc' and m.drugWarehouse.pckcId=?1")
+	public Medicine getMedBypcId(String pcId);
 }

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IHosEmpDao;
 import com.his.pojo.HosEmp;
+import com.his.pojo.HosEmpPK;
 
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -14,8 +15,5 @@ public class HosEmpService {
 	@Autowired
 	private IHosEmpDao hosEmpDao;
 	
-	public void addHosEmp(HosEmp hosEmp){
-		hosEmp.setHosDuty("登记员");
-		hosEmpDao.save(hosEmp);
-	}
+	
 }

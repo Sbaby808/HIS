@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.his.pojo.Department;
 import com.his.service.DepartmentService;
 
+/**
+ * 
+* @ClassName: DepartmentController  
+* @Description: 科室 
+* @author Hamster
+* @date 2019年8月15日  上午11:25:06
+*
+ */
 @Controller
 public class DepartmentController {
 	
@@ -28,6 +36,22 @@ public class DepartmentController {
 	@PostMapping("/updatedepartment")
 	public void updateks(@RequestBody Department department) {
 		departmentService.updateks(department);
+	}
+	
+	/**
+	 * 
+	* @Title:getHosDepartMent
+	* @Description:查询住院部门科室
+	* @param:@return
+	* @return:List<Department>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月15日 上午11:25:21
+	 */
+	@ResponseBody
+	@GetMapping("/get_hos_department")
+	public List <Department> getHosDepartMent(){
+		return departmentService.getHosDepartments();
 	}
 	
 	@ResponseBody

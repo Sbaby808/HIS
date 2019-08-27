@@ -46,8 +46,10 @@ public class HosPrescriptonController {
 	
 	@ResponseBody
 	@GetMapping("/get_hos_prescription_byPage")
-	public Map getHosPrescriptionByPage(int curpage,int pagesize){
-		return hosPrescriptionService.getHosPrescriptionByPage(curpage, pagesize);
+	public Map getHosPrescriptionByPage(String text1,String text2,int curpage,int pagesize){
+		String cardName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		return hosPrescriptionService.getHosPrescriptionByPage(cardName,ksName,curpage, pagesize);
 	}
 	
 	/**

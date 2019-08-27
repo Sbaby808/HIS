@@ -88,7 +88,6 @@ public class EmpInformationController {
 	@ResponseBody
 	@GetMapping("/get_doctors_by_ksId")
 	public List <EmpInformation> getDoctorsByWkAndKs(String ksId){
-		System.out.println(ksId);
 		return empInformationService.getDoctorsByWkAndKs(ksId);
 	}
 	

@@ -3,6 +3,8 @@ package com.his.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.apache.commons.collections4.functors.FalsePredicate;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
@@ -29,15 +31,7 @@ public class SolveScheme implements Serializable {
 	@Column(name="RYTZ_ID")
 	private String rytzId;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="SCHE_END_TIME")
-	private Date scheEndTime;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="SCHE_START_TIME")
-	private Date scheStartTime;
-
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd")
 	@Column(name="SCHE_TIME")
 	private Date scheTime;
 
@@ -57,12 +51,13 @@ public class SolveScheme implements Serializable {
 	private List<OtherAdvice> otherAdvices;
 
 	//bi-directional one-to-one association to HospitalNotice
-	@OneToOne(mappedBy="solveScheme")
+	@OneToOne(mappedBy="solveScheme", cascade = CascadeType.MERGE)
 	@JSONField(serialize=false)
 	private HospitalNotice hospitalNotice;
 
 	//bi-directional one-to-one association to ObservationNotice
 	@OneToOne(mappedBy="solveScheme")
+	@JSONField(serialize = false)
 	private ObservationNotice observationNotice;
 
 	//bi-directional one-to-one association to History
@@ -95,22 +90,6 @@ public class SolveScheme implements Serializable {
 
 	public void setRytzId(String rytzId) {
 		this.rytzId = rytzId;
-	}
-
-	public Date getScheEndTime() {
-		return this.scheEndTime;
-	}
-
-	public void setScheEndTime(Date scheEndTime) {
-		this.scheEndTime = scheEndTime;
-	}
-
-	public Date getScheStartTime() {
-		return this.scheStartTime;
-	}
-
-	public void setScheStartTime(Date scheStartTime) {
-		this.scheStartTime = scheStartTime;
 	}
 
 	public Date getScheTime() {

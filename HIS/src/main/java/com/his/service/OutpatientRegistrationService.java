@@ -202,7 +202,6 @@ public class OutpatientRegistrationService {
 	public OutpatientRegistration addReg(OutpatientRegistration outpatientRegistration) {
 		outpatientRegistration.setRegId(UUID.randomUUID().toString().replaceAll("-", ""));
 		outpatientRegistration.setTimeType(SimpleTools.isToday(outpatientRegistration.getDoDate()) ? "当日" : "预约");
-		System.out.println(outpatientRegistration.getTimeType());
 		outpatientRegistration.setRegTime(new Date());
 		outpatientRegistration.setRegStatus("待缴费");
 		outpatientRegistrationDao.save(outpatientRegistration);
@@ -326,7 +325,8 @@ public class OutpatientRegistrationService {
 	 */
 	public Map<String, String> getCheckQrCode(String outTradeNo, String ygxh, String regId) {
 		Map<String, String> res = new HashMap<>();
-		res.put("code", "http://localhost:8089/check_reg_pay?outTradeNo=" + outTradeNo + "&ygxh=" + ygxh + "&regId=" + regId);
+		res.put("code", "{\"outTradeNo\":\"" + outTradeNo + "\",\"ygxh\":\"" + ygxh + "\",\"regId\":\"" + regId + "\"}");
+		System.out.println(res.get("code"));
 		return res;
 	}
 	
@@ -413,5 +413,25 @@ public class OutpatientRegistrationService {
 	 */
 	public int getAllRegsCount(String cardNum) {
 		return outpatientRegistrationDao.getAllRegsByCardNumCount(cardNum);
+	}
+	
+	/**
+	* @Title:getLastOutReg
+	* @Description:获取最新的挂号记录
+	* @param:@param cardId
+	* @param:@param roomId
+	* @param:@return
+	* @return:OutpatientRegistration
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年8月24日 下午3:23:43
+	 */
+	public OutpatientRegistration getLastOutReg(String cardId, String roomId) {
+		PageRequest page = PageRequest.of(0, 1);
+		return outpatientRegistrationDao.getLastOutReg(cardId, roomId, page).get(0);
+	}
+
+	public void removeReg(String regId) {
+		outpatientRegistrationDao.deleteById(regId);
 	}
 }

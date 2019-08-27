@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IAbuEmpDAO;
 import com.his.dao.IUserRoleDao;
-import com.his.dao.IWktimeEmpDAO;
+import com.his.dao.IWktimeempDao;
 import com.his.dao.IWorkTimeDao;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.WorkTime;
@@ -32,7 +32,7 @@ public class AmbulanceService {
 	@Autowired
 	private IUserRoleDao iUserRoleDao;
 	@Autowired
-	private IWktimeEmpDAO iWktimeEmpDAO;
+	private IWktimeempDao wktimeEmpDao;
 	@Autowired
 	private IWorkTimeDao iWorkTimeDao;
 	@Autowired

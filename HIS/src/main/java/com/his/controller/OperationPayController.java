@@ -95,6 +95,12 @@ public class OperationPayController {
     	operationPayService.delOperationPay(operid);
     }
 
+	@ResponseBody
+	@GetMapping("/get_all_oper_pay")
+	public List <OperationPay> getAllOPerPay(){
+		return operationPayService.getAllOperationPay();
+	}
+
 	
 	/**
 	 * 

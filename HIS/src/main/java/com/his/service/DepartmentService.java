@@ -24,6 +24,12 @@ public class DepartmentService {
 	private DepartmentDAO departmentDAO;
 	@Autowired
 	private DeptDAO deptDAO;
+	@Autowired
+	private IDepartmentDao departmentDao2;
+	
+	public List <Department> getHosDepartments(){
+		return departmentDao2.getHosDepartments();
+	}
 	
 	public List<Department> findallDepartments(){
 		return (List<Department>) departmentDAO.findAll();
@@ -51,16 +57,20 @@ public class DepartmentService {
 	public void deleteDepartment(String ksid) {
 		departmentDAO.deleteById(ksid);
 	}
-	public long findcount(String ksname) {
-		ksname="%"+ksname+"%";
-		return departmentDAO.countnames(ksname);
+	public List<Department> getHosDepartment(){
+		return departmentDao2.getHosDepartments();
 	}
 	
-	public long countbyname(String name) {
-		return departmentDAO.countbynames(name);
-	}
-	//修改ks
 	public void updateks(Department department) {
 		departmentDAO.save(department);
 	}
+	public long findcount(String ksName) {
+		ksName = "%"+ksName+"%";
+		return departmentDAO.countnames(ksName);
+	}
+	public long countbyname(String name) {
+		return departmentDAO.countbynames(name);
+	}
+	
+	
 }

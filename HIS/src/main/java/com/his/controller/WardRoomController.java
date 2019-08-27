@@ -41,8 +41,16 @@ public class WardRoomController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_all_ward_room")
-	public Map getAllWardRoom(int curpage,int pagesize){
-		return wardRoomService.getAllWardRoom(curpage, pagesize);
+	public Map getAllWardRoom(String text1,String text2,int curpage,int pagesize){
+		String roomName = "%"+text1+"%";
+		String ksName = "%"+text2+"%";
+		return wardRoomService.getAllWardRoom(roomName,ksName,curpage, pagesize);
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_ward_rooms")
+	public List <WardRoom> getWardRooms(){
+		return wardRoomService.getWardRooms();
 	}
 	
 	/**
