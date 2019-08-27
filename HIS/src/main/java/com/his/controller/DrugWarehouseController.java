@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,40 @@ public class DrugWarehouseController {
 	
 	@Autowired
 	private DrugWarehouseService drugWarehouseService;
+	
+	
+	/**
+	* @Title:search_all_warehouse_by_page
+	* @Description:分页查询搜索条件
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月26日 上午11:41:39
+	 */
+	@ResponseBody
+	@GetMapping("search_all_warehouse_by_page")
+	public JsonResult search_all_warehouse_by_page(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugWarehouseService.searchAllInformationByPage(searchKey, searchType, searchSubclass, searchGys, searchMinorDefect, minPrice, maxPrice, pageNum, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 	
 	/**
 	* @Title:get_drug_for_back

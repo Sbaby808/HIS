@@ -46,9 +46,13 @@ public class PsBackDetailsService {
 	* @Date:2019年8月25日 下午11:17:34
 	 */
 	public void addDrugBackAndDetail(List<PsBackDetail> psBackDetail) throws ServiceException{
+		System.out.println("-------------------------------");
+		System.out.println(psBackDetail.size());
+		System.out.println(psBackDetail.get(0).getPutstockBack().getPsBackReason());
 		//先维护退药信息
 		PutstockBack putStockBack = psBackDetail.get(0).getPutstockBack();
 		String psBackId = UUID.randomUUID().toString().replace("-", "");
+		putStockBack.setPsBackId(psBackId);
 		try {
 			putstockBackDao.save(putStockBack);
 			//循环插入明细 数据从第二个开始

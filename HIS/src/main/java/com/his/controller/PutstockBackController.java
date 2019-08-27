@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.JsonResult;
@@ -36,7 +37,7 @@ public class PutstockBackController {
 	 */
 	@ResponseBody
 	@PostMapping("add_drug_bakc_and_detial")
-	public JsonResult add_drug_bakc_and_detial(List<PsBackDetail> psBackDetail) {
+	public JsonResult add_drug_bakc_and_detial(@RequestBody List<PsBackDetail> psBackDetail) {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			psBackDetailsService.addDrugBackAndDetail(psBackDetail);

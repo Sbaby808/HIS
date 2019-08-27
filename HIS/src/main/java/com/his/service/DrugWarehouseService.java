@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,50 @@ public class DrugWarehouseService {
 	private IPutStockDetailsDao putStockDetailsDao;
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
+	
+	
+	/**
+	* @Title:searchAllInformationByPage
+	* @Description:多条件分页查询药品
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月26日 上午11:40:51
+	 */
+	public Map searchAllInformationByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
+		System.out.println("ttttttttttttttttttttttttttttttttttttttttttttt");
+		Map map = new HashMap();
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+		List<DrugWarehouse> list = drugWarehouseDao.searchAllInformationByPage(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchMinorDefect) ? SimpleTools.addCharForSearch(searchMinorDefect) : searchMinorDefect, 
+				minPrice, maxPrice, 
+				page);
+		int total = drugWarehouseDao.searchAllInformationByPageCount(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchMinorDefect) ? SimpleTools.addCharForSearch(searchMinorDefect) : searchMinorDefect, 
+				minPrice, maxPrice);
+		map.put("drugs", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:queryDrugForback

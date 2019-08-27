@@ -1,5 +1,6 @@
 package com.his.dao;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.DrugInformation;
 import com.his.pojo.DrugWarehouse;
 
 /**  
@@ -17,6 +19,63 @@ import com.his.pojo.DrugWarehouse;
 *    
 */
 public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>{
+	
+	/**
+	* @Title:searchAllInformationByPage
+	* @Description:多条件分页查询药品
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月26日 上午11:40:06
+	 */
+	@Query("from DrugWarehouse d "
+			+ "where (d.drugInformation.ypName like ?1 "
+			+ "or d.drugInformation.vocode like ?1 )"
+			+ "and d.drugInformation.ypType like ?2 "
+			+ "and d.drugInformation.drugSubclass.subclassId like ?3 "
+			+ "and d.drugInformation.supplier.gysId like ?4 "
+			+ "and d.drugInformation.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
+			+ "and d.drugInformation.ypPrice >= ?6 "
+			+ "and d.drugInformation.ypPrice <= ?7 ")
+	public List<DrugWarehouse> searchAllInformationByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+
+	/**
+	* @Title:searchAllInformationByPageCount
+	* @Description:多条件分页查询药品的条数
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月26日 上午11:40:24
+	 */
+	@Query("select count(*) from DrugWarehouse d "
+		+ "where (d.drugInformation.ypName like ?1 "
+		+ "or d.drugInformation.vocode like ?1 )"
+		+ "and d.drugInformation.ypType like ?2 "
+		+ "and d.drugInformation.drugSubclass.subclassId like ?3 "
+		+ "and d.drugInformation.supplier.gysId like ?4 "
+		+ "and d.drugInformation.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
+		+ "and d.drugInformation.ypPrice >= ?6 "
+		+ "and d.drugInformation.ypPrice <= ?7 ")
+	public int searchAllInformationByPageCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice);
 	
 	/**
 	* @Title:queryBackDrug
