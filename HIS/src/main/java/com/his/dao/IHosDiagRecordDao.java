@@ -46,8 +46,9 @@ public interface IHosDiagRecordDao extends CrudRepository<HosDiagnosticRecord, S
 			+ " h.medicalRecord.medOutTime is null "
 			+ " and (h.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1"
 			+ " or h.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
-			+ " and h.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 ")
-	public List <HosDiagnosticRecord> getDiagRecordByPage(String cardName,String ksName,Pageable page);
+			+ " and h.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
+			+ " and h.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
+	public List <HosDiagnosticRecord> getDiagRecordByPage(String cardName,String ksName,String roomName,Pageable page);
 	
 	@Query("select count(*) from HosDiagnosticRecord h where h.medicalRecord.medOutTime is null")
 	public Long countInDiag();

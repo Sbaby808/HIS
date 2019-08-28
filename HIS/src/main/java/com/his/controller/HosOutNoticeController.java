@@ -3,6 +3,7 @@ package com.his.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.formula.functions.Roman;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +33,11 @@ public class HosOutNoticeController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_out_notice_byPage")
-	public Map getHosOutNoticeByPage(String text1,String text2,int curpage,int pagesize){
+	public Map getHosOutNoticeByPage(String text1,String text2,String text3,int curpage,int pagesize){
 		String cardName = "%"+text1+"%";
 		String ksName = "%"+text2+"%";
-		return hosOutNoticeService.getHosOutNoticeByPage(cardName,ksName,curpage, pagesize);
+		String roomName = "%"+text3+"%";
+		return hosOutNoticeService.getHosOutNoticeByPage(cardName,ksName,roomName,curpage, pagesize);
 	}
 	
 	/**

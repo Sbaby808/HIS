@@ -1,10 +1,12 @@
 package com.his.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.EmpInformation;
 import com.his.pojo.UserRole;
 
 /**  
@@ -18,4 +20,22 @@ public interface IUserRoleDao extends CrudRepository<UserRole, String>{
 
 	@Query("from UserRole ur where ur.id.ygxh = ?1")
 	public List<UserRole> queryAllRoleByYgxh(String ygxh);
+	//通过员工序号查询员工的所有职位序号
+	@Query("select ur.role.roleId from UserRole ur where ur.empInformation.ygxh=?1")
+	public Set<String> findroleidsStrings(String ygxh);
+	/**
+	 * 
+	* @Title:findempsbyrole
+	* @Description:通过职位名字找到所有这个职位的员工
+	* @param:@param rolename
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:jack
+	* @Date:2019年8月26日 上午11:23:13
+	 */
+	@Query("select ur.empInformation from UserRole ur where ur.role.rolePosition=?1")
+	public List<EmpInformation> findempsbyrole(String rolename);
+	
+	
 }

@@ -68,8 +68,8 @@ public class HosDiagRecordService {
 	* @author:Hamster
 	* @Date:2019年8月5日 上午11:35:35
 	 */
-	public Map getDiagRecordByPage(String cardName,String ksName,int curpage,int pagesize){
-		List <HosDiagnosticRecord> list = hosDiagRecordDao.getDiagRecordByPage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
+	public Map getDiagRecordByPage(String cardName,String ksName,String roomName,int curpage,int pagesize){
+		List <HosDiagnosticRecord> list = hosDiagRecordDao.getDiagRecordByPage(cardName,ksName,roomName,PageRequest.of(curpage-1, pagesize));
 		long total = hosDiagRecordDao.countInDiag();
 		Map map = new HashMap<>();
 		map.put("list", list);

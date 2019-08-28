@@ -35,7 +35,7 @@ public class DeptController {
 	public void addDept(@RequestBody Dept dept) {
 		deptService.addDept(dept);
 	}
-	//查询部门
+	//查询所有部门
 	@GetMapping("/findDept1")
 	@ResponseBody
 	public List<Dept> find() {

@@ -49,9 +49,11 @@ public class HospitalizedPatient implements Serializable {
 	private String outRid;
 
 	@JSONField(format="yyyy-MM-dd")
-	@Temporal(TemporalType.DATE)
 	@Column(name="REGISTER_TIME")
 	private Date registerTime;
+	
+	@Column(name="HOS_NOTE")
+	private String hosNote;
 
 	//bi-directional many-to-one association to BedTransRecord
 	@OneToMany(mappedBy="hospitalizedPatient")
@@ -108,6 +110,16 @@ public class HospitalizedPatient implements Serializable {
 	private OutHospitaiRecord outHospitaiRecord;
 
 	public HospitalizedPatient() {
+	}
+
+	
+	
+	public String getHosNote() {
+		return hosNote;
+	}
+
+	public void setHosNote(String hosNote) {
+		this.hosNote = hosNote;
 	}
 
 	public String getHospId() {

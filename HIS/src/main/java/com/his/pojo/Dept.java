@@ -25,7 +25,7 @@ public class Dept implements Serializable {
 	private String deptName;
 
 	//bi-directional many-to-one association to Department
-	@OneToMany(mappedBy="dept")
+	@OneToMany(cascade={CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE},mappedBy="dept")
 	@JSONField(serialize=false)
 	private List<Department> departments;
 

@@ -46,8 +46,8 @@ public class HosDrugDetailService {
 	* @author:Hamster
 	* @Date:2019年8月14日 下午5:54:46
 	 */
-	public Map getHosDrugDetailbyPage(String cardName,int curpage,int pagesize){
-		List <HosDrugDetail> list = hosDrugDetailDao.getHosDrugDetailbyPage(cardName,PageRequest.of(curpage-1, pagesize));
+	public Map getHosDrugDetailbyPage(String cardName,String ksName,String roomName,int curpage,int pagesize){
+		List <HosDrugDetail> list = hosDrugDetailDao.getHosDrugDetailbyPage(cardName,ksName,roomName,PageRequest.of(curpage-1, pagesize));
 		long total = hosDrugDetailDao.countInDrugDetail();
 		Map map = new HashMap<>();
 		map.put("list", list);

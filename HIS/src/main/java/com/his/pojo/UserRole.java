@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * The persistent class for the USER_ROLE database table.
- * 
+ * 用户角色中间表
  */
 @Entity
 @Table(name="USER_ROLE")

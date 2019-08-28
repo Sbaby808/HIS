@@ -247,4 +247,17 @@ public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>
 	@Query(value="select d.drugInformation.ypName,d.drugInformation.ypGuige from DrugWarehouse d where d.pckcId=?1")
 	public String [] getname(String pcid);
 
+	/**
+	 * 
+	* @Title:getDrugsOrderByExpireDate
+	* @Description:根据到期时间查询某种药品
+	* @param:@param ypId
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月26日 下午3:00:34
+	 */
+	@Query("from DrugWarehouse d where d.drugInformation.ypId = ?1 order by d.expireDate asc ")
+	public List <DrugWarehouse> getDrugsOrderByExpireDate(String ypId);
 }

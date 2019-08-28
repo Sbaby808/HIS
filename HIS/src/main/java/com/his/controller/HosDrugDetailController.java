@@ -28,9 +28,11 @@ public class HosDrugDetailController {
 	
 	@ResponseBody
 	@GetMapping("/get_hos_drug_detail")
-	public Map getHosDrugDetail(String text1,int curpage,int pagesize){
+	public Map getHosDrugDetail(String text1,String text2,String text3,int curpage,int pagesize){
 		String cardName = "%"+text1+"%";
-		return hosDrugDetailService.getHosDrugDetailbyPage(cardName,curpage, pagesize);
+		String ksName = "%"+text2+"%";
+		String roomName = "%"+text3+"%";
+		return hosDrugDetailService.getHosDrugDetailbyPage(cardName,ksName,roomName,curpage, pagesize);
 	}
 	
 	/**

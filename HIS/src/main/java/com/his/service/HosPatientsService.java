@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,8 +69,8 @@ public class HosPatientsService {
 	* @author:Hamster
 	* @Date:2019年8月9日 下午6:32:44
 	 */
-	public Map getHosPatientsByPage(String hospName,String ksName,String wardName,String roomName,int curpage,int pagesize){
-		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(hospName,ksName,wardName,roomName,PageRequest.of(curpage-1,pagesize));
+	public Map getHosPatientsByPage(String hospName,String ksName,String roomName,int curpage,int pagesize){
+		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(hospName,ksName,roomName,PageRequest.of(curpage-1,pagesize));
 		long total = hosPatientDao.countInPatient();
 		Map map = new HashMap<>();
 		map.put("list", patients);
@@ -225,6 +226,42 @@ public class HosPatientsService {
 		hosPatientDao.save(patient);
 		
 		
+	}
+	
+	/**
+	 * 
+	* @Title:addDepositMoney
+	* @Description:补交预交款
+	* @param:@param hospId
+	* @param:@param money
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月26日 上午11:24:41
+	 */
+	public void addDepositMoney(String hospId,String money){
+		HospitalizedPatient patient = hosPatientDao.findById(hospId).get();
+		
+		BigDecimal add = new BigDecimal(money);
+		BigDecimal deposit = add.add(patient.getDepositMoney());
+		patient.setDepositMoney(deposit);
+		hosPatientDao.save(patient);
+	}
+	
+	@Scheduled(cron="0 0/10 * * * ?")
+	public void checkBalance(){
+		List <HospitalizedPatient> patients = hosPatientDao.getHosInPatient();
+		for(int i=0;i<patients.size();i++){
+			BigDecimal balance = patients.get(i).getBalance();
+			BigDecimal depositMoney = patients.get(i).getDepositMoney();
+			BigDecimal percent = new BigDecimal(0.05);
+			if(balance.compareTo(depositMoney.multiply(percent)) == -1){
+				patients.get(i).setHosNote("余额不足,请充值");
+			}
+			else{
+				patients.get(i).setHosNote(null);
+			}
+		}
 	}
 	
 }
