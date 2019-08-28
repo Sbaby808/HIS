@@ -30,7 +30,7 @@ import com.his.bean.Two;
 import com.his.bean.White;
 import com.his.bean.Zong;
 import com.his.dao.IRoleDao;
-import com.his.dao.IWktimeempDao;
+import com.his.dao.IWktimeEmpDAO;
 import com.his.dao.IWorkTimeDao;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.WktimeEmp;
@@ -54,7 +54,7 @@ public class WorkTimeService {
 	@Autowired
 	private IRoleDao iRoleDao;
 	@Autowired
-	private IWktimeempDao iWktimeempDao;
+	private IWktimeEmpDAO iWktimeempDao;
 	
 	
 	public List<EmpInformation> getallemp(String empid){
@@ -393,6 +393,8 @@ public class WorkTimeService {
         }
         else {}
         pbid=iWorkTimeDao.getpbid(ksid,list.get(0), "晚班");
+        System.err.println(pbid);
+    	System.err.println(111111);
         if(pbid!=null) {
         List<WktimeEmp> oneEmpswan=iWorkTimeDao.getwkemps(ksid, list.get(0), "晚班");
         for (WktimeEmp wktimeEmp : oneEmpswan) {
@@ -403,6 +405,8 @@ public class WorkTimeService {
         else {}
         //周二
         pbid=iWorkTimeDao.getpbid(ksid,list.get(1), "白班");
+        System.err.println(pbid);
+    	System.err.println(333333);
         if(pbid!=null) {
         List<WktimeEmp> twoEmps=iWorkTimeDao.getwkemps(ksid, list.get(1), "白班");
         for (WktimeEmp wktimeEmp : twoEmps) {
@@ -413,6 +417,8 @@ public class WorkTimeService {
         else {}
         
         pbid=iWorkTimeDao.getpbid(ksid,list.get(1), "晚班");
+        System.err.println(pbid);
+    	System.err.println(444444);
         if(pbid!=null) {
         List<WktimeEmp> twoEmpswan=iWorkTimeDao.getwkemps(ksid, list.get(1), "晚班");
         for (WktimeEmp wktimeEmp : twoEmpswan) {
@@ -545,6 +551,8 @@ public class WorkTimeService {
 	}
 	
 	public void addtimework(List<EmpInformation> zrlist,List<EmpInformation> fzrlist,List<EmpInformation> hslist,UUIDGenerator uuid,Date date,String type,String ygxh) {
+		if(zrlist.isEmpty()&&fzrlist.isEmpty()&&hslist.isEmpty()) {}
+		else {
 		String pbid=uuid.getUUID();
 		WorkTime workTime=new WorkTime();
 		workTime.setPbDate(date);
@@ -590,6 +598,8 @@ public class WorkTimeService {
 			}
 		}
 		else {}
+		}
+		
 	}
 	
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IEmpInformationDao;
-import com.his.dao.IWktimeempDao;
+import com.his.dao.IWktimeEmpDAO;
 import com.his.dao.IWorkTimeDao;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.WorkTime;
@@ -32,7 +32,7 @@ public class OnemainService {
 	@Autowired
 	private IWorkTimeDao iWorkTimeDao;
 	@Autowired
-	private IWktimeempDao iWktimeempDao;
+	private IWktimeEmpDAO iWktimeempDao;
 	/**
 	 * 
 	* @Title:getbyid

@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IAbuEmpDAO;
 import com.his.dao.IUserRoleDao;
-import com.his.dao.IWktimeempDao;
 import com.his.dao.IWorkTimeDao;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.WorkTime;
@@ -31,8 +30,6 @@ import com.his.pojo.WorkTime;
 public class AmbulanceService {
 	@Autowired
 	private IUserRoleDao iUserRoleDao;
-	@Autowired
-	private IWktimeempDao wktimeEmpDao;
 	@Autowired
 	private IWorkTimeDao iWorkTimeDao;
 	@Autowired
@@ -114,18 +111,7 @@ public class AmbulanceService {
 					}
 				}
 			
-			/*
-			 * for (EmpInformation empInformation : emps) { String
-			 * ygxh=empInformation.getYgxh(); //通过员工序号找到该员工排班的日期 WorkTime workTime=
-			 * iWktimeEmpDAO.findpbid(ygxh); String a =
-			 * format0.format(workTime.getPbDate()); if
-			 * (workTime.getPbType().equals("晚班")&&a.equals(good)) { if
-			 * ((good1>180000&&good1<240000)||(0<good1&&good1<60000)) {
-			 * //满足条件的话，该员工就可以用，把员工添加进去 emps.add(empInformation); } } if
-			 * (workTime.getPbType().equals("白班")&&a.equals(good)) { if
-			 * (60000<good1&&good1<180000) { //满足条件的话，该员工就可以用，把员工添加进去
-			 * emps.add(empInformation); } } }
-			 */
+			 
 				return emps2;
 				}
 		}
