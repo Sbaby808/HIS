@@ -115,20 +115,6 @@ public class HosBedController {
 		hosBedService.addHosBed(hosBed);
 	}
 	
-	/**
-	 * 
-	* @Title:delHosBed
-	* @Description:删除床位
-	* @param:@param hosBed
-	* @return:void
-	* @throws
-	* @author:Hamster
-	* @Date:2019年8月5日 上午9:04:42
-	 */
-	@ResponseBody
-	@PostMapping("/del_hos_bed")
-	public void delHosBed(@RequestBody HosBed hosBed){
-		hosBedService.delHosBed(hosBed);
-	}
+
 	
 }
