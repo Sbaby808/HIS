@@ -1,12 +1,16 @@
 package com.his.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.JsonResult;
+import com.his.pojo.Medicine;
 import com.his.service.MedicineService;
 
 /**  
@@ -21,6 +25,31 @@ public class MedicineController {
 	
 	@Autowired
 	private MedicineService medicineService;
+	
+	/**
+	* @Title:query_medicine
+	* @Description:查找没有库存的药品
+	* @param:@param chooseNuber
+	* @param:@param deptId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月27日 下午10:02:42
+	 */
+	@ResponseBody
+	@GetMapping("query_no_kucun")
+	public JsonResult query_no_kucun(int chooseNuber,String deptId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(medicineService.qeuryNoKuCun(chooseNuber,deptId));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
 
 	/**
 	* @Title:query_medicine_by_page
@@ -36,10 +65,14 @@ public class MedicineController {
 	 */
 	@ResponseBody
 	@GetMapping("query_medicine")
-	public JsonResult query_medicine(int chooseNuber) {
+	public JsonResult query_medicine(int chooseNuber,String deptId) {
 		JsonResult jsonResult = new JsonResult();
+		Map map = new HashMap();
 		try {
-			jsonResult.setResult(medicineService.queryMedicineNowNumber(chooseNuber));
+			List<Medicine> list = medicineService.queryMedicineNowNumber(chooseNuber,deptId);
+			map.put("list", list);
+			map.put("chooseStatus", chooseNuber);
+			jsonResult.setResult(map);
 			jsonResult.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -29,6 +29,31 @@ public class MedicineService {
 	@Autowired
 	private IMedicineDao medicineDao;
 	
+	/**
+	* @Title:qeuryNoKuCun
+	* @Description:查询没有库存的药品
+	* @param:@param chooseNumber
+	* @param:@param deptId
+	* @param:@return
+	* @param:@throws ServiceException
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月27日 下午10:00:03
+	 */
+	public List<Medicine> qeuryNoKuCun(int chooseNumber,String deptId) throws ServiceException{
+		int minNumber = chooseNumber*5-4;
+		int maxNumber = chooseNumber*5;
+		List<Medicine> list = null;
+		try {
+			list =  medicineDao.queryNoKuCun(new BigDecimal(minNumber), new BigDecimal(maxNumber),deptId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("查找药品失败");
+		}
+		return list;
+	}
+	
 	
 	/**
 	* @Title:queryMedicineNowNumberByPage
@@ -43,22 +68,17 @@ public class MedicineService {
 	* @author:crazy_long
 	* @Date:2019年8月26日 下午4:48:05
 	 */
-	public Map queryMedicineNowNumber(int chooseNumber) throws ServiceException{
-		Map map = new HashMap();
+	public List<Medicine> queryMedicineNowNumber(int chooseNumber,String deptId) throws ServiceException{
 		int minNumber = chooseNumber*5-4;
 		int maxNumber = chooseNumber*5;
 		List<Medicine> list = null;
-		int total;
 		try {
-			list =  medicineDao.queryNowNumber(new BigDecimal(minNumber), new BigDecimal(maxNumber));
-			total = medicineDao.queryNowNumberCount(new BigDecimal(minNumber), new BigDecimal(maxNumber));
+			list =  medicineDao.queryNowNumber(new BigDecimal(minNumber), new BigDecimal(maxNumber),deptId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException("查找药品失败");
 		}
-		map.put("list", list);
-		map.put("total", total);
-		return map;
+		return list;
 	}
 	
 	/**

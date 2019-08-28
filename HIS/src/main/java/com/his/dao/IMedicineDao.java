@@ -18,6 +18,9 @@ import com.his.pojo.Medicine;
  */
 public interface IMedicineDao extends CrudRepository<Medicine, String> {
 	
+	@Query("from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.dept.deptId = ?3 and m.drugWarehouse.nowNumber = 0 and m.drugWarehouse.state = '否'")
+	public List<Medicine> queryNoKuCun(BigDecimal minNuber,BigDecimal maxNumber,String deptId);
+	
 	/**
 	* @Title:queryByNowNumber
 	* @Description:根据药房药品库存段查找对应的药品
@@ -30,8 +33,8 @@ public interface IMedicineDao extends CrudRepository<Medicine, String> {
 	* @author:crazy_long
 	* @Date:2019年8月26日 下午4:28:07
 	 */
-	@Query("from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.drugWarehouse.state = '否'")
-	public List<Medicine> queryNowNumber(BigDecimal minNuber,BigDecimal maxNumber);
+	@Query("from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.dept.deptId = ?3 and m.drugWarehouse.nowNumber > 0 and m.drugWarehouse.state = '否'")
+	public List<Medicine> queryNowNumber(BigDecimal minNuber,BigDecimal maxNumber,String deptId);
 	
 	/**
 	* @Title:queryNowNumberByPage
@@ -45,8 +48,8 @@ public interface IMedicineDao extends CrudRepository<Medicine, String> {
 	* @author:crazy_long
 	* @Date:2019年8月26日 下午4:42:42
 	 */
-	@Query("select count(*) from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.drugWarehouse.state = '否'")
-	public int queryNowNumberCount(BigDecimal minNuber,BigDecimal maxNumber);
+	@Query("select count(*) from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.dept.deptId = ?3 and m.drugWarehouse.nowNumber > 0 and m.drugWarehouse.state = '否'")
+	public int queryNowNumberCount(BigDecimal minNuber,BigDecimal maxNumber,String deptId);
 	
 	/**
 	 * 

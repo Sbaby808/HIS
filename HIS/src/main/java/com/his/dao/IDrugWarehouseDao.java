@@ -38,7 +38,8 @@ public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>
 	* @Date:2019年8月26日 上午11:40:06
 	 */
 	@Query("from DrugWarehouse d "
-			+ "where (d.drugInformation.ypName like ?1 "
+			+ "where d.state = '否' "
+			+ "and (d.drugInformation.ypName like ?1 "
 			+ "or d.drugInformation.vocode like ?1 )"
 			+ "and d.drugInformation.ypType like ?2 "
 			+ "and d.drugInformation.drugSubclass.subclassId like ?3 "
@@ -66,7 +67,8 @@ public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>
 	* @Date:2019年8月26日 上午11:40:24
 	 */
 	@Query("select count(*) from DrugWarehouse d "
-		+ "where (d.drugInformation.ypName like ?1 "
+		+ "where d.state = '否' "
+		+ "and (d.drugInformation.ypName like ?1 "
 		+ "or d.drugInformation.vocode like ?1 )"
 		+ "and d.drugInformation.ypType like ?2 "
 		+ "and d.drugInformation.drugSubclass.subclassId like ?3 "
