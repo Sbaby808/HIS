@@ -19,7 +19,7 @@ import com.his.service.HosBedService;
 * @ClassName: HosBedController  
 * @Description: 住院床位 
 * @author Hamster
-* @date 2019年7月31日  下午10:52:06
+* @date 2019年8月28日  下午7:15:12
 *
  */
 @Controller
