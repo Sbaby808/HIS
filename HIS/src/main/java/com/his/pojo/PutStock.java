@@ -26,7 +26,7 @@ public class PutStock implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="RK_TIME")
 	private Date rkTime;
-
+	
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
 	@JoinColumn(name="YGXH")
@@ -56,7 +56,7 @@ public class PutStock implements Serializable {
 	public void setRkTime(Date rkTime) {
 		this.rkTime = rkTime;
 	}
-
+	
 	public EmpInformation getEmpInformation() {
 		return this.empInformation;
 	}

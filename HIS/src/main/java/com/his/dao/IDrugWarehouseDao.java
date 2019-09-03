@@ -21,6 +21,32 @@ import com.his.pojo.DrugWarehouse;
 public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>{
 	
 	/**
+	* @Title:getDrugTotalNumberById
+	* @Description:查询某种药品的所有没有过期的批次
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:45:39
+	 */
+	@Query("from DrugWarehouse dw where dw.drugInformation.ypId = ?1 and dw.nowNumber > 0 and dw.state = '否' order by dw.produceDate asc")
+	public List<DrugWarehouse> getAllWarehouse(String ypId);
+	
+	/**
+	* @Title:getDrugTotalNumberById
+	* @Description:查询某种药品的总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:45:39
+	 */
+	@Query("select sum(dw.nowNumber) from DrugWarehouse dw where dw.drugInformation.ypId = ?1 and dw.state = '否'")
+	public int getDrugTotalNumberById(String ypId);
+	
+	/**
 	* @Title:searchAllInformationByPage
 	* @Description:多条件分页查询药品
 	* @param:@param searchKey

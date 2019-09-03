@@ -33,6 +33,10 @@ public class Dept implements Serializable {
 	@OneToMany(mappedBy="dept")
 	@JSONField(serialize=false)
 	private List<Medicine> medicines;
+	
+	@OneToMany(mappedBy="dept")
+	@JSONField(serialize=false)
+	private List<OutpatientRequestionMedicine> outpatientRequestionMedicine;
 
 	public Dept() {
 	}
@@ -95,6 +99,28 @@ public class Dept implements Serializable {
 		medicine.setDept(null);
 
 		return medicine;
+	}
+	
+	
+	public List<OutpatientRequestionMedicine> getOutpatientRequestionMedicine() {
+		return this.outpatientRequestionMedicine;
+	}
+
+	public void setOutpatientRequestionMedicine(List<OutpatientRequestionMedicine> outpatientRequestionMedicine) {
+		this.outpatientRequestionMedicine = outpatientRequestionMedicine;
+	}
+
+	public OutpatientRequestionMedicine addOutpatientRequestionMedicine(OutpatientRequestionMedicine outpatientRequestionMedicine) {
+		getOutpatientRequestionMedicine().add(outpatientRequestionMedicine);
+		outpatientRequestionMedicine.setDept(this);
+
+		return outpatientRequestionMedicine;
+	}
+
+	public OutpatientRequestionMedicine removeOutpatientRequestionMedicine(OutpatientRequestionMedicine outpatientRequestionMedicine) {
+		getOutpatientRequestionMedicine().remove(outpatientRequestionMedicine);
+		outpatientRequestionMedicine.setDept(null);
+		return outpatientRequestionMedicine;
 	}
 
 }

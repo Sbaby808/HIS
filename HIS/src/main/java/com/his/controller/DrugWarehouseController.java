@@ -27,7 +27,29 @@ public class DrugWarehouseController {
 	@Autowired
 	private DrugWarehouseService drugWarehouseService;
 	
-	
+	/**
+	* @Title:get_all_Warehouse
+	* @Description:查询某个药品的总批次信息和总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:57:56
+	 */
+	@ResponseBody
+	@GetMapping("get_all_Warehouse_and_totalCount")
+	public JsonResult get_all_Warehouse(String ypId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugWarehouseService.getAllWarehouseAndTotalCount(ypId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setStatus("error");
+		}
+		return 	result;
+	}
+		
 	/**
 	* @Title:search_all_warehouse_by_page
 	* @Description:分页查询搜索条件

@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +50,59 @@ public class DrugWarehouseService {
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
 	
+	/**
+	* @Title:getAllWarehouseAndTotalCount
+	* @Description:查询某个药品的总批次信息和总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月2日 下午2:29:21
+	 */
+	public Map getAllWarehouseAndTotalCount(String ypId) throws ServiceException{
+		Map map = new HashMap();
+		List<DrugWarehouse> list = null;
+		int totalCount = 0;
+		try {
+			list = drugWarehouseDao.getAllWarehouse(ypId);
+			totalCount = drugWarehouseDao.getDrugTotalNumberById(ypId);
+			map.put("list", list);
+			map.put("total", totalCount);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("查询某个药品的总批次信息和总库存失败");
+		}
+		return map;
+	}
+	
+	/**
+	* @Title:getAllWarehouse
+	* @Description:查询某种药品的所有没有过期的批次
+	* @param:@param ypId
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:56:11
+	 */
+	public List<DrugWarehouse> getAllWarehouse(String ypId){
+		return drugWarehouseDao.getAllWarehouse(ypId);
+	}
+	
+	/**
+	* @Title:getTotalCountByDrugId
+	* @Description:查询某种药品的总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:47:49
+	 */
+	public int getTotalCountByDrugId(String ypId) {
+		return drugWarehouseDao.getDrugTotalNumberById(ypId);
+	}
 	
 	/**
 	* @Title:searchAllInformationByPage
