@@ -26,6 +26,9 @@ public class OutPreItem implements Serializable {
 
 	@Column(name="OUT_MED_NUM")
 	private BigDecimal outMedNum;
+	
+	@Column(name="USED_NUM")
+	private int usedNum;
 
 	@Column(name="OUT_PRE_TIME")
 	private String outPreTime;
@@ -48,6 +51,14 @@ public class OutPreItem implements Serializable {
 	private Prescription prescription;
 
 	public OutPreItem() {
+	}
+
+	public int getUsedNum() {
+		return usedNum;
+	}
+
+	public void setUsedNum(int usedNum) {
+		this.usedNum = usedNum;
 	}
 
 	public OutPreItemPK getId() {

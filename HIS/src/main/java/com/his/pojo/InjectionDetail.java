@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -19,7 +22,7 @@ public class InjectionDetail implements Serializable {
 	@EmbeddedId
 	private InjectionDetailPK id;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="DRUG_TIME")
 	private Date drugTime;
 
@@ -33,12 +36,12 @@ public class InjectionDetail implements Serializable {
 	private String psDrugUnit;
 
 	//bi-directional many-to-one association to Medicine
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name="MEDICINE_ID", insertable=false, updatable=false)
 	private Medicine medicine;
 
 	//bi-directional many-to-one association to UseDrugRecord
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name="INJ_ID", insertable=false, updatable=false)
 	private UseDrugRecord useDrugRecord;
 

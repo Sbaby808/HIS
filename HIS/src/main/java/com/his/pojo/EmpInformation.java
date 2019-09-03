@@ -249,7 +249,7 @@ public class EmpInformation implements Serializable {
 	private List<UserRole> userRoles;
 
 	//bi-directional many-to-one association to UseDrugRecord
-	@OneToMany(mappedBy="empInformation")
+	@OneToMany(mappedBy="empInformation", cascade = CascadeType.MERGE)
 	@JSONField(serialize=false)
 	private List<UseDrugRecord> useDrugRecords;
 
