@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,6 +177,24 @@ public class HisApplicationTests {
 		String str = "{\"outTradeNo\":\"69169713f6b34088920d1c43485b8177\",\"ygxh\":\"ADMINTST\",\"regId\":\"69169713f6b34088920d1c43485b8177\"}";
 		JSONObject obj = JSONObject.parseObject(str);
 		System.out.println(obj.get("outTradeNo"));
+	}
+	
+	/**
+	* @Title:testMd5
+	* @Description:测试Md5加密解密
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月4日 上午11:03:37
+	 */
+	@Test
+	public void testMd5() {
+		String source = "{\"outTradeNo\":\"ae77dc6e3ebe4bdcbd6f865def97b628\",\"ygxh\":\"ADMINTST\",\"regId\":\"ae77dc6e3ebe4bdcbd6f865def97b628\"}";
+		String secret = MD5Tools.KL(source);
+		System.out.println(secret);
+		String reString = MD5Tools.JM(secret);
+		System.out.println(reString);
 	}
 
 }

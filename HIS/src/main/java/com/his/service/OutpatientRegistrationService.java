@@ -34,6 +34,7 @@ import com.his.pojo.TechnicalPost;
 import com.his.pojo.WorkTime;
 import com.his.utils.AliPay;
 import com.his.utils.GeneratorWord;
+import com.his.utils.MD5Tools;
 import com.his.utils.QRCodeUtil;
 import com.his.utils.SimpleTools;
 
@@ -234,7 +235,7 @@ public class OutpatientRegistrationService {
 	* @author:Sbaby
 	* @Date:2019年8月12日 下午8:43:53
 	 */
-	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId, String fileName, Map<String, String> map, Map<String, String> checkMap) {
+	public HttpServletResponse generatorRegTable(HttpServletResponse response, String regId, String fileName, Map<String, String> checkMap) {
 		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
 		Map<String, Object> datas = new HashMap<>();
     	datas.put("type", "当日".equals(reg.getTimeType()) ? "" : "预约");
@@ -251,11 +252,11 @@ public class OutpatientRegistrationService {
     	datas.put("regEmp", getDoctor(reg.getRegEmps(), "挂号员").getYgName());
     	datas.put("regTime", SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd HH:mm:ss"));
     	// 生成支付二维码
-    	QRCodeUtil.zxingCodeCreate(map.get("code"), 160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg", "jpg");
+//    	QRCodeUtil.zxingCodeCreate(map.get("code"), 160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg", "jpg");
     	// 生成检查二维码
     	QRCodeUtil.zxingCodeCreate(checkMap.get("code"), 160, 160, "D://his//reg_check_code//" + regId + ".jpg", "jpg");
     	// 本地图片
-    	datas.put("payCode", new PictureRenderData(160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg"));
+//    	datas.put("payCode", new PictureRenderData(160, 160, "D://HIS//reg_pay_code//" + regId + ".jpg"));
     	datas.put("checkPay", new PictureRenderData(160, 160, "D://HIS//reg_check_code//" + regId + ".jpg"));
     	
     	GeneratorWord.makeWord(datas, "D:\\HIS\\reg_table\\", "挂号单模版.docx", fileName);
@@ -433,5 +434,41 @@ public class OutpatientRegistrationService {
 
 	public void removeReg(String regId) {
 		outpatientRegistrationDao.deleteById(regId);
+	}
+	
+	/**
+	* @Title:getRegTableInfo
+	* @Description:获取挂号单信息
+	* @param:@param regId
+	* @param:@param ygxh
+	* @param:@return
+	* @return:Map<String,String>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月4日 上午9:47:26
+	 */
+	public Map<String, String> getRegTableInfo(String regId, String ygxh) {
+		// 生成支付二维码
+		Map<String, String> map = this.getCardQrCode(regId);
+		// 生成检查是否缴费二维码
+		Map<String, String> checkMap = this.getCheckQrCode(map.get("outTradeNo"), ygxh, regId);
+		OutpatientRegistration reg = outpatientRegistrationDao.findById(regId).get();
+		Map<String, String> datas = new HashMap<>();
+    	datas.put("type", "当日".equals(reg.getTimeType()) ? "" : "预约");
+    	datas.put("cardName",reg.getMedicalCard().getCardName());
+    	datas.put("gender",  reg.getMedicalCard().getGender());
+    	datas.put("birthday", SimpleTools.formatDate(reg.getMedicalCard().getBirthday(), "yyyy-MM-dd"));
+    	datas.put("cardNum", reg.getMedicalCard().getPersonId());
+    	datas.put("regType", reg.getRegType());
+    	datas.put("regKs", reg.getDepartment().getKsName());
+    	datas.put("regTp", reg.getTechnicalPost().getTpName());
+    	datas.put("doDate", SimpleTools.formatDate(reg.getDoDate(), "yyyy-MM-dd"));
+    	datas.put("doctor", getDoctor(reg.getRegEmps(), "医生").getYgName());
+    	datas.put("waitingRoom", getDoctor(reg.getRegEmps(), "医生").getWaitingRoom().getWaitingRoomName());
+    	datas.put("regEmp", getDoctor(reg.getRegEmps(), "挂号员").getYgName());
+    	datas.put("regTime", SimpleTools.formatDate(reg.getRegTime(), "yyyy-MM-dd HH:mm:ss"));
+    	datas.put("checkPay", checkMap.get("code"));
+    	datas.put("payCode", map.get("code"));
+		return datas;
 	}
 }

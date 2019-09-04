@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSONObject;
 import com.his.dao.IOutMedicalRecordDao;
 import com.his.dao.IOutpatientRegistrationDao;
+import com.his.utils.MD5Tools;
 import com.his.utils.QRCodeUtil;
 
 import javax.servlet.http.HttpSession;
@@ -76,6 +77,8 @@ public class OutMedicalRecordService {
         	result.setResult("解析二维码失败，请重试拍照上传！");
         	result.setStatus("error");
         }else{
+//        	resultInfo = MD5Tools.reMd5(resultInfo);
+//        	resultInfo = MD5Tools.JM(resultInfo);
         	System.out.println(resultInfo);
         	JSONObject obj = JSONObject.parseObject(resultInfo);
         	// 检查是否允许
