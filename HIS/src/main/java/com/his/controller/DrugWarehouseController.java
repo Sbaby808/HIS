@@ -1,7 +1,9 @@
 package com.his.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.JsonResult;
+import com.his.pojo.Medicine;
 import com.his.pojo.PutStockInformation;
 import com.his.service.DrugWarehouseService;
 
@@ -26,6 +29,54 @@ public class DrugWarehouseController {
 	
 	@Autowired
 	private DrugWarehouseService drugWarehouseService;
+	
+	/**
+	* @Title:query_drugWarehouse_by_choosenumber
+	* @Description:查找特定范围的药品
+	* @param:@param chooseNumber
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月4日 下午3:49:04
+	 */
+	@ResponseBody
+	@GetMapping("query_drugWarehouse_by_choosenumber")
+	public JsonResult query_drugWarehouse_by_choosenumber(int chooseNumber) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(drugWarehouseService.queryWarehouseByChooseNumber(chooseNumber));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:update_nownumber_by_id
+	* @Description:根据id修改库存
+	* @param:@param pckcId
+	* @param:@param updateNumber
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月3日 下午9:20:41
+	 */
+	@ResponseBody
+	@GetMapping("update_nownumber_by_id")
+	public JsonResult update_nownumber_by_id(String pckcId,int updateNumber) {
+		JsonResult result = new JsonResult();
+		try {
+			drugWarehouseService.updateNowNumberById(pckcId, updateNumber);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			result.setStatus("error");
+		}
+		return 	result;
+	}
 	
 	/**
 	* @Title:get_all_Warehouse

@@ -20,6 +20,9 @@ public class OutstockDetail implements Serializable {
 
 	@Column(name="YKOUT_NUM")
 	private BigDecimal ykoutNum;
+	
+	@Column(name="STATE")
+	private String state;
 
 	//bi-directional many-to-one association to DrugWarehouse
 	@ManyToOne
@@ -48,6 +51,14 @@ public class OutstockDetail implements Serializable {
 
 	public void setYkoutNum(BigDecimal ykoutNum) {
 		this.ykoutNum = ykoutNum;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public DrugWarehouse getDrugWarehouse() {

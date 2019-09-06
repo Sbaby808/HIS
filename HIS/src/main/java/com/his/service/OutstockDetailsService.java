@@ -37,8 +37,22 @@ public class OutstockDetailsService {
 	private IReqDetailsDao reqDetailsDao;
 	
 	/**
+	* @Title:getOutstockDetailByReqId
+	* @Description:根据申领id查找对应的明细
+	* @param:@param reqId
+	* @param:@return
+	* @return:List<OutstockDetail>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午5:48:17
+	 */
+	public List<OutstockDetail> getOutstockDetailByReqId(String reqId){
+		return outstockDetailsDao.getOutstockDetailByReqId(reqId);
+	}
+	
+	/**
 	* @Title:addOutStockByOneDrug
-	* @Description:插入一个药品的出库明细
+	* @Description:批量插入药库出库明细
 	* @param:@param outstockDetail
 	* @param:@throws ServiceException
 	* @return:void
@@ -64,7 +78,8 @@ public class OutstockDetailsService {
 				outstockDetailPK.setPckcId(out.getDrugWarehouse().getPckcId());
 				outsd.setId(outstockDetailPK);
 				outsd.setYkoutNum(out.getYkoutNum());
-				//插入出库单
+				outsd.setState("已出库");
+				//插入出库单明细
 				outstockDetailsDao.save(outsd);
 				//修改库存
 				BigDecimal outNumber = out.getYkoutNum();

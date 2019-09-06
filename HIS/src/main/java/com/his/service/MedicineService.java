@@ -30,6 +30,21 @@ public class MedicineService {
 	private IMedicineDao medicineDao;
 	
 	/**
+	* @Title:warehouseIsHave
+	* @Description:判断一个部门的这个药品的批次存不存在
+	* @param:@param pckcId
+	* @param:@param deptId
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 上午12:48:23
+	 */
+	public Medicine warehouseIsHave(String pckcId ,String deptId) {
+		return medicineDao.warehouseIsHave(pckcId, deptId);
+	}
+	
+	/**
 	* @Title:qeuryNoKuCun
 	* @Description:查询没有库存的药品
 	* @param:@param chooseNumber

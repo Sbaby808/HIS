@@ -1,7 +1,5 @@
 package com.his.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,63 +8,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.JsonResult;
-import com.his.pojo.OutstockDetail;
-import com.his.service.OutstockDetailsService;
+import com.his.pojo.PhaIn;
+import com.his.service.PhaInService;
 
 /**  
-* @ClassName: OutstockDetailsController  
-* @Description: 出库明细Controller
+* @ClassName: PhaInController  
+* @Description: 药房入库Controller
 * @author crazy_long
-* @date 2019年9月3日  上午9:45:03
+* @date 2019年9月5日  下午8:06:25
 *    
 */
-
 @Controller
-public class OutstockDetailsController {
+public class PhaInController {
 	
 	@Autowired
-	private OutstockDetailsService outstockDetailsService;
-		
-	/**
-	* @Title:get_OutstockDetail_By_ReqId
-	* @Description:根据申领id查找对应的明细
-	* @param:@param reqId
-	* @param:@return
-	* @return:JsonResult
-	* @throws
-	* @author:crazy_long
-	* @Date:2019年9月5日 下午5:50:46
-	 */
-	@ResponseBody
-	@GetMapping("get_OutstockDetail_By_ReqId")
-	public JsonResult get_OutstockDetail_By_ReqId(String reqId) {		
-		JsonResult jsonResult = new JsonResult();
-		try {
-			jsonResult.setResult(outstockDetailsService.getOutstockDetailByReqId(reqId));
-			jsonResult.setStatus("ok");
-		} catch (Exception e) {
-			e.printStackTrace();
-			jsonResult.setStatus("error");
-		}
-		return jsonResult;
-	}
+	private PhaInService pahInservice;
 	
 	/**
-	* @Title:add_one_drug_outStockDetail
-	* @Description:添加一个药品的出库明细
-	* @param:@param outstockDetail
+	* @Title:add_a_phaIn
+	* @Description:插入一个药房入库单
+	* @param:@param phaIn
 	* @param:@return
 	* @return:JsonResult
 	* @throws
 	* @author:crazy_long
-	* @Date:2019年9月3日 上午9:50:37
+	* @Date:2019年9月5日 下午8:15:18
 	 */
 	@ResponseBody
-	@PostMapping("add_one_drug_outStockDetail")
-	public JsonResult add_one_drug_outStockDetail(@RequestBody List<OutstockDetail> outstockDetail) {		
+	@PostMapping("add_a_phaIn")
+	public JsonResult add_a_phaIn(@RequestBody PhaIn phaIn) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			outstockDetailsService.addOutStockByOneDrug(outstockDetail);
+			pahInservice.addPhaIn(phaIn);
 			jsonResult.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,4 +48,27 @@ public class OutstockDetailsController {
 		return jsonResult;
 	}
 
+	/**
+	* @Title:phaIn_is_exits
+	* @Description:判断入库单是否存在
+	* @param:@param phaInId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午8:10:03
+	 */
+	@ResponseBody
+	@GetMapping("phaIn_is_exits")
+	public JsonResult phaIn_is_exits(String reqId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(pahInservice.pahInIsExits(reqId));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
 }

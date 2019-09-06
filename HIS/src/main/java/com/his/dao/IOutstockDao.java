@@ -16,7 +16,7 @@ import com.his.pojo.Outstock;
 *    
 */
 public interface IOutstockDao extends CrudRepository<Outstock, String>{
-
+	
 	/**
 	* @Title:getAllWarehouse
 	* @Description:查询药品申领单对应的出库单是否已经存在

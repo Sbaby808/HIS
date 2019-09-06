@@ -22,6 +22,7 @@ import com.his.dao.IPutStockDetailsDao;
 import com.his.pojo.DrugInformation;
 import com.his.pojo.DrugWarehouse;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.Medicine;
 import com.his.pojo.PutStock;
 import com.his.pojo.PutStockDetail;
 import com.his.pojo.PutStockDetailPK;
@@ -49,6 +50,51 @@ public class DrugWarehouseService {
 	private IPutStockDetailsDao putStockDetailsDao;
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
+	
+	/**
+	* @Title:queryMedicineNowNumber
+	* @Description:查找特定范围的药品
+	* @param:@param chooseNumber
+	* @param:@return
+	* @param:@throws ServiceException
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月4日 下午3:45:27
+	 */
+	public List<DrugWarehouse> queryWarehouseByChooseNumber(int chooseNumber) throws ServiceException{
+		int minNumber = chooseNumber*5-4;
+		int maxNumber = chooseNumber*5;
+		List<DrugWarehouse> list = null;
+		try {
+			list =  drugWarehouseDao.queryWarehouseByChooseNumber(new BigDecimal(minNumber), new BigDecimal(maxNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("查找特定范围的药品失败");
+		}
+		return list;
+	}
+	
+	/**
+	* @Title:updateNowNumberById
+	* @Description:根据id修改库存
+	* @param:@param pckcId
+	* @param:@param updataNumber
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月3日 下午9:18:26
+	 */
+	public void updateNowNumberById(String pckcId,int updataNumber) throws ServiceException{
+		try {
+			DrugWarehouse d = drugWarehouseDao.findById(pckcId).get();
+			d.setNowNumber(new BigDecimal(updataNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改库存失败");
+		}
+	}
 	
 	/**
 	* @Title:getAllWarehouseAndTotalCount
@@ -124,7 +170,6 @@ public class DrugWarehouseService {
 	 */
 	public Map searchAllInformationByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
 			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
-		System.out.println("ttttttttttttttttttttttttttttttttttttttttttttt");
 		Map map = new HashMap();
 		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
 		List<DrugWarehouse> list = drugWarehouseDao.searchAllInformationByPage(

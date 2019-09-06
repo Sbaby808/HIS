@@ -33,6 +33,34 @@ public class OutpatientRequestionMedicineService {
 	private DeptDAO deptdao;
 	
 	/**
+	* @Title:getAlreadyOutStockByDeptId
+	* @Description:查找对应部门已出库状态的申领单
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<OutpatientRequestionMedicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午5:27:27
+	 */
+	public List<OutpatientRequestionMedicine> getAlreadyOutStockByDeptId(String deptId) {
+		return outpatientRequestionMedicineDao.getAlreadyOutStockByDeptId(deptId);
+	}
+	
+	/**
+	* @Title:getAlreadyOutStockByDeptId
+	* @Description:查找对应部门已出库状态的申领单条数
+	* @param:@param deptId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午5:05:20
+	 */
+	public int getAlreadyOutStockCount(String deptId) {
+		return outpatientRequestionMedicineDao.getAlreadyOutStockByDeptIdCount(deptId);
+	}
+	
+	/**
 	* @Title:updateRequestState
 	* @Description:改变申领单的状态
 	* @param:@param reqId

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.OutpatientRequestionMedicine;
+import com.his.pojo.Outstock;
 
 /**  
 * @ClassName: IOutpatientRequestionMedicine  
@@ -16,6 +17,32 @@ import com.his.pojo.OutpatientRequestionMedicine;
 *    
 */
 public interface IOutpatientRequestionMedicineDao extends CrudRepository<OutpatientRequestionMedicine, String>{
+	
+	/**
+	* @Title:getAlreadyOutStockByDeptId
+	* @Description:查找对应部门已出库状态的申领单
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<OutpatientRequestionMedicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午5:25:56
+	 */
+	@Query("from OutpatientRequestionMedicine o where o.dept.deptId = ?1 and o.reqStatus='已出库' ")
+	public List<OutpatientRequestionMedicine> getAlreadyOutStockByDeptId(String deptId);
+	
+	/**
+	* @Title:getOutStockByDeptId
+	* @Description:查找对应部门已出库状态的申领单条数
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<Outstock>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午4:59:59
+	 */
+	@Query("select count(*) from OutpatientRequestionMedicine o where o.dept.deptId = ?1 and o.reqStatus='已出库' ")
+	public int getAlreadyOutStockByDeptIdCount(String deptId);
 	
 	/**
 	* @Title:queryRequestBydeptName

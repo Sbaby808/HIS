@@ -1,9 +1,20 @@
 package com.his.pojo;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 
 /**
@@ -32,6 +43,7 @@ public class Outstock implements Serializable {
 	private EmpInformation empInformation;
 
 	//bi-directional many-to-one association to OutstockDetail
+	@JSONField(serialize=false)
 	@OneToMany(mappedBy="outstock")
 	private List<OutstockDetail> outstockDetails;
 

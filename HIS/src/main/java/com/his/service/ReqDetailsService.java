@@ -140,11 +140,16 @@ public class ReqDetailsService {
 			outpatientRequestionMedicineDao.save(orm);
 			//循环添加明细
 			for (int i = 1; i < reqDetails.size(); i++) {
+				System.out.println("--------------------");
+				System.out.println("reqId:"+reqId);
+				System.out.println("ypid:"+reqDetails.get(i).getDrugInformation().getYpId());
+				System.out.println("number:"+reqDetails.get(i).getReqNum());
 				ReqDetail reqDetail = reqDetails.get(i);
 				ReqDetailPK reqDetailPK = new ReqDetailPK();
 				reqDetailPK.setReqId(reqId);
 				reqDetailPK.setYpId(reqDetails.get(i).getDrugInformation().getYpId());
 				reqDetail.setId(reqDetailPK);
+				reqDetail.setState("未处理");
 				reqDetailsDao.save(reqDetail);
 			}
 		} catch (Exception e) {

@@ -18,7 +18,7 @@ import com.his.utils.ServiceException;
 
 /**  
 * @ClassName: PurchaseDetailsService  
-* @Description:药品采购明细
+* @Description:药品采购明细Service
 * @author crazy_long
 * @date 2019年7月30日  下午2:14:29
 *    
@@ -42,9 +42,8 @@ public class PurchaseDetailsService {
 	* @Date:2019年8月14日 下午10:10:59
 	 */
 	public void appendToDetail(List<PurchaseDetail> purchaseDetail) throws ServiceException{
-		//获取主表的信息
+		//获取采购单id
 		Purchase purchase = purchaseDetail.get(0).getPurchase();
-		//生成该采购计划的主键
 		String cgId = purchase.getCgId();
 		try {
 			//循环插入采购明细
