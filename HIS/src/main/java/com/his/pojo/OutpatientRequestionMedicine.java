@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +34,13 @@ public class OutpatientRequestionMedicine implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="YGXH")
 	private EmpInformation empInformation;
+	
+	@ManyToOne
+	@JoinColumn(name="DEPT_ID")
+	private Dept dept;
 
 	//bi-directional many-to-one association to ReqDetail
+	@JSONField(serialize = false)
 	@OneToMany(mappedBy="outpatientRequestionMedicine")
 	private List<ReqDetail> reqDetails;
 
@@ -69,6 +77,14 @@ public class OutpatientRequestionMedicine implements Serializable {
 
 	public void setEmpInformation(EmpInformation empInformation) {
 		this.empInformation = empInformation;
+	}
+	
+	public Dept getDept() {
+		return this.dept;
+	}
+
+	public void setDept(Dept dept) {
+		this.dept = dept;
 	}
 
 	public List<ReqDetail> getReqDetails() {

@@ -23,6 +23,9 @@ public class PhaIn implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="PHA_IN_DATE")
 	private Date phaInDate;
+	
+	@Column(name="REQ_ID")
+	private String reqId;
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -50,6 +53,14 @@ public class PhaIn implements Serializable {
 
 	public void setPhaInDate(Date phaInDate) {
 		this.phaInDate = phaInDate;
+	}
+
+	public String getReqId() {
+		return reqId;
+	}
+
+	public void setReqId(String reqId) {
+		this.reqId = reqId;
 	}
 
 	public EmpInformation getEmpInformation() {

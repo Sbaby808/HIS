@@ -20,6 +20,9 @@ public class ReqDetail implements Serializable {
 
 	@Column(name="REQ_NUM")
 	private BigDecimal reqNum;
+	
+	@Column(name="STATE")
+	private String state;
 
 	//bi-directional many-to-one association to DrugInformation
 	@ManyToOne
@@ -48,6 +51,15 @@ public class ReqDetail implements Serializable {
 
 	public void setReqNum(BigDecimal reqNum) {
 		this.reqNum = reqNum;
+	}
+
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public DrugInformation getDrugInformation() {

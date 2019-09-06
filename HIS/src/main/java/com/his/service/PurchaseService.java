@@ -37,6 +37,28 @@ public class PurchaseService {
 	private IPurchaseDetailsDao purchaseDetailsDao;
 	
 	/**
+	* @Title:addPurchaseX
+	* @Description:生成一个采购计划单
+	* @param:@param purchase
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月4日 上午12:02:09
+	 */
+	public void addPurchaseX(Purchase purchase) throws ServiceException{
+		purchase.setCgId(UUID.randomUUID().toString().replace("-", ""));
+		purchase.setState("否");
+		try {
+			//插入一个采购计划
+			purchasedao.save(purchase);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("添加采购计划失败");
+		}
+	}
+	
+	/**
 	* @Title:addPurchaseAndpurchaseDetail
 	* @Description:添加一个采购计划和其明细
 	* @param:@param purchaseDetail

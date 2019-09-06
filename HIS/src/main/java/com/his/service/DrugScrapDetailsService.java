@@ -117,7 +117,6 @@ public class DrugScrapDetailsService {
 				//修改库存表
 				DrugWarehouse drugWarehouse = drugWarehouseDao.findById(drugScrapDetail.get(i).getDrugWarehouse().getPckcId()).get(); 
 				drugWarehouse.setNowNumber(new BigDecimal(0)); //清空库存
-				drugWarehouse.setState("是"); //修改状态
 				//drugWarehouseDao.save(drugWarehouse);
 			}
 		} catch (Exception e) {

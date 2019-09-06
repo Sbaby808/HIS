@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.DrugInformation;
 import com.his.pojo.DrugWarehouse;
+import com.his.pojo.Medicine;
 
 /**  
 * @ClassName: IDrugWarehouseDao  
@@ -19,6 +20,46 @@ import com.his.pojo.DrugWarehouse;
 *    
 */
 public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>{
+	
+	/**
+	* @Title:queryWarehouseByChooseNumber
+	* @Description:查找特定范围的药品
+	* @param:@param minNuber
+	* @param:@param maxNumber
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月4日 下午3:43:35
+	 */
+	@Query("from DrugWarehouse m where m.nowNumber >= ?1 and m.nowNumber <= ?2 and m.state = '否'")
+	public List<DrugWarehouse> queryWarehouseByChooseNumber(BigDecimal minNuber,BigDecimal maxNumber);
+	
+	/**
+	* @Title:getDrugTotalNumberById
+	* @Description:查询某种药品的所有没有过期的批次
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:45:39
+	 */
+	@Query("from DrugWarehouse dw where dw.drugInformation.ypId = ?1 and dw.nowNumber > 0 and dw.state = '否' order by dw.produceDate asc")
+	public List<DrugWarehouse> getAllWarehouse(String ypId);
+	
+	/**
+	* @Title:getDrugTotalNumberById
+	* @Description:查询某种药品的总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:45:39
+	 */
+	@Query("select sum(dw.nowNumber) from DrugWarehouse dw where dw.drugInformation.ypId = ?1 and dw.state = '否'")
+	public int getDrugTotalNumberById(String ypId);
 	
 	/**
 	* @Title:searchAllInformationByPage
@@ -46,7 +87,8 @@ public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>
 			+ "and d.drugInformation.supplier.gysId like ?4 "
 			+ "and d.drugInformation.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
 			+ "and d.drugInformation.ypPrice >= ?6 "
-			+ "and d.drugInformation.ypPrice <= ?7 ")
+			+ "and d.drugInformation.ypPrice <= ?7 "
+			+ "order by d.produceDate asc")
 	public List<DrugWarehouse> searchAllInformationByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
 			BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
@@ -75,7 +117,8 @@ public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>
 		+ "and d.drugInformation.supplier.gysId like ?4 "
 		+ "and d.drugInformation.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
 		+ "and d.drugInformation.ypPrice >= ?6 "
-		+ "and d.drugInformation.ypPrice <= ?7 ")
+		+ "and d.drugInformation.ypPrice <= ?7 "
+		+ "order by d.produceDate asc")
 	public int searchAllInformationByPageCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
 			BigDecimal minPrice, BigDecimal maxPrice);
 	

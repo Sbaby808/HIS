@@ -64,7 +64,7 @@ public class Department implements Serializable {
 	private List<Role> roles;
 
 	//bi-directional many-to-one association to UseDrugRecord
-	@OneToMany(mappedBy="department")
+	@OneToMany(mappedBy="department", cascade = CascadeType.MERGE)
 	@JSONField(serialize=false)
 	private List<UseDrugRecord> useDrugRecords;
 

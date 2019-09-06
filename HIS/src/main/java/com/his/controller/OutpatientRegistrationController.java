@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -270,12 +271,12 @@ public class OutpatientRegistrationController {
 	@ResponseBody
 	public void generatorRegTable(HttpServletResponse res, String regId, String ygxh) throws UnsupportedEncodingException {
 		// 生成支付二维码
-		Map<String, String> map = outpatientRegistrationService.getCardQrCode(regId);
+//		Map<String, String> map = outpatientRegistrationService.getCardQrCode(regId);
 		// 生成检查是否缴费二维码
-		Map<String, String> checkMap = outpatientRegistrationService.getCheckQrCode(map.get("outTradeNo"), ygxh, regId);
+		Map<String, String> checkMap = outpatientRegistrationService.getCheckQrCode(regId, ygxh, regId);
 		// 生成挂号单
 		String fileName = "挂号单-" + SimpleTools.formatDate(new Date(), "yyyy-MM-dd_HH_mm_ss") + ".docx";
-		res = outpatientRegistrationService.generatorRegTable(res, regId, fileName, map, checkMap);
+		res = outpatientRegistrationService.generatorRegTable(res, regId, fileName, checkMap);
 		res.setHeader("content-type", "application/octet-stream;charset=UTF-8");
 		res.setCharacterEncoding("utf-8");
         res.setContentType("application/octet-stream");
@@ -308,6 +309,31 @@ public class OutpatientRegistrationController {
             }
           }
         }
+	}
+	
+	/**
+	* @Title:getRegTableInfo
+	* @Description:获取挂号单信息
+	* @param:@param regId
+	* @param:@param regInfo
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月4日 上午9:40:29
+	 */
+	@GetMapping("/get_reg_table_info")
+	@ResponseBody
+	public JsonResult getRegTableInfo(String regId, String ygxh) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(outpatientRegistrationService.getRegTableInfo(regId, ygxh));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
 	}
 	
 	/**
@@ -446,4 +472,5 @@ public class OutpatientRegistrationController {
 		}
 		return result;
 	}
+	
 }

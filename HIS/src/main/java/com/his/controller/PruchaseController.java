@@ -31,6 +31,29 @@ public class PruchaseController {
 	@Autowired
 	private PurchaseService purchaseService;
 	
+	/**
+	* @Title:add_pruchase
+	* @Description:插入一个采购计划
+	* @param:@param purchaseDetail
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月3日 下午11:56:57
+	 */
+	@ResponseBody
+	@PostMapping("/add_pruchase_x")
+	public JsonResult add_pruchase_x(@RequestBody Purchase purchase) {		
+		JsonResult jsonResult = new JsonResult();
+		try {
+			purchaseService.addPurchaseX(purchase);
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
 
 	/**
 	* @Title:add_pruchase

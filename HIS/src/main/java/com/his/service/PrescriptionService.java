@@ -1,6 +1,8 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.his.dao.IOutPreItemDao;
 import com.his.dao.IOutPrePayDao;
 import com.his.dao.IPrescriptionDao;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.OutPreItem;
 import com.his.pojo.OutPrePay;
 import com.his.pojo.Prescription;
 
@@ -55,6 +58,28 @@ public class PrescriptionService {
 		outPrePayDao.save(outPrePay);
 		prescription.setOutPrePay(outPrePay);
 		prescriptionDao.save(prescription);
+	}
+	
+	/**
+	* @Title:updateOutPreItem
+	* @Description:修改处方已用药品数量
+	* @param:@param prescription
+	* @param:@param ypId
+	* @param:@param num
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月3日 下午8:53:16
+	 */
+	public void updateOutPreItem(Prescription prescription, String ypId, int num) {
+		List<OutPreItem> outPreItems = prescription.getOutPreItems();
+		for (OutPreItem outPreItem : outPreItems) {
+			if(ypId.equals(outPreItem.getDrugInformation().getYpId())) {
+				outPreItem.setUsedNum(outPreItem.getUsedNum() + num);
+				outPreItemDao.save(outPreItem);
+				break;
+			}
+		}
 	}
 	
 }

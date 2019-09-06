@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.EmpInformation;
+import com.his.pojo.JsonResult;
 import com.his.service.EmpInformationService;
 import com.his.utils.Result;
 
@@ -27,6 +28,29 @@ public class EmpInformationController {
 	@Autowired
 	private EmpInformationService empInformationService; 
 	
+	/**
+	* @Title:get_dept_by_ygxh
+	* @Description:根据员工序号查找dept
+	* @param:@param ygxh
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午2:52:59
+	 */
+	@ResponseBody
+	@GetMapping("get_dept_by_ygxh")
+	public JsonResult get_dept_by_ygxh(String ygxh) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(empInformationService.getDeptByYgxh(ygxh));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
 	
 	@ResponseBody
 	@PostMapping("add_emp_information")

@@ -1,7 +1,6 @@
 package com.his.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,18 +11,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.DeptDAO;
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.ITechnicalPostDao;
 import com.his.dao.IUserRoleDao;
 import com.his.dao.IWaitingRoomDao;
-import com.his.dao.IWktimeEmpDAO;
+import com.his.pojo.Dept;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.UserRole;
 import com.his.pojo.WaitingRoom;
-import com.his.pojo.WktimeEmp;
 import com.his.utils.CreateUUID;
 import com.his.utils.MD5Tools;
 import com.his.utils.ServiceException;
+import java.util.Date;
+
+import com.his.dao.IWktimeEmpDAO;
+
+import com.his.pojo.WktimeEmp;
+
 
 /**
  * @ClassName: EmpInformationService
@@ -47,6 +52,29 @@ public class EmpInformationService {
 	private IUserRoleDao userroledao;
 	@Autowired
 	private IWktimeEmpDAO iWktimeEmpDAO;
+	
+	/**
+	* @Title:getDeptByYgxh
+	* @Description:根据员工序号获取门诊管理员或急诊管理员的部门信息
+	* @param:@param ygxh
+	* @param:@return
+	* @return:List<Dept>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午2:38:40
+	 */
+	public Dept getDeptByYgxh(String ygxh){
+		List<Object[]> list = empInformationDao.getDetpByYgxh(ygxh);
+		Dept dept = new Dept();
+		//循环判断
+		for (Object[] o : list) {
+			if("急诊药房管理员".equals(o[2].toString())||"门诊药库管理员".equals(o[2].toString())) {
+				dept.setDeptId(o[0].toString());
+				dept.setDeptName(o[1].toString());
+			}
+		}
+		return dept;
+	}
 	
 	/**
 	 * @Title:addEmpAllInformation

@@ -11,13 +11,39 @@ import com.his.pojo.Medicine;
 
 /**
  * @ClassName: IMedicineDao
- * @Description: 药房药品dao
+ * @Description: 药房药品库存dao
  * @author crazy_long
  * @date 2019年7月30日 上午10:59:20
  * 
  */
 public interface IMedicineDao extends CrudRepository<Medicine, String> {
 	
+	/**
+	* @Title:queryNoKuCun
+	* @Description:判断一个部门的这个药品的批次存不存在
+	* @param:@param pckcId
+	* @param:@param deptId
+	* @param:@return
+	* @return:Medicine
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 上午12:44:09
+	 */
+	@Query("from Medicine m where m.drugWarehouse.pckcId = ?1 and m.dept.deptId = ?2 ")
+	public Medicine warehouseIsHave(String pckcId ,String deptId);
+	
+	/**
+	* @Title:queryNoKuCun
+	* @Description:查找没有库存的药品
+	* @param:@param minNuber
+	* @param:@param maxNumber
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 上午12:39:46
+	 */
 	@Query("from Medicine m where m.medicineName >= ?1 and m.medicineName <= ?2 and m.dept.deptId = ?3 and m.drugWarehouse.nowNumber = 0 and m.drugWarehouse.state = '否'")
 	public List<Medicine> queryNoKuCun(BigDecimal minNuber,BigDecimal maxNumber,String deptId);
 	
@@ -90,4 +116,18 @@ public interface IMedicineDao extends CrudRepository<Medicine, String> {
 	 */
 	@Query("from Medicine m where m.dept.deptId='cccccccc' and m.drugWarehouse.pckcId=?1")
 	public Medicine getMedBypcId(String pcId);
+	
+	/**
+	* @Title:checkMedicineNum
+	* @Description:查询药房药品库存
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:Medicine
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月3日 下午9:32:19
+	 */
+	@Query("from Medicine m where m.drugWarehouse.drugInformation.ypId = ?1 and m.dept.deptId = ?2")
+	public Medicine checkMedicineNum(String ypId, String deptId);
 }

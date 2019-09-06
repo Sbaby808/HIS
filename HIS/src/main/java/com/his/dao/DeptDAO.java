@@ -16,6 +16,7 @@ import com.his.pojo.Dept;
 *    
 */
 public interface DeptDAO extends CrudRepository<Dept, String>{
+		
 	@Query("from Dept t")
 	public List<Dept> find(Pageable pageable);
 	@Query("select count(*) from Dept t where t.deptName = ?1")
