@@ -7,12 +7,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IMedicineDao;
+import com.his.pojo.DrugInformation;
 import com.his.pojo.Medicine;
 import com.his.utils.ServiceException;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: MedicineService  
@@ -28,6 +31,68 @@ public class MedicineService {
 	
 	@Autowired
 	private IMedicineDao medicineDao;
+	
+	/**
+	* @Title:searchDrugByPage
+	* @Description:查找某一个部门的药房药品
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param minNumber
+	* @param:@param maxNumber
+	* @param:@param deptId
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 下午2:15:27
+	 */
+	public Map searchDrugByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice,BigDecimal minNumber,BigDecimal maxNumber, String deptId,int pageNum, int pageSize) {
+		Map map = new HashMap();
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+		List<Medicine> list = medicineDao.searchDrugByPage(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchMinorDefect) ? SimpleTools.addCharForSearch(searchMinorDefect) : searchMinorDefect,
+				minPrice, maxPrice,minNumber,maxNumber,deptId,
+				page);
+		int total = medicineDao.searchDrugCount(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchMinorDefect) ? SimpleTools.addCharForSearch(searchMinorDefect) : searchMinorDefect, 
+						minPrice, maxPrice,minNumber,maxNumber,deptId);
+		map.put("drugs", list);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	* @Title:updateKuCunCount
+	* @Description:更改药品的库存
+	* @param:@param medicineId
+	* @param:@param updateNumber
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 下午2:59:34
+	 */
+	public void updateKuCunCount(String medicineId,BigDecimal updateNumber) throws ServiceException{
+		Medicine medicine = medicineDao.findById(medicineId).get();
+		medicine.setMedicineName(updateNumber);
+		
+	}
 	
 	/**
 	* @Title:warehouseIsHave

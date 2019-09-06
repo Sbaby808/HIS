@@ -26,6 +26,31 @@ public class OutstockDetailsController {
 	
 	@Autowired
 	private OutstockDetailsService outstockDetailsService;
+	
+	/**
+	* @Title:update_detail_state
+	* @Description:回库时修改明细单状态
+	* @param:@param ckId
+	* @param:@param pckcId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 上午10:02:16
+	 */
+	@ResponseBody
+	@GetMapping("update_detail_state")
+	public JsonResult update_detail_state(String ckId,String pckcId) {		
+		JsonResult jsonResult = new JsonResult();
+		try {
+			outstockDetailsService.updateDetailState(ckId, pckcId);
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
 		
 	/**
 	* @Title:get_OutstockDetail_By_ReqId
