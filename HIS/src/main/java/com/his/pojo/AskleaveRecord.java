@@ -27,6 +27,15 @@ public class AskleaveRecord implements Serializable {
 	@Column(name="askleave_type")
 	private String askLeaveType;
 
+	@Column(name="askdesc")
+	private String askdesc;
+	
+	@Column(name="status")
+	private String status;
+	
+	@Column(name="whetheragree")
+	private String whetheragree;
+
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
 	@JoinColumn(name="YGXH")
@@ -67,6 +76,30 @@ public class AskleaveRecord implements Serializable {
 
 	public void setEmpInformation(EmpInformation empInformation) {
 		this.empInformation = empInformation;
+	}
+
+	public String getAskdesc() {
+		return askdesc;
+	}
+
+	public void setAskdesc(String askdesc) {
+		this.askdesc = askdesc;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getWhetheragree() {
+		return whetheragree;
+	}
+
+	public void setWhetheragree(String whetheragree) {
+		this.whetheragree = whetheragree;
 	}
 
 }

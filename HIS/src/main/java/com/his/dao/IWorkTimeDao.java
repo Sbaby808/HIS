@@ -42,8 +42,7 @@ public interface IWorkTimeDao extends CrudRepository<WorkTime, String>{
 	@Query(value="select w from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3")
 	public List<WktimeEmp> getwkemps(String ksid,Date date,String type);
 	@Query(value="select w.workTime.pbId from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3")
-	public String getpbid(String ksid,Date date,String type);
-	
+	public String[] getpbid(String ksid,Date date,String type);
 	//通过员工序号 找到该员工的排班时间
 	@Query("select we.workTime from WktimeEmp we where we.empInformation.ygxh=?1")
 	public WorkTime findpbid(String ygxh);
