@@ -30,6 +30,8 @@ public interface IWktimeEmpDAO extends CrudRepository<WktimeEmp, WktimeEmpPK>{
 	public List<WktimeEmp> getemps(String pbid);
 	@Query(value="select w.workTime  from WktimeEmp w where w.empInformation.ygxh=?1 and w.workTime.pbDate=?2")
 	public List<WorkTime> getbytimeandid(String id,Date date);
+	@Query(value="select w from WktimeEmp w where w.empInformation.ygxh=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3")
+	public WktimeEmp getbytimeandygxh(String id,Date date,String type);
 	@Query(value="select u.role.department.ksId from UserRole u where u.empInformation.ygxh=?1 and u.role.rolePosition='排班人员'")
 	public String getksid(String ygxh);
 	

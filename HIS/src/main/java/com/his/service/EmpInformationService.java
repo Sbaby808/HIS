@@ -23,6 +23,12 @@ import com.his.pojo.WaitingRoom;
 import com.his.utils.CreateUUID;
 import com.his.utils.MD5Tools;
 import com.his.utils.ServiceException;
+import java.util.Date;
+
+import com.his.dao.IWktimeEmpDAO;
+
+import com.his.pojo.WktimeEmp;
+
 
 /**
  * @ClassName: EmpInformationService
@@ -44,6 +50,8 @@ public class EmpInformationService {
 	private IWaitingRoomDao waitingroomDao;
 	@Autowired
 	private IUserRoleDao userroledao;
+	@Autowired
+	private IWktimeEmpDAO iWktimeEmpDAO;
 	
 	/**
 	* @Title:getDeptByYgxh
@@ -325,6 +333,49 @@ public class EmpInformationService {
 	 */
 	public List<EmpInformation> getDoctorsByWkAndKs(String ksId){
 		return empInformationDao.getDoctorsByWkAndKs(ksId);
+	}
+	public void checkwork(EmpInformation empInformation) {
+		Date date=new Date();
+		int hours=date.getHours();
+		Date baitime=new Date();
+		baitime.setHours(8);
+		baitime.setMinutes(10);
+		Date endtime=new Date();
+		endtime.setHours(18);
+		endtime.setMinutes(10);
+		Date starttime=new Date();
+		starttime.setHours(16);
+		String type="";
+		if(hours<16) {
+			type="白班";
+		}
+		else {
+			type="晚班";
+		}
+		if(date.compareTo(baitime)==-1) {
+			WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(empInformation.getYgxh(), date, type);
+		    if(wktimeEmp!=null) {
+		    	wktimeEmp.setState("正在上班");
+		    	iWktimeEmpDAO.save(wktimeEmp);
+		    }
+		    else {}
+		}
+		else if (date.compareTo(starttime)==1&&date.compareTo(endtime)==-1) {
+			WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(empInformation.getYgxh(), date, type);
+			if(wktimeEmp!=null) {
+		    	wktimeEmp.setState("正在上班");
+		    	iWktimeEmpDAO.save(wktimeEmp);
+		    }
+		    else {}
+		}
+		else {
+			WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(empInformation.getYgxh(), date, type);
+			if(wktimeEmp!=null) {
+		    	wktimeEmp.setState("迟到");
+		    	iWktimeEmpDAO.save(wktimeEmp);
+		    }
+		    else {}
+		}
 	}
 
 }

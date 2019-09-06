@@ -384,141 +384,141 @@ public class WorkTimeService {
         String ksid=iWktimeempDao.getksid(ygxh);
         System.err.println(ygxh);
         System.err.println(ksid);
-        String onepbid=iWorkTimeDao.getpbid(ksid,list.get(0), "白班");
+        String onepbid[]=iWorkTimeDao.getpbid(ksid,list.get(0), "白班");
         
-        if(onepbid!=null) {
+        if(onepbid.length!=0) {
         
-        List<WktimeEmp> oneEmps=iWktimeempDao.getemps(onepbid);
+        List<WktimeEmp> oneEmps=iWktimeempDao.getemps(onepbid[0]);
         for (WktimeEmp wktimeEmp : oneEmps) {
 			iWktimeempDao.delete(wktimeEmp);
         }
-        iWorkTimeDao.deleteById(onepbid);
+        iWorkTimeDao.deleteById(onepbid[0]);
         }
         else {}
-        String onepbidwan=iWorkTimeDao.getpbid(ksid,list.get(0), "晚班");
-        if(onepbidwan!=null) {
-        List<WktimeEmp> oneEmpswan=iWktimeempDao.getemps(onepbidwan);
+        String onepbidwan[]=iWorkTimeDao.getpbid(ksid,list.get(0), "晚班");
+        if(onepbidwan.length!=0) {
+        List<WktimeEmp> oneEmpswan=iWktimeempDao.getemps(onepbidwan[0]);
         for (WktimeEmp wktimeEmp : oneEmpswan) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(onepbidwan);
+        iWorkTimeDao.deleteById(onepbidwan[0]);
         }
         else {}
         //周二
-        String  twopbid=iWorkTimeDao.getpbid(ksid,list.get(1), "白班");
-        if(twopbid!=null) {
-        List<WktimeEmp> twoEmps=iWktimeempDao.getemps(twopbid);
+        String  twopbid[]=iWorkTimeDao.getpbid(ksid,list.get(1), "白班");
+        if(twopbid.length!=0) {
+        List<WktimeEmp> twoEmps=iWktimeempDao.getemps(twopbid[0]);
         for (WktimeEmp wktimeEmp : twoEmps) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(twopbid);
+        iWorkTimeDao.deleteById(twopbid[0]);
         }
         else {}
         
-        String twopbidwan=iWorkTimeDao.getpbid(ksid,list.get(1), "晚班");
-        if(twopbidwan!=null) {
-        List<WktimeEmp> twoEmpswan=iWktimeempDao.getemps(twopbidwan);
+        String twopbidwan[]=iWorkTimeDao.getpbid(ksid,list.get(1), "晚班");
+        if(twopbidwan.length!=0) {
+        List<WktimeEmp> twoEmpswan=iWktimeempDao.getemps(twopbidwan[0]);
         for (WktimeEmp wktimeEmp : twoEmpswan) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(twopbidwan);
+        iWorkTimeDao.deleteById(twopbidwan[0]);
         }
         else {}
         //周三
-        String threepbid=iWorkTimeDao.getpbid(ksid,list.get(2), "白班");
-        if(threepbid!=null) {
-        List<WktimeEmp> sanEmps=iWktimeempDao.getemps(threepbid);
+        String threepbid[]=iWorkTimeDao.getpbid(ksid,list.get(2), "白班");
+        if(threepbid.length!=0) {
+        List<WktimeEmp> sanEmps=iWktimeempDao.getemps(threepbid[0]);
         for (WktimeEmp wktimeEmp : sanEmps) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(threepbid);
+        iWorkTimeDao.deleteById(threepbid[0]);
         }
         else {}
-        String threepbidwan=iWorkTimeDao.getpbid(ksid,list.get(2), "晚班");
-        if(threepbidwan!=null) {
-        List<WktimeEmp> sanEmpswan=iWktimeempDao.getemps(threepbidwan);
+        String threepbidwan[]=iWorkTimeDao.getpbid(ksid,list.get(2), "晚班");
+        if(threepbidwan.length!=0) {
+        List<WktimeEmp> sanEmpswan=iWktimeempDao.getemps(threepbidwan[0]);
         for (WktimeEmp wktimeEmp : sanEmpswan) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(threepbidwan);
+        iWorkTimeDao.deleteById(threepbidwan[0]);
         }
         else {}
         //周四
-        String fourpbid=iWorkTimeDao.getpbid(ksid,list.get(3), "白班");
+        String fourpbid[]=iWorkTimeDao.getpbid(ksid,list.get(3), "白班");
         System.err.println(fourpbid);
-        if(fourpbid!=null) {
-        List<WktimeEmp> fourEmps=iWktimeempDao.getemps(fourpbid);
+        if(fourpbid.length!=0) {
+        List<WktimeEmp> fourEmps=iWktimeempDao.getemps(fourpbid[0]);
         for (WktimeEmp wktimeEmp : fourEmps) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(fourpbid);
+        iWorkTimeDao.deleteById(fourpbid[0]);
         }
         else {}
-        String fouurpbidwan=iWorkTimeDao.getpbid(ksid,list.get(3), "晚班");
+        String fouurpbidwan[]=iWorkTimeDao.getpbid(ksid,list.get(3), "晚班");
         System.err.println(fouurpbidwan);
-        if(fouurpbidwan!=null) {
-        List<WktimeEmp> fourEmpswan=iWktimeempDao.getemps(fouurpbidwan);
+        if(fouurpbidwan.length!=0) {
+        List<WktimeEmp> fourEmpswan=iWktimeempDao.getemps(fouurpbidwan[0]);
         for (WktimeEmp wktimeEmp : fourEmpswan) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(fouurpbidwan);
+        iWorkTimeDao.deleteById(fouurpbidwan[0]);
         }
         else {}
         //周五
-        String fivepbid=iWorkTimeDao.getpbid(ksid,list.get(4), "白班");
-        if(fivepbid!=null) {
-        List<WktimeEmp> fiveEmps=iWktimeempDao.getemps(fivepbid);
+        String fivepbid[]=iWorkTimeDao.getpbid(ksid,list.get(4), "白班");
+        if(fivepbid.length!=0) {
+        List<WktimeEmp> fiveEmps=iWktimeempDao.getemps(fivepbid[0]);
         for (WktimeEmp wktimeEmp : fiveEmps) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(fivepbid);
+        iWorkTimeDao.deleteById(fivepbid[0]);
         }
         else {}
-        String fivepbidwan=iWorkTimeDao.getpbid(ksid,list.get(4), "晚班");
-        if(fivepbidwan!=null) {
-        List<WktimeEmp> fiveEmpswan=iWktimeempDao.getemps(fivepbidwan);
+        String fivepbidwan[]=iWorkTimeDao.getpbid(ksid,list.get(4), "晚班");
+        if(fivepbidwan.length!=0) {
+        List<WktimeEmp> fiveEmpswan=iWktimeempDao.getemps(fivepbidwan[0]);
         for (WktimeEmp wktimeEmp : fiveEmpswan) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(fivepbidwan);
+        iWorkTimeDao.deleteById(fivepbidwan[0]);
         }
         else {}
         //周六
-        String sixpbid=iWorkTimeDao.getpbid(ksid,list.get(5), "白班");
-        if(sixpbid!=null) {
-        List<WktimeEmp> sixEmps=iWktimeempDao.getemps(sixpbid);
+        String sixpbid[]=iWorkTimeDao.getpbid(ksid,list.get(5), "白班");
+        if(sixpbid.length!=0) {
+        List<WktimeEmp> sixEmps=iWktimeempDao.getemps(sixpbid[0]);
         for (WktimeEmp wktimeEmp : sixEmps) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(sixpbid);
+        iWorkTimeDao.deleteById(sixpbid[0]);
         }
         else {}
-        String sixpbidwan=iWorkTimeDao.getpbid(ksid,list.get(5), "晚班");
-        if(sixpbidwan!=null) {
-        List<WktimeEmp> sixEmpswan=iWktimeempDao.getemps(sixpbidwan);
+        String sixpbidwan[]=iWorkTimeDao.getpbid(ksid,list.get(5), "晚班");
+        if(sixpbidwan.length!=0) {
+        List<WktimeEmp> sixEmpswan=iWktimeempDao.getemps(sixpbidwan[0]);
         for (WktimeEmp wktimeEmp : sixEmpswan) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(sixpbidwan);
+        iWorkTimeDao.deleteById(sixpbidwan[0]);
         }
         else {}
         //周日
-        String sevenpbid=iWorkTimeDao.getpbid(ksid,list.get(6), "白班");
-        if(sevenpbid!=null) {
-        List<WktimeEmp> sevenEmps=iWktimeempDao.getemps(sevenpbid);
+        String sevenpbid[]=iWorkTimeDao.getpbid(ksid,list.get(6), "白班");
+        if(sevenpbid.length!=0) {
+        List<WktimeEmp> sevenEmps=iWktimeempDao.getemps(sevenpbid[0]);
         for (WktimeEmp wktimeEmp : sevenEmps) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(sevenpbid);
+        iWorkTimeDao.deleteById(sevenpbid[0]);
         }
         else {}
-        String sevenpbidwan=iWorkTimeDao.getpbid(ksid,list.get(6), "晚班");
-        if(sevenpbidwan!=null) {
-        List<WktimeEmp> sevenEmpswan=iWktimeempDao.getemps(sevenpbidwan);
+        String sevenpbidwan[]=iWorkTimeDao.getpbid(ksid,list.get(6), "晚班");
+        if(sevenpbidwan.length!=0) {
+        List<WktimeEmp> sevenEmpswan=iWktimeempDao.getemps(sevenpbidwan[0]);
         for (WktimeEmp wktimeEmp : sevenEmpswan) {
 			iWktimeempDao.delete(wktimeEmp);
 		}
-        iWorkTimeDao.deleteById(sevenpbidwan);
+        iWorkTimeDao.deleteById(sevenpbidwan[0]);
         }
         else {}
         //添加
@@ -600,6 +600,7 @@ public class WorkTimeService {
 		}
 		
 	}
+	
 	
 	
 
