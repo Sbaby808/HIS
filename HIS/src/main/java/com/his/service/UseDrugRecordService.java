@@ -202,6 +202,9 @@ public class UseDrugRecordService {
 		injectionDetailDao.save(injectionDetail);
 		injectionDetails.add(injectionDetail);
 		useDrugRecordDao.save(useDrugRecord);
+		// 修改药品库存
+		medicine.setMedicineName(medicine.getMedicineName().subtract(ypNum));
+		medicineDao.save(medicine);
 		// 修改用药数量
 		prescriptionService.updateOutPreItem(prescription, ypId, ypNum.intValue());
 	}
