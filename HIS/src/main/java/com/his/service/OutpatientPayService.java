@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alipay.api.AlipayApiException;
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutpatientPayDao;
 import com.his.dao.IOutpatientRegistrationDao;
+import com.his.pojo.JsonResult;
 import com.his.pojo.OutpatientPay;
 import com.his.pojo.OutpatientRegistration;
 import com.his.utils.AliPay;
@@ -32,6 +34,8 @@ public class OutpatientPayService {
 	private IOutpatientPayDao outpatientPayDao;
 	@Autowired
 	private IOutpatientRegistrationDao outpatientRegistrationDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	public void addOutPatientPay(OutpatientPay outpatientPay) {
 		outpatientPay.setPayId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -94,6 +98,55 @@ public class OutpatientPayService {
 		outpatientRegistration.setRegStatus("已缴费");
 		outpatientRegistrationDao.save(outpatientRegistration);
 		outpatientPayDao.save(outpatientPay);
+	}
+	
+	/**
+	* @Title:regPayBack
+	* @Description:门诊挂号退费
+	* @param:@param regId
+	* @param:@param ygxh
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月10日 下午2:31:35
+	 */
+	public JsonResult regPayBack(String regId, String ygxh) {
+		JsonResult result = new JsonResult();
+		// 获取挂号对象
+		OutpatientRegistration outpatientRegistration = outpatientRegistrationDao.findById(regId).get();
+		if(outpatientRegistration == null) {
+			result.setResult("此挂号对象不存在！");
+			result.setStatus("error");
+		} else {
+			// 判断此挂号单是否已经缴费
+			if(outpatientRegistration.getOutpatientPay() != null && "已缴费".equals(outpatientRegistration.getOutpatientPay().getActStatus())) {
+				// 判断此挂号是已排队候诊过
+				if(outpatientRegistration.getOutMedicalRecord() != null) {
+					result.setStatus("error");
+					result.setResult("此挂号已排队候诊，无法退费！");
+				} else {
+					// 判断是否在允许时间内（与挂号时间不超过两小时）
+					if((new Date().getTime() - outpatientRegistration.getRegTime().getTime()) <= 1000 * 60 * 60 * 2) {
+						// 满足条件
+						OutpatientPay outpatientPay = outpatientRegistration.getOutpatientPay();
+						outpatientPay.setActStatus("已退费");
+						outpatientPay.setEmpInformation(empInformationDao.findById(ygxh).get());
+						outpatientPayDao.save(outpatientPay);
+						outpatientRegistration.setRegStatus("已退费");
+						outpatientRegistrationDao.save(outpatientRegistration);
+						result.setResult(outpatientPay);
+						result.setStatus("ok");
+					} else {
+						result.setResult("挂号已超过两小时，无法退费！");
+						result.setStatus("error");
+					}
+				}
+			} else {
+				result.setStatus("error");
+				result.setResult("此挂号还未缴费！");
+			}
+		}
+		return result;
 	}
 	
 	/**
