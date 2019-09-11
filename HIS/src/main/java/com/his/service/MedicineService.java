@@ -33,6 +33,21 @@ public class MedicineService {
 	private IMedicineDao medicineDao;
 	
 	/**
+	* @Title:getMedicineCanUse
+	* @Description:查找对应部门存在库存且没有过期的药品 
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 下午5:13:27
+	 */
+	public List<Medicine> getMedicineCanUse(String ypId,String deptId){
+		return medicineDao.getMedicineCanUse(ypId, deptId);
+	}
+	
+	/**
 	* @Title:searchDrugByPage
 	* @Description:查找某一个部门的药房药品
 	* @param:@param searchKey

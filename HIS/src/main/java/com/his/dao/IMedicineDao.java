@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.DrugInformation;
+import com.his.pojo.DrugWarehouse;
 import com.his.pojo.Medicine;
 
 /**
@@ -18,6 +19,20 @@ import com.his.pojo.Medicine;
  * 
  */
 public interface IMedicineDao extends CrudRepository<Medicine, String> {
+	
+	/**
+	* @Title:getAllWarehouse
+	* @Description:查找对应部门存在库存且没有过期的药品 
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 下午5:08:34
+	 */
+	@Query("from Medicine m where m.drugWarehouse.drugInformation.ypId = ?1 and m.dept.deptId = ?2 and m.medicineName > 0 and m.drugWarehouse.state = '否'  order by m.drugWarehouse.produceDate asc")
+	public List<Medicine> getMedicineCanUse(String ypId,String deptId);
 	
 	/**
 	* @Title:searchDrugByPage

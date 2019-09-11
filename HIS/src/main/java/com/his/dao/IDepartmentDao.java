@@ -10,6 +10,22 @@ import com.his.pojo.Department;
 public interface IDepartmentDao extends CrudRepository<Department, String>{
 	
 	/**
+	* @Title:queryByYgxh
+	* @Description:查找员工对应的科室
+	* @param:@param ygxh
+	* @param:@return
+	* @return:List<Department>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 上午10:49:55
+	 */
+	@Query(value="select d.ks_id,r.role_position from department d left outer join role r on d.ks_id = r.ks_id " + 
+			"left outer join user_role ur on r.role_id = ur.role_id " + 
+			"left outer join emp_information e on e.ygxh = ur.ygxh " + 
+			"where e.ygxh = ?1 ",nativeQuery = true)
+	public List<Object[]> queryByYgxh(String ygxh);
+	
+	/**
 	 * 
 	* @Title:getAllDepartments
 	* @Description:查询所有科室

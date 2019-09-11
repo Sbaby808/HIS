@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -29,9 +32,13 @@ public class DamagedMedicine implements Serializable {
 
 	@Column(name="DAMAGED_TYPE")
 	private String damagedType;
+	
+	@Column(name="STATE")
+	private String state;
 
 	//bi-directional many-to-one association to DamagedDrugDetail
-	@OneToMany(mappedBy="damagedMedicine")
+	@JSONField(serialize = false)
+	@OneToMany(mappedBy="damagedMedicine",cascade = CascadeType.REMOVE)
 	private List<DamagedDrugDetail> damagedDrugDetails;
 
 	//bi-directional many-to-one association to EmpInformation
@@ -72,6 +79,14 @@ public class DamagedMedicine implements Serializable {
 
 	public void setDamagedType(String damagedType) {
 		this.damagedType = damagedType;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public List<DamagedDrugDetail> getDamagedDrugDetails() {

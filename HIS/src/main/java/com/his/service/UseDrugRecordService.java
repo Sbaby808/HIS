@@ -3,7 +3,9 @@ package com.his.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,12 @@ import com.his.dao.IPrescriptionDao;
 import com.his.dao.IUseDrugRecordDao;
 import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
-import com.his.pojo.History;
 import com.his.pojo.InjectionDetail;
 import com.his.pojo.InjectionDetailPK;
 import com.his.pojo.Medicine;
 import com.his.pojo.Prescription;
 import com.his.pojo.UseDrugRecord;
+import com.his.utils.ServiceException;
 
 /**  
 * @ClassName: UseDrugRecordService  
@@ -50,6 +52,103 @@ public class UseDrugRecordService {
 	private IMedicineDao medicineDao;
 	@Autowired
 	private PrescriptionService prescriptionService;
+	
+	/**
+	* @Title:finish_use_drug_record
+	* @Description:完成用药明细记录 改状态 改库存
+	* @param:@param injId
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月10日 上午9:32:53
+	 */
+	public void finishUseDrugRecord(String injId) {
+		try {
+			//获取明细
+			List<InjectionDetail> injectionDetail = injectionDetailDao.getAllDetialByInjId(injId);
+			for (InjectionDetail indel : injectionDetail) {
+				//获取数量
+				BigDecimal number = indel.getPsDrugNum();
+				//药房id
+				String medicineId = indel.getMedicine().getMedicineId();
+				//查找药房
+				Medicine medicine = medicineDao.findById(medicineId).get();
+				//更改数量
+				medicine.setMedicineName(medicine.getMedicineName().subtract(number));
+			}
+			//更改用药记录状态
+			UseDrugRecord useDrugRecord = useDrugRecordDao.findById(injId).get();
+			useDrugRecord.setState("已取药");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("完成用药明细记录失败");
+		}
+	}
+	
+	/**
+	* @Title:addAnUseDrugRecord
+	* @Description:添加一个用药详情
+	* @param:@param u
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 下午2:02:16
+	 */
+	public Map addAnUseDrugRecord(UseDrugRecord u) throws ServiceException{
+		Map map = new HashMap();
+		try {
+			String prescriptionId = u.getPrescription().getPrescriptionId();
+			//先判断记录是否存在
+			int count1 = useDrugRecordDao.UseDrugRecordIsHave(prescriptionId);
+			int count2 = useDrugRecordDao.UseDrugRecordIsAlready(prescriptionId);
+			if(count1 > 0) {
+				//已经存在但未完成的
+				UseDrugRecord us = useDrugRecordDao.getUseDrugRecord(prescriptionId);
+				map.put("injId", us.getInjId());
+				map.put("flag", "isExitsforNo");
+			}else if(count2 > 0) {
+				//已经存在但已经完成的
+				UseDrugRecord us = useDrugRecordDao.getUseDrugRecord(prescriptionId);
+				map.put("injId", us.getInjId());
+				map.put("flag", "isExitsYes");
+			}else {
+				//不存在
+				String injId = UUID.randomUUID().toString().replace("-", "");
+				u.setInjId(injId);
+				//查找科室id
+				String ygxh = u.getEmpInformation().getYgxh();
+				//根据ygxh查找对应的科室id
+				List<Object[]> department = departmentDao.queryByYgxh(ygxh);
+				System.out.println("----------------------------------------");
+				System.out.println(department.size());
+				//取出门诊或急诊药房管理员的科室
+				String departmentId = "";
+				for (Object[] o : department) {
+					String position = o[1].toString();
+					if (position.equals("门诊药房管理员") || position.equals("急诊药房管理员")) {
+						departmentId = o[0].toString();
+						break;
+					}
+				}
+				Department d = departmentDao.findById(departmentId).get();
+				u.setDepartment(d);
+				u.setInjTime(new Date());
+				u.setState("未取药");
+				useDrugRecordDao.save(u);
+				map.put("injId", prescriptionId);
+				map.put("flag", "createNew");
+			}
+			
+		} catch (Exception e) {
+			map.put("flag", false);
+			map.put("injId", "erroe");
+			e.printStackTrace();
+			throw new ServiceException("添加一个用药记录失败");
+		}
+		return map;
+	}
+	
 	
 	/**
 	* @Title:addUseDrug

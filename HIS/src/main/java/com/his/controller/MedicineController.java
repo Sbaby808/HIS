@@ -28,6 +28,31 @@ public class MedicineController {
 	private MedicineService medicineService;
 	
 	/**
+	* @Title:get_medicine_can_use
+	* @Description:查找对应部门存在库存且没有过期的药品 
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 下午5:15:15
+	 */
+	@ResponseBody
+	@GetMapping("get_medicine_can_use")
+	public JsonResult get_medicine_can_use(String ypId,String deptId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicineService.getMedicineCanUse(ypId, deptId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:search_medicine_drug_by_page
 	* @Description:查找某一个部门的药房药品
 	* @param:@param searchKey

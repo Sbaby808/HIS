@@ -68,7 +68,10 @@ public class EmpInformationService {
 		Dept dept = new Dept();
 		//循环判断
 		for (Object[] o : list) {
-			if("急诊药房管理员".equals(o[2].toString())||"门诊药库管理员".equals(o[2].toString())) {
+			if("急诊药房管理员".equals(o[2].toString())||"门诊药房管理员".equals(o[2].toString())) {
+				System.out.println("-----------------------in to-----------------");
+				System.out.println("id:"+o[0].toString());
+				System.out.println("name:"+o[1].toString());
 				dept.setDeptId(o[0].toString());
 				dept.setDeptName(o[1].toString());
 			}
