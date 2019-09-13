@@ -32,7 +32,7 @@ public interface IRoleDao extends CrudRepository<Role, String>{
 	@Query(value="from Role r where r.rolePosition=?1")
 	public Role getRole(String role_position);
     
-	@Query(value="select u.empInformation  from Role r,UserRole u where r.roleId=u.role.roleId and r.department.ksId=?1")
+	@Query(value="select distinct u.empInformation  from Role r,UserRole u where r.roleId=u.role.roleId and r.department.ksId=?1")
 	public List<EmpInformation> getallemp(String ksid);
 
 	

@@ -1,6 +1,8 @@
 package com.his.pojo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 
 
@@ -22,6 +24,12 @@ public class WktimeEmp implements Serializable {
 	
 	@Column(name="state")
 	private String state;
+	
+	@Column(name="earlyleave")
+	private String earlyleave;
+	
+	@Column(name="overtime")
+	private BigDecimal overtime;
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -74,6 +82,22 @@ public class WktimeEmp implements Serializable {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getEarlyleave() {
+		return earlyleave;
+	}
+
+	public void setEarlyleave(String earlyleave) {
+		this.earlyleave = earlyleave;
+	}
+
+	public BigDecimal getOvertime() {
+		return overtime;
+	}
+
+	public void setOvertime(BigDecimal overtime) {
+		this.overtime = overtime;
 	}
 	
 

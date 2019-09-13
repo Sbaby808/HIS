@@ -34,5 +34,18 @@ public interface IWktimeEmpDAO extends CrudRepository<WktimeEmp, WktimeEmpPK>{
 	public WktimeEmp getbytimeandygxh(String id,Date date,String type);
 	@Query(value="select u.role.department.ksId from UserRole u where u.empInformation.ygxh=?1 and u.role.rolePosition='排班人员'")
 	public String getksid(String ygxh);
-	
+	@Query(value="select w from WktimeEmp w where w.empInformation.ygxh=?1 and w.workTime.pbDate=?2")
+	public List<WktimeEmp> getbytimeandempid(String id,Date date);
+	@Query(value="select count(1) from WktimeEmp w where w.empInformation.ygxh=?1 and w.earlyleave='早退' and w.workTime.pbDate between ?2 and ?3")
+	public int getzaotui(String ygxh,Date starttime,Date endtime);
+	@Query(value="select count(1) from WktimeEmp w where w.empInformation.ygxh=?1 and w.state='迟到' and w.workTime.pbDate between ?2 and ?3")
+	public int getchidao(String ygxh,Date starttime,Date endtime);
+	@Query(value="select count(1) from WktimeEmp w where w.empInformation.ygxh=?1 and w.state='请假' and w.workTime.pbDate between ?2 and ?3")
+	public int getqingjia(String ygxh,Date starttime,Date endtime);
+	@Query(value="select count(1) from WktimeEmp w where w.empInformation.ygxh=?1 and w.state='旷工' and w.workTime.pbDate between ?2 and ?3")
+	public int getkuanggong(String ygxh,Date starttime,Date endtime);
+	@Query(value="select count(1) from WktimeEmp w where w.empInformation.ygxh=?1 and w.overtime!=null and w.workTime.pbDate between ?2 and ?3")
+	public int getjiaban(String ygxh,Date starttime,Date endtime);
+	@Query(value="select w.overtime from WktimeEmp w where w.empInformation.ygxh=?1 and w.overtime!=null and w.workTime.pbDate between ?2 and ?3")
+	public List<Integer> getjiabantime(String ygxh,Date starttime,Date endtime);
 }
