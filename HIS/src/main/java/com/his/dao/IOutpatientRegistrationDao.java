@@ -28,7 +28,7 @@ public interface IOutpatientRegistrationDao extends CrudRepository<OutpatientReg
 	* @Date:2019年8月10日 下午2:33:06
 	 */
 	@Query(value = "select count(*) from reg_emp re left outer join outpatient_registration r on re.reg_id = r.reg_id "
-       + " where to_char(r.do_date,'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and re.ygxh = ?1 and r.reg_status != '退号'", nativeQuery = true)
+       + " where to_char(r.do_date,'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and re.ygxh = ?1 and r.reg_status != '已退费'", nativeQuery = true)
 	public int getRegsitrationCountByEmpId(String empId);
 	
 	/**

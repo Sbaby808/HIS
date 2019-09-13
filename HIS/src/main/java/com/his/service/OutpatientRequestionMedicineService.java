@@ -33,6 +33,26 @@ public class OutpatientRequestionMedicineService {
 	private DeptDAO deptdao;
 	
 	/**
+	* @Title:updateOPRMstate
+	* @Description:修改申领单的状态为已入库
+	* @param:@param reqId
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 上午10:16:24
+	 */
+	public void updateOPRMstate(String reqId) throws ServiceException{
+		try {
+			OutpatientRequestionMedicine outpatientRequestionMedicine = outpatientRequestionMedicineDao.findById(reqId)
+					.get();
+			outpatientRequestionMedicine.setReqStatus("已入库");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改申领单状态失败");
+		}
+	}
+	
+	/**
 	* @Title:getAlreadyOutStockByDeptId
 	* @Description:查找对应部门已出库状态的申领单
 	* @param:@param deptId

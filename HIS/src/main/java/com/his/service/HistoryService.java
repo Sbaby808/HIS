@@ -7,14 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -355,6 +349,37 @@ public class HistoryService {
      */
     public SolveScheme getSolveSchemeByHistoryId(String historyId) {
     	return solveSchemeDao.getByHistoryId(historyId);
+    }
+    
+    /**
+    * @Title:getHistoryCountByCardId
+    * @Description:查询门诊诊断记录数量
+    * @param:@param cardId
+    * @param:@return
+    * @return:List<History>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月11日 下午6:18:53
+     */
+    public int getHistoryCountByCardId(String cardId) {
+    	return historyDao.getHistoryCountByCardId(cardId);
+    }
+    
+    /**
+    * @Title:getHistoryByCardId
+    * @Description:查询门诊诊断记录
+    * @param:@param cardId
+    * @param:@param pageNum
+    * @param:@param pageSize
+    * @param:@return
+    * @return:List<History>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月11日 下午6:30:24
+     */
+    public List<History> getHistoryByCardId(String cardId, int pageNum, int pageSize) {
+    	PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+    	return historyDao.getHistoryByCardId(cardId, page);
     }
 
 

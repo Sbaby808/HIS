@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.DrugInformation;
+import com.his.pojo.DrugWarehouse;
 import com.his.pojo.Medicine;
 
 /**
@@ -17,6 +19,91 @@ import com.his.pojo.Medicine;
  * 
  */
 public interface IMedicineDao extends CrudRepository<Medicine, String> {
+	
+	/**
+	* @Title:getAllWarehouse
+	* @Description:查找对应部门存在库存且没有过期的药品 
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 下午5:08:34
+	 */
+	@Query("from Medicine m where m.drugWarehouse.drugInformation.ypId = ?1 and m.dept.deptId = ?2 and m.medicineName > 0 and m.drugWarehouse.state = '否'  order by m.drugWarehouse.produceDate asc")
+	public List<Medicine> getMedicineCanUse(String ypId,String deptId);
+	
+	/**
+	* @Title:searchDrugByPage
+	* @Description:查找某一个部门的药房药品
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param minNumber
+	* @param:@param maxNumber
+	* @param:@param deptId
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 下午2:06:59
+	 */
+	@Query("from Medicine d "
+			+ "where (d.drugWarehouse.drugInformation.ypName like ?1 "
+			+ "or d.drugWarehouse.drugInformation.vocode like ?1 )"
+			+ "and d.drugWarehouse.drugInformation.ypType like ?2 "
+			+ "and d.drugWarehouse.drugInformation.drugSubclass.subclassId like ?3 "
+			+ "and d.drugWarehouse.drugInformation.supplier.gysId like ?4 "
+			+ "and d.drugWarehouse.drugInformation.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
+			+ "and d.drugWarehouse.drugInformation.ypPrice >= ?6 "
+			+ "and d.drugWarehouse.drugInformation.ypPrice <= ?7 "
+			+ "and d.drugWarehouse.state = '否' "
+			+ "and d.medicineName >= ?8 "
+			+ "and d.medicineName <= ?9 "
+			+ "and d.dept.deptId = ?10 ")
+	public List<Medicine> searchDrugByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice,BigDecimal minNumber,BigDecimal maxNumber,String deptId,Pageable pageable);
+	
+	/**
+	* @Title:searchDrugCount
+	* @Description:查找某一个部门的药房药品的条数
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param minNumber
+	* @param:@param maxNumber
+	* @param:@param deptId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 下午2:07:28
+	 */
+	@Query("select count(*) from Medicine d "
+			+ "where (d.drugWarehouse.drugInformation.ypName like ?1 "
+			+ "or d.drugWarehouse.drugInformation.vocode like ?1 )"
+			+ "and d.drugWarehouse.drugInformation.ypType like ?2 "
+			+ "and d.drugWarehouse.drugInformation.drugSubclass.subclassId like ?3 "
+			+ "and d.drugWarehouse.drugInformation.supplier.gysId like ?4 "
+			+ "and d.drugWarehouse.drugInformation.drugSubclass.drugMinorDefect.minorDefectsId like ?5 "
+			+ "and d.drugWarehouse.drugInformation.ypPrice >= ?6 "
+			+ "and d.drugWarehouse.drugInformation.ypPrice <= ?7 "
+			+ "and d.drugWarehouse.state = '否' "
+			+ "and d.medicineName >= ?8 "
+			+ "and d.medicineName <= ?9 "
+			+ "and d.dept.deptId = ?10 ")
+		public int searchDrugCount(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+				BigDecimal minPrice, BigDecimal maxPrice,BigDecimal minNumber,BigDecimal maxNumber,String deptId);
 	
 	/**
 	* @Title:queryNoKuCun

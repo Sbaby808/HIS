@@ -22,6 +22,30 @@ public class OutpatientRequestionMedicineController {
 	private OutpatientRequestionMedicineService outpatientRequestionMedicineService;
 	
 	/**
+	* @Title:updata_request_state
+	* @Description:改变申领单的状态为已入库
+	* @param:@param reqId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月3日 下午3:34:56
+	 */
+	@ResponseBody
+	@GetMapping("updata_request_state_already_put")
+	public JsonResult updata_request_state_already_put(String reqId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			outpatientRequestionMedicineService.updateOPRMstate(reqId);;
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:get_already_outStock
 	* @Description:查找对应部门已出库状态的申领单
 	* @param:@param deptId
@@ -71,7 +95,7 @@ public class OutpatientRequestionMedicineController {
 	
 	/**
 	* @Title:updata_request_state
-	* @Description:改变申领单的状态
+	* @Description:改变申领单的状态为已出库
 	* @param:@param reqId
 	* @param:@return
 	* @return:JsonResult

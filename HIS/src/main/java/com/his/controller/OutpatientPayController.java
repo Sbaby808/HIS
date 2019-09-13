@@ -92,5 +92,29 @@ public class OutpatientPayController {
 		return result;
 	}
 	
+	/**
+	* @Title:payBack
+	* @Description:门诊挂号退费
+	* @param:@param regId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月10日 下午2:30:33
+	 */
+	@GetMapping("/money_pay_back")
+	@ResponseBody
+	public JsonResult payBack(String regId, String ygxh) {
+		JsonResult result = new JsonResult();
+		try {
+			result = outpatientPayService.regPayBack(regId, ygxh);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setResult("查验挂号信息失败，请稍后重试！");
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IMedicineDao;
 import com.his.dao.IOutstockDetailsDao;
 import com.his.dao.IPhaInDetailsDao;
 import com.his.pojo.Dept;
@@ -36,6 +37,8 @@ public class PhaInDetailsService {
 	private MedicineService medicineService;
 	@Autowired 
 	private IOutstockDetailsDao outstockDetailsDao;
+	@Autowired 
+	private IMedicineDao medicinedao;
 	
 	/**
 	* @Title:addPhaInDetailByBatch
@@ -73,7 +76,8 @@ public class PhaInDetailsService {
 				} else {
 					//批次不存在  创建批次
 					Medicine m = new Medicine();
-					m.setMedicineId(UUID.randomUUID().toString().replace("-", ""));
+					String medicineId = UUID.randomUUID().toString().replace("-", "");
+					m.setMedicineId(medicineId);
 					DrugWarehouse drugWarehouse = new DrugWarehouse();
 					drugWarehouse.setPckcId(pdh.getPckcId());
 					m.setDrugWarehouse(drugWarehouse);
@@ -81,11 +85,12 @@ public class PhaInDetailsService {
 					dept.setDeptId(pdh.getDeptId());
 					m.setDept(dept);
 					m.setMedicineName(pdh.getPhaInNum());
+					medicinedao.save(m);
 					//插入明细
 					PhaInDetail phaInDetail = new PhaInDetail();
 					PhaInDetailPK phaInDetailPK = new PhaInDetailPK();
 					phaInDetailPK.setPhaInId(pdh.getPhaInId());
-					phaInDetailPK.setMedicineId(medicine.getMedicineId());
+					phaInDetailPK.setMedicineId(medicineId);
 					phaInDetail.setId(phaInDetailPK);
 					phaInDetail.setPhaInNum(pdh.getPhaInNum());
 					//插入明细

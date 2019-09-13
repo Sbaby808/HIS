@@ -26,6 +26,9 @@ public class UseDrugRecord implements Serializable {
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="INJ_TIME")
 	private Date injTime;
+	
+	@Column(name="STATE")
+	private String state;
 
 	//bi-directional many-to-one association to InjectionDetail
 	@OneToMany(mappedBy="useDrugRecord", cascade = CascadeType.MERGE)
@@ -65,6 +68,14 @@ public class UseDrugRecord implements Serializable {
 
 	public void setInjTime(Date injTime) {
 		this.injTime = injTime;
+	}
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public List<InjectionDetail> getInjectionDetails() {

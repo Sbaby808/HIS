@@ -37,6 +37,24 @@ public class OutstockDetailsService {
 	private IReqDetailsDao reqDetailsDao;
 	
 	/**
+	* @Title:updateDetailState
+	* @Description:回库时修改明细单状态
+	* @param:@param ckId
+	* @param:@param pckcId
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 上午10:00:28
+	 */
+	public void updateDetailState(String ckId,String pckcId) {
+		OutstockDetailPK outstockDetailPK = new OutstockDetailPK();
+		outstockDetailPK.setCkId(ckId);
+		outstockDetailPK.setPckcId(pckcId);
+		OutstockDetail outstockDetail = outstockDetailsDao.findById(outstockDetailPK).get();
+		outstockDetail.setState("回库");
+	}
+	
+	/**
 	* @Title:getOutstockDetailByReqId
 	* @Description:根据申领id查找对应的明细
 	* @param:@param reqId

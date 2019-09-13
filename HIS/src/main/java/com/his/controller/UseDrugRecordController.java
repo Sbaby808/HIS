@@ -5,10 +5,12 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.JsonResult;
-import com.his.service.PrescriptionService;
+import com.his.pojo.UseDrugRecord;
 import com.his.service.UseDrugRecordService;
 
 /**  
@@ -23,6 +25,54 @@ public class UseDrugRecordController {
 
 	@Autowired
 	private UseDrugRecordService useDrugRecordService;
+	
+	/**
+	* @Title:finish_use_drug_record
+	* @Description:完成用药明细记录
+	* @param:@param injId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月10日 上午9:31:49
+	 */
+	@GetMapping("/finish_use_drug_record")
+	@ResponseBody
+	public JsonResult finish_use_drug_record(String injId) {
+		JsonResult result = new JsonResult();
+		try {
+			useDrugRecordService.finishUseDrugRecord(injId);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:add_a_useDrugRecord
+	* @Description:添加一个用药记录
+	* @param:@param useDrugRecord
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 上午11:06:31
+	 */
+	@PostMapping("/add_a_useDrugRecord")
+	@ResponseBody
+	public JsonResult add_a_useDrugRecord(@RequestBody UseDrugRecord useDrugRecord) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(useDrugRecordService.addAnUseDrugRecord(useDrugRecord));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 	
 	/**
 	* @Title:initUseDrugRecord
