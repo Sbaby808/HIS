@@ -37,5 +37,17 @@ public interface IUserRoleDao extends CrudRepository<UserRole, String>{
 	@Query("select ur.empInformation from UserRole ur where ur.role.rolePosition=?1")
 	public List<EmpInformation> findempsbyrole(String rolename);
 	
+	/**
+	* @Title:checkLoginGrant
+	* @Description:检查是否有登录权限
+	* @param:@param ygxh
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月13日 下午2:00:41
+	 */
+	@Query(value = "select count(*) from user_role ur right outer join role_func rf on ur.role_id = rf.role_id where ur.ygxh = ?1 ", nativeQuery = true)
+	public int checkLoginGrant(String ygxh);
 	
 }

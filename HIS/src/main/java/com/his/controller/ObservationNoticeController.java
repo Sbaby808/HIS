@@ -1,5 +1,7 @@
 package com.his.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,8 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.dao.IRemainRecordDAO;
 import com.his.pojo.JsonResult;
+import com.his.pojo.ObservationBed;
 import com.his.pojo.ObservationNotice;
+import com.his.pojo.RemainRecord;
 import com.his.service.ObservationNoticeService;
 
 /**  
@@ -23,6 +28,8 @@ public class ObservationNoticeController {
 
 	@Autowired
 	private ObservationNoticeService observationNoticeService;
+	@Autowired
+	private IRemainRecordDAO remainrecorddao;
 	
 	/**
 	* @Title:addObsNotice
@@ -119,4 +126,57 @@ public class ObservationNoticeController {
 		}
 		return result;
 	}
+	
+	//出院时候删除这条记录 同时置空对应的床位
+		@ResponseBody
+		@GetMapping("/deleteremain")
+		public void deleteremain(String remainId) {
+			observationNoticeService.deleteaa(remainId);
+		}
+		//查询留观登记表有多少条记录
+		@ResponseBody
+		@GetMapping("/findcountssss")
+		public long findcountsss() {
+			return observationNoticeService.findcountss();
+		}
+		@ResponseBody
+		@GetMapping("/updateremain")
+		public void Update(String remainId) {
+			observationNoticeService.update(remainId);
+		}
+		//登记
+		@ResponseBody
+		@GetMapping("/addliuguan")
+		public int addliuguan(String jzcwid,String cardid,String observaId) {
+			return observationNoticeService.addliuguan(jzcwid, cardid, observaId);
+		}
+		//找到一个空闲的床位
+		@ResponseBody
+		@GetMapping("/findbed")
+		public ObservationBed findonenull() {
+			return observationNoticeService.findonenull();
+		}
+		@ResponseBody
+		@GetMapping("/findallremain")
+		public List<RemainRecord> findall(){
+			return (List<RemainRecord>) remainrecorddao.findAll();
+		}
+		//分页查询所有的留观登记表
+		@ResponseBody
+		@GetMapping("findallbypage1")
+		public List<RemainRecord> findrr(int currentpage){
+			return observationNoticeService.findrr(currentpage);
+		}
+		//找到所有留观通知表数目
+		@ResponseBody
+		@GetMapping("/findcountsonotice")
+		public long findcounts1() {
+			return observationNoticeService.findcount();
+		}
+		//分页查询留观通知单
+		@ResponseBody
+		@GetMapping("/findallservationbypage")
+		public List<ObservationNotice> findobsbypage(int currentpage){
+			return observationNoticeService.findobs(currentpage);
+		}
 }

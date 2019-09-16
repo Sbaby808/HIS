@@ -380,5 +380,21 @@ public class EmpInformationService {
 		    else {}
 		}
 	}
+	
+	/**
+	* @Title:checkLoginGrant
+	* @Description:检查员工是否有登录权限
+	* @param:@param ygxh
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月13日 下午12:41:26
+	 */
+	public boolean checkLoginGrant(String ygxh) {
+		EmpInformation empInformation  =empInformationDao.findById(ygxh).get();
+		int result = userroledao.checkLoginGrant(ygxh);
+		return result > 0 ? true : false;
+	}
 
 }
