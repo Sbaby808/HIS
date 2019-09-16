@@ -19,6 +19,19 @@ import com.his.pojo.Outstock;
 public interface IOutpatientRequestionMedicineDao extends CrudRepository<OutpatientRequestionMedicine, String>{
 	
 	/**
+	* @Title:getNewCreateById
+	* @Description:查看对应部门的申领单
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<OutpatientRequestionMedicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 上午10:51:08
+	 */
+	@Query("from OutpatientRequestionMedicine o where o.dept.deptId = ?1 and o.reqStatus='未提交' ")
+	public List<OutpatientRequestionMedicine> getNewCreateById(String deptId);
+	
+	/**
 	* @Title:getAlreadyOutStockByDeptId
 	* @Description:查找对应部门已出库状态的申领单
 	* @param:@param deptId
@@ -30,6 +43,20 @@ public interface IOutpatientRequestionMedicineDao extends CrudRepository<Outpati
 	 */
 	@Query("from OutpatientRequestionMedicine o where o.dept.deptId = ?1 and o.reqStatus='已出库' ")
 	public List<OutpatientRequestionMedicine> getAlreadyOutStockByDeptId(String deptId);
+	
+	/**
+	* @Title:getAlreadyOutStockByDeptIdCount
+	* @Description:查找已入库的申领单条数
+	* @param:@param deptId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 下午4:13:32
+	 */
+	@Query("select count(*) from OutpatientRequestionMedicine o where o.dept.deptId = ?1 and o.reqStatus='已入库' ")
+	public int getHavePutStockCount(String deptId);
+	
 	
 	/**
 	* @Title:getOutStockByDeptId

@@ -12,13 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.DeptDAO;
+import com.his.dao.IDepartmentDao;
 import com.his.dao.IEmpInformationDao;
+import com.his.dao.IRoleDao;
 import com.his.dao.ITechnicalPostDao;
 import com.his.dao.IUserRoleDao;
 import com.his.dao.IWaitingRoomDao;
+import com.his.pojo.Department;
 import com.his.pojo.Dept;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.Role;
 import com.his.pojo.UserRole;
+import com.his.pojo.UserRolePK;
 import com.his.pojo.WaitingRoom;
 import com.his.utils.CreateUUID;
 import com.his.utils.MD5Tools;
@@ -52,6 +57,14 @@ public class EmpInformationService {
 	private IUserRoleDao userroledao;
 	@Autowired
 	private IWktimeEmpDAO iWktimeEmpDAO;
+	@Autowired
+	private DeptDAO deptdao;
+	@Autowired
+	private IDepartmentDao iDepartmentDao;
+	@Autowired
+	private IRoleDao iRoleDao;
+	@Autowired
+	private IUserRoleDao iUserRoleDao;
 	
 	/**
 	* @Title:getDeptByYgxh
@@ -89,7 +102,7 @@ public class EmpInformationService {
 	 */
 	public void addEmpAllInformation(EmpInformation empInformation) throws ServiceException {
 		try {
-			// 维护职位id
+			// 维护职称id
 			String tp_id = empInformation.getTechnicalPost().getTpId();
 			if (tp_id.equals("")) {
 				empInformation.setTechnicalPost(null);
@@ -101,13 +114,24 @@ public class EmpInformationService {
 				empInformation.setWaitingRoom(null);
 				System.out.println("into add wid");
 			}
+			String roleid=empInformation.getYgPassword();
+			System.out.println(roleid);
 			// 员工id
-			empInformation.setYgxh(UUID.randomUUID().toString().replace("-", ""));
-			// 初始化密码为111111
-			empInformation.setYgPassword("111111");
+			String ygxh=UUID.randomUUID().toString().replace("-", "");
+			empInformation.setYgxh(ygxh);
+			// 初始化密码为123456
+			empInformation.setYgPassword(MD5Tools.KL(MD5Tools.Md5("123456")));
 			// 员工序号
 			empInformation.setYgGh(CreateUUID.getUUID_16());
 			empInformationDao.save(empInformation);
+			UserRole userRole=new UserRole();
+			userRole.setHireDate(new Date());
+			UserRolePK pk=new UserRolePK();
+			pk.setRoleId(roleid);
+			pk.setYgxh(ygxh);
+			userRole.setId(pk);
+			iUserRoleDao.save(userRole);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException("添加员工失败");
@@ -157,28 +181,20 @@ public class EmpInformationService {
 		try {
 			// 维护waitingRoomId
 			String waitingRoomId = empInformation.getWaitingRoomId();
+			System.err.println(waitingRoomId);
 			System.out.println("-----------------------waitingRoomId为"+waitingRoomId);
 			if (waitingRoomId.equals("")||waitingRoomId.equals("0")) {
-				System.out.println("into waitingRoomId");
-				//先找到存在的waitingRoomId;
-				String ygxh = empInformation.getYgxh();
-				String ewtId = this.getEmpInfoById(ygxh).getWaitingRoomId();
-				System.out.println("-----------------------waitingRoomId为"+ewtId);
-				WaitingRoom waitingroom = waitingroomDao.findById(ewtId).get();
-				EmpInformation e = empInformationDao.findById(ygxh).get();
-				e.setWaitingRoomId(null);
-				waitingroom.setEmpInformation(e);
-				waitingroomDao.save(waitingroom);
-				
+                  empInformation.setWaitingRoomId(null);				
 			}
-			// 维护职位id
+			// 维护职称id
 			String tp_id = empInformation.getTechnicalPost().getTpId();
 			System.out.println("-----------------------tp_id为"+tp_id);
 			if (tp_id.equals("")||tp_id.equals("0")) {
 				System.out.println("into TechnicalPost");
 				empInformation.setTechnicalPost(null);
 			}
-			
+			EmpInformation emp=empInformationDao.findById(empInformation.getYgxh()).get();
+			empInformation.setYgPassword(emp.getYgPassword());
 			empInformationDao.save(empInformation);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -337,47 +353,86 @@ public class EmpInformationService {
 	public List<EmpInformation> getDoctorsByWkAndKs(String ksId){
 		return empInformationDao.getDoctorsByWkAndKs(ksId);
 	}
-	public void checkwork(EmpInformation empInformation) {
-		Date date=new Date();
-		int hours=date.getHours();
-		Date baitime=new Date();
-		baitime.setHours(8);
-		baitime.setMinutes(10);
-		Date endtime=new Date();
-		endtime.setHours(18);
-		endtime.setMinutes(10);
-		Date starttime=new Date();
-		starttime.setHours(16);
-		String type="";
-		if(hours<16) {
-			type="白班";
+	/**
+	 * 
+	* @Title:getdept获得所有部门对象
+	* @Description:TODO
+	* @param:@return
+	* @return:List<Dept>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月13日 下午12:00:32
+	 */
+	public List<Dept> getdept(){
+		return (List<Dept>) deptdao.findAll();
+	}
+	/**
+	 * 
+	* @Title:getDepartments
+	* @Description:TODO获得所有科室
+	* @param:@param deptname
+	* @param:@return
+	* @return:List<Department>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月13日 下午1:52:44
+	 */
+	public List<Department> getDepartments(String deptid){
+		List<Department> list=iDepartmentDao.getDepartments(deptid);
+		return list;
+	}
+	/**
+	 * 
+	* @Title:getrole
+	* @Description:TODO获得该科室的所有职位
+	* @param:@param ksid
+	* @param:@return
+	* @return:List<Role>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月13日 下午2:44:35
+	 */
+	public List<Role> getrole(String ksid){
+		List<Role> list=iRoleDao.getrole(ksid);
+		return list;
+	}
+	/**
+	 * 
+	* @Title:getWaitingRooms
+	* @Description:TODO根据科室id获得
+	* @param:@param ksid
+	* @param:@return
+	* @return:List<WaitingRoom>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月15日 上午12:14:02
+	 */
+	public List<WaitingRoom> getWaitingRooms(String ksid){
+		List<WaitingRoom> list=waitingroomDao.getRooms(ksid);
+		return list;
+	}
+	/**
+	 * 
+	* @Title:gaipassword
+	* @Description:TODO修改密码
+	* @param:@param ygxh
+	* @param:@param old
+	* @param:@param xin
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月15日 上午2:46:17
+	 */
+	public String gaipassword(String ygxh,String old,String xin) {
+		EmpInformation emp=empInformationDao.findById(ygxh).get();
+		if(MD5Tools.check(old, emp.getYgPassword())) {
+			emp.setYgPassword(MD5Tools.KL(MD5Tools.Md5(xin)));
+			empInformationDao.save(emp);
+			return "修改密码成功！";
 		}
 		else {
-			type="晚班";
-		}
-		if(date.compareTo(baitime)==-1) {
-			WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(empInformation.getYgxh(), date, type);
-		    if(wktimeEmp!=null) {
-		    	wktimeEmp.setState("正在上班");
-		    	iWktimeEmpDAO.save(wktimeEmp);
-		    }
-		    else {}
-		}
-		else if (date.compareTo(starttime)==1&&date.compareTo(endtime)==-1) {
-			WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(empInformation.getYgxh(), date, type);
-			if(wktimeEmp!=null) {
-		    	wktimeEmp.setState("正在上班");
-		    	iWktimeEmpDAO.save(wktimeEmp);
-		    }
-		    else {}
-		}
-		else {
-			WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(empInformation.getYgxh(), date, type);
-			if(wktimeEmp!=null) {
-		    	wktimeEmp.setState("迟到");
-		    	iWktimeEmpDAO.save(wktimeEmp);
-		    }
-		    else {}
+			return "修改密码失败，请输入正确的密码！";
 		}
 	}
 	

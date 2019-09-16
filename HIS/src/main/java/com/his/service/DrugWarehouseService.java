@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDrugInformationDao;
 import com.his.dao.IDrugWarehouseDao;
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IPutStockDao;
 import com.his.dao.IPutStockDetailsDao;
 import com.his.pojo.DrugInformation;
@@ -50,6 +51,8 @@ public class DrugWarehouseService {
 	private IPutStockDetailsDao putStockDetailsDao;
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	/**
 	* @Title:queryMedicineNowNumber
@@ -316,13 +319,13 @@ public class DrugWarehouseService {
 	 */
 	public void DrugPutStockBybatch(List<PutStockInformation> psinfo) throws ServiceException{
 		try {
+			String rkid = UUID.randomUUID().toString().replace("-", "");
+			String ygxh = psinfo.get(0).getYgxh();
+			EmpInformation emp = empInformationDao.findById(ygxh).get();
 			//先插入药库信息表
 			PutStock putstock = new PutStock();
-			EmpInformation emp = new EmpInformation();
-			String rkid = UUID.randomUUID().toString().replace("-", "");
 			putstock.setRkId(rkid);
-			putstock.setRkTime(psinfo.get(0).getPutStockDate());
-			emp.setYgxh(psinfo.get(0).getYgxh());
+			putstock.setRkTime(new Date());
 			putstock.setEmpInformation(emp);
 			//插入入库信息表
 			PutStockDao.save(putstock);
@@ -343,6 +346,7 @@ public class DrugWarehouseService {
 					drugWarehouse.setNowNumber(p.getPutNumber());
 					//药品生产日期时间
 					drugWarehouse.setProduceDate(p.getYpProduceDate());
+					//维护药品id
 					DrugInformation drugInformation = drugInformationDao.findById(p.getYpId()).get();
 					drugWarehouse.setDrugInformation(drugInformation);
 					//获取药品的保质期
@@ -355,6 +359,7 @@ public class DrugWarehouseService {
 					calendar.add(Calendar.MONTH, month);
 					ypProduceDate = calendar.getTime();
 					drugWarehouse.setExpireDate(ypProduceDate);
+					drugWarehouse.setState("否");
 					drugWarehouseDao.save(drugWarehouse);
 					
 					//把数据插入明细表

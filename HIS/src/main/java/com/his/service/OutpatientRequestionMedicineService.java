@@ -1,8 +1,10 @@
 package com.his.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -10,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.DeptDAO;
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutpatientRequestionMedicineDao;
 import com.his.pojo.Dept;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.OutpatientRequestionMedicine;
 import com.his.utils.ServiceException;
 
@@ -31,6 +35,73 @@ public class OutpatientRequestionMedicineService {
 	private IOutpatientRequestionMedicineDao outpatientRequestionMedicineDao;
 	@Autowired
 	private DeptDAO deptdao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
+	
+	/**
+	* @Title:createOutpatientReq
+	* @Description:创建药房申领单
+	* @param:@param createDate
+	* @param:@param ygxh
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 上午10:45:42
+	 */
+	public void createOutpatientReq(long createDate,String ygxh,String deptId) throws ServiceException{
+		try {
+			Date cdate = new Date(createDate);
+			EmpInformation emp = empInformationDao.findById(ygxh).get();
+			Dept dept = deptdao.findById(deptId).get();
+			String reqId = UUID.randomUUID().toString().replace("-", "");
+			OutpatientRequestionMedicine orm = new OutpatientRequestionMedicine();
+			orm.setReqId(reqId);
+			orm.setEmpInformation(emp);
+			orm.setDept(dept);
+			orm.setReqTime(cdate);
+			orm.setReqStatus("未提交");
+			outpatientRequestionMedicineDao.save(orm);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("创建申领单失败");
+		}
+		
+	}
+	
+	/**
+	* @Title:getNewCreateById
+	* @Description:查看对应部门刚创建未提交的申领单
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<OutpatientRequestionMedicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 上午10:52:27
+	 */
+	public List<OutpatientRequestionMedicine> getNewCreateById(String deptId){
+		return outpatientRequestionMedicineDao.getNewCreateById(deptId);
+	}
+	
+	/**
+	* @Title:updateStateToSubmit
+	* @Description:提交新建的申领单  改变状态为‘未申领’
+	* @param:@param reqId
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 下午3:57:51
+	 */
+	public void updateStateToSubmit(String reqId) throws ServiceException{
+		try {
+			OutpatientRequestionMedicine outpatientRequestionMedicine = outpatientRequestionMedicineDao.findById(reqId).get();
+			outpatientRequestionMedicine.setReqStatus("未申领");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改申领单状态失败");
+		}
+	}
 	
 	/**
 	* @Title:updateOPRMstate
@@ -43,8 +114,7 @@ public class OutpatientRequestionMedicineService {
 	 */
 	public void updateOPRMstate(String reqId) throws ServiceException{
 		try {
-			OutpatientRequestionMedicine outpatientRequestionMedicine = outpatientRequestionMedicineDao.findById(reqId)
-					.get();
+			OutpatientRequestionMedicine outpatientRequestionMedicine = outpatientRequestionMedicineDao.findById(reqId).get();
 			outpatientRequestionMedicine.setReqStatus("已入库");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,6 +134,20 @@ public class OutpatientRequestionMedicineService {
 	 */
 	public List<OutpatientRequestionMedicine> getAlreadyOutStockByDeptId(String deptId) {
 		return outpatientRequestionMedicineDao.getAlreadyOutStockByDeptId(deptId);
+	}
+	
+	/**
+	* @Title:getAlreadyOutStockCount
+	* @Description:查找已入库的申领单条数
+	* @param:@param deptId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 下午4:12:57
+	 */
+	public int getHavePutStockCount(String deptId) {
+		return outpatientRequestionMedicineDao.getHavePutStockCount(deptId);
 	}
 	
 	/**

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDamagedMedicineDao;
+import com.his.dao.IEmpInformationDao;
 import com.his.pojo.DamagedMedicine;
+import com.his.pojo.EmpInformation;
 import com.his.utils.ServiceException;
 
 /**  
@@ -25,10 +27,12 @@ public class DamagedMedicineService {
 	
 	@Autowired
 	private IDamagedMedicineDao damagedMedicineDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	/**
 	* @Title:updateDamegeForYesById
-	* @Description:修改报损单位已完成
+	* @Description:修改报损单已完成
 	* @param:@param damagedId
 	* @param:@throws ServiceException
 	* @return:void
@@ -60,7 +64,7 @@ public class DamagedMedicineService {
 			damagedMedicineDao.deleteById(damagedId);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ServiceException("创建报损单失败");
+			throw new ServiceException("级联删除报损单及其明细失败");
 		}
 	}
 	
@@ -89,10 +93,16 @@ public class DamagedMedicineService {
 	 */
 	public void addDamagedMedicine(DamagedMedicine damagedMedicine) throws ServiceException{
 		try {
+			DamagedMedicine dm = new DamagedMedicine();
+			EmpInformation emp = empInformationDao.findById(damagedMedicine.getEmpInformation().getYgxh()).get();
 			String damagedId = UUID.randomUUID().toString().replace("-","");
-			damagedMedicine.setDamagedId(damagedId);
-			damagedMedicine.setState("未完成");
-			damagedMedicineDao.save(damagedMedicine);
+			dm.setDamagedId(damagedId);
+			dm.setEmpInformation(emp);
+			dm.setDamagedTime(damagedMedicine.getDamagedTime());
+			dm.setDamagedDesc(damagedMedicine.getDamagedDesc());
+			dm.setDamagedType(damagedMedicine.getDamagedType());
+			dm.setState("未完成");
+			damagedMedicineDao.save(dm);
 
 		} catch (Exception e) {
 			e.printStackTrace();

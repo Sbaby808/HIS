@@ -54,38 +54,10 @@ public class PruchaseController {
 		}
 		return jsonResult;
 	}
-
-	/**
-	* @Title:add_pruchase
-	* @Description:插入一个采购计划
-	* @param:@param list
-	* @param:@return
-	* @return:Result
-	* @throws
-	* @author:crazy_long
-	* @Date:2019年8月13日 下午3:28:33
-	 */
-	@ResponseBody
-	@PostMapping("/add_pruchase")
-	public JsonResult add_pruchase(@RequestBody List<PurchaseDetail> purchaseDetail) {		
-		System.out.println("------------------------------");
-		JsonResult jsonResult = new JsonResult();
-		try {
-			purchaseService.addPurchaseAndpurchaseDetail(purchaseDetail);
-			jsonResult.setResult(purchaseDetail);
-			jsonResult.setStatus("ok");
-		} catch (Exception e) {
-			e.printStackTrace();
-			jsonResult.setResult(purchaseDetail);
-			jsonResult.setStatus("error");
-		}
-		return jsonResult;
-	
-	}
 	
 	/**
 	* @Title:get_all_purchase_for_no
-	* @Description:查询所有未执行的采购计划
+	* @Description:查询所有未提交的采购计划
 	* @param:@return
 	* @return:JsonResult
 	* @throws
@@ -98,6 +70,29 @@ public class PruchaseController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			jsonResult.setResult(purchaseService.getAllPurchaseForNoDo());
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:get_all_have_submit
+	* @Description:获取“已提交” 的采购单
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 上午2:18:22
+	 */
+	@ResponseBody
+	@GetMapping("get_all_have_submit")
+	public JsonResult get_all_have_submit() {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(purchaseService.getAllHaveToSubmit());
 			jsonResult.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -177,7 +172,7 @@ public class PruchaseController {
 	}
 	
 	/**
-	* @Title:updata_state_by_id
+	* @Title:updata_state_toSubmit_byId
 	* @Description:修改状态
 	* @param:@param cgid
 	* @param:@return
@@ -187,11 +182,25 @@ public class PruchaseController {
 	* @Date:2019年8月14日 下午2:45:12
 	 */
 	@ResponseBody
-	@GetMapping("updata_state_by_id")
-	public JsonResult updata_state_by_id(String cgid) {
+	@GetMapping("updata_state_toSubmit_byId")
+	public JsonResult updata_state_toSubmit_byId(String cgid) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			purchaseService.updataForState(cgid);;
+			purchaseService.updataForStateToYes(cgid);;
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	@ResponseBody
+	@GetMapping("updata_state_to_haveCheck")
+	public JsonResult updata_state_to_haveCheck(String cgid) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			purchaseService.updataStateToHaveCheck(cgid);;
 			jsonResult.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -561,7 +561,7 @@ public class WorkTimeService {
 		if(!zrlist.isEmpty()) {
 			for (EmpInformation empInformation : zrlist) {
 				WktimeEmp wEmp=new WktimeEmp();
-				wEmp.setState("矿工");
+				wEmp.setState("旷工");
 				wEmp.setWktimeDuty("主任医生");
 				WktimeEmpPK pk=new WktimeEmpPK();
 				pk.setPbId(pbid);
@@ -574,7 +574,7 @@ public class WorkTimeService {
 		if(!fzrlist.isEmpty()) {
 			for (EmpInformation empInformation : fzrlist) {
 				WktimeEmp wEmp=new WktimeEmp();
-				wEmp.setState("矿工");
+				wEmp.setState("旷工");
 				wEmp.setWktimeDuty("副主任医生");
 				WktimeEmpPK pk=new WktimeEmpPK();
 				pk.setPbId(pbid);
@@ -587,7 +587,7 @@ public class WorkTimeService {
 		if(!hslist.isEmpty()) {
 			for (EmpInformation empInformation : hslist) {
 				WktimeEmp wEmp=new WktimeEmp();
-				wEmp.setState("矿工");
+				wEmp.setState("旷工");
 				wEmp.setWktimeDuty("护士");
 				WktimeEmpPK pk=new WktimeEmpPK();
 				pk.setPbId(pbid);

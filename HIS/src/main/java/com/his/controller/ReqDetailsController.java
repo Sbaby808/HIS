@@ -27,6 +27,31 @@ public class ReqDetailsController {
 	private ReqDetailsService reqDetailsService;
 	
 	/**
+	* @Title:del_one_req_detail
+	* @Description:删除一个明细
+	* @param:@param reqId
+	* @param:@param ypId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 上午11:02:09
+	 */
+	@ResponseBody
+	@GetMapping("del_one_req_detail")
+	public JsonResult del_one_req_detail(String reqId,String ypId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			reqDetailsService.delOneDetail(reqId, ypId);
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:is_have_no_do
 	* @Description:查看是否有没有未处理的药品
 	* @param:@param reqId

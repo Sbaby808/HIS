@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +35,9 @@ public class AllocationOutbound implements Serializable {
 
 	@Column(name="OUT_YF")
 	private String outYf;
+	
+	@Column(name="BACK_TYPE")
+	private String backType;
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -40,6 +46,7 @@ public class AllocationOutbound implements Serializable {
 
 	//bi-directional many-to-one association to ChangeDrugDetail
 	@OneToMany(mappedBy="allocationOutbound")
+	@JSONField(serialize = false)
 	private List<ChangeDrugDetail> changeDrugDetails;
 
 	public AllocationOutbound() {
@@ -87,6 +94,14 @@ public class AllocationOutbound implements Serializable {
 
 	public EmpInformation getEmpInformation() {
 		return this.empInformation;
+	}
+
+	public String getBackType() {
+		return backType;
+	}
+
+	public void setBackType(String backType) {
+		this.backType = backType;
 	}
 
 	public void setEmpInformation(EmpInformation empInformation) {

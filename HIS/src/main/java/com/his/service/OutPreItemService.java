@@ -33,16 +33,9 @@ public class OutPreItemService {
 	* @author:crazy_long
 	* @Date:2019年9月10日 下午4:49:53
 	 */
-	public Map getPrescriptionDetailToBack(String prescriptionId){
-		Map map = new HashMap();
+	public 	List<OutPreItem> getPreDetailByPreID(String prescriptionId){
 		List<OutPreItem> list = outPreItemDao.queryOutPreItemByPreId(prescriptionId);
-		if(list.size()>0) {
-			map.put("list", list);
-			map.put("flag", "yes");
-		}else {
-			map.put("flag", "noData");
-		}
-		return map;
+		return list;
 	} 
 	
 	/**

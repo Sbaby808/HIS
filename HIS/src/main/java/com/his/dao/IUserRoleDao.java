@@ -17,6 +17,18 @@ import com.his.pojo.UserRole;
 *    
 */
 public interface IUserRoleDao extends CrudRepository<UserRole, String>{
+	
+	/**
+	* @Title:getYKManager
+	* @Description:获取药库管理员
+	* @param:@return
+	* @return:List<UserRole>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 下午3:48:27
+	 */
+	@Query("from UserRole ur where ur.role.rolePosition = '药库管理员' ")
+	public List<UserRole> getYKManager();
 
 	@Query("from UserRole ur where ur.id.ygxh = ?1")
 	public List<UserRole> queryAllRoleByYgxh(String ygxh);

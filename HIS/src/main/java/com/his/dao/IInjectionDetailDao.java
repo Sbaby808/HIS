@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.InjectionDetail;
 import com.his.pojo.InjectionDetailPK;
+import com.his.pojo.OutPreItem;
 
 /**  
 * @ClassName: IInjectionDetailDao  
@@ -16,6 +17,19 @@ import com.his.pojo.InjectionDetailPK;
 *    
 */
 public interface IInjectionDetailDao extends CrudRepository<InjectionDetail, InjectionDetailPK> {
+	
+	/**
+	* @Title:queryOutPreItemByPreId
+	* @Description:根据处方单查找明细
+	* @param:@param prescriptionId
+	* @param:@return
+	* @return:List<InjectionDetail>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月11日 上午11:16:59
+	 */
+	@Query("from InjectionDetail ind where ind.useDrugRecord.prescription.prescriptionId = ?1 ")
+	public List<InjectionDetail> queryBackItemByPreId(String prescriptionId);
 	
 	/**
 	* @Title:getAllDetialByInjId

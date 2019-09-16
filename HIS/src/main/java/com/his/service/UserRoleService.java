@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IUserRoleDao;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.UserRole;
 
 /**  
@@ -22,6 +24,29 @@ public class UserRoleService {
 	
 	@Autowired
 	private IUserRoleDao userroledao;
+	
+	/**
+	* @Title:getYKManager
+	* @Description:获取药库管理员
+	* @param:@return
+	* @return:List<UserRole>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 下午3:49:54
+	 */
+	public List<EmpInformation> getYKManager(){
+		List<EmpInformation> empList = new ArrayList<EmpInformation>();
+		List<UserRole> list = userroledao.getYKManager();
+		System.out.println("---------------------");
+		System.out.println("共有"+list.size()+"个药房管理员");
+		if(list.size()!=0) {
+			for (UserRole userRole : list) {
+				EmpInformation emp = userRole.getEmpInformation();
+				empList.add(emp);
+			}
+		}
+		return empList;
+	}
 	
 	/**
 	* @Title:queryAllRoleByYgxh

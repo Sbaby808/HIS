@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IEmpInformationDao;
+import com.his.dao.IOutpatientRequestionMedicineDao;
 import com.his.dao.IPhaInDao;
+import com.his.pojo.EmpInformation;
+import com.his.pojo.OutpatientRequestionMedicine;
 import com.his.pojo.PhaIn;
 import com.his.utils.ServiceException;
 
@@ -26,6 +30,10 @@ public class PhaInService {
 	
 	@Autowired
 	private IPhaInDao phainDao;
+	@Autowired
+	private IOutpatientRequestionMedicineDao outpatientRequestionMedicineDao ;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	/**
 	* @Title:addPhaIn
@@ -37,8 +45,20 @@ public class PhaInService {
 	* @Date:2019年9月5日 下午8:11:26
 	 */
 	public void addPhaIn(PhaIn phaIn) throws ServiceException{
-		phaIn.setPhaInId(UUID.randomUUID().toString().replace("-", ""));
-		phainDao.save(phaIn);
+		try {
+			PhaIn pha = new PhaIn();
+			String phaInId = UUID.randomUUID().toString().replace("-","");
+			String ygxh = phaIn.getEmpInformation().getYgxh();
+			EmpInformation emp = empInformationDao.findById(ygxh).get();
+			pha.setPhaInId(phaInId);
+			pha.setReqId(phaIn.getReqId());
+			pha.setPhaInDate(phaIn.getPhaInDate());
+			pha.setEmpInformation(emp);
+			phainDao.save(pha);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("创建药房入库单失败");
+		}
 	}
 	
 	/**

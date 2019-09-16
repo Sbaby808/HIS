@@ -141,7 +141,7 @@ public class CheckPayService {
 		return nameString;
 	}
 	public void addcheckpay(String str,String cname,String cdesc,BigDecimal cprice,String ygxh,String checkid) {
-		if(checkid!=null) {
+		if(checkid.length()!=0) {
 			CheckPay checkPay=iCheckPayDao.findById(checkid).get();
 			checkPay.setCheckFormPath(str);
 			checkPay.setCheckPayMoney(cprice);
@@ -160,6 +160,7 @@ public class CheckPayService {
 			checkPay.setCheckPayDesc(cdesc);
 			checkPay.setEmpInformation(iEmpInformationDao.findById(ygxh).get());
 			UUIDGenerator uuid=new UUIDGenerator();
+			System.err.println(uuid.getUUID());
 			checkPay.setCheckId(uuid.getUUID());
 			iCheckPayDao.save(checkPay);
 		}

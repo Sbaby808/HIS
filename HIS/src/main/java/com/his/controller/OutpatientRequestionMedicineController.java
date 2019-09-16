@@ -22,6 +22,79 @@ public class OutpatientRequestionMedicineController {
 	private OutpatientRequestionMedicineService outpatientRequestionMedicineService;
 	
 	/**
+	* @Title:create_outpatient_requestion_medicine
+	* @Description:创建药房申领单
+	* @param:@param createDate
+	* @param:@param ygxh
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 上午10:46:12
+	 */
+	@ResponseBody
+	@GetMapping("create_outpatient_requestion_medicine")
+	public JsonResult create_outpatient_requestion_medicine(long createDate,String ygxh,String deptId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			outpatientRequestionMedicineService.createOutpatientReq(createDate,ygxh,deptId);
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:get_reqList_by_deptId
+	* @Description:查看对应部门刚创建未提交的申领单
+	* @param:@param deptId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 上午10:54:56
+	 */
+	@ResponseBody
+	@GetMapping("get_reqList_by_deptId")
+	public JsonResult get_reqList_by_deptId(String deptId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(outpatientRequestionMedicineService.getNewCreateById(deptId));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:updata_request_state_toSubmit
+	* @Description:提交新建的申领单  改变状态为‘未申领’
+	* @param:@param reqId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 下午3:58:22
+	 */
+	@ResponseBody
+	@GetMapping("updata_request_state_toSubmit")
+	public JsonResult updata_request_state_toSubmit(String reqId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			outpatientRequestionMedicineService.updateStateToSubmit(reqId);;;
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:updata_request_state
 	* @Description:改变申领单的状态为已入库
 	* @param:@param reqId
@@ -85,6 +158,30 @@ public class OutpatientRequestionMedicineController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			jsonResult.setResult(outpatientRequestionMedicineService.getAlreadyOutStockCount(deptId));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:get_have_putStock_count
+	* @Description:查找已经入库的申领条数
+	* @param:@param deptId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 下午4:14:39
+	 */
+	@ResponseBody
+	@GetMapping("get_have_putStock_count")
+	public JsonResult get_have_putStock_count(String deptId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(outpatientRequestionMedicineService.getHavePutStockCount(deptId));
 			jsonResult.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

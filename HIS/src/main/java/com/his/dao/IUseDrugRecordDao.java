@@ -42,7 +42,7 @@ public interface IUseDrugRecordDao extends CrudRepository<UseDrugRecord, String>
 	
 	/**
 	* @Title:getUseDrugRecord
-	* @Description:获取用药记录
+	* @Description:根据处方id获取用药记录
 	* @param:@param prescriptionId
 	* @param:@return
 	* @return:UseDrugRecord
