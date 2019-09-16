@@ -15,6 +15,7 @@ import com.his.pojo.Function;
 import com.his.pojo.FunctionClassify;
 import com.his.pojo.Role;
 import com.his.service.GrantService;
+import com.his.utils.Result2;
 
 /**  
 * @ClassName: GrantController  
@@ -142,5 +143,10 @@ public class GrantController {
 	@GetMapping("/findygxhs")
 	public List<String> findempygxhs(String roleid){
 		return grantService.findempygxhs(roleid);
+	}
+	@ResponseBody
+	@GetMapping("/findepts")
+	public List<Result2> finddepts(){
+		return grantService.finDepts();
 	}
 }

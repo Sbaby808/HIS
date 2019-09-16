@@ -25,7 +25,7 @@ public class OpeNotice implements Serializable {
 	@Column(name="MOPER_COMMENT")
 	private String moperComment;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	@Column(name="MOPER_TIME")
 	private Date moperTime;
 

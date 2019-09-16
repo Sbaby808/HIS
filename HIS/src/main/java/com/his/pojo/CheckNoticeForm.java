@@ -25,7 +25,7 @@ public class CheckNoticeForm implements Serializable {
 	@Column(name="MCHECK_COMMENT")
 	private String mcheckComment;
 
-	@JSONField(format="yyyy-MM-dd")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="MCHECK_TIME")
 	private Date mcheckTime;
 	

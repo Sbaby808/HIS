@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.DeptDAO;
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.IFunctionClassifyDAO;
 import com.his.dao.IFunctionDAO;
@@ -24,6 +25,7 @@ import com.his.pojo.FunctionClassify;
 import com.his.pojo.Role;
 import com.his.pojo.UserRole;
 import com.his.pojo.UserRolePK;
+import com.his.utils.Result2;
 import com.his.utils.Stringgood;
 import com.his.utils.UUIDGenerator;
 
@@ -49,6 +51,8 @@ public class GrantService {
 	private IFunctionClassifyDAO iFunctionClassifyDAO;
 	@Autowired
 	private IFunctionClassifyDAO functionClassifyDAO;
+	@Autowired
+	private DeptDAO deptDAO;
 	/**
 	 * 
 	* @Title:findClassifies
@@ -405,6 +409,22 @@ public class GrantService {
 			}
 		}
 			return functionsid;
+	}
+	
+	//找到所有的dept  result2
+	public List<Result2> finDepts(){
+		List<Result2> result2s = new ArrayList<Result2>();
+		List<Dept> depts = (List<Dept>) deptDAO.findAll();
+		//因为被禁止序列化了
+		for (Dept dept : depts) {
+			Result2 result2 = new Result2();
+			result2.setDeptId(dept.getDeptId());
+			result2.setDeptName(dept.getDeptName());
+			result2.setDepartments(dept.getDepartments());
+			result2.setMedicines(dept.getMedicines());
+			result2s.add(result2);
+		}
+		return result2s;
 	}
 }
 
