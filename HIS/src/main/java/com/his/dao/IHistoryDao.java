@@ -173,4 +173,36 @@ public interface IHistoryDao extends CrudRepository<History, String> {
 			+ "and h.hisTime between ?2 and ?3 "
 			+ "order by h.hisTime desc")
 	public List<History> searchHistoryByCardId(String cardId, Date startTime, Date endTime, Pageable pageable);
+	
+	/**
+	* @Title:getHistoryCountByCardId
+	* @Description:查询门诊诊断记录数量
+	* @param:@param cardId
+	* @param:@return
+	* @return:List<History>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月11日 下午6:21:52
+	 */
+	@Query("select count(*) from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.illness != NULL")
+	public int getHistoryCountByCardId(String cardId);
+	
+	/**
+	* @Title:getHistoryByCardId
+	* @Description:查询门诊诊断记录
+	* @param:@param cardId
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<History>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月11日 下午6:28:25
+	 */
+	@Query("from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.illness != NULL "
+			+ "order by hisTime desc")
+	public List<History> getHistoryByCardId(String cardId, Pageable pageable);
 }

@@ -42,7 +42,6 @@ public class LoginController {
 			if(empInformationService.loginTestEmp(empInformation)) {
 				result.setStatus("ok");
 				result.setResult(empInformation);
-				
 			} else {
 				result.setStatus("error");
 				result.setResult("用户名或密码错误！");

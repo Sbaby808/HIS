@@ -1,5 +1,8 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.his.pojo.WaitingRoom;
@@ -12,5 +15,7 @@ import com.his.pojo.WaitingRoom;
 *    
 */
 public interface IWaitingRoomDao extends CrudRepository<WaitingRoom, String>{
+	@Query(value="select w from WaitingRoom w where w.department.ksId=?1")
+	public List<WaitingRoom> getRooms(String ksid);
 
 }

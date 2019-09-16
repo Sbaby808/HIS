@@ -32,7 +32,7 @@ public interface IRoleDao extends CrudRepository<Role, String>{
 	@Query(value="from Role r where r.rolePosition=?1")
 	public Role getRole(String role_position);
     
-	@Query(value="select u.empInformation  from Role r,UserRole u where r.roleId=u.role.roleId and r.department.ksId=?1")
+	@Query(value="select distinct u.empInformation  from Role r,UserRole u where r.roleId=u.role.roleId and r.department.ksId=?1")
 	public List<EmpInformation> getallemp(String ksid);
 
 	
@@ -57,4 +57,17 @@ public interface IRoleDao extends CrudRepository<Role, String>{
 	//通过roleid找到所有该职位员工的id
 	@Query("select u.empInformation.ygxh from UserRole u where u.role.roleId = ?1")
 	public List<String> findempygxhs(String roleid);
+	/**
+	 * 
+	* @Title:getrole
+	* @Description:TODO根据科室id获得职位
+	* @param:@param ksid
+	* @param:@return
+	* @return:List<Role>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月13日 下午2:45:37
+	 */
+	@Query(value="select r from Role r where r.department.ksId=?1")
+	public List<Role> getrole(String ksid);
 }

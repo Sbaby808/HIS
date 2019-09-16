@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.his.bean.Piebean;
 import com.his.pojo.AskleaveRecord;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.WorkTime;
@@ -163,9 +164,73 @@ public class OnemainController {
 	public void noagreeask(String ygxh,long time,String type,String askid) {
 		onemainService.noagreeask(ygxh, time, type, askid);
 	}
+	/**
+	 * 
+	* @Title:getdealask
+	* @Description:TODO获得已处理的请假请求
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@param name
+	* @param:@param starttime
+	* @param:@param endtime
+	* @param:@param ygxh
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月10日 下午3:42:06
+	 */
 	@ResponseBody
 	@GetMapping("getaskrecord")
 	public Map getdealask(int curpage,int pagesize,String name,@DateTimeFormat(pattern = "yyyy-MM-dd") @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")Date starttime,@DateTimeFormat(pattern = "yyyy-MM-dd") @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")Date endtime,String ygxh) {
 		return onemainService.getdealask(curpage, pagesize, name, starttime, endtime, ygxh);
+	}
+	/**
+	 * 
+	* @Title:checkwork
+	* @Description:TODO考勤
+	* @param:@param ygxh
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月10日 下午3:42:26
+	 */
+	@ResponseBody
+	@GetMapping("chework")
+	public String checkwork(String ygxh) {
+		return onemainService.checkwork(ygxh);
+	}
+	/**
+	 * 
+	* @Title:chaban
+	* @Description:TODO打卡按钮的内容
+	* @param:@param ygxh
+	* @param:@return
+	* @return:String
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月10日 下午3:42:33
+	 */
+	@ResponseBody
+	@GetMapping("chaban")
+	public String chaban(String ygxh) {
+		return onemainService.chaban(ygxh);
+	}
+	/**
+	 * 
+	* @Title:getpie
+	* @Description:TODO统计迟到，早退，旷工，加班的天数
+	* @param:@param ygxh
+	* @param:@return
+	* @return:List<Piebean>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月10日 下午5:20:21
+	 */
+	@ResponseBody
+	@GetMapping("getpie")
+	public List<Piebean> getpie(String ygxh) {
+		return onemainService.getpie(ygxh);
 	}
 }
