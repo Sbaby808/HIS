@@ -28,6 +28,56 @@ public class MedicineController {
 	private MedicineService medicineService;
 	
 	/**
+	* @Title:get_overdue_drug_By_Page
+	* @Description:查找某一个部门过期的药品
+	* @param:@param deptId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月13日 上午1:11:45
+	 */
+	@ResponseBody
+	@GetMapping("get_overdue_drug_By_Page")
+	public JsonResult get_overdue_drug_By_Page(String deptId,int curPage,int pageSize) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicineService.getOverdueDrugByPage(deptId, curPage, pageSize));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:get_no_overdue_count
+	* @Description:查找某一个部门没有过期的药品数量
+	* @param:@param deptId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月13日 上午12:51:28
+	 */
+	@ResponseBody
+	@GetMapping("get_overdue_count")
+	public JsonResult get_no_overdue_count(String deptId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicineService.getNoOverdueCount(deptId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:get_medicine_can_use
 	* @Description:查找对应部门存在库存且没有过期的药品 
 	* @param:@param ypId

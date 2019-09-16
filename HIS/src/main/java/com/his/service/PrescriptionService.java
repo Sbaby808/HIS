@@ -1,8 +1,9 @@
 package com.his.service;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,26 @@ public class PrescriptionService {
 	private IEmpInformationDao empInformationDao;
 	@Autowired
 	private IOutPrePayDao outPrePayDao;
+		
+	/**
+	* @Title:getBackAllInformation
+	* @Description:查找要打印的信息
+	* @param:@param prescriptionId
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月11日 下午11:16:06
+	 */
+	public Map getBackAllInformation(String prescriptionId) {
+		Map map = new HashMap();
+		//查找处方单信息
+		Prescription prescription = prescriptionDao.findById(prescriptionId).get();
+		List<OutPreItem> outPreItemList = outPreItemDao.queryOutPreItemByPreId(prescriptionId);
+		map.put("prescription", prescription);
+		map.put("outPreItemList", outPreItemList);
+		return map;
+	}
 	
 	/**
 	* @Title:addPrePay

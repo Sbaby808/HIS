@@ -3,15 +3,16 @@ package com.his.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IDrugInformationDao;
 import com.his.dao.IOutpatientRequestionMedicineDao;
 import com.his.dao.IReqDetailsDao;
+import com.his.pojo.DrugInformation;
 import com.his.pojo.OutpatientRequestionMedicine;
 import com.his.pojo.ReqDetail;
 import com.his.pojo.ReqDetailPK;
@@ -32,6 +33,32 @@ public class ReqDetailsService {
 	private IReqDetailsDao reqDetailsDao;
 	@Autowired
 	private IOutpatientRequestionMedicineDao outpatientRequestionMedicineDao;
+	@Autowired 
+	private IDrugInformationDao drugInformationDao;
+	
+	/**
+	* @Title:delOneDetail
+	* @Description:删除一个明细
+	* @param:@param reqId
+	* @param:@param ypId
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月14日 上午10:58:00
+	 */
+	public void delOneDetail(String reqId,String ypId) throws ServiceException{
+		try {
+			ReqDetailPK reqDetailPK = new ReqDetailPK();
+			reqDetailPK.setReqId(reqId);
+			reqDetailPK.setYpId(ypId);
+			if (reqDetailsDao.existsById(reqDetailPK)) {
+				reqDetailsDao.deleteById(reqDetailPK);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("删除一个申领明细失败");
+		}
+	}
 	
 	/**
 	* @Title:IsHaveNoDo
@@ -116,7 +143,6 @@ public class ReqDetailsService {
 		map.put("list", list);
 		map.put("total", total);
 		return map;
-
 	}
 	
 	/**
@@ -130,31 +156,33 @@ public class ReqDetailsService {
 	* @Date:2019年8月28日 下午6:27:21
 	 */
 	public void addRequestMedicine(List<ReqDetail> reqDetails) throws ServiceException {
-		
-		//取出第一个的明细表信息
-		OutpatientRequestionMedicine orm = reqDetails.get(0).getOutpatientRequestionMedicine();
-		String reqId = UUID.randomUUID().toString().replace("-", "");
-		orm.setReqId(reqId);
-		orm.setReqStatus("未申领");
 		try {
-			outpatientRequestionMedicineDao.save(orm);
+			//取出申领单的id
+			String reqId = reqDetails.get(0).getOutpatientRequestionMedicine().getReqId();
 			//循环添加明细
-			for (int i = 1; i < reqDetails.size(); i++) {
-				System.out.println("--------------------");
-				System.out.println("reqId:"+reqId);
-				System.out.println("ypid:"+reqDetails.get(i).getDrugInformation().getYpId());
-				System.out.println("number:"+reqDetails.get(i).getReqNum());
-				ReqDetail reqDetail = reqDetails.get(i);
+			for (ReqDetail req : reqDetails) {
+				//维护药品id
+				String ypId = req.getDrugInformation().getYpId();
 				ReqDetailPK reqDetailPK = new ReqDetailPK();
 				reqDetailPK.setReqId(reqId);
-				reqDetailPK.setYpId(reqDetails.get(i).getDrugInformation().getYpId());
-				reqDetail.setId(reqDetailPK);
-				reqDetail.setState("未处理");
-				reqDetailsDao.save(reqDetail);
+				reqDetailPK.setYpId(ypId);
+				//先判断是否已经存在
+				if(reqDetailsDao.existsById(reqDetailPK)) {
+					//存在修改数量
+					ReqDetail re = reqDetailsDao.findById(reqDetailPK).get();
+					re.setReqNum(req.getReqNum());
+				}else {
+					//不存在直接加入
+					ReqDetail reqDetail = new ReqDetail(); 
+					reqDetail.setId(reqDetailPK);
+					reqDetail.setReqNum(req.getReqNum());
+					reqDetail.setState("未处理");
+					reqDetailsDao.save(reqDetail);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ServiceException("添加失败");
+			throw new ServiceException("添加申领明细失败");
 		}
 		
 	}

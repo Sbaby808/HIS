@@ -36,7 +36,7 @@ public class OutPreItemController {
 	public JsonResult get_prescription_detail_to_back(String prescriptionId) {
 		JsonResult jsonresult = new JsonResult();
 		try {
-			jsonresult.setResult(outPreItemService.getPrescriptionDetailToBack(prescriptionId));
+			jsonresult.setResult(outPreItemService.getPreDetailByPreID(prescriptionId));
 			jsonresult.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

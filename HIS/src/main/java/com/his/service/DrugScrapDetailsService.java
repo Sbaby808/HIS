@@ -15,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IDrugScrapDao;
 import com.his.dao.IDrugScrapDetailsDao;
 import com.his.dao.IDrugWarehouseDao;
+import com.his.dao.IEmpInformationDao;
 import com.his.pojo.DrugScrap;
 import com.his.pojo.DrugScrapDetail;
 import com.his.pojo.DrugScrapDetailPK;
 import com.his.pojo.DrugWarehouse;
+import com.his.pojo.EmpInformation;
 import com.his.utils.ServiceException;
 import com.his.utils.SimpleTools;
 
@@ -40,6 +42,8 @@ public class DrugScrapDetailsService {
 	private IDrugScrapDetailsDao drugScrapDetailsDao;
 	@Autowired
 	private IDrugWarehouseDao drugWarehouseDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 		
 	/**
 	* @Title:queryScrapDrugBypage
@@ -141,7 +145,10 @@ public class DrugScrapDetailsService {
 		DrugScrap drugScrap = drugScrapDetail.get(0).getDrugScrap();
 		//维护过期信息表
 		String bfId = UUID.randomUUID().toString().replace("-", "");
+		EmpInformation emp = empInformationDao.findById(drugScrap.getEmpInformation().getYgxh()).get();
 		drugScrap.setBfId(bfId);
+		drugScrap.setEmpInformation(emp);
+		drugScrap.setBfDate(new Date());
 		drugScrap.setBfType("过期");
 		drugScrap.setBfReason("保质期已过");
 		try {

@@ -26,7 +26,7 @@ public interface IPurchaseCheckDao extends CrudRepository<PurchaseCheck, String>
 	* @author:crazy_long
 	* @Date:2019年8月17日 上午9:26:28
 	 */
-	@Query("from PurchaseCheck p where p.state='否' order by p.purChaTime asc")
+	@Query("from PurchaseCheck p where p.state='否'  order by p.purChaTime asc")
 	public List<PurchaseCheck> getAllForNoPut();
 	
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.DeptDAO;
+import com.his.dao.IDrugWarehouseDao;
 import com.his.dao.IMedicineDao;
 import com.his.dao.IOutstockDetailsDao;
 import com.his.dao.IPhaInDetailsDao;
@@ -39,6 +41,10 @@ public class PhaInDetailsService {
 	private IOutstockDetailsDao outstockDetailsDao;
 	@Autowired 
 	private IMedicineDao medicinedao;
+	@Autowired
+	private IDrugWarehouseDao drugWarehouseDao;
+	@Autowired
+	private DeptDAO deptDao;
 	
 	/**
 	* @Title:addPhaInDetailByBatch
@@ -78,11 +84,11 @@ public class PhaInDetailsService {
 					Medicine m = new Medicine();
 					String medicineId = UUID.randomUUID().toString().replace("-", "");
 					m.setMedicineId(medicineId);
-					DrugWarehouse drugWarehouse = new DrugWarehouse();
-					drugWarehouse.setPckcId(pdh.getPckcId());
+					//维护药库id
+					DrugWarehouse drugWarehouse = drugWarehouseDao.findById(pdh.getPckcId()).get();
 					m.setDrugWarehouse(drugWarehouse);
-					Dept dept = new Dept();
-					dept.setDeptId(pdh.getDeptId());
+					//维护deptId
+					Dept dept = deptDao.findById(pdh.getDeptId()).get();
 					m.setDept(dept);
 					m.setMedicineName(pdh.getPhaInNum());
 					medicinedao.save(m);

@@ -2,12 +2,16 @@ package com.his.service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.his.dao.IInjectionDetailDao;
+import com.his.dao.IPrescriptionDao;
+import com.his.dao.IUseDrugRecordDao;
 import com.his.pojo.InjectionDetail;
 import com.his.pojo.InjectionDetailPK;
 import com.his.utils.ServiceException;
@@ -24,6 +28,31 @@ public class InjectionDetailService {
 
 	@Autowired
 	private IInjectionDetailDao injectionDetailDao ;
+	@Autowired
+	private IUseDrugRecordDao useDrugRecordDao;
+	@Autowired
+	private IPrescriptionDao prescriptionDao;
+	
+	public Map getDrugDetailToBack(String prescriptionId){
+		Map map = new HashMap();
+		//先判断处方单存在不存在
+		boolean exist = prescriptionDao.existsById(prescriptionId);
+		if(exist) {
+			//获取明细
+			List<InjectionDetail> list = injectionDetailDao.queryBackItemByPreId(prescriptionId);
+			String state = useDrugRecordDao.getUseDrugRecord(prescriptionId).getState();
+			if(state.equals("已取药")) {
+				map.put("list", list);
+				map.put("flag", "yes");
+			}else {
+				map.put("list", list);
+				map.put("flag", "noGetDrug");
+			}
+		}else {
+			map.put("flag", "noData");
+		}
+		return map;
+	}
 		
 	/**
 	* @Title:updateDetailNumber

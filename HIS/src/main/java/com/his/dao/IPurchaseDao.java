@@ -18,6 +18,30 @@ import com.his.pojo.Purchase;
 public interface IPurchaseDao extends CrudRepository<Purchase, String>{
 	
 	/**
+	* @Title:getAllHaveToSubmit
+	* @Description:获取已提交的采购单
+	* @param:@return
+	* @return:List<Purchase>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 上午2:26:28
+	 */
+	@Query("from Purchase p where p.state = '已提交'  order by p.cgTime desc")
+	public List<Purchase> getAllHaveToSubmit();
+	
+	/**
+	* @Title:getAllHaveToSubmit
+	* @Description:分页获取已提交的采购单
+	* @param:@return
+	* @return:List<Purchase>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 上午2:26:50
+	 */
+	@Query("from Purchase p where p.state = '已提交'  order by p.cgTime desc")
+	public List<Purchase> getAllHaveToSubmitByPage(Pageable page);
+	
+	/**
 	* @Title:getAllForNo
 	* @Description:查询所有未执行的采购计划
 	* @param:@return
@@ -26,7 +50,7 @@ public interface IPurchaseDao extends CrudRepository<Purchase, String>{
 	* @author:crazy_long
 	* @Date:2019年8月14日 上午9:24:56
 	 */
-	@Query("from Purchase p where p.state = '否'  order by p.cgTime desc")
+	@Query("from Purchase p where p.state = '未提交'  order by p.cgTime desc")
 	public List<Purchase> getAllForNoDo();
 	
 	/**
@@ -38,7 +62,7 @@ public interface IPurchaseDao extends CrudRepository<Purchase, String>{
 	* @author:crazy_long
 	* @Date:2019年8月14日 上午9:24:56
 	 */
-	@Query("from Purchase p where p.state = '否'  order by p.cgTime desc")
+	@Query("from Purchase p where p.state = '未提交'  order by p.cgTime desc")
 	public List<Purchase> getAllForNo(Pageable page);
 	
 	/**
@@ -50,7 +74,7 @@ public interface IPurchaseDao extends CrudRepository<Purchase, String>{
 	* @author:crazy_long
 	* @Date:2019年8月14日 上午10:45:11
 	 */
-	@Query("select count(*) from Purchase p where p.state = '否'  order by p.cgTime desc")
+	@Query("select count(*) from Purchase p where p.state = '已提交'  order by p.cgTime desc")
 	public int getAllForNoCount();
 	
 	/**
@@ -63,7 +87,7 @@ public interface IPurchaseDao extends CrudRepository<Purchase, String>{
 	* @author:crazy_long
 	* @Date:2019年8月14日 下午2:52:21
 	 */
-	@Query("from Purchase p where p.state = '是'  order by p.cgTime desc")
+	@Query("from Purchase p where p.state = '已入库'  order by p.cgTime desc")
 	public List<Purchase> getAllForYes(Pageable page);
 	
 	/**
@@ -75,7 +99,7 @@ public interface IPurchaseDao extends CrudRepository<Purchase, String>{
 	* @author:crazy_long
 	* @Date:2019年8月14日 下午2:53:23
 	 */
-	@Query("select count(*) from Purchase p where p.state = '是'  order by p.cgTime desc")
+	@Query("select count(*) from Purchase p where p.state = '已入库'  order by p.cgTime desc")
 	public int getAllForYesCount();
 
 }

@@ -1,14 +1,13 @@
 package com.his.dao;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.his.pojo.DrugInformation;
-import com.his.pojo.DrugWarehouse;
 import com.his.pojo.Medicine;
 
 /**
@@ -19,6 +18,44 @@ import com.his.pojo.Medicine;
  * 
  */
 public interface IMedicineDao extends CrudRepository<Medicine, String> {
+	
+	/**
+	* @Title:getNoOverdueDrugByPage
+	* @Description:查找某一个部门过期的药品
+	* @param:@param overdueTime
+	* @param:@param deptId
+	* @param:@param page
+	* @param:@return
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月13日 上午1:07:22
+	 */
+	@Query(value=("select * from medicine m " + 
+			"left outer join drug_warehouse dw on m.pckc_id = dw.pckc_id " + 
+			"where dw.expire_date < ?1 " + 
+			"and dw.state = '否'  " + 
+			"and m.medicine_name > 0 " + 
+			"and m.dept_id =  ?2 "),nativeQuery = true)
+	public List<Medicine> getOverdueDrugByPage(Date overdueTime,String deptId,Pageable page);
+	
+	/**
+	* @Title:getNoOverdueCount
+	* @Description:查找某一个部门过期的药品数量
+	* @param:@param deptId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月13日 上午12:48:58
+	 */
+	@Query(value=("select count(*) from medicine m " + 
+			"left outer join drug_warehouse dw on m.pckc_id = dw.pckc_id " + 
+			"where dw.expire_date < ?1 " + 
+			"and dw.state = '否'  " + 
+			"and m.medicine_name > 0 " + 
+			"and m.dept_id =  ?2 "),nativeQuery = true)
+	public int getOverdueCount(Date overdueTime,String deptId);
 	
 	/**
 	* @Title:getAllWarehouse

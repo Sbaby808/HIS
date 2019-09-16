@@ -1,18 +1,17 @@
 package com.his.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IMedicineDao;
-import com.his.pojo.DrugInformation;
 import com.his.pojo.Medicine;
 import com.his.utils.ServiceException;
 import com.his.utils.SimpleTools;
@@ -31,6 +30,44 @@ public class MedicineService {
 	
 	@Autowired
 	private IMedicineDao medicineDao;
+	
+	/**
+	* @Title:getNoOverdueDrugByPage
+	* @Description:查找某一个部门过期的药品
+	* @param:@param deptId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月13日 上午1:09:04
+	 */
+	public Map getOverdueDrugByPage(String deptId,int curPage,int pageSize) {
+		Map map = new HashMap();
+		Date overdueTime = new Date();
+		List<Medicine> list = medicineDao.getOverdueDrugByPage(overdueTime,deptId,PageRequest.of(curPage-1, pageSize));
+		int total = medicineDao.getOverdueCount(overdueTime, deptId);
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	* @Title:getNoOverdueCount
+	* @Description:查找某一个部门没有过期的药品数量
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月12日 下午11:59:37
+	 */
+	public int getNoOverdueCount(String deptId) {
+		Date overdueTime = new Date();
+		return medicineDao.getOverdueCount(overdueTime,deptId);
+	}
 	
 	/**
 	* @Title:getMedicineCanUse

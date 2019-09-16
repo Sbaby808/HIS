@@ -28,6 +28,30 @@ public class InjectionDetailController {
 	private InjectionDetailService injectionDetailService;
 	
 	/**
+	* @Title:patient_back_drug
+	* @Description:病人根据退药单退药
+	* @param:@param prescriptionId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月11日 上午11:14:59
+	 */
+	@ResponseBody
+	@GetMapping("patient_back_drug")
+	public JsonResult patient_back_drug(String prescriptionId) {
+		JsonResult jsonresult = new JsonResult();
+		try {
+			jsonresult.setResult(injectionDetailService.getDrugDetailToBack(prescriptionId));
+			jsonresult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonresult.setStatus("error");
+		}
+		return jsonresult;
+	}
+	
+	/**
 	* @Title:del_one_injection_detail
 	* @Description:删除一个明细
 	* @param:@param injId
