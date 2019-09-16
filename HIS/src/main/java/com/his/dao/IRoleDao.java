@@ -52,8 +52,8 @@ public interface IRoleDao extends CrudRepository<Role, String>{
 	@Query("select count(*) from Role t where t.rolePosition like ?1")
 	public long countnames(String rolePosition);
 	
-	@Query("select count(*) from Role t where t.rolePosition = ?1" )
-	public long countnamesss(String rolePosition);
+	@Query("select count(*) from Role t where t.rolePosition = ?1 and t.department.ksId=?2" )
+	public long countnamesss(String rolePosition,String ksId);
 	//通过roleid找到所有该职位员工的id
 	@Query("select u.empInformation.ygxh from UserRole u where u.role.roleId = ?1")
 	public List<String> findempygxhs(String roleid);

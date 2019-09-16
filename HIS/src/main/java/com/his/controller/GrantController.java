@@ -136,8 +136,8 @@ public class GrantController {
 	}
 	@ResponseBody
 	@GetMapping("/findcountsbyname11")
-	public long findcountsbyname(String rolePosition) {
-		return grantService.findcountsbyname(rolePosition);
+	public long findcountsbyname(String rolePosition,String ksId) {
+		return grantService.findcountsbyname(rolePosition,ksId);
 	}
 	@ResponseBody
 	@GetMapping("/findygxhs")

@@ -275,8 +275,9 @@ public class GrantService {
 			}
 		}
 	}
-	public long findcountsbyname(String rolename) {
-		return roleDao.countnamesss(rolename);
+	//查找同科室下面这个名字有多少name
+	public long findcountsbyname(String rolename,String ksId) {
+		return roleDao.countnamesss(rolename,ksId);
 	}
 	
 	public List<String> findempygxhs(String roleid){
