@@ -1,6 +1,7 @@
 package com.his.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IMedicineDao;
 import com.his.pojo.Medicine;
 import com.his.utils.ServiceException;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: MedicineService  
@@ -29,6 +31,161 @@ public class MedicineService {
 	@Autowired
 	private IMedicineDao medicineDao;
 	
+	/**
+	* @Title:getNoOverdueDrugByPage
+	* @Description:查找某一个部门过期的药品
+	* @param:@param deptId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月13日 上午1:09:04
+	 */
+	public Map getOverdueDrugByPage(String deptId,int curPage,int pageSize) {
+		Map map = new HashMap();
+		Date overdueTime = new Date();
+		List<Medicine> list = medicineDao.getOverdueDrugByPage(overdueTime,deptId,PageRequest.of(curPage-1, pageSize));
+		int total = medicineDao.getOverdueCount(overdueTime, deptId);
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	* @Title:getNoOverdueCount
+	* @Description:查找某一个部门没有过期的药品数量
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月12日 下午11:59:37
+	 */
+	public int getNoOverdueCount(String deptId) {
+		Date overdueTime = new Date();
+		return medicineDao.getOverdueCount(overdueTime,deptId);
+	}
+	
+	/**
+	* @Title:getMedicineCanUse
+	* @Description:查找对应部门存在库存且没有过期的药品 
+	* @param:@param ypId
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 下午5:13:27
+	 */
+	public List<Medicine> getMedicineCanUse(String ypId,String deptId){
+		return medicineDao.getMedicineCanUse(ypId, deptId);
+	}
+	
+	/**
+	* @Title:searchDrugByPage
+	* @Description:查找某一个部门的药房药品
+	* @param:@param searchKey
+	* @param:@param searchType
+	* @param:@param searchSubclass
+	* @param:@param searchGys
+	* @param:@param searchMinorDefect
+	* @param:@param minPrice
+	* @param:@param maxPrice
+	* @param:@param minNumber
+	* @param:@param maxNumber
+	* @param:@param deptId
+	* @param:@param pageNum
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 下午2:15:27
+	 */
+	public Map searchDrugByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
+			BigDecimal minPrice, BigDecimal maxPrice,BigDecimal minNumber,BigDecimal maxNumber, String deptId,int pageNum, int pageSize) {
+		Map map = new HashMap();
+		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+		List<Medicine> list = medicineDao.searchDrugByPage(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchMinorDefect) ? SimpleTools.addCharForSearch(searchMinorDefect) : searchMinorDefect,
+				minPrice, maxPrice,minNumber,maxNumber,deptId,
+				page);
+		int total = medicineDao.searchDrugCount(
+				SimpleTools.addCharForSearch(searchKey), 
+				"".equals(searchType) ? SimpleTools.addCharForSearch(searchType) : searchType, 
+				"".equals(searchSubclass) ? SimpleTools.addCharForSearch(searchSubclass) : searchSubclass, 
+				"".equals(searchGys) ? SimpleTools.addCharForSearch(searchGys) : searchGys, 
+				"".equals(searchMinorDefect) ? SimpleTools.addCharForSearch(searchMinorDefect) : searchMinorDefect, 
+						minPrice, maxPrice,minNumber,maxNumber,deptId);
+		map.put("drugs", list);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	* @Title:updateKuCunCount
+	* @Description:更改药品的库存
+	* @param:@param medicineId
+	* @param:@param updateNumber
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 下午2:59:34
+	 */
+	public void updateKuCunCount(String medicineId,BigDecimal updateNumber) throws ServiceException{
+		Medicine medicine = medicineDao.findById(medicineId).get();
+		medicine.setMedicineName(updateNumber);
+		
+	}
+	
+	/**
+	* @Title:warehouseIsHave
+	* @Description:判断一个部门的这个药品的批次存不存在
+	* @param:@param pckcId
+	* @param:@param deptId
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月6日 上午12:48:23
+	 */
+	public Medicine warehouseIsHave(String pckcId ,String deptId) {
+		return medicineDao.warehouseIsHave(pckcId, deptId);
+	}
+	
+	/**
+	* @Title:qeuryNoKuCun
+	* @Description:查询没有库存的药品
+	* @param:@param chooseNumber
+	* @param:@param deptId
+	* @param:@return
+	* @param:@throws ServiceException
+	* @return:List<Medicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年8月27日 下午10:00:03
+	 */
+	public List<Medicine> qeuryNoKuCun(int chooseNumber,String deptId) throws ServiceException{
+		int minNumber = chooseNumber*5-4;
+		int maxNumber = chooseNumber*5;
+		List<Medicine> list = null;
+		try {
+			list =  medicineDao.queryNoKuCun(new BigDecimal(minNumber), new BigDecimal(maxNumber),deptId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("查找药品失败");
+		}
+		return list;
+	}
+	
 	
 	/**
 	* @Title:queryMedicineNowNumberByPage
@@ -43,22 +200,17 @@ public class MedicineService {
 	* @author:crazy_long
 	* @Date:2019年8月26日 下午4:48:05
 	 */
-	public Map queryMedicineNowNumber(int chooseNumber) throws ServiceException{
-		Map map = new HashMap();
+	public List<Medicine> queryMedicineNowNumber(int chooseNumber,String deptId) throws ServiceException{
 		int minNumber = chooseNumber*5-4;
 		int maxNumber = chooseNumber*5;
 		List<Medicine> list = null;
-		int total;
 		try {
-			list =  medicineDao.queryNowNumber(new BigDecimal(minNumber), new BigDecimal(maxNumber));
-			total = medicineDao.queryNowNumberCount(new BigDecimal(minNumber), new BigDecimal(maxNumber));
+			list =  medicineDao.queryNowNumber(new BigDecimal(minNumber), new BigDecimal(maxNumber),deptId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException("查找药品失败");
 		}
-		map.put("list", list);
-		map.put("total", total);
-		return map;
+		return list;
 	}
 	
 	/**

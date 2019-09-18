@@ -25,6 +25,30 @@ public class PrescriptionController {
 	private PrescriptionService prescriptionService;
 	
 	/**
+	* @Title:get_back_allInformation
+	* @Description:查找要打印的信息
+	* @param:@param prescriptionId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月11日 下午11:21:46
+	 */
+	@GetMapping("/get_allInformation_to_printf")
+	@ResponseBody
+	public JsonResult get_back_allInformation(String prescriptionId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(prescriptionService.getBackAllInformation(prescriptionId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+		
+	/**
 	* @Title:addPrePay
 	* @Description:添加处方缴费项
 	* @param:@param prescriptionId

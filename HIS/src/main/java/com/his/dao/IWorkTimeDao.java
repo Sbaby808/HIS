@@ -37,11 +37,13 @@ public interface IWorkTimeDao extends CrudRepository<WorkTime, String>{
 	public String getksid(String empid);
 	@Query(value="from WorkTime w where w.pbType=?1 and w.pbDate=?2")
 	public List<WorkTime> getbydateandtype(String type,Date date);
-	@Query(value="select w.empInformation from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3 and w.wktimeDuty=?4")
+	@Query(value="select distinct w.empInformation from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3 and w.wktimeDuty=?4")
 	public List<EmpInformation> getemps(String ksid,Date date,String type,String duty);
 	@Query(value="select w from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3")
 	public List<WktimeEmp> getwkemps(String ksid,Date date,String type);
 	@Query(value="select w.workTime.pbId from WktimeEmp w,UserRole u where w.empInformation=u.empInformation and u.role.department.ksId=?1 and w.workTime.pbDate=?2 and w.workTime.pbType=?3")
-	public String getpbid(String ksid,Date date,String type);
-	
+	public String[] getpbid(String ksid,Date date,String type);
+	//通过员工序号 找到该员工的排班时间
+	@Query("select we.workTime from WktimeEmp we where we.empInformation.ygxh=?1")
+	public WorkTime findpbid(String ygxh);
 }

@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,27 +23,32 @@ public class UseDrugRecord implements Serializable {
 	@Column(name="INJ_ID")
 	private String injId;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="INJ_TIME")
 	private Date injTime;
+	
+	@Column(name="STATE")
+	private String state;
 
 	//bi-directional many-to-one association to InjectionDetail
-	@OneToMany(mappedBy="useDrugRecord")
+	@OneToMany(mappedBy="useDrugRecord", cascade = CascadeType.MERGE)
+	@JSONField(serialize = false)
 	private List<InjectionDetail> injectionDetails;
 
 	//bi-directional many-to-one association to Department
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name="KS_ID")
 	private Department department;
 
 	//bi-directional many-to-one association to EmpInformation
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name="YGXH")
 	private EmpInformation empInformation;
 
 	//bi-directional one-to-one association to Prescription
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name="PRESCRIPTION_ID")
+	@JSONField(serialize = false)
 	private Prescription prescription;
 
 	public UseDrugRecord() {
@@ -60,6 +68,14 @@ public class UseDrugRecord implements Serializable {
 
 	public void setInjTime(Date injTime) {
 		this.injTime = injTime;
+	}
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public List<InjectionDetail> getInjectionDetails() {

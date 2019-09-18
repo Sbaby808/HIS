@@ -29,6 +29,9 @@ public class AmbulanceRecord implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="AMB_TIME")
 	private Date ambTime;
+	
+	@Column(name="STATUS")
+	private String status;
 
 	//bi-directional many-to-one association to AbuEmp
 	@OneToMany(mappedBy="ambulanceRecord")
@@ -40,6 +43,14 @@ public class AmbulanceRecord implements Serializable {
 	private OtherProject otherProject;
 
 	public AmbulanceRecord() {
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getAmbId() {

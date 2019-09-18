@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.his.pojo.Dept;
 import com.his.pojo.EmpInformation;
 
 /**  
@@ -16,6 +17,24 @@ import com.his.pojo.EmpInformation;
 *    
 */
 public interface IEmpInformationDao extends CrudRepository<EmpInformation, String>{
+	
+	/**
+	* @Title:getDetpByYgxh
+	* @Description：根据员工序号查找dept
+	* @param:@param ygxh
+	* @param:@return
+	* @return:List<Dept>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月5日 下午2:37:10
+	 */
+	@Query(value="select d.*,r.role_position from emp_information e left outer join user_role ur on e.ygxh = ur.ygxh " + 
+			"left outer join role r on ur.role_id = r.role_id " + 
+			"left outer join department dm on r.ks_id = dm.ks_id " + 
+			"left outer join dept d on d.dept_id = dm.dept_id " + 
+			"where e.ygxh = ?1 ",nativeQuery = true)
+	public List<Object[]> getDetpByYgxh(String ygxh);
+	
 	public EmpInformation findEmpInformationByYgGh(String yggh);
 
 	@Query("from EmpInformation e left outer join e.technicalPost t")
@@ -72,5 +91,16 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
        + " where to_char(wt.pb_date, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') "
        + " and ro.ks_id = ?1", nativeQuery = true)
 	public List<EmpInformation> getDoctorsByWkAndKs(String ksId);
-
+	/**
+	 * 
+	* @Title:getsijibyempid
+	* @Description:查询所有的司机
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:jack
+	* @Date:2019年8月26日 上午9:54:45
+	 */
+	@Query("select ur.empInformation from UserRole ur where ur.role.rolePosition = '司机' ")
+	public List<EmpInformation> getsijibyempid();
 }

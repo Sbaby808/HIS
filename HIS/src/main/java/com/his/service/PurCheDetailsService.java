@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,9 +11,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IPurCheDetailsDao;
 import com.his.dao.IPurchaseCheckDao;
-import com.his.pojo.DrugInformation;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.PurCheDetail;
 import com.his.pojo.PurCheDetailPK;
 import com.his.pojo.PurchaseCheck;
@@ -34,6 +36,8 @@ public class PurCheDetailsService {
 	private IPurchaseCheckDao purchaseCheckDao;
 	@Autowired
 	private IPurCheDetailsDao purCheDetailsDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	
 	/**
@@ -68,22 +72,32 @@ public class PurCheDetailsService {
 	* @Date:2019年8月16日 下午12:15:41
 	 */
 	public void addPurcheDetail(List<PurCheDetail> purCheDetail) throws ServiceException{
-		//先获取主表信息
-		PurchaseCheck purchaseCheck = purCheDetail.get(0).getPurchaseCheck();
-		//设定主键
-		String puichaid = UUID.randomUUID().toString().replace("-", "");
-		purchaseCheck.setPurChaId(puichaid);
 		try {
+			//先获取主表信息
+			PurchaseCheck purchaseCheck = new PurchaseCheck();
+			String ygxh = purCheDetail.get(0).getPurchaseCheck().getEmpInformation().getYgxh();
+			EmpInformation emp = empInformationDao.findById(ygxh).get();
+			//设定主键
+			String puichaid = UUID.randomUUID().toString().replace("-", "");
+			purchaseCheck.setPurChaId(puichaid);
+			purchaseCheck.setEmpInformation(emp);
+			purchaseCheck.setPurChaTime(new Date());
+			purchaseCheck.setState("否");
 			//保存采购验收主表
 			purchaseCheckDao.save(purchaseCheck);
 			//循环把验收明细插入进去
 			for (PurCheDetail purChe : purCheDetail) {
+				PurCheDetail purCheDet = new PurCheDetail();
 				//建立联合主键
 				PurCheDetailPK purCheDetailPK = new PurCheDetailPK();
 				purCheDetailPK.setPurChaId(puichaid);
 				purCheDetailPK.setYpId(purChe.getDrugInformation().getYpId());
-				purChe.setId(purCheDetailPK);
-				purCheDetailsDao.save(purChe);
+				purCheDet.setId(purCheDetailPK);
+				purCheDet.setPurCheDetid(purChe.getPurCheDetid());
+				purCheDet.setPruCheDetreason(purChe.getPruCheDetreason());
+				purCheDet.setPurCheDetdeal(purChe.getPurCheDetdeal());
+				purCheDet.setPruCheDetprod(purChe.getPruCheDetprod());
+				purCheDetailsDao.save(purCheDet);
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();

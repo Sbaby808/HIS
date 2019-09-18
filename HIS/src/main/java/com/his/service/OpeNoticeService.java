@@ -217,6 +217,8 @@ public class OpeNoticeService {
      */
     public List<OpeNotice> addOpeNotice(OpeNotice opeNotice) {
     	opeNotice.setMoperId(UUID.randomUUID().toString().replaceAll("-", ""));
+    	opeNotice.setMoperTime(new Date());
+    	opeNotice.setMoperComment("无");
     	iOperationNotice.save(opeNotice);
     	return iOperationNotice.getAllBySolveId(opeNotice.getSolveScheme().getScheId());
     }

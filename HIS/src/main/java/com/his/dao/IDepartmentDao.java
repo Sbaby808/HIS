@@ -10,6 +10,22 @@ import com.his.pojo.Department;
 public interface IDepartmentDao extends CrudRepository<Department, String>{
 	
 	/**
+	* @Title:queryByYgxh
+	* @Description:查找员工对应的科室
+	* @param:@param ygxh
+	* @param:@return
+	* @return:List<Department>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月9日 上午10:49:55
+	 */
+	@Query(value="select d.ks_id,r.role_position from department d left outer join role r on d.ks_id = r.ks_id " + 
+			"left outer join user_role ur on r.role_id = ur.role_id " + 
+			"left outer join emp_information e on e.ygxh = ur.ygxh " + 
+			"where e.ygxh = ?1 ",nativeQuery = true)
+	public List<Object[]> queryByYgxh(String ygxh);
+	
+	/**
 	 * 
 	* @Title:getAllDepartments
 	* @Description:查询所有科室
@@ -61,5 +77,18 @@ public interface IDepartmentDao extends CrudRepository<Department, String>{
 	 */
 	@Query("from Department d where d.ksId = ?1")
 	public Department getDepartmentByDid(String departId);
+	/**
+	 * 
+	* @Title:getDepartments
+	* @Description:TODO根据部门id获得科室
+	* @param:@param deptid
+	* @param:@return
+	* @return:List<Department>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月13日 下午2:45:14
+	 */
+	@Query(value="select d from Department d where d.dept.deptId=?1")
+	public List<Department> getDepartments(String deptid);
 	
 }

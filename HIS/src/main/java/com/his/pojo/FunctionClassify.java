@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.List;
 
 
@@ -23,7 +26,7 @@ public class FunctionClassify implements Serializable {
 	private String funcClassifyName;
 
 	//bi-directional many-to-one association to Function
-	@OneToMany(mappedBy="functionClassify")
+	@OneToMany(mappedBy="functionClassify",cascade={CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE})
 	private List<Function> functions;
 
 	public FunctionClassify() {

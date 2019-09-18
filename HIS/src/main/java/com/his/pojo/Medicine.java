@@ -42,7 +42,7 @@ public class Medicine implements Serializable {
 	private List<DamagedDrugDetail> damagedDrugDetails;
 
 	//bi-directional many-to-one association to InjectionDetail
-	@OneToMany(mappedBy="medicine")
+	@OneToMany(mappedBy="medicine", cascade = CascadeType.MERGE)
 	@JSONField(serialize=false)
 	private List<InjectionDetail> injectionDetails;
 	

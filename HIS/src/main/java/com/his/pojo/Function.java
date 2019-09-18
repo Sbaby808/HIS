@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.List;
 
 
@@ -10,7 +13,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="\"FUNCTION\"")
+@Table(name="FUNCTION")
 @NamedQuery(name="Function.findAll", query="SELECT f FROM Function f")
 public class Function implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -25,10 +28,12 @@ public class Function implements Serializable {
 	//bi-directional many-to-one association to FunctionClassify
 	@ManyToOne
 	@JoinColumn(name="FUNC_CLASSIFY_ID")
+	@JSONField(serialize = false)
 	private FunctionClassify functionClassify;
 
 	//bi-directional many-to-many association to Role
 	@ManyToMany(mappedBy="functions")
+	@JSONField(serialize = false)
 	private List<Role> roles;
 
 	public Function() {

@@ -16,6 +16,7 @@ import com.his.pojo.Dept;
 *    
 */
 public interface DeptDAO extends CrudRepository<Dept, String>{
+		
 	@Query("from Dept t")
 	public List<Dept> find(Pageable pageable);
 	@Query("select count(*) from Dept t where t.deptName = ?1")
@@ -25,5 +26,8 @@ public interface DeptDAO extends CrudRepository<Dept, String>{
 	//根据部门名字模糊查询有多少
 	@Query("select count(*) from Dept t where t.deptName like ?1")
 	public long countnames(String deptName);
+	//根据部门名字返回该部门
+	@Query("from Dept t where t.deptName = ?1")
+	public Dept finddept(String name);
 
 }

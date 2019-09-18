@@ -3,6 +3,8 @@ package com.his.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import net.bytebuddy.asm.Advice.This;
+
 /**  
 * @ClassName: MD5Tools  
 * @Description: MD5加密解密工具类
@@ -49,6 +51,7 @@ public class MD5Tools {
 			return "";
 		}
 	}
+	
 	
 	/**
 	 * 

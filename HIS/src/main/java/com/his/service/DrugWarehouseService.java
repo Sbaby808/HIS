@@ -12,17 +12,18 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDrugInformationDao;
 import com.his.dao.IDrugWarehouseDao;
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IPutStockDao;
 import com.his.dao.IPutStockDetailsDao;
 import com.his.pojo.DrugInformation;
 import com.his.pojo.DrugWarehouse;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.Medicine;
 import com.his.pojo.PutStock;
 import com.his.pojo.PutStockDetail;
 import com.his.pojo.PutStockDetailPK;
@@ -50,7 +51,107 @@ public class DrugWarehouseService {
 	private IPutStockDetailsDao putStockDetailsDao;
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
+	/**
+	* @Title:queryMedicineNowNumber
+	* @Description:查找特定范围的药品
+	* @param:@param chooseNumber
+	* @param:@return
+	* @param:@throws ServiceException
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月4日 下午3:45:27
+	 */
+	public List<DrugWarehouse> queryWarehouseByChooseNumber(int chooseNumber) throws ServiceException{
+		int minNumber = chooseNumber*5-4;
+		int maxNumber = chooseNumber*5;
+		List<DrugWarehouse> list = null;
+		try {
+			list =  drugWarehouseDao.queryWarehouseByChooseNumber(new BigDecimal(minNumber), new BigDecimal(maxNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("查找特定范围的药品失败");
+		}
+		return list;
+	}
+	
+	/**
+	* @Title:updateNowNumberById
+	* @Description:根据id修改库存
+	* @param:@param pckcId
+	* @param:@param updataNumber
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月3日 下午9:18:26
+	 */
+	public void updateNowNumberById(String pckcId,int updataNumber) throws ServiceException{
+		try {
+			DrugWarehouse d = drugWarehouseDao.findById(pckcId).get();
+			d.setNowNumber(new BigDecimal(updataNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改库存失败");
+		}
+	}
+	
+	/**
+	* @Title:getAllWarehouseAndTotalCount
+	* @Description:查询某个药品的总批次信息和总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月2日 下午2:29:21
+	 */
+	public Map getAllWarehouseAndTotalCount(String ypId) throws ServiceException{
+		Map map = new HashMap();
+		List<DrugWarehouse> list = null;
+		int totalCount = 0;
+		try {
+			list = drugWarehouseDao.getAllWarehouse(ypId);
+			totalCount = drugWarehouseDao.getDrugTotalNumberById(ypId);
+			map.put("list", list);
+			map.put("total", totalCount);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("查询某个药品的总批次信息和总库存失败");
+		}
+		return map;
+	}
+	
+	/**
+	* @Title:getAllWarehouse
+	* @Description:查询某种药品的所有没有过期的批次
+	* @param:@param ypId
+	* @param:@return
+	* @return:List<DrugWarehouse>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:56:11
+	 */
+	public List<DrugWarehouse> getAllWarehouse(String ypId){
+		return drugWarehouseDao.getAllWarehouse(ypId);
+	}
+	
+	/**
+	* @Title:getTotalCountByDrugId
+	* @Description:查询某种药品的总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月1日 下午10:47:49
+	 */
+	public int getTotalCountByDrugId(String ypId) {
+		return drugWarehouseDao.getDrugTotalNumberById(ypId);
+	}
 	
 	/**
 	* @Title:searchAllInformationByPage
@@ -72,7 +173,6 @@ public class DrugWarehouseService {
 	 */
 	public Map searchAllInformationByPage(String searchKey, String searchType, String searchSubclass, String searchGys, String searchMinorDefect,
 			BigDecimal minPrice, BigDecimal maxPrice, int pageNum, int pageSize) {
-		System.out.println("ttttttttttttttttttttttttttttttttttttttttttttt");
 		Map map = new HashMap();
 		PageRequest page = PageRequest.of(pageNum - 1, pageSize);
 		List<DrugWarehouse> list = drugWarehouseDao.searchAllInformationByPage(
@@ -219,13 +319,13 @@ public class DrugWarehouseService {
 	 */
 	public void DrugPutStockBybatch(List<PutStockInformation> psinfo) throws ServiceException{
 		try {
+			String rkid = UUID.randomUUID().toString().replace("-", "");
+			String ygxh = psinfo.get(0).getYgxh();
+			EmpInformation emp = empInformationDao.findById(ygxh).get();
 			//先插入药库信息表
 			PutStock putstock = new PutStock();
-			EmpInformation emp = new EmpInformation();
-			String rkid = UUID.randomUUID().toString().replace("-", "");
 			putstock.setRkId(rkid);
-			putstock.setRkTime(psinfo.get(0).getPutStockDate());
-			emp.setYgxh(psinfo.get(0).getYgxh());
+			putstock.setRkTime(new Date());
 			putstock.setEmpInformation(emp);
 			//插入入库信息表
 			PutStockDao.save(putstock);
@@ -246,6 +346,7 @@ public class DrugWarehouseService {
 					drugWarehouse.setNowNumber(p.getPutNumber());
 					//药品生产日期时间
 					drugWarehouse.setProduceDate(p.getYpProduceDate());
+					//维护药品id
 					DrugInformation drugInformation = drugInformationDao.findById(p.getYpId()).get();
 					drugWarehouse.setDrugInformation(drugInformation);
 					//获取药品的保质期
@@ -258,6 +359,7 @@ public class DrugWarehouseService {
 					calendar.add(Calendar.MONTH, month);
 					ypProduceDate = calendar.getTime();
 					drugWarehouse.setExpireDate(ypProduceDate);
+					drugWarehouse.setState("否");
 					drugWarehouseDao.save(drugWarehouse);
 					
 					//把数据插入明细表

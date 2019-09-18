@@ -60,11 +60,11 @@ public class Prescription implements Serializable {
 	private OutPrePay outPrePay;
 
 	//bi-directional one-to-one association to UseDrugRecord
-	@OneToOne(mappedBy="prescription")
+	@OneToOne(mappedBy="prescription", cascade = CascadeType.MERGE)
 	private UseDrugRecord useDrugRecord;
 
 	public Prescription() {
-	}
+	} 
 
 	public String getPrescriptionId() {
 		return this.prescriptionId;

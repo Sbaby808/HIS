@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDrugInformationDao;
+import com.his.dao.IDrugSubclassDao;
+import com.his.dao.ISupplierDao;
 import com.his.pojo.DrugInformation;
+import com.his.pojo.DrugSubclass;
+import com.his.pojo.Supplier;
 import com.his.utils.ServiceException;
 import com.his.utils.SimpleTools;
 
@@ -31,6 +35,10 @@ public class DrugInformationService {
 
 	@Autowired
 	private IDrugInformationDao drugInformationDao;
+	@Autowired
+	private ISupplierDao supplierDao;
+	@Autowired
+	private IDrugSubclassDao drugSubclassDao;
 	
 	/**
 	* @Title:addDrugInformation
@@ -44,8 +52,20 @@ public class DrugInformationService {
 	 */
 	public void addDrugInformation(DrugInformation drugInformation) throws ServiceException{
 		try {
-			drugInformation.setYpId(UUID.randomUUID().toString().replace("-", ""));
-			drugInformationDao.save(drugInformation);
+			DrugInformation drug = new DrugInformation();
+			String ypId = UUID.randomUUID().toString().replace("-", "");
+			drugInformation.setYpId(ypId);
+			//维护供应商
+			Supplier supplier = supplierDao.findById(drugInformation.getSupplier().getGysId()).get();
+			//维护小类id
+			DrugSubclass drugSubclass = drugSubclassDao.findById(drugInformation.getDrugSubclass().getSubclassId()).get();
+			drug.setYpName(drugInformation.getYpName());
+			drug.setYpType(drugInformation.getYpType());
+			drug.setYpGuige(drugInformation.getYpGuige());
+			drug.setYpShelflife(drugInformation.getYpShelflife());
+			drug.setYpPrice(drugInformation.getYpPrice());
+			drug.setVocode(drugInformation.getVocode());
+			drugInformationDao.save(drug);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException("添加药品失败");
@@ -65,8 +85,17 @@ public class DrugInformationService {
 	public void addDrugInformationSByBatch(List<DrugInformation> list) throws ServiceException{
 		try {
 			for (DrugInformation drugInformation : list) {
-				drugInformation.setYpId(UUID.randomUUID().toString().replace("-", ""));
-				drugInformationDao.save(drugInformation);
+				DrugInformation drug = new DrugInformation();
+				drug = drugInformation;
+				String ypId = UUID.randomUUID().toString().replace("-", "");
+				drug.setYpId(ypId);
+				//维护供应商
+				Supplier supplier = supplierDao.findById(drugInformation.getSupplier().getGysId()).get();
+				//维护小类id
+				DrugSubclass drugSubclass = drugSubclassDao.findById(drugInformation.getDrugSubclass().getSubclassId()).get();
+				drug.setSupplier(supplier);
+				drug.setDrugSubclass(drugSubclass);
+				drugInformationDao.save(drug);
 			} 
 		} catch (Exception e) {
 			throw new ServiceException("批量添加药品信息失败");
@@ -143,7 +172,15 @@ public class DrugInformationService {
 	 */
 	public void updataDrugInformation(DrugInformation editDrugInfo) throws ServiceException {
 		try {
-			drugInformationDao.save(editDrugInfo);
+			DrugInformation drug = new DrugInformation();
+			drug = editDrugInfo;
+			//维护供应商
+			Supplier supplier = supplierDao.findById(editDrugInfo.getSupplier().getGysId()).get();
+			//维护小类id
+			DrugSubclass drugSubclass = drugSubclassDao.findById(editDrugInfo.getDrugSubclass().getSubclassId()).get();
+			drug.setSupplier(supplier);
+			drug.setDrugSubclass(drugSubclass);
+			drugInformationDao.save(drug);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException("修改药品失败");

@@ -1,9 +1,20 @@
 package com.his.pojo;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 
 /**
@@ -22,6 +33,9 @@ public class Outstock implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="CK_TIME")
 	private Date ckTime;
+	
+	@Column(name="REQ_ID")
+	private String req_id;
 
 	//bi-directional many-to-one association to EmpInformation
 	@ManyToOne
@@ -29,6 +43,7 @@ public class Outstock implements Serializable {
 	private EmpInformation empInformation;
 
 	//bi-directional many-to-one association to OutstockDetail
+	@JSONField(serialize=false)
 	@OneToMany(mappedBy="outstock")
 	private List<OutstockDetail> outstockDetails;
 
@@ -51,6 +66,14 @@ public class Outstock implements Serializable {
 		this.ckTime = ckTime;
 	}
 
+	public String getReq_id() {
+		return req_id;
+	}
+
+	public void setReq_id(String req_id) {
+		this.req_id = req_id;
+	}
+	
 	public EmpInformation getEmpInformation() {
 		return this.empInformation;
 	}

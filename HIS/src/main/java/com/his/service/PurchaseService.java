@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IPurchaseDao;
 import com.his.dao.IPurchaseDetailsDao;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.JsonResult;
 import com.his.pojo.Purchase;
 import com.his.pojo.PurchaseDetail;
@@ -35,41 +37,30 @@ public class PurchaseService {
 	private IPurchaseDao purchasedao;
 	@Autowired
 	private IPurchaseDetailsDao purchaseDetailsDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 	
 	/**
-	* @Title:addPurchaseAndpurchaseDetail
-	* @Description:添加一个采购计划和其明细
-	* @param:@param purchaseDetail
+	* @Title:addPurchaseX
+	* @Description:生成一个采购计划单
+	* @param:@param purchase
+	* @param:@throws ServiceException
 	* @return:void
 	* @throws
 	* @author:crazy_long
-	* @Date:2019年8月13日 下午4:51:00
+	* @Date:2019年9月4日 上午12:02:09
 	 */
-	public void addPurchaseAndpurchaseDetail(List<PurchaseDetail> purchaseDetail) throws ServiceException{
-		//获取主表的信息
-		Purchase purchase = purchaseDetail.get(0).getPurchase();
-		//生成该采购计划的主键
-		String cgId = UUID.randomUUID().toString().replace("-", "");
-		purchase.setCgId(cgId);
+	public void addPurchaseX(Purchase purchase) throws ServiceException{
+		EmpInformation emp = empInformationDao.findById(purchase.getEmpInformation().getYgxh()).get();
+		purchase.setCgId(UUID.randomUUID().toString().replace("-", ""));
+		purchase.setEmpInformation(emp);
+		purchase.setState("未提交");
 		try {
-			purchase.setState("否");
 			//插入一个采购计划
 			purchasedao.save(purchase);
-			//循环插入采购明细
-			for (PurchaseDetail p : purchaseDetail) {
-				if (p.getPurchase() != null) {
-					p.setPurchase(null);
-				}
-				//建立联合主键
-				PurchaseDetailPK purchaseDetailPK = new PurchaseDetailPK();
-				purchaseDetailPK.setCgId(cgId);
-				purchaseDetailPK.setYpId(p.getDrugInformation().getYpId());
-				p.setId(purchaseDetailPK);
-				purchaseDetailsDao.save(p);
-			} 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ServiceException("添加采购计划及其明细失败");
+			throw new ServiceException("添加采购计划失败");
 		}
 	}
 	
@@ -84,6 +75,32 @@ public class PurchaseService {
 	 */
 	public List<Purchase> getAllPurchaseForNoDo() {
 		return purchasedao.getAllForNoDo();
+	}
+	
+	/**
+	* @Title:getAllHaveToSubmit
+	* @Description:获取已提交的采购单
+	* @param:@return
+	* @return:List<Purchase>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 上午2:16:27
+	 */
+	public List<Purchase> getAllHaveToSubmit() {
+		return purchasedao.getAllHaveToSubmit();
+	}
+	
+	/**
+	* @Title:getAllHaveToSubmitByPage
+	* @Description:分页获取已提交的采购单
+	* @param:@return
+	* @return:List<Purchase>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 上午2:27:57
+	 */
+	public List<Purchase> getAllHaveToSubmitByPage(int curPage,int pageSize) {
+		return purchasedao.getAllHaveToSubmitByPage(PageRequest.of(curPage - 1, pageSize));
 	}
 	
 	/**
@@ -145,7 +162,7 @@ public class PurchaseService {
 	
 	/**
 	* @Title:updataForState
-	* @Description:根据id修改状态
+	* @Description:根据id修改状态为 "已提交"
 	* @param:@param cgId
 	* @param:@throws ServiceException
 	* @return:void
@@ -153,11 +170,33 @@ public class PurchaseService {
 	* @author:crazy_long
 	* @Date:2019年8月14日 下午2:43:40
 	 */
-	public void updataForState(String cgId) throws ServiceException{
+	public void updataForStateToYes(String cgId) throws ServiceException{
 		try {
 			Purchase purchase = purchasedao.findById(cgId).get();
 			if (purchase != null) {
-				purchase.setState("是");
+				purchase.setState("已提交");
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改状态失败");
+		}
+	}
+	
+	/**
+	* @Title:updataStateToHaveCheck
+	* @Description:根据id修改状态为 "已验收"
+	* @param:@param cgId
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月15日 下午2:13:52
+	 */
+	public void updataStateToHaveCheck(String cgId) throws ServiceException{
+		try {
+			Purchase purchase = purchasedao.findById(cgId).get();
+			if (purchase != null) {
+				purchase.setState("已验收");
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();

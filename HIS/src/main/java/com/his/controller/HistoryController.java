@@ -227,6 +227,58 @@ public class HistoryController {
     }
     
     /**
+    * @Title:searchHisPreCountByCardId
+    * @Description:查询门诊带处方诊断记录 条数
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月3日 上午9:00:11
+     */
+    @GetMapping("/search_his_pre_count_by_card_id")
+    @ResponseBody
+    public JsonResult searchHisPreCountByCardId(String cardId, String searchStartTime, String searchEndTime ) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.searchHisPreCountByCardId(cardId, searchStartTime, searchEndTime));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:searchHisPreByCardId
+    * @Description:查询带处方的门诊诊断记录
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月3日 上午9:08:30
+     */
+    @GetMapping("/search_his_pre_by_card_id")
+    @ResponseBody
+    public JsonResult searchHisPreByCardId(String cardId, String searchStartTime, String searchEndTime) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.searchHisPreByCardId(cardId, searchStartTime, searchEndTime));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
     * @Title:searchHistoryByCardId
     * @Description:根据就诊卡编号查询诊断记录
     * @param:@param cardId
@@ -299,6 +351,56 @@ public class HistoryController {
     	JsonResult result = new JsonResult();
     	try {
 			result.setResult(historyService.getSolveSchemeByHistoryId(historyId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:getHistoryCountByCardId
+    * @Description:查询门诊诊断记录条数
+    * @param:@param cardId
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月11日 下午6:18:09
+     */
+    @GetMapping("/get_his_count_by_card")
+    @ResponseBody
+    public JsonResult getHistoryCountByCardId(String cardId) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.getHistoryCountByCardId(cardId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+    	return result;
+    }
+    
+    /**
+    * @Title:getHistoryByCardId
+    * @Description:查询门诊诊断记录
+    * @param:@param cardId
+    * @param:@param pageNum
+    * @param:@param pageSize
+    * @param:@return
+    * @return:JsonResult
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月11日 下午6:32:20
+     */
+    @GetMapping("/get_his_by_card")
+    @ResponseBody
+    public JsonResult getHistoryByCardId(String cardId, int pageNum, int pageSize) {
+    	JsonResult result = new JsonResult();
+    	try {
+			result.setResult(historyService.getHistoryByCardId(cardId, pageNum, pageSize));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -7,14 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -251,9 +245,49 @@ public class HistoryService {
      */
     public int searchHistoryCountByCardId(String cardId, String searchStartTime, String searchEndTime) throws ParseException {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1900-00-00 00:00:00" : searchStartTime);
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1970-00-00 00:00:00" : searchStartTime);
     	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
     	return historyDao.searchHistoryCountByCardId(cardId, startTime, endTime);
+    }
+    
+    /**
+    * @Title:searchHisPreCountByCardId
+    * @Description:查询门诊带处方诊断记录条数
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @param:@throws ParseException
+    * @return:int
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月3日 上午9:00:36
+     */
+    public int searchHisPreCountByCardId(String cardId, String searchStartTime, String searchEndTime) throws ParseException {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1970-00-00 00:00:00" : searchStartTime);
+    	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
+    	return historyDao.searchHisPreCountByCardId(cardId, startTime, endTime);
+    }
+    
+    /**
+    * @Title:searchHisPreByCardId
+    * @Description:查询带处方的门诊诊断记录
+    * @param:@param cardId
+    * @param:@param searchStartTime
+    * @param:@param searchEndTime
+    * @param:@return
+    * @param:@throws ParseException
+    * @return:List<History>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月3日 上午9:08:50
+     */
+    public List<History> searchHisPreByCardId(String cardId, String searchStartTime, String searchEndTime) throws ParseException {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date startTime = sdf.parse("".equals(searchStartTime) ? "1970-00-00 00:00:00" : searchStartTime);
+    	Date endTime = sdf.parse("".equals(searchEndTime) ? sdf.format(new Date()) : searchEndTime);
+    	return historyDao.searchHisPreByCardId(cardId, startTime, endTime);
     }
     
     /**
@@ -315,6 +349,37 @@ public class HistoryService {
      */
     public SolveScheme getSolveSchemeByHistoryId(String historyId) {
     	return solveSchemeDao.getByHistoryId(historyId);
+    }
+    
+    /**
+    * @Title:getHistoryCountByCardId
+    * @Description:查询门诊诊断记录数量
+    * @param:@param cardId
+    * @param:@return
+    * @return:List<History>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月11日 下午6:18:53
+     */
+    public int getHistoryCountByCardId(String cardId) {
+    	return historyDao.getHistoryCountByCardId(cardId);
+    }
+    
+    /**
+    * @Title:getHistoryByCardId
+    * @Description:查询门诊诊断记录
+    * @param:@param cardId
+    * @param:@param pageNum
+    * @param:@param pageSize
+    * @param:@return
+    * @return:List<History>
+    * @throws
+    * @author:Sbaby
+    * @Date:2019年9月11日 下午6:30:24
+     */
+    public List<History> getHistoryByCardId(String cardId, int pageNum, int pageSize) {
+    	PageRequest page = PageRequest.of(pageNum - 1, pageSize);
+    	return historyDao.getHistoryByCardId(cardId, page);
     }
 
 

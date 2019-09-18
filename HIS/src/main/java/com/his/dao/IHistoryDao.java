@@ -95,6 +95,44 @@ public interface IHistoryDao extends CrudRepository<History, String> {
 	public int searchHistoryCountByCardId(String cardId, Date startTime, Date endTime);
 	
 	/**
+	* @Title:searchHisPreCountByCardId
+	* @Description:查询门诊处方诊断记录
+	* @param:@param cardId
+	* @param:@param startTime
+	* @param:@param endTime
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月3日 上午8:53:25
+	 */
+	@Query("select count(*) from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.prescriptionId is not null "
+			+ "and h.hisTime between ?2 and ?3 "
+			+ "order by h.hisTime desc")
+	public int searchHisPreCountByCardId(String cardId, Date startTime, Date endTime);
+	
+	/**
+	* @Title:searchHisPreByCardId
+	* @Description:查询带处方的门诊诊断记录
+	* @param:@param cardId
+	* @param:@param startTime
+	* @param:@param endTime
+	* @param:@return
+	* @return:List<History>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月3日 上午9:09:20
+	 */
+	@Query("from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.prescriptionId is not null "
+			+ "and h.hisTime between ?2 and ?3 "
+			+ "order by h.hisTime desc")
+	public List<History> searchHisPreByCardId(String cardId, Date startTime, Date endTime);
+	
+	/**
 	* @Title:searchHistory
 	* @Description:搜索诊断记录
 	* @param:@param ygxh
@@ -103,7 +141,7 @@ public interface IHistoryDao extends CrudRepository<History, String> {
 	* @param:@param pageable
 	* @param:@return
 	* @return:int
-	* @throws
+	* @throws 
 	* @author:Sbaby
 	* @Date:2019年8月25日 下午3:17:49
 	 */
@@ -135,4 +173,36 @@ public interface IHistoryDao extends CrudRepository<History, String> {
 			+ "and h.hisTime between ?2 and ?3 "
 			+ "order by h.hisTime desc")
 	public List<History> searchHistoryByCardId(String cardId, Date startTime, Date endTime, Pageable pageable);
+	
+	/**
+	* @Title:getHistoryCountByCardId
+	* @Description:查询门诊诊断记录数量
+	* @param:@param cardId
+	* @param:@return
+	* @return:List<History>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月11日 下午6:21:52
+	 */
+	@Query("select count(*) from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.illness != NULL")
+	public int getHistoryCountByCardId(String cardId);
+	
+	/**
+	* @Title:getHistoryByCardId
+	* @Description:查询门诊诊断记录
+	* @param:@param cardId
+	* @param:@param pageable
+	* @param:@return
+	* @return:List<History>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月11日 下午6:28:25
+	 */
+	@Query("from History h "
+			+ "where h.outpatientRegistration.medicalCard.cardId = ?1 "
+			+ "and h.illness != NULL "
+			+ "order by hisTime desc")
+	public List<History> getHistoryByCardId(String cardId, Pageable pageable);
 }

@@ -1,5 +1,8 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,6 +17,13 @@ import com.his.pojo.ObservationNotice;
 */
 public interface IObservationNoticeDao extends CrudRepository<ObservationNotice, String> {
 
+	//查询留观通知单总数
+	@Query("select count(*) from ObservationNotice")
+	public long findcount();
+	//分页查询所有留观通知单
+	@Query("from ObservationNotice")
+	public List<ObservationNotice> findallbypage(Pageable pageable);
+	
 	/**
 	* @Title:getBySolveId
 	* @Description:根据医嘱编号查询留观通知单

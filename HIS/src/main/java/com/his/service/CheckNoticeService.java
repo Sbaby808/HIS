@@ -92,6 +92,9 @@ public class CheckNoticeService {
 		List<Checknoticebean> cList=new ArrayList<Checknoticebean>();
 		List<CheckNoticeForm> list=(List<CheckNoticeForm>) iCheckNoticeDao.getbysoufenye(sou, PageRequest.of(curpage - 1,
 		  pagesize));	
+		for (CheckNoticeForm checkNoticeForm : list) {
+			System.out.println(checkNoticeForm.getCheckPay().getCheckPayName());
+		}
 		for (CheckNoticeForm checkNoticeForm : list) {	
 			String a[]=iCheckNoticeDao.getbnameandid(checkNoticeForm.getMcheckId()).split(",");
 			Checknoticebean cbean=new Checknoticebean(checkNoticeForm.getMcheckId(), a[0], a[1], a[2], a[3], checkNoticeForm.getMcheckComment(), checkNoticeForm.getMcheckTime());
@@ -350,6 +353,8 @@ public class CheckNoticeService {
 	 */
 	public List<CheckNoticeForm> addCheckNotice(CheckNoticeForm checkNoticeForm) {
 		checkNoticeForm.setMcheckId(UUID.randomUUID().toString().replaceAll("-", ""));
+		checkNoticeForm.setCheckEndTime(new Date());
+		checkNoticeForm.setMcheckComment("无");
 		iCheckNoticeDao.save(checkNoticeForm);
 		return this.getAllCheckNotice(checkNoticeForm.getSolveScheme().getScheId());
 	}
