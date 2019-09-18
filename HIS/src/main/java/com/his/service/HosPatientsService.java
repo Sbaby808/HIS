@@ -26,6 +26,7 @@ import com.his.dao.IHosBedDao;
 import com.his.dao.IHosEmpDao;
 import com.his.dao.IHosOutDao;
 import com.his.dao.IHosPatientDao;
+import com.his.dao.IHosPayRecordDao;
 import com.his.dao.IMedicalRecordDao;
 import com.his.dao.IWardRoomDao;
 import com.his.pojo.Department;
@@ -33,14 +34,18 @@ import com.his.pojo.EmpInformation;
 import com.his.pojo.HosBed;
 import com.his.pojo.HosEmp;
 import com.his.pojo.HosEmpPK;
+import com.his.pojo.HosPayRecord;
 import com.his.pojo.HospitalizedPatient;
 import com.his.pojo.MedicalRecord;
 import com.his.pojo.OutHospitaiRecord;
 import com.his.pojo.WardRoom;
 /**
- * 住院登记
- * @author dell
- *
+ * 
+* @ClassName: HosPatientsService  
+* @Description: 住院登记  
+* @author Hamster
+* @date 2019年9月18日  下午1:35:35
+*
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -62,6 +67,8 @@ public class HosPatientsService {
 	private IEmpInformationDao empInformationDao;
 	@Autowired
 	private IDepartmentDao departmentDao;
+	@Autowired
+	private IHosPayRecordDao hosPayRecordDao;
 	
 	/**
 	 * 
@@ -77,7 +84,7 @@ public class HosPatientsService {
 	 */
 	public Map getHosPatientsByPage(String hospName,String ksName,String roomName,int curpage,int pagesize){
 		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(hospName,ksName,roomName,PageRequest.of(curpage-1,pagesize));
-		long total = patients.size();
+		long total = hosPatientDao.countNum(hospName, ksName, roomName);
 		Map map = new HashMap<>();
 		map.put("list", patients);
 		map.put("total", total);
@@ -244,18 +251,43 @@ public class HosPatientsService {
 	* @param:@param hospId
 	* @param:@param money
 	* @return:void
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月26日 上午11:24:41
 	 */
-	public void addDepositMoney(String hospId,String money){
+	public void addDepositMoney(String hospId,String money,String empId) throws ParseException{
 		HospitalizedPatient patient = hosPatientDao.findById(hospId).get();
+		EmpInformation emp = empInformationDao.findById(empId).get();
+		
 		
 		BigDecimal add = new BigDecimal(money);
 		BigDecimal deposit = add.add(patient.getDepositMoney());
 		patient.setDepositMoney(deposit);
 		hosPatientDao.save(patient);
+		
+		HosPayRecord payRecord = new HosPayRecord();
+		String payRecordId = UUID.randomUUID().toString().replace("-", "");
+		payRecord.setHosPrid(payRecordId);
+		payRecord.setHospitalizedPatient(patient);
+		payRecord.setEmpInformation(emp);
+		payRecord.setHosPrmoney(add);
+		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = dateFormat.format(new Date());
+		payRecord.setHosPrtime(dateFormat.parse(time));
+		hosPayRecordDao.save(payRecord);
 	}
+	
+	/**
+	 * 
+	* @Title:checkBalance
+	* @Description:实时监测余额
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月18日 下午7:26:55
+	 */
 	
 	@Scheduled(cron="0 0/10 * * * ?")
 	public void checkBalance(){

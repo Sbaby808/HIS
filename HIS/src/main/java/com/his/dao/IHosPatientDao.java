@@ -35,6 +35,14 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 			+ " and h.hospState !='已出院' ")
 	public List<HospitalizedPatient> getAllPatientsByPage(String hospName,String ksName,String roomName,Pageable page);
 	
+	@Query("select count(*) from HospitalizedPatient h where "
+			+ " h.medicalCard.cardName like ?1 "
+			+ " and h.department.ksName like ?2 "
+			+ " and h.hosBed.wardRoom.wroomName like ?3 "
+			+ " and h.hospState !='已出院' ")
+	public Long countNum(String hospName,String ksName,String roomName);
+	
+	
 	
 	@Query("from HospitalizedPatient h")
 	public List <HospitalizedPatient> getHospitalizedPatient(Pageable page);

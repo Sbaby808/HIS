@@ -39,7 +39,7 @@ public class HosBedService {
 	 */
 	public Map getAllBedsByPage(String ksName,String wardName,String roomName,int curpage,int pagesize){
 		List <HosBed> list = hosBedDao.getAllBedsByPage(ksName,wardName,roomName,PageRequest.of(curpage-1, pagesize));
-		long total  = hosBedDao.count();
+		long total  = hosBedDao.countNum(ksName, wardName, roomName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

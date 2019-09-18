@@ -24,6 +24,12 @@ public interface IHosOutRecordDao extends CrudRepository<OutHospitaiRecord, Stri
 			+ " and o.outDepart like ?2")
 	public List <OutHospitaiRecord> getOutRecord(String cardName,String ksName,Pageable page);
 
+	@Query("select count(*) from OutHospitaiRecord o where "
+			+ " (o.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or o.hospitalizedPatient.medicalCard.personId like ?1)"
+			+ " and o.outDepart like ?2")
+	public Long countNum(String cardName,String ksName);
+	
 	/**
 	 * 
 	* @Title:outRecordForCharts

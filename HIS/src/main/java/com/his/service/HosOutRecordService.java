@@ -33,7 +33,7 @@ public class HosOutRecordService {
 	
 	public Map getHosOutRecord(String cardName,String ksName,int curpage,int pagesize){
 		List <OutHospitaiRecord> list = hosOutRecordDao.getOutRecord(cardName,ksName,PageRequest.of(curpage-1, pagesize));
-		Long total = hosOutRecordDao.count();
+		Long total = hosOutRecordDao.countNum(cardName, ksName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

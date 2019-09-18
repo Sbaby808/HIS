@@ -2,6 +2,11 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,7 +28,7 @@ public class HosPayRecord implements Serializable {
 	@Column(name="HOS_PRMONEY")
 	private BigDecimal hosPrmoney;
 
-	@Temporal(TemporalType.DATE)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="HOS_PRTIME")
 	private Date hosPrtime;
 

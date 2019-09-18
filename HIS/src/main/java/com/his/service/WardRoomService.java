@@ -17,9 +17,12 @@ import com.his.pojo.HosBed;
 import com.his.pojo.WardRoom;
 
 /**
- * 住院病房
- * @author dell
- *
+ * 
+* @ClassName: WardRoomService  
+* @Description: 住院病房 
+* @author Hamster
+* @date 2019年9月18日  下午1:22:59
+*
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -44,7 +47,7 @@ public class WardRoomService {
 	 */
 	public Map getAllWardRoom(String roomName,String ksName,int curpage,int pagesize){
 		List <WardRoom> list = wardRoomDao.getAllWardRoom(roomName,ksName,PageRequest.of(curpage-1, pagesize));
-		long total = wardRoomDao.count();
+		long total = wardRoomDao.countNum(roomName, ksName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

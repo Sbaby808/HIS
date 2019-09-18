@@ -37,6 +37,14 @@ public interface IHosOutNoticeDao extends CrudRepository<HosOutNotice, String>{
 			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
 	public List <HosOutNotice> getHosOutNoticeByPage(String cardName,String ksName,String roomName,Pageable page);
 	
+	@Query("select count(*) from HosOutNotice h where"
+			+ " (h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1"
+			+ " or h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1 )"
+			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
+			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
+	public Long countNum1(String cardName,String ksName,String roomName);
+	
+	
 	@Query("from HosOutNotice h where"
 			+ " h.hosOutTime between ?1 and ?2"
 			+ " and (h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3"
@@ -45,5 +53,12 @@ public interface IHosOutNoticeDao extends CrudRepository<HosOutNotice, String>{
 			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?5 ")
 	public List <HosOutNotice> getHosOutNoticeByPageandTime(Date start,Date end,String cardName,String ksName,String roomName,Pageable page);
 	
+	@Query("select count(*) from HosOutNotice h where"
+			+ " h.hosOutTime between ?1 and ?2"
+			+ " and (h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3"
+			+ " or h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3 )"
+			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
+			+ " and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?5 ")
+	public Long countNum2(Date start,Date end,String cardName,String ksName,String roomName);
 	
 }

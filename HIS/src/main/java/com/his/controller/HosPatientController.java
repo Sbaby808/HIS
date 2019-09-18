@@ -141,14 +141,15 @@ public class HosPatientController {
 	* @param:@param hospId
 	* @param:@param money
 	* @return:void
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月26日 上午11:28:29
 	 */
 	@ResponseBody
 	@GetMapping("/add_deposit_money")
-	public void addDepositMoney(String hospId,String money){
-		hosPatientsService.addDepositMoney(hospId, money);
+	public void addDepositMoney(String hospId,String money,String empId) throws ParseException{
+		hosPatientsService.addDepositMoney(hospId, money,empId);
 	}
 	
 	@ResponseBody

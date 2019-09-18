@@ -44,14 +44,16 @@ public class HosOutNoticeService {
 	 */
 	public Map getHosOutNoticeByPage(String start,String end,String cardName,String ksName,String roomName,int curpage,int pagesize) throws ParseException{
 		List <HosOutNotice> list;
+		long total;
 		if(start==null||end==null){
 			list = hosOutNoticeDao.getHosOutNoticeByPage(cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+			total = hosOutNoticeDao.countNum1(cardName, ksName, roomName);
 		}
 		else{
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			list = hosOutNoticeDao.getHosOutNoticeByPageandTime(format.parse(start), format.parse(end), cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+			total = hosOutNoticeDao.countNum2(format.parse(start), format.parse(end), cardName, ksName, roomName);
 		}
-		long total = hosOutNoticeDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

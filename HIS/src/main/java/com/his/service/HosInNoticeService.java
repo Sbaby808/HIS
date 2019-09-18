@@ -42,14 +42,16 @@ public class HosInNoticeService {
 	 */
 	public Map getHosInNoticeByPage(String start,String end,String hospName,String sourceText,String departText,int curpage,int pagesize) throws ParseException{
 		List <HospitalNotice> list;
+		long total;
 		if(start==null||end==null){
 			list = hosInNoticeDao.getHosInNoticeByPage(hospName, sourceText, departText, PageRequest.of(curpage-1, pagesize));
+			total = hosInNoticeDao.countNum1(hospName, sourceText, departText);
 		}
 		else{
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			list = hosInNoticeDao.getHosInNoticeByPageandTime(format.parse(start), format.parse(end), hospName, sourceText, departText, PageRequest.of(curpage-1, pagesize));
+			total = hosInNoticeDao.countNum2(format.parse(start), format.parse(end), hospName, sourceText, departText);
 		}		
-		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

@@ -67,14 +67,17 @@ public class HosPrescriptionService {
 	 */
 	public Map getHosPrescriptionByPage(String start,String end,String cardName,String ksName,int curpage,int pagesize) throws ParseException{
 		List <HosPrescription> list;
+		long total;
 		if(start==null||end==null){
 			list = hosPrescriptionDao.getHosPrescriptionByPage(cardName, ksName, PageRequest.of(curpage-1, pagesize));
+			total = hosPrescriptionDao.countNum1(cardName, ksName);
 		}
 		else{
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			list = hosPrescriptionDao.getHosPrescriptionByPageandTime(format.parse(start), format.parse(end), cardName, ksName, PageRequest.of(curpage-1, pagesize));
+			total = hosPrescriptionDao.countNum2(format.parse(start), format.parse(end), cardName, ksName);
 		}
-		long total = list.size();
+		
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

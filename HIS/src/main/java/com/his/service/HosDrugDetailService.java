@@ -51,14 +51,16 @@ public class HosDrugDetailService {
 	 */
 	public Map getHosDrugDetailbyPage(String start,String end,String cardName,String ksName,String roomName,int curpage,int pagesize) throws ParseException{
 		List <HosDrugDetail> list;
+		long total;
 		if(start==null||end==null){
 			list = hosDrugDetailDao.getHosDrugDetailbyPage(cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+			total = hosDrugDetailDao.countNum1(cardName, ksName, roomName);
 		}
 		else{
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			list = hosDrugDetailDao.getHosDrugDetailbyPageandTime(format.parse(start), format.parse(end), cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+			total = hosDrugDetailDao.countNum2(format.parse(start), format.parse(end), cardName, ksName, roomName);
 		}
-		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

@@ -38,6 +38,14 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 			+ " and m.medInDept like ?2 ")
 	public List <MedicalRecord> getAllMedicalRecordByPage(String cardName,String ksName,Pageable page);
 	
+	@Query("select count(*) from MedicalRecord m where "
+			+ " (m.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or m.hospitalizedPatient.medicalCard.personId like ?1)"
+			+ " and m.medInDept like ?2 ")
+	public Long countNum(String cardName,String ksName);
+	
+	
+	
 	/**
 	 * 
 	* @Title:getClosedMedicalRecord
@@ -58,6 +66,13 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 			+ " and m.medOther is not null ")
 	public List <MedicalRecord> getClosedMedicalRecord(String cardName,String ksName,Pageable page);
 	
+	@Query("select count(*) from MedicalRecord m where "
+			+ " (m.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or m.hospitalizedPatient.medicalCard.personId like ?1)"
+			+ " and m.medInDept like ?2 "
+			+ " and m.medOther is not null ")
+	public Long countNum2(String cardName,String ksName);
+	
 	/**
 	 * 
 	* @Title:getOpenMedicalRecord
@@ -77,6 +92,13 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 			+ " and m.medInDept like ?2 "
 			+ " and m.medOther is null ")
 	public List <MedicalRecord> getOpenMedicalRecord(String cardName,String ksName,Pageable page);
+	
+	@Query("select count(*) from MedicalRecord m where "
+			+ " (m.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or m.hospitalizedPatient.medicalCard.personId like ?1)"
+			+ " and m.medInDept like ?2 "
+			+ " and m.medOther is null ")
+	public Long countNum1(String cardName,String ksName);
 	
 	/**
 	 * 

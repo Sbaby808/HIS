@@ -30,6 +30,9 @@ public interface IWardRoomDao extends CrudRepository<WardRoom, String>{
 			+ " and w.ward.department.ksName like ?2")
 	public List <WardRoom> getAllWardRoom(String roomName,String ksName,Pageable page);
 	
+	@Query("select count(*) from WardRoom w where w.wroomName like ?1 and w.ward.department.ksName like ?2 ")
+	public Long countNum(String roomName,String ksName);
+	
 	@Query("from WardRoom w")
 	public List <WardRoom> getWardRooms();
 

@@ -15,9 +15,12 @@ import com.his.dao.IHosPayRecordDao;
 import com.his.pojo.HosPayRecord;
 
 /**
- * 住院患者缴费记录
- * @author dell
- *
+ * 
+* @ClassName: HosPayRecordService  
+* @Description:住院缴费记录 
+* @author Hamster
+* @date 2019年9月18日  下午8:03:16
+*
  */
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -26,13 +29,15 @@ public class HosPayRecordService{
 	@Autowired
 	private IHosPayRecordDao hosPayRecordDao;
 	
-	private Map getAllPayRecord(int curpage,int pagesize){
-		List <HosPayRecord> list = hosPayRecordDao.getAllPayRecord(PageRequest.of(curpage-1, pagesize));
-		long total = hosPayRecordDao.count();
+	public Map getAllPayRecord(String cardName,int curpage,int pagesize){
+		List <HosPayRecord> list = hosPayRecordDao.getAllPayRecord(cardName,PageRequest.of(curpage-1, pagesize));
+		long total = hosPayRecordDao.countNum(cardName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
 		return map;
 	}
+	
+	
 	
 }

@@ -40,7 +40,7 @@ public class WardService {
 	 */
 	public Map getAllWardByPage(String wardName,String ksName,int curpage,int pagesize){
 		List <Ward> list = wardDao.getAllWardByPage(wardName,ksName,PageRequest.of(curpage-1, pagesize));
-		long total = wardDao.count();
+		long total = wardDao.countNum(wardName, ksName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

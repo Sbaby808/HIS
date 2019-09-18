@@ -43,6 +43,15 @@ public interface IHosInNoticeDao extends CrudRepository<HospitalNotice,String>{
 			+ " and h.ryNote is null")
 	public List <HospitalNotice> getHosInNoticeByPage(String hospName,String sourceText,String departText,Pageable page);
 	
+	@Query("select count(*) from HospitalNotice h where "
+			+ " (h.solveScheme.history.outpatientRegistration.medicalCard.cardName like ?1 "
+			+ " or h.solveScheme.history.outpatientRegistration.medicalCard.personId like ?1)"
+			+ " and h.solveScheme.history.department.dept.deptName like ?2 "
+			+ " and h.department.ksName like ?3 "
+			+ " and h.ryNote is null")
+	public Long countNum1(String hospName,String sourceText,String departText);
+	
+	
 	@Query("from HospitalNotice h where "
 			+ " h.ryTime between ?1 and ?2"
 			+ " and (h.solveScheme.history.outpatientRegistration.medicalCard.cardName like ?3 "
@@ -52,6 +61,14 @@ public interface IHosInNoticeDao extends CrudRepository<HospitalNotice,String>{
 			+ " and h.ryNote is null")
 	public List <HospitalNotice> getHosInNoticeByPageandTime(Date start,Date end,String hospName,String sourceText,String departText,Pageable page);	
 	
+	@Query("from HospitalNotice h where "
+			+ " h.ryTime between ?1 and ?2"
+			+ " and (h.solveScheme.history.outpatientRegistration.medicalCard.cardName like ?3 "
+			+ " or h.solveScheme.history.outpatientRegistration.medicalCard.personId like ?3)"
+			+ " and h.solveScheme.history.department.dept.deptName like ?4 "
+			+ " and h.department.ksName like ?5 "
+			+ " and h.ryNote is null")
+	public Long countNum2(Date start,Date end,String hospName,String sourceText,String departText);
 	
 	/**
 	* @Title:getHosNoticeBySolveId

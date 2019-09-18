@@ -33,6 +33,9 @@ public interface IHosBedDao extends CrudRepository<HosBed,String>{
 			+ " and h.wardRoom.wroomName like ?3 ")
 	public List <HosBed> getAllBedsByPage(String ksName,String wardName,String roomName,Pageable page);
 	
+	@Query("select count(*) from HosBed h where h.wardRoom.ward.department.ksName like ?1 and h.wardRoom.ward.wardName like ?2 and h.wardRoom.wroomName like ?3 ")
+	public Long countNum(String ksName,String wardName,String roomName);
+	
 	/**
 	 * 
 	* @Title:getAllBeds

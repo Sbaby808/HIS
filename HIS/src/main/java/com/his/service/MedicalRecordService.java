@@ -44,7 +44,7 @@ public class MedicalRecordService {
 	 */
 	public Map getAllMedicalRecordByPage(String cardName,String ksName,int curpage,int pagesize){
 		List <MedicalRecord> list = medicalRecordDao.getAllMedicalRecordByPage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
-		long total = medicalRecordDao.count();
+		long total = medicalRecordDao.countNum(cardName, ksName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -126,8 +126,7 @@ public class MedicalRecordService {
 	 */
 	public Map getOpenMedicalRecord(String cardName,String ksName,int curpage,int pagesize){
 		List <MedicalRecord> list = medicalRecordDao.getOpenMedicalRecord(cardName, ksName, PageRequest.of(curpage-1, pagesize));
-		long total = list.size();
-		System.out.println(total);
+		long total = medicalRecordDao.countNum1(cardName, ksName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -150,7 +149,7 @@ public class MedicalRecordService {
 	 */
 	public Map getClosedMedicalRecord(String cardName,String ksName,int curpage,int pagesize){
 		List <MedicalRecord> list = medicalRecordDao.getClosedMedicalRecord(cardName, ksName, PageRequest.of(curpage-1, pagesize));
-		long total = list.size();
+		long total = medicalRecordDao.countNum2(cardName, ksName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

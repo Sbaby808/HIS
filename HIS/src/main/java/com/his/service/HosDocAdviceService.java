@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.TotalDigitsDocument.TotalDigits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -71,14 +72,17 @@ public class HosDocAdviceService {
 	 */
 	public Map getHosDocAdviceByPage(String start,String end,String cardName,String ksName,int curpage,int pagesize) throws ParseException{
 		List <HosDoctorAdvice> list;
+		long total ;
 		if(start==null||end==null){
 			list = hosDocAdviceDao.getHosDocAdviceBypage(cardName, ksName, PageRequest.of(curpage-1, pagesize));
+			total = hosDocAdviceDao.countNum1(cardName, ksName);
 		}
 		else{
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			list = hosDocAdviceDao.getHosDocAdviceBypageandTime(format.parse(start), format.parse(end), cardName, ksName, PageRequest.of(curpage-1, pagesize));
+			total = hosDocAdviceDao.countNum2(format.parse(start), format.parse(end), cardName, ksName);
 		}
-		long total = list.size();
+		
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

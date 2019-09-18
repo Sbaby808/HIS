@@ -60,7 +60,7 @@ public class HosOtherCostService {
 	 */
 	public Map getAllOtherCostByPage(String cardName,int curpage,int pagesize){
 		List <HosOtherCost> list = hosOtherCostDao.getAllOtherCostByPage(cardName,PageRequest.of(curpage-1, pagesize));
-		long total = list.size();
+		long total = hosOtherCostDao.countNum(cardName);
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
