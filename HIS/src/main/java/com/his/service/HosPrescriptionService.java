@@ -60,15 +60,21 @@ public class HosPrescriptionService {
 	* @param:@param pagesize
 	* @param:@return
 	* @return:Map
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月5日 下午7:21:52
 	 */
-	public Map getHosPrescriptionByPage(String cardName,String ksName,int curpage,int pagesize){
-		List <HosPrescription> list =hosPrescriptionDao.getHosPrescriptionByPage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
-		System.out.println("list:"+list.size());
-		long total = hosPrescriptionDao.countInPres();
-		System.out.println(total);
+	public Map getHosPrescriptionByPage(String start,String end,String cardName,String ksName,int curpage,int pagesize) throws ParseException{
+		List <HosPrescription> list;
+		if(start==null||end==null){
+			list = hosPrescriptionDao.getHosPrescriptionByPage(cardName, ksName, PageRequest.of(curpage-1, pagesize));
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			list = hosPrescriptionDao.getHosPrescriptionByPageandTime(format.parse(start), format.parse(end), cardName, ksName, PageRequest.of(curpage-1, pagesize));
+		}
+		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

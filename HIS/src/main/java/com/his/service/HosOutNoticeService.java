@@ -1,6 +1,8 @@
 package com.his.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,12 +37,20 @@ public class HosOutNoticeService {
 	* @Description:查询所有出院通知单
 	* @param:@return
 	* @return:List<HosOutNotice>
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月3日 上午11:32:51
 	 */
-	public Map getHosOutNoticeByPage(String cardName,String ksName,String roomName,int curpage,int pagesize){
-		List <HosOutNotice> list = hosOutNoticeDao.getHosOutNoticeByPage(cardName,ksName,roomName,PageRequest.of(curpage-1, pagesize));
+	public Map getHosOutNoticeByPage(String start,String end,String cardName,String ksName,String roomName,int curpage,int pagesize) throws ParseException{
+		List <HosOutNotice> list;
+		if(start==null||end==null){
+			list = hosOutNoticeDao.getHosOutNoticeByPage(cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			list = hosOutNoticeDao.getHosOutNoticeByPageandTime(format.parse(start), format.parse(end), cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+		}
 		long total = hosOutNoticeDao.count();
 		Map map = new HashMap<>();
 		map.put("list", list);

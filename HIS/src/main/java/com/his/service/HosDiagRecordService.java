@@ -64,13 +64,22 @@ public class HosDiagRecordService {
 	* @param:@param pagesize
 	* @param:@return
 	* @return:Map
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月5日 上午11:35:35
 	 */
-	public Map getDiagRecordByPage(String cardName,String ksName,String roomName,int curpage,int pagesize){
-		List <HosDiagnosticRecord> list = hosDiagRecordDao.getDiagRecordByPage(cardName,ksName,roomName,PageRequest.of(curpage-1, pagesize));
-		long total = hosDiagRecordDao.countInDiag();
+	public Map getDiagRecordByPage(String start,String end,String cardName,String ksName,String roomName,int curpage,int pagesize) throws ParseException{
+		List <HosDiagnosticRecord> list;
+		
+		if(start==null||end==null){
+			list = hosDiagRecordDao.getDiagRecordByPage(cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			list = hosDiagRecordDao.getDiagRecordByPageandTime(format.parse(start), format.parse(end), cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+		}
+		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

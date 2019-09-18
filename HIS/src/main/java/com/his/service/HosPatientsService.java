@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.dao.ForChart;
+import com.his.dao.IDepartmentDao;
 import com.his.dao.IEmpInformationDao;
 import com.his.dao.IHosBedDao;
 import com.his.dao.IHosEmpDao;
@@ -25,6 +28,7 @@ import com.his.dao.IHosOutDao;
 import com.his.dao.IHosPatientDao;
 import com.his.dao.IMedicalRecordDao;
 import com.his.dao.IWardRoomDao;
+import com.his.pojo.Department;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.HosBed;
 import com.his.pojo.HosEmp;
@@ -56,6 +60,8 @@ public class HosPatientsService {
 	private IHosEmpDao hosEmpDao;
 	@Autowired
 	private IEmpInformationDao empInformationDao;
+	@Autowired
+	private IDepartmentDao departmentDao;
 	
 	/**
 	 * 
@@ -71,7 +77,7 @@ public class HosPatientsService {
 	 */
 	public Map getHosPatientsByPage(String hospName,String ksName,String roomName,int curpage,int pagesize){
 		List <HospitalizedPatient> patients = hosPatientDao.getAllPatientsByPage(hospName,ksName,roomName,PageRequest.of(curpage-1,pagesize));
-		long total = hosPatientDao.countInPatient();
+		long total = patients.size();
 		Map map = new HashMap<>();
 		map.put("list", patients);
 		map.put("total", total);
@@ -200,6 +206,9 @@ public class HosPatientsService {
 		outRecord.setOutRecTime(new Date());
 		outRecord.setHospitalizedPatient(patient);
 		outRecord.setEmpInformation(emp);
+		String departId = patient.getHosBed().getWardRoom().getWard().getDepartment().getKsId();
+		Department department = departmentDao.findById(departId).get();
+		outRecord.setOutDepart(department.getKsName());
 		hosOutDao.save(outRecord);
 		
 		MedicalRecord record = patient.getMedicalRecord();
@@ -262,6 +271,30 @@ public class HosPatientsService {
 				patients.get(i).setHosNote(null);
 			}
 		}
+	}
+	
+	/**
+	 * 
+	* @Title:countForCharts
+	* @Description:入院图表统计
+	* @param:@return
+	* @return:List<BigDecimal>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年8月31日 下午9:37:40
+	 */
+	public List<BigDecimal> countForCharts(){
+		List object = hosPatientDao.countForCharts();
+		List<ForChart> list = new ArrayList();
+		for (Object row : object) {
+			Object[] cells = (Object[]) row;
+			ForChart result= new ForChart();
+			result.setTime((String) cells[0]);
+			result.setNum((BigDecimal) cells[1]);
+			list.add(result);
+		}
+        List<BigDecimal> numbers=list.stream().map(ForChart::getNum).collect(Collectors.toList());
+        return numbers;
 	}
 	
 }

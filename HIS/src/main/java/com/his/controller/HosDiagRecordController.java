@@ -51,18 +51,20 @@ public class HosDiagRecordController {
 	* @param:@param curpage
 	* @param:@param pagesize
 	* @param:@return
+	 * @return 
 	* @return:Map
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月5日 上午11:39:40
 	 */
 	@ResponseBody
 	@GetMapping("/get_diag_record_byPage")
-	public Map getDiagRecordByPage(String text1,String text2,String text3,int curpage,int pagesize){
+	public Map getDiagRecordByPage(String start,String end,String text1,String text2,String text3,int curpage,int pagesize) throws ParseException{
 		String cardName = "%"+text1+"%";
 		String ksName = "%"+text2+"%";
 		String roomName = "%"+text3+"%";
-		return hosDiagRecordService.getDiagRecordByPage(cardName,ksName,roomName,curpage, pagesize);
+		return hosDiagRecordService.getDiagRecordByPage(start,end,cardName,ksName,roomName,curpage, pagesize);
 	}
 	
 	/**

@@ -35,9 +35,6 @@ public interface IHosPreDetailDao extends CrudRepository<HosPrescriptionDetail, 
 			+ " and h.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid !=null ")
 	public List <HosPrescriptionDetail> getHosPreDetailsByPage(String cardName,Pageable page);
 	
-	@Query("select count(*) from HosPrescriptionDetail h where "
-			+ " h.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid !=null ")
-	public Long countInDrugCost();
 	
 	
 	/**

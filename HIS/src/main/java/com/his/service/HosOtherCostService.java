@@ -60,7 +60,7 @@ public class HosOtherCostService {
 	 */
 	public Map getAllOtherCostByPage(String cardName,int curpage,int pagesize){
 		List <HosOtherCost> list = hosOtherCostDao.getAllOtherCostByPage(cardName,PageRequest.of(curpage-1, pagesize));
-		long total = hosOtherCostDao.countInOtherCost();
+		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -109,7 +109,7 @@ public class HosOtherCostService {
 	* @Date:2019年8月20日 上午9:17:34
 	 */
 	
-	@Scheduled(cron = "0 00 06 ? * *")
+	@Scheduled(cron = "0 00 09 ? * *")
 	public void addHosOtherCost() throws ParseException{
 		List <HospitalizedPatient> patients = hosPatientDao.getHosInPatient();
 		

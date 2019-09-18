@@ -2,6 +2,9 @@ package com.his.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 
@@ -43,7 +46,7 @@ public class TransOfficeRecord implements Serializable {
 	@Column(name="OUT_BNAME")
 	private String outBname;
 
-	@Temporal(TemporalType.TIME)
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@Column(name="OUT_OFFICE_TIME")
 	private Date outOfficeTime;
 

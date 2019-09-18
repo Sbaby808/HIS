@@ -39,6 +39,18 @@ public class OutHospitaiRecord implements Serializable {
 	@OneToOne
 	@JoinColumn(name="HOSP_ID")
 	private HospitalizedPatient hospitalizedPatient;
+	
+	@Column(name="OUT_DEPART")
+	private String outDepart;
+	
+
+	public String getOutDepart() {
+		return outDepart;
+	}
+
+	public void setOutDepart(String outDepart) {
+		this.outDepart = outDepart;
+	}
 
 	public OutHospitaiRecord() {
 	}

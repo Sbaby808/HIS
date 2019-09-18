@@ -64,13 +64,21 @@ public class HosDocAdviceService {
 	* @param:@param pagesize
 	* @param:@return
 	* @return:Map
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月13日 下午9:10:36
 	 */
-	public Map getHosDocAdviceByPage(String cardName,String ksName,int curpage,int pagesize){
-		List <HosDoctorAdvice> list = hosDocAdviceDao.getHosDocAdviceBypage(cardName,ksName,PageRequest.of(curpage-1, pagesize));
-		long total = hosDocAdviceDao.countInDoc();
+	public Map getHosDocAdviceByPage(String start,String end,String cardName,String ksName,int curpage,int pagesize) throws ParseException{
+		List <HosDoctorAdvice> list;
+		if(start==null||end==null){
+			list = hosDocAdviceDao.getHosDocAdviceBypage(cardName, ksName, PageRequest.of(curpage-1, pagesize));
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			list = hosDocAdviceDao.getHosDocAdviceBypageandTime(format.parse(start), format.parse(end), cardName, ksName, PageRequest.of(curpage-1, pagesize));
+		}
+		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

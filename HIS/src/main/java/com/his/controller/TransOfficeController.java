@@ -2,6 +2,8 @@ package com.his.controller;
 
 
 import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,5 +64,12 @@ public class TransOfficeController {
 	@GetMapping("/change_message")
 	public void changeMessage(String inBid,String outBid){
 		transOfficeService.changeMessage(inBid, outBid);
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_trans_record_byPage")
+	public Map getTransRecordByPage(String start,String end,String text4,int curpage,int pagesize) throws ParseException{
+		String cardName = "%"+text4+"%";
+		return transOfficeService.getTransRecordByPage(start, end, cardName, curpage, pagesize);
 	}
 }

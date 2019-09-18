@@ -1,5 +1,7 @@
 package com.his.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,13 +35,21 @@ public class HosInNoticeService {
 	* @Description:查询所有通知单
 	* @param:@return
 	* @return:List<HospitalNotice>
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月1日 下午8:00:36
 	 */
-	public Map getHosInNoticeByPage(String hospName,String sourceText,String departText,int curpage,int pagesize){
-		List <HospitalNotice> list = hosInNoticeDao.getHosInNoticeByPage(hospName,sourceText,departText,PageRequest.of(curpage-1, pagesize));
-		long total = hosInNoticeDao.count();
+	public Map getHosInNoticeByPage(String start,String end,String hospName,String sourceText,String departText,int curpage,int pagesize) throws ParseException{
+		List <HospitalNotice> list;
+		if(start==null||end==null){
+			list = hosInNoticeDao.getHosInNoticeByPage(hospName, sourceText, departText, PageRequest.of(curpage-1, pagesize));
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			list = hosInNoticeDao.getHosInNoticeByPageandTime(format.parse(start), format.parse(end), hospName, sourceText, departText, PageRequest.of(curpage-1, pagesize));
+		}		
+		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

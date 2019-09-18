@@ -40,6 +40,46 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 	
 	/**
 	 * 
+	* @Title:getClosedMedicalRecord
+	* @Description:已封档病案
+	* @param:@param cardName
+	* @param:@param ksName
+	* @param:@param page
+	* @param:@return
+	* @return:List<MedicalRecord>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月6日 下午2:34:10
+	 */
+	@Query("from MedicalRecord m where "
+			+ " (m.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or m.hospitalizedPatient.medicalCard.personId like ?1)"
+			+ " and m.medInDept like ?2 "
+			+ " and m.medOther is not null ")
+	public List <MedicalRecord> getClosedMedicalRecord(String cardName,String ksName,Pageable page);
+	
+	/**
+	 * 
+	* @Title:getOpenMedicalRecord
+	* @Description:未封档病案
+	* @param:@param cardName
+	* @param:@param ksName
+	* @param:@param page
+	* @param:@return
+	* @return:List<MedicalRecord>
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月6日 下午2:35:23
+	 */
+	@Query("from MedicalRecord m where "
+			+ " (m.hospitalizedPatient.medicalCard.cardName like ?1 "
+			+ " or m.hospitalizedPatient.medicalCard.personId like ?1)"
+			+ " and m.medInDept like ?2 "
+			+ " and m.medOther is null ")
+	public List <MedicalRecord> getOpenMedicalRecord(String cardName,String ksName,Pageable page);
+	
+	/**
+	 * 
 	* @Title:getMedicalRecordByhospId
 	* @Description:根据住院id查询病案
 	* @param:@param hospId
@@ -51,5 +91,6 @@ public interface IMedicalRecordDao extends CrudRepository<MedicalRecord, String>
 	 */
 	@Query(value="select * from medical_record m where m.hosp_id=?1",nativeQuery=true)
 	public MedicalRecord getMedicalRecordByhospId(String hospId);
-	
+
+
 }

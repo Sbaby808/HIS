@@ -103,4 +103,49 @@ public class MedicalRecordController {
 	public MedicalRecord getMedicalRecordByhospId(String hospId){
 		return medicalRecordService.getMedicalRecordByhospId(hospId);
 	}
+	
+	/**
+	 * 
+	* @Title:getOpenMedicalRecord
+	* @Description:未封档病案
+	* @param:@param text3
+	* @param:@param text4
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月6日 下午2:45:06
+	 */
+	@ResponseBody
+	@GetMapping("/get_open_medical_record")
+	public Map getOpenMedicalRecord(String text3,String text4,int curpage,int pagesize){
+		String cardName = "%"+text3+"%";
+		String ksName = "%"+text4+"%";
+		return medicalRecordService.getOpenMedicalRecord(cardName, ksName, curpage, pagesize);
+	}
+	
+	
+	/**
+	 * 
+	* @Title:getClosedMedicalRecord
+	* @Description:已封档病案
+	* @param:@param text5
+	* @param:@param text6
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月6日 下午2:46:44
+	 */
+	@ResponseBody
+	@GetMapping("/get_closed_medical_record")
+	public Map getClosedMedicalRecord(String text5,String text6,int curpage,int pagesize){
+		String cardName = "%"+text5+"%";
+		String ksName = "%"+text6+"%";
+		return medicalRecordService.getClosedMedicalRecord(cardName, ksName, curpage, pagesize);
+	}
 }

@@ -64,7 +64,7 @@ public class HosPreDetailService {
 	 */
 	public Map getHosPreDetailByPage(String cardName,int curpage,int pagesize){
 		List <HosPrescriptionDetail> list = hosPreDetailDao.getHosPreDetailsByPage(cardName,PageRequest.of(curpage-1, pagesize));
-		long total = hosPreDetailDao.countInDrugCost();
+		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
@@ -100,6 +100,13 @@ public class HosPreDetailService {
 		return hosPreDetailDao.getHosPreDetailByPid(pid);
 	}
 	
+	public List <HosPrescriptionDetail> getDetailsByDiagId(String diagId){
+		HosPrescription prescription = hosPrescriptionDao.getHosPresByDiagId(diagId);
+		List <HosPrescriptionDetail> details = hosPreDetailDao.getHosPreDetailByPid(prescription.getHosPreId());		
+		return details;
+	}
+	
+
 	/**
 	 * 
 	* @Title:getHosPreDetailByDiagId

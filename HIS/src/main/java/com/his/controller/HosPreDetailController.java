@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.pojo.HosDrugDetail;
 import com.his.pojo.HosOutNotice;
 import com.his.pojo.HosPrescriptionDetail;
 import com.his.pojo.LastDrugDetail;
@@ -45,6 +46,8 @@ public class HosPreDetailController {
 		return hosPreDetailService.getHosPreDetail();
 	}
 	
+
+	
 	@ResponseBody
 	@GetMapping("/get_hos_pre_detail_byPage")
 	public Map getHosPreDetailByPage(String text1,int curpage,int pagesize){
@@ -69,6 +72,7 @@ public class HosPreDetailController {
 		return hosPreDetailService.getHosPreDetailByPid(pid);
 	}
 	
+	
 	/**
 	 * 
 	* @Title:getHosPreDetailByDiagId
@@ -84,6 +88,12 @@ public class HosPreDetailController {
 	@GetMapping("/get_hos_pre_detail_byDiagId")
 	public List <LastDrugDetail> getHosPreDetailByDiagId(String diagId){
 		return hosPreDetailService.getHosPreDetailByDiagId(diagId);
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_details_by_diagId")
+	public List <HosPrescriptionDetail> getDetailsByDiagId(String diagId){
+		return hosPreDetailService.getDetailsByDiagId(diagId);
 	}
 	
 	@ResponseBody

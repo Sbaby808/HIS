@@ -1,6 +1,8 @@
 package com.his.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,13 +44,21 @@ public class HosDrugDetailService {
 	* @Description:查询用药明细
 	* @param:@return
 	* @return:List<HosDrugDetail>
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月14日 下午5:54:46
 	 */
-	public Map getHosDrugDetailbyPage(String cardName,String ksName,String roomName,int curpage,int pagesize){
-		List <HosDrugDetail> list = hosDrugDetailDao.getHosDrugDetailbyPage(cardName,ksName,roomName,PageRequest.of(curpage-1, pagesize));
-		long total = hosDrugDetailDao.countInDrugDetail();
+	public Map getHosDrugDetailbyPage(String start,String end,String cardName,String ksName,String roomName,int curpage,int pagesize) throws ParseException{
+		List <HosDrugDetail> list;
+		if(start==null||end==null){
+			list = hosDrugDetailDao.getHosDrugDetailbyPage(cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			list = hosDrugDetailDao.getHosDrugDetailbyPageandTime(format.parse(start), format.parse(end), cardName, ksName, roomName, PageRequest.of(curpage-1, pagesize));
+		}
+		long total = list.size();
 		Map map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);

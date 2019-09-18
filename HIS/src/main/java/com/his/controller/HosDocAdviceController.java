@@ -70,16 +70,17 @@ public class HosDocAdviceController {
 	* @param:@param pagesize
 	* @param:@return
 	* @return:Map
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月13日 下午9:15:27
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_advice_byPage")
-	public Map getHosDocAdviceByPage(String text1,String text2,int curpage,int pagesize){
+	public Map getHosDocAdviceByPage(String start,String end,String text1,String text2,int curpage,int pagesize) throws ParseException{
 		String cardName = "%"+text1+"%";
 		String ksName = "%"+text2+"%";
-		return hosDocAdviceService.getHosDocAdviceByPage(cardName,ksName,curpage, pagesize);
+		return hosDocAdviceService.getHosDocAdviceByPage(start,end,cardName,ksName,curpage, pagesize);
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +29,11 @@ public class HosDrugDetailController {
 	
 	@ResponseBody
 	@GetMapping("/get_hos_drug_detail")
-	public Map getHosDrugDetail(String text1,String text2,String text3,int curpage,int pagesize){
+	public Map getHosDrugDetail(String start,String end,String text1,String text2,String text3,int curpage,int pagesize) throws ParseException{
 		String cardName = "%"+text1+"%";
 		String ksName = "%"+text2+"%";
 		String roomName = "%"+text3+"%";
-		return hosDrugDetailService.getHosDrugDetailbyPage(cardName,ksName,roomName,curpage, pagesize);
+		return hosDrugDetailService.getHosDrugDetailbyPage(start,end,cardName,ksName,roomName,curpage, pagesize);
 	}
 	
 	/**

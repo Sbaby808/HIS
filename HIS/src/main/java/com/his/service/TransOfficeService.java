@@ -3,10 +3,13 @@ package com.his.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,5 +102,32 @@ public class TransOfficeService {
 		inRoom.setWNum(inRoom.getWNum()-1);
 		wardRoomDao.save(inRoom);
 		
+	}
+	
+	/**
+	 * 
+	* @Title:getTransRecordByPage
+	* @Description:查询所有住院转科转床记录
+	* @param:@return
+	* @return:List<TransOfficeRecord>
+	 * @throws ParseException 
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月5日 下午5:14:06
+	 */
+	public Map getTransRecordByPage(String start,String end,String cardName,int curpage,int pagesize) throws ParseException{
+		List <TransOfficeRecord> list;
+		if(start==null||end==null){
+			list = transOfficeDao.getTransRecordByPage(cardName, PageRequest.of(curpage-1, pagesize));
+		}
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			list = transOfficeDao.getTransRecordByPageandTime(format.parse(start), format.parse(end), cardName, PageRequest.of(curpage-1, pagesize));
+		}
+		long total = list.size();
+		Map map = new HashMap<>();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
 	}
 }

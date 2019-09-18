@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -148,5 +149,11 @@ public class HosPatientController {
 	@GetMapping("/add_deposit_money")
 	public void addDepositMoney(String hospId,String money){
 		hosPatientsService.addDepositMoney(hospId, money);
+	}
+	
+	@ResponseBody
+	@GetMapping("/get_numbers_for_charts")
+	public List <BigDecimal> countForCharts(){
+		return hosPatientsService.countForCharts();
 	}
 }

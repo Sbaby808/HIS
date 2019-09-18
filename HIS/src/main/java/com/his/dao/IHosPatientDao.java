@@ -38,9 +38,7 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	
 	@Query("from HospitalizedPatient h")
 	public List <HospitalizedPatient> getHospitalizedPatient(Pageable page);
-	
-	@Query(value="select count(*) from hospitalized_patients h where h.hosp_state!='已出院' ",nativeQuery=true)
-	public Long countInPatient();
+
 	
 	/**
 	 * 
@@ -83,4 +81,21 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 	 */
 	@Query("from HospitalizedPatient h where h.hospState !='已出院' ")
 	public List <HospitalizedPatient> getHosInPatient();
+	
+	/**
+	 * 
+	* @Title:countForCharts
+	* @Description:入院记录图表统计
+	* @param:@return
+	* @return:List
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月1日 下午7:59:28
+	 */
+	@Query(value="WITH T1 AS (SELECT ADD_MONTHS(DATE '2018-12-01', LEVEL) AS COL1 FROM DUAL CONNECT BY LEVEL <= 12) "
+			+ " SELECT TO_CHAR(T.COL1, 'YYYY-MM'), NVL(count(h.register_time),0) FROM T1 T "
+			+ " LEFT JOIN hospitalized_patients h ON TO_CHAR(T.COL1, 'YYYY-MM') = TO_CHAR(h.register_time, 'YYYY-MM') "
+			+ " GROUP BY TO_CHAR(T.COL1, 'YYYY-MM') order by 1 ",nativeQuery=true)
+	public List countForCharts();
+
 }

@@ -1,5 +1,6 @@
 package com.his.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -49,9 +50,15 @@ public interface IHosPrescriptionDao extends CrudRepository<HosPrescription, Str
 			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null")
 	public List <HosPrescription> getHosPrescriptionByPage(String cardName,String ksName,Pageable page);
 	
+	@Query("from HosPrescription h where "
+			+ " h.hosPreTime between ?1 and ?2 "
+			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3 "
+			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null")
+	public List <HosPrescription> getHosPrescriptionByPageandTime(Date start,Date end,String cardName,String ksName,Pageable page);
 	
-	@Query("select count(*) from HosPrescription h where h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBid!=null")
-	public Long countInPres();
+	
 	
 	/**
 	 * 

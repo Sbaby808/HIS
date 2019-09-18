@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +20,15 @@ public class HosOutRecordController {
 	
 	@ResponseBody
 	@GetMapping("/get_hos_out_record")
-	public Map getHosOutRecord(String text1,int curpage,int pagesize){
+	public Map getHosOutRecord(String text1,String text2,int curpage,int pagesize){
 		String cardName = "%"+text1+"%";
-		return hosOutRecordService.getHosOutRecord(cardName,curpage,pagesize);
+		String ksName = "%"+text2+"%";
+		return hosOutRecordService.getHosOutRecord(cardName,ksName,curpage,pagesize);
+	}
+	
+	@ResponseBody
+	@GetMapping("out_record_for_charts")
+	public List <BigDecimal> outRecordForCharts(){
+		return hosOutRecordService.countForCharts();
 	}
 }

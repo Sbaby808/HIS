@@ -24,10 +24,6 @@ public interface IHosOtherCostDao extends CrudRepository<HosOtherCost, String>{
 			+ " and h.medicalRecord.hospitalizedPatient.hosBed.hosBid !=null ")
 	public List <HosOtherCost> getAllOtherCostByPage(String cardName,Pageable page);
 	
-	@Query("select count(*) from HosOtherCost h where"
-			+ " h.medicalRecord.hospitalizedPatient.hosBed.hosBid !=null ")
-	public Long countInOtherCost();
-	
 	@Query("from HosOtherCost h")
 	public List <HosOtherCost> getHosOtherCost();
 	

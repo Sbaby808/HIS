@@ -77,8 +77,8 @@ public interface IDrugInformationDao extends CrudRepository<DrugInformation, Str
 	* @author:Hamster
 	* @Date:2019年8月7日 下午9:12:41
 	 */
-	@Query("from DrugInformation d where d.medicinePayId is not null")
-	public List <DrugInformation> getAllDrugInformation();
+	@Query("from DrugInformation d where d.medicinePayId is not null and d.ypName like ?1 ")
+	public List <DrugInformation> getAllDrugInformation(String ypName);
 	
 	/**
 	* @Title:getYpType

@@ -109,4 +109,52 @@ public class MedicalRecordService {
 	public MedicalRecord getMedicalRecordByhospId(String hospId){
 		return medicalRecordDao.getMedicalRecordByhospId(hospId);
 	}
+	
+	/**
+	 * 
+	* @Title:getOpenMedicalRecord
+	* @Description:未封档病案
+	* @param:@param cardName
+	* @param:@param ksName
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月6日 下午2:40:36
+	 */
+	public Map getOpenMedicalRecord(String cardName,String ksName,int curpage,int pagesize){
+		List <MedicalRecord> list = medicalRecordDao.getOpenMedicalRecord(cardName, ksName, PageRequest.of(curpage-1, pagesize));
+		long total = list.size();
+		System.out.println(total);
+		Map map = new HashMap<>();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	 * 
+	* @Title:getClosedMedicalRecord
+	* @Description:已封档病案
+	* @param:@param cardName
+	* @param:@param ksName
+	* @param:@param curpage
+	* @param:@param pagesize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:Hamster
+	* @Date:2019年9月6日 下午2:40:48
+	 */
+	public Map getClosedMedicalRecord(String cardName,String ksName,int curpage,int pagesize){
+		List <MedicalRecord> list = medicalRecordDao.getClosedMedicalRecord(cardName, ksName, PageRequest.of(curpage-1, pagesize));
+		long total = list.size();
+		Map map = new HashMap<>();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
+	
 }

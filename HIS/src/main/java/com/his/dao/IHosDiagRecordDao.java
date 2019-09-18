@@ -1,5 +1,6 @@
 package com.his.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -50,8 +51,17 @@ public interface IHosDiagRecordDao extends CrudRepository<HosDiagnosticRecord, S
 			+ " and h.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
 	public List <HosDiagnosticRecord> getDiagRecordByPage(String cardName,String ksName,String roomName,Pageable page);
 	
-	@Query("select count(*) from HosDiagnosticRecord h where h.medicalRecord.medOutTime is null")
-	public Long countInDiag();
+	
+	@Query("from HosDiagnosticRecord h where "
+			+ " h.medicalRecord.medOutTime is null "
+			+ " and h.hosDiagTime between ?1 and ?2 "
+			+ " and (h.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3"
+			+ " or h.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
+			+ " and h.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
+			+ " and h.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?5 ")
+	public List <HosDiagnosticRecord> getDiagRecordByPageandTime(Date start,Date end,String cardName,String ksName,String roomName,Pageable page);
+	
+	
 	
 	@Query("from HosDiagnosticRecord h where h.medicalRecord.medRid = ?1")
 	public List <HosDiagnosticRecord> getDiagRecordbyMid(String medRid);

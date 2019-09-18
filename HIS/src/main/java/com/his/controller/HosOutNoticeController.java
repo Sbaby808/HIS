@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,17 +28,18 @@ public class HosOutNoticeController {
 	* @Description:获取所有出院通知单
 	* @param:@return
 	* @return:List<HosOutNotice>
+	 * @throws ParseException 
 	* @throws
 	* @author:Hamster
 	* @Date:2019年8月4日 上午10:00:00
 	 */
 	@ResponseBody
 	@GetMapping("/get_hos_out_notice_byPage")
-	public Map getHosOutNoticeByPage(String text1,String text2,String text3,int curpage,int pagesize){
+	public Map getHosOutNoticeByPage(String start,String end,String text1,String text2,String text3,int curpage,int pagesize) throws ParseException{
 		String cardName = "%"+text1+"%";
 		String ksName = "%"+text2+"%";
 		String roomName = "%"+text3+"%";
-		return hosOutNoticeService.getHosOutNoticeByPage(cardName,ksName,roomName,curpage, pagesize);
+		return hosOutNoticeService.getHosOutNoticeByPage(start,end,cardName,ksName,roomName,curpage, pagesize);
 	}
 	
 	/**

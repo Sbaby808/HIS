@@ -359,8 +359,9 @@ public class DrugInformationController {
 	 */
 	@ResponseBody
 	@GetMapping("/get_all_drug_information")
-	public List <DrugInformation> getAllDrugInformation(){
-		return drugInformationService.getAllDrugInformation();
+	public List <DrugInformation> getAllDrugInformation(String ypName){
+		String name = "%"+ypName+"%";
+		return drugInformationService.getAllDrugInformation(name);
 	}
 	
 	@ResponseBody
