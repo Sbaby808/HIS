@@ -353,6 +353,7 @@ public class WorkTimeService {
         zong.setFivelist(five);
         zong.setSixlist(six);
         zong.setSevenlist(seven);
+        zong.setTime(date);
         
         
         return zong;

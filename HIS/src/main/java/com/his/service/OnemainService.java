@@ -476,7 +476,7 @@ public class OnemainService {
         c.add(Calendar.DATE, -1);
         Date time = c.getTime();
         WktimeEmp wktimeEmp=iWktimeempDao.getbytimeandygxh(ygxh, time, "晚班");
-        if(wktimeEmp!=null&&(wktimeEmp.getState().equals("迟到")||wktimeEmp.getState().equals("正在上班"))&&wktimeEmp.getEarlyleave()==null) {
+        if(wktimeEmp!=null&&(wktimeEmp.getState().equals("迟到")||wktimeEmp.getState().equals("正在上班"))&&wktimeEmp.getEarlyleave()==null&&date.getHours()<10) {
         	string="点我打卡下班";
         }
         else {

@@ -23,7 +23,7 @@ public interface IOperationNoticeDao extends CrudRepository<OpeNotice, String>{
 	public List<OpeNoticebean> getopenoticebysou(String sou);
 	@Query(value="select count(*) from OpeNotice o where o.solveScheme.history.outpatientRegistration.medicalCard.cardId=?1")
 	public long getcountbysou(String sou);
-	@Query(value="select new com.his.bean.OpeNoticebean(o.moperId, o.moperComment,o.moperTime, o.operationPay.operPayName,o.solveScheme.history.outpatientRegistration.medicalCard.cardName,o.solveScheme.history.outpatientRegistration.medicalCard.cardId,o.operationPay.operPayId)  from OpeNotice o where o.solveScheme.history.outpatientRegistration.medicalCard.cardId=?1")
+	@Query(value="select new com.his.bean.OpeNoticebean(o.moperId, o.moperComment,o.moperTime, o.operationPay.operPayName,o.solveScheme.history.outpatientRegistration.medicalCard.cardName,o.solveScheme.history.outpatientRegistration.medicalCard.cardId,o.operationPay.operPayId)  from OpeNotice o where o.solveScheme.history.outpatientRegistration.medicalCard.cardId=?1 order by o.moperTime desc")
     public List<OpeNoticebean> getNoticebeans(String sou,Pageable page);
 	@Query(value="select count(*) from OpeNotice o")
     public long getcount();

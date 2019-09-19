@@ -67,8 +67,8 @@ public class OpeDrugDetailController {
 	 */
 	@ResponseBody
 	@PostMapping("add_ope_drug")
-	public void addopeDrugDetail(@RequestBody List<Addmedicbean> list) {
-		opeDrugDetailsService.addopdrug(list);
+	public String addopeDrugDetail(@RequestBody List<Addmedicbean> list) {
+		return opeDrugDetailsService.addopdrug(list);
 	}
 	/**
 	 * 

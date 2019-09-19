@@ -27,7 +27,7 @@ public interface IOperationPayDao extends CrudRepository<OperationPay, String>{
 	* @author:TRC
 	* @Date:2019年7月31日 下午5:57:12
 	 */
-    @Query(value="select new com.his.bean.OperationPaybean(o.operPayId, o.operPayDesc,o.operPayName, o.operPayPrice, o.operPayTime,e.ygName,e.ygxh) from OperationPay o, EmpInformation e where o.empInformation = e.ygxh and o.operPayName like ?1")
+    @Query(value="select new com.his.bean.OperationPaybean(o.operPayId, o.operPayDesc,o.operPayName, o.operPayPrice, o.operPayTime,e.ygName,e.ygxh) from OperationPay o, EmpInformation e where o.empInformation = e.ygxh and o.operPayName like ?1 order by  o.operPayTime desc")
 	public List<OperationPaybean> getall_ope_pays(String sou,Pageable page);
     @Query(value="select count(*) from OperationPay o where o.operPayName like ?1")
     public long getcount(String sou);

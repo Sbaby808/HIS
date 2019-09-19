@@ -18,7 +18,7 @@ import com.his.pojo.HosSurgeryNotice;
 *
  */
 public interface IHosSurgeryNoticeDao extends CrudRepository<HosSurgeryNotice, String>{
-	@Query(value="select new com.his.bean.OpeNoticebean(h.hosSurId,h.payNote,h.hosSurTime,o.operPayName,h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName,h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardId,h.hosSurNote) from HosSurgeryNotice h,OperationPay o where h.hosSurNote=o.operPayId and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardId like?1")
+	@Query(value="select new com.his.bean.OpeNoticebean(h.hosSurId,h.payNote,h.hosSurTime,o.operPayName,h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName,h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardId,h.hosSurNote) from HosSurgeryNotice h,OperationPay o where h.hosSurNote=o.operPayId and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardId like?1 order by h.hosSurTime desc")
 	public List<OpeNoticebean> getzhuyuannotice(String sou,Pageable page);
 	@Query(value="select count(1) from HosSurgeryNotice h,OperationPay o where h.hosSurNote=o.operPayId and h.hosDoctorAdvice.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardId like?1")
 	public long getcount(String sou);

@@ -19,7 +19,7 @@ import com.his.pojo.CheckPayRecord;
 public interface ICheckPayRecordDao extends CrudRepository<CheckPayRecord, String>{
 	@Query(value="from CheckPayRecord c where c.medicalCard.cardId=?1 and c.checkPay.checkId=?2 and c.checkResultForm.checkResultId=null order by c.checkJfTime")
 	public List<CheckPayRecord> getPayRecord(String card_id,String cheid);
-	@Query(value="from CheckPayRecord c where c.medicalCard.cardName like?1")
+	@Query(value="from CheckPayRecord c where c.medicalCard.cardName like?1 order by c.checkJfTime desc")
 	public List<CheckPayRecord> getpayrecord(String sou,Pageable page);
 	@Query(value="select count(1) from CheckPayRecord c where c.medicalCard.cardName like?1")
 	public long getgount(String sou);

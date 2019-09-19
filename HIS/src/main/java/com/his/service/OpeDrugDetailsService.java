@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.his.bean.Addmedicbean;
 import com.his.bean.Medicinebean;
@@ -13,6 +14,7 @@ import com.his.dao.IDrugWarehouseDao;
 import com.his.dao.IMedicineDao;
 import com.his.dao.IOpeDrugDetailDao;
 import com.his.dao.IOperationRecordDao;
+import com.his.pojo.Medicine;
 import com.his.pojo.OpeDrugDetail;
 import com.his.pojo.OpeDrugDetailPK;
 import com.his.pojo.OperationRecord;
@@ -25,6 +27,7 @@ import com.his.pojo.OperationRecord;
 *    
 */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class OpeDrugDetailsService {
 	@Autowired
 	private IOpeDrugDetailDao iOpeDrugDetailDao;
@@ -137,9 +140,17 @@ public class OpeDrugDetailsService {
     * @author:TRC
     * @Date:2019年8月9日 下午3:50:46
      */
-    public void addopdrug(List<Addmedicbean> list) {
+    public String addopdrug(List<Addmedicbean> list) {
     	String opeid=list.get(0).getOpeid();
+        List<OpeDrugDetail> druglist=iOperationRecordDao.findById(opeid).get().getOpeDrugDetails();
+        if(druglist.size()>0) {
+        	return "您已经编辑过用药信息了！";
+        }
+        else {
     	for (Addmedicbean addmedicbean : list) {
+    		Medicine medicine=iMedicineDao.findById(iMedicineDao.getmid(addmedicbean.getPcid())[0]).get();
+    		medicine.setMedicineName(medicine.getMedicineName().subtract(addmedicbean.getTotal()));
+    		iMedicineDao.save(medicine);
     		OpeDrugDetail opeDrugDetail=new OpeDrugDetail();
         	opeDrugDetail.setOpeDrugUnit(addmedicbean.getYaoname().substring(addmedicbean.getYaoname().length()-1,addmedicbean.getYaoname().length()));
         	opeDrugDetail.setOpeDrugNum(addmedicbean.getTotal());
@@ -149,6 +160,8 @@ public class OpeDrugDetailsService {
         	opeDrugDetail.setId(pk);
         	iOpeDrugDetailDao.save(opeDrugDetail);
 		}
+    	return "用药信息编辑成功！";
+    	}
     }
     /**
      * 

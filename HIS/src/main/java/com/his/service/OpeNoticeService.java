@@ -22,6 +22,7 @@ import com.his.dao.IOperationNoticeDao;
 import com.his.dao.IOperationPayDao;
 import com.his.dao.IOperationRecordDao;
 import com.his.dao.IRoleDao;
+import com.his.dao.IWktimeEmpDAO;
 import com.his.pojo.CheckNoticeForm;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.HosSurgeryNotice;
@@ -34,6 +35,8 @@ import com.his.pojo.OperationRecord;
 import com.his.pojo.Role;
 import com.his.pojo.SolveScheme;
 import com.his.pojo.UserRole;
+import com.his.pojo.WktimeEmp;
+import com.his.pojo.WorkTime;
 import com.his.utils.UUIDGenerator;
 
 import oracle.net.aso.e;
@@ -67,6 +70,8 @@ public class OpeNoticeService {
 	private IOpeEmpDao iOpeEmpDao;
 	@Autowired
 	private IHosSurgeryNoticeDao iHosSurgeryNoticeDao;
+	@Autowired
+	private IWktimeEmpDAO iWktimeEmpDAO;
     public Map getNoticebeans(int curpage, int pagesize,String sou){
     	List<OpeNoticebean> list=iOperationNotice.getNoticebeans( sou,PageRequest.of(curpage - 1,
 		  pagesize));
@@ -104,10 +109,29 @@ public class OpeNoticeService {
         System.out.println(role.getRoleId());
         List<UserRole> list=role.getUserRoles();
         List<EmpInformation> emplist=new ArrayList<EmpInformation>();
+        Date date=new Date();
         for (UserRole userRole : list) {	
-        	emplist.add(userRole.getEmpInformation());
-        	
+        	if(date.getHours()<18&&date.getHours()>5) {
+        	WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(userRole.getEmpInformation().getYgxh(), date, "白班");
+        	if(wktimeEmp!=null) {
+        		emplist.add(userRole.getEmpInformation());
+        	}
+        	else {}
+        	}
+        	else {
+        	WktimeEmp wktimeEmp=iWktimeEmpDAO.getbytimeandygxh(userRole.getEmpInformation().getYgxh(), date, "晚班");
+        	if(wktimeEmp!=null) {
+        		emplist.add(userRole.getEmpInformation());
+        	}
+        	else {}
+        	}
 		}
+        if(emplist.size()==0) {
+        	for(UserRole userRole : list) {
+        		emplist.add(userRole.getEmpInformation());
+        	}
+        }
+        else {}
         List<OpeEmp> listopeEmps=new ArrayList<OpeEmp>();
         OpeEmp opeEmp=new OpeEmp();
         opeEmp.setDuty("主刀医生");

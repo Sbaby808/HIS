@@ -29,7 +29,7 @@ public interface ICheckPayDao extends CrudRepository<CheckPay, String>{
 	 */
 	@Query("from CheckPay c")
 	public List <CheckPay> getAllCheckPay();
-	@Query(value="from CheckPay c where c.checkPayName like?1")
+	@Query(value="from CheckPay c where c.checkPayName like?1 order by c.checkPayTime desc")
 	public List<CheckPay> getcheckbysou(String sou,Pageable page);
 	@Query(value="select count(1) from CheckPay c where c.checkPayName like?1")
 	public long getcount(String sou);

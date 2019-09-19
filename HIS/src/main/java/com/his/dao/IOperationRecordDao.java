@@ -26,7 +26,7 @@ public interface IOperationRecordDao extends CrudRepository<OperationRecord, Str
 	* @author:TRC
 	* @Date:2019年8月1日 下午5:19:25
 	 */
-	@Query(value="select new com.his.bean.OperationRecordbean(o.operationRecord.opeId,p.medicalCard.cardName,p.operationPay.operPayName, o.operationRecord.opeJg, o.operationRecord.opeStatus,o.operationRecord.opeTime,o.operationRecord.opeType,o.operationRecord.opeDiagnose) from OpeEmp o,OperPayRecord p where o.operationRecord.opeId=p.operationRecord.opeId and p.medicalCard.cardName like ?1 and o.empInformation.ygxh=?2 and o.duty='主刀医生'")
+	@Query(value="select new com.his.bean.OperationRecordbean(o.operationRecord.opeId,p.medicalCard.cardName,p.operationPay.operPayName, o.operationRecord.opeJg, o.operationRecord.opeStatus,o.operationRecord.opeTime,o.operationRecord.opeType,o.operationRecord.opeDiagnose) from OpeEmp o,OperPayRecord p where o.operationRecord.opeId=p.operationRecord.opeId and p.medicalCard.cardName like ?1 and o.empInformation.ygxh=?2 and o.duty='主刀医生' order by o.operationRecord.opeTime desc")
 	public List<OperationRecordbean> getallOperationRecordbeans(String sou,String ygxh,Pageable page);
 	@Query(value="select count(*) from OpeEmp o,OperPayRecord p where o.operationRecord.opeId=p.operationRecord.opeId and p.medicalCard.cardName like ?1 and o.empInformation.ygxh=?2 and o.duty='主刀医生'")
 	public long getcount(String sou,String ygxh);
