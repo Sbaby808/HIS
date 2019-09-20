@@ -18,6 +18,7 @@ import com.his.pojo.AliPayEntity;
 import com.his.pojo.EmpInformation;
 import com.his.service.EmpInformationService;
 import com.his.service.MedicalCardService;
+import com.his.utils.ACR122uTools;
 import com.his.utils.AliPay;
 import com.his.utils.ImageBase64Utils;
 import com.his.utils.MD5Tools;
@@ -195,6 +196,20 @@ public class HisApplicationTests {
 		System.out.println(secret);
 		String reString = MD5Tools.JM(secret);
 		System.out.println(reString);
+	}
+	
+	/**
+	* @Title:testGetCardNum
+	* @Description:测试读取卡号
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月20日 下午5:35:34
+	 */
+	@Test
+	public void testGetCardNum() {
+		System.out.println(ACR122uTools.getCardNum());
 	}
 
 }
