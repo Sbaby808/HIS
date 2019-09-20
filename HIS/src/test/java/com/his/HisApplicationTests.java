@@ -203,12 +203,13 @@ public class HisApplicationTests {
 	* @Description:测试读取卡号
 	* @param:
 	* @return:void
+	 * @throws Exception 
 	* @throws
 	* @author:Sbaby
 	* @Date:2019年9月20日 下午5:35:34
 	 */
 	@Test
-	public void testGetCardNum() {
+	public void testGetCardNum() throws Exception {
 		System.out.println(ACR122uTools.getCardNum());
 	}
 
