@@ -233,4 +233,5 @@ public class OnemainController {
 	public List<Piebean> getpie(String ygxh) {
 		return onemainService.getpie(ygxh);
 	}
+	
 }

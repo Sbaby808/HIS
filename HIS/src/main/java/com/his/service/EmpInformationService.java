@@ -109,11 +109,11 @@ public class EmpInformationService {
 				System.out.println("into add tp_id");
 			}
 			// 维护waitingRoomId
-			String wid = empInformation.getWaitingRoomId();
-			if (wid.equals("")) {
-				empInformation.setWaitingRoom(null);
-				System.out.println("into add wid");
-			}
+			//String wid = empInformation.getWaitingRoomId();
+			/*
+			 * if (wid.equals("")||wid==null) { empInformation.setWaitingRoom(null);
+			 * System.out.println("into add wid"); }
+			 */
 			String roleid=empInformation.getYgPassword();
 			System.out.println(roleid);
 			// 员工id

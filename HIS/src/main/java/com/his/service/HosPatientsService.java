@@ -262,8 +262,8 @@ public class HosPatientsService {
 		
 		
 		BigDecimal add = new BigDecimal(money);
-		BigDecimal deposit = add.add(patient.getDepositMoney());
-		patient.setDepositMoney(deposit);
+		BigDecimal balance = add.add(patient.getBalance());
+		patient.setBalance(balance);
 		hosPatientDao.save(patient);
 		
 		HosPayRecord payRecord = new HosPayRecord();
