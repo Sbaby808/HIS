@@ -91,4 +91,12 @@ public interface IDepartmentDao extends CrudRepository<Department, String>{
 	@Query(value="select d from Department d where d.dept.deptId=?1")
 	public List<Department> getDepartments(String deptid);
 	
+	/**
+	 * 同个部门下面的所有科室不能重名
+	 * 科室名称相等的情况下 部门的id也要相等  返回数量
+	 */
+	@Query("select count(*) from Department d where d.ksName=?1 "
+			+ "and d.dept.deptId=?2")
+	public long findcountbyname(String ksName,String deptId);
+	
 }

@@ -87,4 +87,10 @@ public class DepartmentController {
 	public void updateDepartment(@RequestBody Department department) {
 		departmentService.addorupdateDepartment(department);
 	}
+	
+	@ResponseBody
+	@GetMapping("/findcounts_byname")
+	public long findcounts(String ksName, String deptId) {
+		return departmentService.findcountsbyname(ksName, deptId);
+	}
 }

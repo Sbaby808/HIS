@@ -72,5 +72,10 @@ public class DepartmentService {
 		return departmentDAO.countbynames(name);
 	}
 	
+	//查询同一个部门下面有多少相同名字的department
+	public long findcountsbyname(String ksName, String deptId) {
+		return departmentDao2.findcountbyname(ksName, deptId);
+	}
+	
 	
 }
