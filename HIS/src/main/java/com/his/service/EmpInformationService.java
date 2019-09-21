@@ -315,8 +315,8 @@ public class EmpInformationService {
 	 * @throws @author:Sbaby
 	 * @Date:2019年7月31日 下午2:37:29
 	 */
-	public boolean loginTestEmp(EmpInformation empInformation) {
-		EmpInformation emp = empInformationDao.findById(empInformation.getYgxh()).get();
+	public boolean loginTestEmp(EmpInformation empInformation) throws Exception {
+		EmpInformation emp = empInformationDao.getEmpByGh(empInformation.getYgGh()).get(0);
 		if (MD5Tools.check(empInformation.getYgPassword(), emp.getYgPassword())) {
 			return true;
 		} else {
@@ -446,9 +446,9 @@ public class EmpInformationService {
 	* @author:Sbaby
 	* @Date:2019年9月13日 下午12:41:26
 	 */
-	public boolean checkLoginGrant(String ygxh) {
-		EmpInformation empInformation  =empInformationDao.findById(ygxh).get();
-		int result = userroledao.checkLoginGrant(ygxh);
+	public boolean checkLoginGrant(String ygGh) throws Exception {
+		EmpInformation empInformation  =empInformationDao.getEmpByGh(ygGh).get(0);
+		int result = userroledao.checkLoginGrant(empInformation.getYgxh());
 		return result > 0 ? true : false;
 	}
 

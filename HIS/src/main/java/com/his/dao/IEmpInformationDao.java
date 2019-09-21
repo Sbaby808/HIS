@@ -103,4 +103,17 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
 	 */
 	@Query("select ur.empInformation from UserRole ur where ur.role.rolePosition = '司机' ")
 	public List<EmpInformation> getsijibyempid();
+	
+	/**
+	* @Title:getEmpByGh
+	* @Description:根据工号查询员工
+	* @param:@param ygGh
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月21日 下午5:04:07
+	 */
+	@Query("from EmpInformation e where e.ygGh = ?1")
+	public List<EmpInformation> getEmpByGh(String ygGh);
 }

@@ -29,7 +29,7 @@ public interface ITechnicalPostDao extends CrudRepository<TechnicalPost, String>
 	* @author:Sbaby
 	* @Date:2019年8月9日 下午5:01:02
 	 */
-	@Query(value = "select t.* from (((technical_post t left outer join emp_information e on t.tp_id = e.tp_id) "
+	@Query(value = "select distinct t.* from (((technical_post t left outer join emp_information e on t.tp_id = e.tp_id) "
        + "left outer join user_role ur on e.ygxh = ur.ygxh) "
        + "left outer join role r on ur.role_id = r.role_id) "
        + "left outer join department d on r.ks_id = d.ks_id "
