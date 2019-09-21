@@ -451,5 +451,58 @@ public class EmpInformationService {
 		int result = userroledao.checkLoginGrant(ygxh);
 		return result > 0 ? true : false;
 	}
+	/**
+	 * 
+	* @Title:getempby
+	* @Description:TODO根据部门，科室，职位筛选员工
+	* @param:@param bumenid
+	* @param:@param ksid
+	* @param:@param roleid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午4:06:15
+	 */
+	public Map getempby(String bumenid,String ksid,String roleid,String name,int curpage, int pagesize) {
+		List<EmpInformation> list=new ArrayList<EmpInformation>();
+		int total=0;
+		if(bumenid!=null&&ksid==null&&name==null) {
+			list=empInformationDao.getbybumen(bumenid,PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		else if(bumenid!=null&&ksid==null&&name!=null) {
+			list=empInformationDao.getbybumenandname(bumenid, "%"+name+"%",PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		else if(ksid!=null&&roleid==null&&name==null) {
+			list=empInformationDao.getbyks(ksid,PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		else if(ksid!=null&&roleid==null&&name!=null) {
+			list=empInformationDao.getbyksandname(ksid, "%"+name+"%",PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		else if(roleid!=null&&name==null){
+			list=empInformationDao.getbyrole(roleid,PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		else if(roleid!=null&&name!=null){
+			list=empInformationDao.getbyroleandname(roleid, "%"+name+"%",PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		else if(bumenid==null&&name!=null){
+			list=empInformationDao.getallbyname("%"+name+"%",PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		else {
+			list=empInformationDao.getall(PageRequest.of(curpage - 1, pagesize));
+			total=list.size();
+		}
+		Map map=new  HashMap();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 
 }

@@ -103,4 +103,109 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
 	 */
 	@Query("select ur.empInformation from UserRole ur where ur.role.rolePosition = '司机' ")
 	public List<EmpInformation> getsijibyempid();
+	/**
+	 * 
+	* @Title:getbybumen
+	* @Description:TODO查部门下的所有员工
+	* @param:@param bumenid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午3:59:59
+	 */
+	@Query(value="select distinct  u.empInformation from UserRole u where u.role.department.dept.deptId=?1")
+	public List<EmpInformation> getbybumen(String bumenid,Pageable page);
+	
+	/**
+	 * 
+	* @Title:getbybumen
+	* @Description:TODO查部门下的所有员工by名字
+	* @param:@param bumenid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午3:59:59
+	 */
+	@Query(value="select distinct  u.empInformation from UserRole u where u.role.department.dept.deptId=?1 and (u.empInformation.ygName like ?2 or u.empInformation.ygGh like ?2)")
+	public List<EmpInformation> getbybumenandname(String bumenid,String name,Pageable page);
+	/**
+	 * 
+	* @Title:getbyks
+	* @Description:TODO查科室下的所有员工
+	* @param:@param ksid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午4:00:15
+	 */
+	@Query(value="select distinct  u.empInformation from UserRole u where u.role.department.ksId=?1")
+	public List<EmpInformation> getbyks(String ksid,Pageable page);
+	/**
+	 * 
+	* @Title:getbyks
+	* @Description:TODO查科室下的所有员工byname
+	* @param:@param ksid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午4:00:15
+	 */
+	@Query(value="select distinct  u.empInformation from UserRole u where u.role.department.ksId=?1 and (u.empInformation.ygName like ?2 or u.empInformation.ygGh like ?2)")
+	public List<EmpInformation> getbyksandname(String ksid,String name,Pageable page);
+	/**
+	 * 
+	* @Title:getbyrole
+	* @Description:TODO有这个职位的员工
+	* @param:@param roleid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午4:00:31
+	 */
+	@Query(value="select distinct  u.empInformation from UserRole u where u.role.roleId=?1")
+	public List<EmpInformation> getbyrole(String roleid,Pageable page);
+	/**
+	 * 
+	* @Title:getbyrole
+	* @Description:TODO有这个职位的员工byname
+	* @param:@param roleid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午4:00:31
+	 */
+	@Query(value="select distinct  u.empInformation from UserRole u where u.role.roleId=?1 and (u.empInformation.ygName like ?2 or u.empInformation.ygGh like ?2)")
+	public List<EmpInformation> getbyroleandname(String roleid,String name,Pageable page);
+	/**
+	 * 
+	* @Title:getbyroleandname
+	* @Description:TODO分页查询所有员工
+	* @param:@param page
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午5:03:45
+	 */
+	@Query(value="select e from EmpInformation e")
+	public List<EmpInformation> getall(Pageable page);
+	/**
+	 * 
+	* @Title:getbyroleandname
+	* @Description:TODO分页查询所有员工byname
+	* @param:@param page
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午5:03:45
+	 */
+	@Query(value="select e from EmpInformation e where (e.ygName like ?1 or e.ygGh like ?1)")
+	public List<EmpInformation> getallbyname(String name,Pageable page);
 }

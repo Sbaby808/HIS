@@ -199,4 +199,22 @@ public class EmpInformationController {
 	public String gaipassword(String ygxh,String old,String xin) {
 		return empInformationService.gaipassword(ygxh, old, xin);
 	}
+	/**
+	 * 
+	* @Title:getemp
+	* @Description:TODO根据部门，科室，职位筛选id
+	* @param:@param bumenid
+	* @param:@param ksid
+	* @param:@param roleid
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:TRC
+	* @Date:2019年9月21日 下午4:07:33
+	 */
+	@ResponseBody
+	@GetMapping("getempby")
+	public Map getemp(String bumenid,String ksid,String roleid,String name,int curpage, int pagesize) {
+		return empInformationService.getempby(bumenid, ksid, roleid,name,curpage,pagesize);
+	}
 }
