@@ -1,5 +1,7 @@
 package com.his.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,8 +151,14 @@ public class OpeDrugDetailsService {
         else {
     	for (Addmedicbean addmedicbean : list) {
     		Medicine medicine=iMedicineDao.findById(iMedicineDao.getmid(addmedicbean.getPcid())[0]).get();
+    	    if(medicine.getMedicineName().compareTo(addmedicbean.getTotal())==-1) {
+    	    	String a[]=null;
+    	    	System.out.println(a[1]);
+    	    }
+    	    else {
     		medicine.setMedicineName(medicine.getMedicineName().subtract(addmedicbean.getTotal()));
     		iMedicineDao.save(medicine);
+    		}
     		OpeDrugDetail opeDrugDetail=new OpeDrugDetail();
         	opeDrugDetail.setOpeDrugUnit(addmedicbean.getYaoname().substring(addmedicbean.getYaoname().length()-1,addmedicbean.getYaoname().length()));
         	opeDrugDetail.setOpeDrugNum(addmedicbean.getTotal());

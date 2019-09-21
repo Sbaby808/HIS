@@ -39,7 +39,7 @@ public class LoginController {
 	public JsonResult login(@RequestBody EmpInformation empInformation) {
 		JsonResult result = new JsonResult();
 		try {
-			if(empInformationService.checkLoginGrant(empInformation.getYgxh())) {
+			
 				if(empInformationService.loginTestEmp(empInformation)) {
 					result.setStatus("ok");
 					result.setResult(empInformation);
@@ -47,10 +47,7 @@ public class LoginController {
 					result.setStatus("error");
 					result.setResult("用户名或密码错误！");
 				}
-			} else {
-				result.setStatus("error");
-				result.setResult("用户没有登录权限");;
-			}
+			
 		} catch (Exception e) {
 			result.setResult("用户不存在");
 			result.setStatus("error");
