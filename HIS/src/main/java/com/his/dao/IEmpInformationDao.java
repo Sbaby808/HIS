@@ -103,7 +103,21 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
 	 */
 	@Query("select ur.empInformation from UserRole ur where ur.role.rolePosition = '司机' ")
 	public List<EmpInformation> getsijibyempid();
+	
 	/**
+	* @Title:getEmpByGh
+	* @Description:根据工号查询员工
+	* @param:@param ygGh
+	* @param:@return
+	* @return:List<EmpInformation>
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月21日 下午5:04:07
+	 */
+	@Query("from EmpInformation e where e.ygGh = ?1")
+	public List<EmpInformation> getEmpByGh(String ygGh);
+
+/**
 	 * 
 	* @Title:getbybumen
 	* @Description:TODO查部门下的所有员工
@@ -208,4 +222,4 @@ public interface IEmpInformationDao extends CrudRepository<EmpInformation, Strin
 	 */
 	@Query(value="select e from EmpInformation e where (e.ygName like ?1 or e.ygGh like ?1)")
 	public List<EmpInformation> getallbyname(String name,Pageable page);
-}
+	}

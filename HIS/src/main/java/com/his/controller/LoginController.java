@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.his.dao.IEmpInformationDao;
 import com.his.pojo.EmpInformation;
 import com.his.pojo.JsonResult;
 import com.his.service.EmpInformationService;
@@ -23,6 +24,8 @@ public class LoginController {
 	
 	@Autowired
 	private EmpInformationService empInformationService;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
 
 	/**
 	* @Title:login
@@ -39,15 +42,19 @@ public class LoginController {
 	public JsonResult login(@RequestBody EmpInformation empInformation) {
 		JsonResult result = new JsonResult();
 		try {
-			
+			if(empInformationService.checkLoginGrant(empInformation.getYgGh())) {
 				if(empInformationService.loginTestEmp(empInformation)) {
 					result.setStatus("ok");
+					empInformation.setYgxh(empInformationDao.getEmpByGh(empInformation.getYgGh()).get(0).getYgxh());
 					result.setResult(empInformation);
 				} else {
 					result.setStatus("error");
 					result.setResult("用户名或密码错误！");
 				}
-			
+			} else {
+				result.setStatus("error");
+				result.setResult("用户没有登录权限");;
+			}
 		} catch (Exception e) {
 			result.setResult("用户不存在");
 			result.setStatus("error");
