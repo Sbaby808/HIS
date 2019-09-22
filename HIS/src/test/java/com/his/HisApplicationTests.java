@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.demo.trade.model.GoodsDetail;
 import com.his.pojo.AliPayEntity;
 import com.his.pojo.EmpInformation;
+import com.his.pojo.MedicalCard;
 import com.his.service.EmpInformationService;
 import com.his.service.MedicalCardService;
 import com.his.utils.ACR122uTools;
@@ -210,6 +211,27 @@ public class HisApplicationTests {
 	 */
 	@Test
 	public void testGetCardNum() throws Exception {
+		System.out.println(ACR122uTools.getCardNum());
+	}
+	
+	/**
+	* @Title:showCardPass
+	* @Description:查看就诊卡密码解码信息
+	* @param:
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月22日 下午11:36:30
+	 */
+	@Test
+	public void showCardPass() {
+		MedicalCard medicalCard = medicalCardService.getCardByCid("da625d38eea142bd8ac49621856cb8ed");
+		System.out.println(MD5Tools.KL(medicalCard.getPasswd()));
+	}
+	
+	@Test
+	public void testGetCard() throws Exception {
+		System.out.println(ACR122uTools.getPassword());
 		System.out.println(ACR122uTools.getCardNum());
 	}
 

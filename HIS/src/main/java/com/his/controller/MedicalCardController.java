@@ -91,8 +91,7 @@ public class MedicalCardController {
 	public JsonResult addCard(@RequestBody MedicalCard medicalCard) {
 		JsonResult result = new JsonResult();
 		try {
-			medicalCardService.addMedicalCard(medicalCard);
-			result.setResult(medicalCard);
+			result.setResult(medicalCardService.addMedicalCard(medicalCard));
 			result.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -35,8 +35,7 @@ public class ACR122uController {
 	public JsonResult readCard() {
 		JsonResult result = new JsonResult();
 		try {
-			result.setResult(acr122uService.readCard());
-			result.setStatus("ok");
+			result = acr122uService.readCard();
 		} catch (Exception e) {
 			result.setStatus("error");
 		}

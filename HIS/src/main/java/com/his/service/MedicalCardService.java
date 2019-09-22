@@ -58,7 +58,7 @@ public class MedicalCardService {
 	* @author:Sbaby
 	* @Date:2019年8月2日 上午9:47:19
 	 */
-	public void addMedicalCard(MedicalCard medicalCard) {
+	public MedicalCard addMedicalCard(MedicalCard medicalCard) {
 		if(medicalCard.getCardId() == null) {
 			medicalCard.setCardId(UUID.randomUUID().toString().replace("-", ""));
 			medicalCard.setAge(new BigDecimal(SimpleTools.calAgeByBirthday(medicalCard.getBirthday())));
@@ -67,6 +67,7 @@ public class MedicalCardService {
 		}
 //		System.out.println(medicalCard.getLinkPerson());
 		medicalCardDao.save(medicalCard);
+		return medicalCard;
 	}
 	
 	/**
