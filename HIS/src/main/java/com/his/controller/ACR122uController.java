@@ -37,6 +37,31 @@ public class ACR122uController {
 		try {
 			result = acr122uService.readCard();
 		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:writeCard
+	* @Description:写卡
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月23日 上午12:00:58
+	 */
+	@GetMapping("/write_acr122u")
+	@ResponseBody
+	public JsonResult writeCard(String cardId) {
+		JsonResult result = new JsonResult();
+		try {
+			acr122uService.writeCard(cardId);
+			result.setResult(cardId);
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
 			result.setStatus("error");
 		}
 		return result;

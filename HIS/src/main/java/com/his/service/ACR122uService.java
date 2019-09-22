@@ -52,5 +52,20 @@ public class ACR122uService {
 //			new Thread(new ACRThread()).start();
 		
 	}
+	
+	/**
+	* @Title:writeCard
+	* @Description:写卡
+	* @param:@param cardId
+	* @return:void
+	* @throws
+	* @author:Sbaby
+	* @Date:2019年9月23日 上午12:06:05
+	 */
+	public void writeCard(String cardId) throws Exception {
+		MedicalCard medicalCard = medicalCardService.getCardByCid(cardId);
+		ACR122uTools.setCardNum(cardId);
+		ACR122uTools.setPasswd(MD5Tools.KL(medicalCard.getPasswd()));
+	}
 
 }
