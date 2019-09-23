@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.HosDrugRecord;
+import com.his.pojo.JsonResult;
 import com.his.service.HosDrugRecordService;
 
 import oracle.jdbc.proxy.annotation.Post;
@@ -40,8 +41,16 @@ public class HosDrugRecordController {
 	 */
 	@ResponseBody
 	@PostMapping("/add_hos_drug_record")
-	public void addHosDrugRecord(@RequestBody HosDrugRecord record) throws ParseException{
-		hosDrugRecordService.addHosDrugRecord(record);
+	public JsonResult addHosDrugRecord(@RequestBody HosDrugRecord record) throws ParseException{
+		JsonResult result = new JsonResult();
+		try{
+			result.setResult(hosDrugRecordService.addHosDrugRecord(record));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
 	}
 	
 	

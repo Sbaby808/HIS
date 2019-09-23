@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.HosDoctorAdvice;
+import com.his.pojo.JsonResult;
 import com.his.service.HosDocAdviceService;
 
 
@@ -96,8 +97,16 @@ public class HosDocAdviceController {
 	 */
 	@ResponseBody
 	@PostMapping("/add_hos_doc_advice")
-	public void addHosDocAdvice(@RequestBody HosDoctorAdvice advice) throws ParseException{
-		hosDocAdviceService.addHosDocAdvice(advice);
+	public JsonResult addHosDocAdvice(@RequestBody HosDoctorAdvice advice) throws ParseException{
+		JsonResult result = new JsonResult();
+		try{
+			result.setResult(hosDocAdviceService.addHosDocAdvice(advice));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
 	}
 	
 	/**

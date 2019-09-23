@@ -78,14 +78,16 @@ public interface IHosDocAdviceDao extends CrudRepository<HosDoctorAdvice, String
 			+ " h.hosDiagnosticRecord.medicalRecord.medOutTime is null "
 			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2"
+			+ " order by h.hosStartTime desc ")
 	public List <HosDoctorAdvice> getHosDocAdviceBypage(String cardName,String ksName,Pageable page);
 	
 	@Query("select count(*) from HosDoctorAdvice h where "
 			+ " h.hosDiagnosticRecord.medicalRecord.medOutTime is null "
 			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
+			+ " order by h.hosStartTime desc ")
 	public Long countNum1(String cardName,String ksName);
 	
 	
@@ -94,7 +96,8 @@ public interface IHosDocAdviceDao extends CrudRepository<HosDoctorAdvice, String
 			+ " and h.hosDiagnosticRecord.medicalRecord.medOutTime is null "
 			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
+			+ " order by h.hosStartTime desc ")
 	public List <HosDoctorAdvice> getHosDocAdviceBypageandTime(Date start,Date end,String cardName,String ksName,Pageable page);
 
 	@Query("select count(*) from HosDoctorAdvice h where "
@@ -102,7 +105,8 @@ public interface IHosDocAdviceDao extends CrudRepository<HosDoctorAdvice, String
 			+ " and h.hosDiagnosticRecord.medicalRecord.medOutTime is null "
 			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
+			+ " order by h.hosStartTime desc ")
 	public Long countNum2(Date start,Date end,String cardName,String ksName);
 
 

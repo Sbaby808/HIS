@@ -105,5 +105,8 @@ public interface IHosPatientDao extends CrudRepository<HospitalizedPatient, Stri
 			+ " LEFT JOIN hospitalized_patients h ON TO_CHAR(T.COL1, 'YYYY-MM') = TO_CHAR(h.register_time, 'YYYY-MM') "
 			+ " GROUP BY TO_CHAR(T.COL1, 'YYYY-MM') order by 1 ",nativeQuery=true)
 	public List countForCharts();
+	
+	@Query("from HospitalizedPatient h where h.hosBed.wardRoom.wroomId = ?1 ")
+	public List <HospitalizedPatient> getPatientsByroomId(String roomId);
 
 }

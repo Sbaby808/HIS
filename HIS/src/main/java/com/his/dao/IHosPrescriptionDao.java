@@ -47,14 +47,16 @@ public interface IHosPrescriptionDao extends CrudRepository<HosPrescription, Str
 			+ " (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
 			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null "
+			+ " order by h.hosPreTime desc ")
 	public List <HosPrescription> getHosPrescriptionByPage(String cardName,String ksName,Pageable page);
 	
 	@Query("select count(*) from HosPrescription h where "
 			+ " (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
 			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null "
+			+ " order by h.hosPreTime desc ")
 	public Long countNum1(String cardName,String ksName);
 	
 	
@@ -63,7 +65,8 @@ public interface IHosPrescriptionDao extends CrudRepository<HosPrescription, Str
 			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
 			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null "
+			+ " order by h.hosPreTime desc ")
 	public List <HosPrescription> getHosPrescriptionByPageandTime(Date start,Date end,String cardName,String ksName,Pageable page);
 	
 	@Query("select count(*) from HosPrescription h where "
@@ -71,7 +74,8 @@ public interface IHosPrescriptionDao extends CrudRepository<HosPrescription, Str
 			+ " and (h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3 "
 			+ " or h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
 			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
-			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null")
+			+ " and h.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.hosBid!=null "
+			+ " order by h.hosPreTime desc ")
 	public Long countNum2(Date start,Date end,String cardName,String ksName);
 	
 	

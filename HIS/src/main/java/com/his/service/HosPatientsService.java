@@ -329,4 +329,8 @@ public class HosPatientsService {
         return numbers;
 	}
 	
+	public List <HospitalizedPatient> getPatientsByroomId(String roomId){
+		return hosPatientDao.getPatientsByroomId(roomId);
+	}
+	
 }

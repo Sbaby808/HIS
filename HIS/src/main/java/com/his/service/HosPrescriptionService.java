@@ -124,7 +124,7 @@ public class HosPrescriptionService {
 	* @author:Hamster
 	* @Date:2019年8月8日 下午8:03:41
 	 */
-	public void addHosPrescription(HosPrescription hosPrescription) throws ParseException{
+	public boolean addHosPrescription(HosPrescription hosPrescription) throws ParseException{
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
 		
@@ -152,6 +152,8 @@ public class HosPrescriptionService {
 		BigDecimal balance = patient.getBalance().subtract(hosPrescription.getHosPreMoney());
 		patient.setBalance(balance);
 		hosPatientDao.save(patient);
+		
+		return true;
 	}
 	
 	/**

@@ -157,4 +157,10 @@ public class HosPatientController {
 	public List <BigDecimal> countForCharts(){
 		return hosPatientsService.countForCharts();
 	}
+	
+	@ResponseBody
+	@GetMapping("/get_patients_by_roomId")
+	public List <HospitalizedPatient> getPatientsByroomId(String roomId){
+		return hosPatientsService.getPatientsByroomId(roomId);
+	}
 }

@@ -115,7 +115,7 @@ public class HosDocAdviceService {
 	* @author:Hamster
 	* @Date:2019年8月7日 上午10:20:49
 	 */
-	public void addHosDocAdvice(HosDoctorAdvice advice) throws ParseException{
+	public boolean addHosDocAdvice(HosDoctorAdvice advice) throws ParseException{
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
 		advice.setHosStartTime(dateFormat.parse(time));
@@ -148,6 +148,7 @@ public class HosDocAdviceService {
 				hosOutNoticeDao.save(outNotices.get(i));
 			}
 		}
+		return true;
 			
 	}
 	

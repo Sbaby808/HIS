@@ -64,7 +64,8 @@ public class HosDrugRecordService {
 	* @author:Hamster
 	* @Date:2019年8月13日 上午10:35:25
 	 */
-	public void addHosDrugRecord(HosDrugRecord record) throws ParseException{
+	public boolean addHosDrugRecord(HosDrugRecord record) throws ParseException{
+		boolean flag = false ;
 		SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = dateFormat.format(new Date());
 		
@@ -82,7 +83,23 @@ public class HosDrugRecordService {
 			String ypId = details.get(i).getDrugInformation().getYpId();
 			
 			List <DrugWarehouse> list = drugWarehouseDao.getDrugsOrderByExpireDate(ypId);
-			if(list.size()>0){
+			
+			BigDecimal all = new BigDecimal(0) ;
+			for(int m=0;m<list.size();m++){
+				String pcId3 = list.get(m).getPckcId();
+				Medicine medicine = medicineDao.getMedBypcId(pcId3);
+				all = all.add(medicine.getMedicineName());
+			}
+			
+			System.out.println("all:"+all);
+			
+			if(list.size()==0||details.get(i).getDrugUseNum().compareTo(all)==1){
+				flag = false;
+			}
+			
+			
+			
+			else{
 				String pcId = list.get(0).getPckcId();
 				Medicine medicine = medicineDao.getMedBypcId(pcId);
 				if(medicine.getMedicineName().compareTo(details.get(i).getDrugUseNum()) > -1){
@@ -112,9 +129,11 @@ public class HosDrugRecordService {
 						}
 					}
 				}
+				flag = true;
 			}
-			
 		}
+		System.out.println(flag);
+		return flag;
 		
 	}
 	

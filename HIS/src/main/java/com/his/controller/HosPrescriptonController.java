@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.his.pojo.HosPrescription;
+import com.his.pojo.JsonResult;
 import com.his.service.HosPrescriptionService;
 
 /**
@@ -84,7 +85,15 @@ public class HosPrescriptonController {
 	 */
 	@ResponseBody
 	@PostMapping("/add_hos_prescription")
-	public void addHosPrescription(@RequestBody HosPrescription hosPrescription) throws ParseException{
-		hosPrescriptionService.addHosPrescription(hosPrescription);
+	public JsonResult addHosPrescription(@RequestBody HosPrescription hosPrescription) throws ParseException{
+		JsonResult result = new JsonResult();
+		try{
+			result.setResult(hosPrescriptionService.addHosPrescription(hosPrescription));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
 	}
 }

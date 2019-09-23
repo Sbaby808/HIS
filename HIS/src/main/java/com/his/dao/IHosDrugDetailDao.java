@@ -25,7 +25,8 @@ public interface IHosDrugDetailDao extends CrudRepository<HosDrugDetail, String>
 			+ " and( h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
 			+ " or h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
 			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
-			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
+			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 "
+			+ " order by h.hosDrugRecord.hosDrugTime desc ")
 	public List <HosDrugDetail> getHosDrugDetailbyPage(String cardName,String ksName,String roomName,Pageable page);
 	
 	@Query("select count(*) from HosDrugDetail h where "
@@ -33,7 +34,8 @@ public interface IHosDrugDetailDao extends CrudRepository<HosDrugDetail, String>
 			+ " and( h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?1 "
 			+ " or h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?1) "
 			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?2 "
-			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 ")
+			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?3 "
+			+ " order by h.hosDrugRecord.hosDrugTime desc ")
 	public Long countNum1(String cardName,String ksName,String roomName);
 	
 	
@@ -43,7 +45,8 @@ public interface IHosDrugDetailDao extends CrudRepository<HosDrugDetail, String>
 			+ " and( h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3 "
 			+ " or h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
 			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
-			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?5 ")
+			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?5 "
+			+ " order by h.hosDrugRecord.hosDrugTime desc ")
 	public List <HosDrugDetail> getHosDrugDetailbyPageandTime(Date start,Date end,String cardName,String ksName,String roomName,Pageable page);
 	
 	@Query("select count(*) from HosDrugDetail h where "
@@ -52,7 +55,8 @@ public interface IHosDrugDetailDao extends CrudRepository<HosDrugDetail, String>
 			+ " and( h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.cardName like ?3 "
 			+ " or h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.medicalCard.personId like ?3) "
 			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.ward.department.ksName like ?4 "
-			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?5 ")
+			+ " and h.hosDrugRecord.hosPrescription.hosDiagnosticRecord.medicalRecord.hospitalizedPatient.hosBed.wardRoom.wroomName like ?5 "
+			+ " order by h.hosDrugRecord.hosDrugTime desc ")
 	public Long countNum2(Date start,Date end,String cardName,String ksName,String roomName);
 	
 	
