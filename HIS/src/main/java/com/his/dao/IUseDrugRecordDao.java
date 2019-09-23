@@ -13,6 +13,19 @@ import com.his.pojo.UseDrugRecord;
 *    
 */
 public interface IUseDrugRecordDao extends CrudRepository<UseDrugRecord, String> {
+	
+	/**
+	* @Title:getAllUseDrugRecord
+	* @Description:TODO
+	* @param:@param prescriptionId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月23日 下午10:11:49
+	 */
+	@Query("from UseDrugRecord u where u.prescription.prescriptionId = ?1 ")
+	public int getAllUseDrugRecord(String prescriptionId);
 
 	/**
 	* @Title:UseDrugRecordIsHave
