@@ -25,6 +25,31 @@ public class DrugSubclassController {
 
 	@Autowired
 	private DrugSubclassService drugSubclassService;
+	
+	/**
+	* @Title:update_subclass_name
+	* @Description:修改小类名称
+	* @param:@param subclassId
+	* @param:@param name
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月18日 下午2:23:20
+	 */
+	@GetMapping("/update_subclass_name")
+	@ResponseBody
+	public JsonResult update_subclass_name(String subclassId,String name) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugSubclassService.updateSubclassName(subclassId, name));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 
 	/**
 	* @Title:getAllDrugSubclass

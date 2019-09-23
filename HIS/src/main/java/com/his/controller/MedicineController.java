@@ -28,6 +28,30 @@ public class MedicineController {
 	private MedicineService medicineService;
 	
 	/**
+	* @Title:get_an_drug_nowNumber
+	* @Description:查找某一个药品的库存
+	* @param:@param medicineId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 上午1:29:46
+	 */
+	@ResponseBody
+	@GetMapping("get_an_drug_nowNumber")
+	public JsonResult get_an_drug_nowNumber(String medicineId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(medicineService.getAnDrugNowNumber(medicineId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
 	* @Title:get_overdue_drug_By_Page
 	* @Description:查找某一个部门过期的药品
 	* @param:@param deptId

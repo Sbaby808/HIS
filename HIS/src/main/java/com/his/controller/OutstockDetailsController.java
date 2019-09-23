@@ -28,6 +28,32 @@ public class OutstockDetailsController {
 	private OutstockDetailsService outstockDetailsService;
 	
 	/**
+	* @Title:get_all_outStock_detail
+	* @Description:分页查找出库单对应的明细
+	* @param:@param ckId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午1:13:35
+	 */
+	@ResponseBody
+	@GetMapping("get_all_outStock_detail_byPage")
+	public JsonResult get_all_outStock_detail_byPage(String ckId,int curPage,int pageSize) {		
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(outstockDetailsService.getAllDetailByPage(ckId, curPage, pageSize));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:update_detail_state
 	* @Description:回库时修改明细单状态
 	* @param:@param ckId
@@ -77,6 +103,30 @@ public class OutstockDetailsController {
 	}
 	
 	/**
+	* @Title:is_have_outStockDetail
+	* @Description:判断是否还有出库明细没有处理完成
+	* @param:@param reqId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午2:53:20
+	 */
+	@ResponseBody
+	@GetMapping("is_have_outStockDetail")
+	public JsonResult is_have_outStockDetail(String reqId) {		
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(outstockDetailsService.isHaveOutStockDetail(reqId));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:add_one_drug_outStockDetail
 	* @Description:添加一个药品的出库明细
 	* @param:@param outstockDetail
@@ -92,6 +142,30 @@ public class OutstockDetailsController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			outstockDetailsService.addOutStockByOneDrug(outstockDetail);
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:add_one_drug_outStockDetail
+	* @Description:忽略一个出库明细  修改申领明细状态为：无药品
+	* @param:@param outstockDetail
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午12:13:45
+	 */
+	@ResponseBody
+	@GetMapping("no_drug_to_outStock")
+	public JsonResult no_drug_to_outStock(String reqId,String ypId) {		
+		JsonResult jsonResult = new JsonResult();
+		try {
+			outstockDetailsService.noDrugToOutStock(reqId, ypId);
 			jsonResult.setStatus("ok");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -14,10 +14,7 @@ import com.his.dao.IEmpInformationDao;
 import com.his.dao.IPurchaseDao;
 import com.his.dao.IPurchaseDetailsDao;
 import com.his.pojo.EmpInformation;
-import com.his.pojo.JsonResult;
 import com.his.pojo.Purchase;
-import com.his.pojo.PurchaseDetail;
-import com.his.pojo.PurchaseDetailPK;
 import com.his.utils.CreateUUID;
 import com.his.utils.ServiceException;
 
@@ -75,6 +72,29 @@ public class PurchaseService {
 	 */
 	public List<Purchase> getAllPurchaseForNoDo() {
 		return purchasedao.getAllForNoDo();
+	}
+	
+	/**
+	* @Title:getAllPurchaseByState
+	* @Description:分页获取某一个状态的采购计划
+	* @param:@param state
+	* @param:@param pageSize
+	* @param:@param curPage
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月20日 下午4:36:25
+	 */
+	public Map getAllPurchaseByState(String state,int pageSize,int curPage) {
+		Map map = new HashMap();
+		List<Purchase> list = null;
+		int total = 0; 
+		list = purchasedao.getAllPurchaseByState(state, PageRequest.of(curPage-1, pageSize));
+		total = purchasedao.getAllPurchaseByStateCount(state);
+		map.put("list", list);
+		map.put("total", total);
+		return map;
 	}
 	
 	/**

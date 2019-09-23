@@ -2,10 +2,13 @@ package com.his.service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import com.his.pojo.PsBackDetailPK;
 import com.his.pojo.PutstockBack;
 import com.his.pojo.Supplier;
 import com.his.utils.ServiceException;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: PsBackDetailsService  
@@ -45,6 +49,36 @@ public class PsBackDetailsService {
 	@Autowired
 	private ISupplierDao supplierDao;
 	
+	/**
+	* @Title:getHasBackDrugByPage
+	* @Description:条件查询退药信息
+	* @param:@param gysId
+	* @param:@param ygxh
+	* @param:@param backDate
+	* @param:@param pageSize
+	* @param:@param curpage
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月20日 下午3:22:25
+	 */
+	public Map getHasBackDrugByPage(String gysId,String ygxh,long backDate,int pageSize,int curpage) {
+		Map map = new HashMap();
+		List<PsBackDetail> list = null;
+		int total = 0;
+		if(backDate==0) {
+			list = psBackDetailsDao.getHasBackNoTimeByPage(SimpleTools.addCharForSearch(gysId),SimpleTools.addCharForSearch(ygxh), PageRequest.of(curpage-1, pageSize));
+			total = psBackDetailsDao.getHasBackNoTimeCount(SimpleTools.addCharForSearch(gysId),SimpleTools.addCharForSearch(ygxh));
+		}else {
+			Date backDate2 = new Date(backDate);
+			list = psBackDetailsDao.getHasBackByPage(SimpleTools.addCharForSearch(gysId),SimpleTools.addCharForSearch(ygxh),backDate2, PageRequest.of(curpage-1, pageSize));
+			total = psBackDetailsDao.getHasBackCount(SimpleTools.addCharForSearch(gysId),SimpleTools.addCharForSearch(ygxh), backDate2);
+		}
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:addDrugBackAndDetail

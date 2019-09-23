@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,51 @@ public class ChangeDrugDetailsService {
 	private IMedicineDao medicineDao;
 	@Autowired
 	private IAllocationOutboundDao allocationOutboundDao;
+	
+	/**
+	* @Title:updateOneDetailNumber
+	* @Description:修改回库数量
+	* @param:@param alloId
+	* @param:@param medicineId
+	* @param:@param updateNumber
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午10:12:04
+	 */
+	public void updateOneDetailNumber(String alloId,String medicineId,BigDecimal updateNumber) throws ServiceException{
+		try {
+			ChangeDrugDetailPK changeDrugDetailPK = new ChangeDrugDetailPK();
+			changeDrugDetailPK.setAlloId(alloId);
+			changeDrugDetailPK.setMedicineId(medicineId);
+			ChangeDrugDetail c = changeDrugDetailsDao.findById(changeDrugDetailPK).get();
+			//修改数量
+			c.setChangeDrugNum(updateNumber);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改一个回库明细数量失败");
+		}
+	}
+	
+	/**
+	* @Title:getDetailCount
+	* @Description:判断一个回库单是否拥有明细
+	* @param:@param alloId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午9:21:18
+	 */
+	public boolean backDetailIsHave(String alloId) {
+		boolean flag = true;
+		int count = changeDrugDetailsDao.getDetailCount(alloId);
+		if(count==0) {
+			flag = false;
+		}
+		return flag;
+	}
 	
 	/**
 	* @Title:delOneDetail

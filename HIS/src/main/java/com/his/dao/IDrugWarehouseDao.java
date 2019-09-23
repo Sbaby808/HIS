@@ -22,6 +22,19 @@ import com.his.pojo.Medicine;
 public interface IDrugWarehouseDao extends CrudRepository<DrugWarehouse, String>{
 	
 	/**
+	* @Title:getDrugTotalNumber
+	* @Description:获取某一个药的总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午4:53:30
+	 */
+	@Query(value="select sum(dw.now_number) from drug_warehouse dw where dw.state ='否' and dw.yp_id = ?1 ",nativeQuery = true)
+	public int getDrugTotalNumber(String ypId);
+	
+	/**
 	* @Title:queryWarehouseByChooseNumber
 	* @Description:查找特定范围的药品
 	* @param:@param minNuber

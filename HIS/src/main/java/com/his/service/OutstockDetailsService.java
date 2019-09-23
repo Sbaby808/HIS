@@ -1,9 +1,12 @@
 package com.his.service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +40,27 @@ public class OutstockDetailsService {
 	private IReqDetailsDao reqDetailsDao;
 	
 	/**
+	* @Title:getAllDetailByPage
+	* @Description:分页查找出库单对应的明细
+	* @param:@param ckId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午1:11:47
+	 */
+	public Map getAllDetailByPage(String ckId,int curPage,int pageSize){
+		Map map = new HashMap();
+		List<OutstockDetail> list = outstockDetailsDao.getAllDetailByPage(ckId, PageRequest.of(curPage-1, pageSize));
+		int total = outstockDetailsDao.getAllDetailCount(ckId);
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
 	* @Title:updateDetailState
 	* @Description:回库时修改明细单状态
 	* @param:@param ckId
@@ -66,6 +90,25 @@ public class OutstockDetailsService {
 	 */
 	public List<OutstockDetail> getOutstockDetailByReqId(String reqId){
 		return outstockDetailsDao.getOutstockDetailByReqId(reqId);
+	}
+	
+	/**
+	* @Title:isHaveOutStockDetail
+	* @Description:判断是否还有出库明细没有处理完成
+	* @param:@param reqId
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午2:52:00
+	 */
+	public boolean isHaveOutStockDetail(String reqId){
+		boolean flag = true;
+		int count = outstockDetailsDao.getOutstockDetailByReqId(reqId).size();
+		if(count==0) {
+			flag = false;
+		}
+		return flag;
 	}
 	
 	/**
@@ -109,11 +152,37 @@ public class OutstockDetailsService {
 				reqDetailPK.setReqId(out.getOutstock().getReq_id());
 				reqDetailPK.setYpId(out.getDrugWarehouse().getDrugInformation().getYpId());
 				ReqDetail reqDetail =  reqDetailsDao.findById(reqDetailPK).get();
-				reqDetail.setState("已处理");
+				reqDetail.setState("已出库");
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException("插入明细失败");
+		}
+	}
+	
+	/**
+	* @Title:noDrugToOutStock
+	* @Description:忽略一个出库明细  修改申领明细状态为：无药品
+	* @param:@param reqId
+	* @param:@param ypId
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午12:20:39
+	 */
+	public void noDrugToOutStock(String reqId,String ypId) throws ServiceException{
+			
+		try {
+				//修改申领单明细状态
+				ReqDetailPK reqDetailPK = new ReqDetailPK();
+				reqDetailPK.setReqId(reqId);
+				reqDetailPK.setYpId(ypId);
+				ReqDetail reqDetail =  reqDetailsDao.findById(reqDetailPK).get();
+				reqDetail.setState("无药品");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("忽略明细失败");
 		}
 	}
 

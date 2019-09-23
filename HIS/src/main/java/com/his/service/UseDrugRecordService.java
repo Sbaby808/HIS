@@ -52,6 +52,47 @@ public class UseDrugRecordService {
 	private IMedicineDao medicineDao;
 	@Autowired
 	private PrescriptionService prescriptionService;
+
+	/**
+	* @Title:qureyPriscriptionByCardId
+	* @Description:根据就诊卡id查询未取药的处方单
+	* @param:@param cardId
+	* @param:@return
+	* @return:List<Prescription>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月23日 上午1:59:07
+	 */
+	public List<Prescription> qureyPriscriptionByCardId(String cardId){
+		return prescriptionDao.qureyPriscriptionByCardId(cardId);
+	}
+	
+	/**
+	* @Title:qureyPriscriptionByCardId
+	* @Description:根据就诊卡id查询"已取药"的处方单
+	* @param:@param cardId
+	* @param:@return
+	* @return:List<Prescription>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月23日 上午3:08:58
+	 */
+	public List<Prescription> qureyPriscriptionNotNullByCardId(String cardId){
+		return prescriptionDao.qureyPriscriptionNotNullByCardId(cardId);
+	}
+	
+	/**
+	* @Title:getAllPriscriptionToTest
+	* @Description:查找测试数据
+	* @param:@return
+	* @return:List<Prescription>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月23日 上午2:32:18
+	 */
+	public List<Prescription> getAllPriscriptionToTest(){
+		return (List<Prescription>) prescriptionDao.findAll();
+	}
 	
 	/**
 	* @Title:finish_use_drug_record

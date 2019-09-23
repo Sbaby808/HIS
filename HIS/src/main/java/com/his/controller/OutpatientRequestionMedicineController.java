@@ -21,6 +21,20 @@ public class OutpatientRequestionMedicineController {
 	@Autowired
 	private OutpatientRequestionMedicineService outpatientRequestionMedicineService;
 	
+	@ResponseBody
+	@GetMapping("get_all_request_for_state_bypage")
+	public JsonResult get_all_request_for_state_bypage(String deptId,String state,int curPage,int pageSize) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(outpatientRequestionMedicineService.getAllRequestionForrStatusByPage(deptId, state, curPage, pageSize));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
 	/**
 	* @Title:create_outpatient_requestion_medicine
 	* @Description:创建药房申领单

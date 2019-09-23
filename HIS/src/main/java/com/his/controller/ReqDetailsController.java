@@ -1,5 +1,6 @@
 package com.his.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,56 @@ public class ReqDetailsController {
 	
 	@Autowired
 	private ReqDetailsService reqDetailsService;
+	
+	/**
+	* @Title:update_an_detail_number
+	* @Description:修改一个明细的数量
+	* @param:@param reqId
+	* @param:@param ypId
+	* @param:@param updateNum
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午4:17:50
+	 */
+	@ResponseBody
+	@GetMapping("update_an_detail_number")
+	public JsonResult update_an_detail_number(String reqId,String ypId,BigDecimal updateNum) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			reqDetailsService.updateAnDetailNumber(reqId, ypId, updateNum);
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:del_one_req_detail
+	* @Description:判断一个申领单是否有明细
+	* @param:@param reqId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午3:46:10
+	 */
+	@ResponseBody
+	@GetMapping("is_have_detail")
+	public JsonResult is_have_detail(String reqId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(reqDetailsService.isHaveDetail(reqId));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
 	
 	/**
 	* @Title:del_one_req_detail

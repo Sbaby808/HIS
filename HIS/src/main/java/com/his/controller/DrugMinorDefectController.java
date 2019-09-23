@@ -26,6 +26,41 @@ public class DrugMinorDefectController {
 	@Autowired
 	private  DrugMinorDefectsService drugMinorDefectsService;
 	
+	/**
+	* @Title:update_subclass_name
+	* @Description:修改中类名称
+	* @param:@param subclassId
+	* @param:@param name
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月18日 下午2:29:15
+	 */
+	@GetMapping("/update_minorDefect_name")
+	@ResponseBody
+	public JsonResult update_minorDefect_name(String minorDefectsId,String name) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(drugMinorDefectsService.updateminorDefectName(minorDefectsId, name));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:add_DrugMinorDefect
+	* @Description:添加一个中类
+	* @param:@param drugMinorDefect
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月18日 下午2:29:00
+	 */
 	@ResponseBody
 	@PostMapping("add_DrugMinorDefect")
 	private JsonResult add_DrugMinorDefect(@RequestBody DrugMinorDefect drugMinorDefect) {
@@ -44,6 +79,15 @@ public class DrugMinorDefectController {
 		}
 	}
 	
+	/**
+	* @Title:get_all_drugMinorDefect
+	* @Description:获取所有的中类
+	* @param:@return
+	* @return:List<DrugMinorDefect>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月18日 下午2:28:44
+	 */
 	@ResponseBody
 	@GetMapping("get_all_drugMinorDefect")
 	public List<DrugMinorDefect> get_all_drugMinorDefect(){

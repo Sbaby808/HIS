@@ -1,5 +1,8 @@
 package com.his.dao;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,6 +16,35 @@ import com.his.pojo.PhaIn;
  * 
  */
 public interface IPhaInDao extends CrudRepository<PhaIn, String> {
+	
+	/**
+	* @Title:getDeptAllPhaInByPage
+	* @Description:分页查找某一部门的入库单
+	* @param:@param deptId
+	* @param:@param page
+	* @param:@return
+	* @return:List<PhaIn>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午4:10:24
+	 */
+	@Query(value="select * from pha_in pi left outer join outpatient_requestion_medicine orm on pi.req_id = orm.req_id " + 
+			"where orm.req_status = '已入库' and orm.dept_id = ?1  order by pi.pha_in_date desc ",nativeQuery=true)
+	public List<PhaIn> getDeptAllPhaInByPage(String deptId,Pageable page);
+	
+	/**
+	* @Title:getDeptAllPhaInCount
+	* @Description:分页查找某一部门的入库单的条数
+	* @param:@param deptId
+	* @param:@return
+	* @return:List<PhaIn>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午4:11:10
+	 */
+	@Query(value="select count(*) from pha_in pi left outer join outpatient_requestion_medicine orm on pi.req_id = orm.req_id " + 
+			"where orm.req_status = '已入库' and orm.dept_id = ?1  order by pi.pha_in_date desc ",nativeQuery=true)
+	public int getDeptAllPhaInCount(String deptId);
 	
 	/**
 	* @Title:pahInIsExits

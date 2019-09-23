@@ -1,14 +1,20 @@
 package com.his.service;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.dao.IEmpInformationDao;
 import com.his.dao.IOutstockDao;
+import com.his.pojo.EmpInformation;
 import com.his.pojo.Outstock;
 import com.his.utils.ServiceException;
 
@@ -25,6 +31,28 @@ public class OutstockService {
 	
 	@Autowired
 	private IOutstockDao outstockDao;
+	@Autowired
+	private IEmpInformationDao empInformationDao;
+	
+	/**
+	* @Title:getAllOutstockByPage
+	* @Description:分页获取所有的出库明细
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午12:50:33
+	 */
+	public Map getAllOutstockByPage(int curPage,int pageSize){
+		Map map = new HashMap();
+		List<Outstock> list = outstockDao.getAllOutstockByPage(PageRequest.of(curPage-1, pageSize));
+		int total = outstockDao.getAllOutstockCount();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:addOutScotck
@@ -37,10 +65,15 @@ public class OutstockService {
 	* @Date:2019年9月2日 上午10:35:12
 	 */
 	public void addOutScotck(Outstock outStock) throws ServiceException{
+		Outstock out = new Outstock();
+		out = outStock;
 		String req_id = UUID.randomUUID().toString().replace("-", "");
-		outStock.setCkId(req_id);
+		EmpInformation emp = empInformationDao.findById(outStock.getEmpInformation().getYgxh()).get();
+		out.setCkId(req_id);
+		out.setCkTime(new Date());
+		out.setEmpInformation(emp);
 		try {
-			outstockDao.save(outStock);
+			outstockDao.save(out);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServiceException("添加出库单失败");

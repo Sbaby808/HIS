@@ -79,6 +79,30 @@ public class PruchaseController {
 	}
 	
 	/**
+	* @Title:get_purchase_by_state
+	* @Description:获取某一状态的采购计划
+	* @param:@param state
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月20日 下午4:28:30
+	 */
+	@ResponseBody
+	@GetMapping("get_purchase_by_state")
+	public JsonResult get_purchase_by_state(String state,int pageSize,int curPage) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(purchaseService.getAllPurchaseByState(state, pageSize, curPage));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:get_all_have_submit
 	* @Description:获取“已提交” 的采购单
 	* @param:@return

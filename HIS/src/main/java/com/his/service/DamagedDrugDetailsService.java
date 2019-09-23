@@ -1,9 +1,12 @@
 package com.his.service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +14,7 @@ import com.his.dao.IDamagedDrugDetailsDao;
 import com.his.dao.IMedicineDao;
 import com.his.pojo.DamagedDrugDetail;
 import com.his.pojo.DamagedDrugDetailPK;
+import com.his.pojo.DamagedMedicine;
 import com.his.pojo.Medicine;
 import com.his.utils.ServiceException;
 
@@ -30,6 +34,46 @@ public class DamagedDrugDetailsService {
 	private IDamagedDrugDetailsDao damagedDrugDetailsDao;
 	@Autowired
 	private IMedicineDao medicineDao;
+	
+	/**
+	* @Title:queryDamagedDetailByPage
+	* @Description:分页查找报损明细
+	* @param:@param damagedId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午1:57:01
+	 */
+	public Map queryDamagedDetailByPage(String damagedId,int curPage,int pageSize){
+		Map map = new HashMap();
+		List<DamagedDrugDetail> list = damagedDrugDetailsDao.queryDamagedDetailByPage(damagedId,PageRequest.of(curPage - 1, pageSize));
+		int total = damagedDrugDetailsDao.isHaveDetail(damagedId);
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
+	
+	/**
+	* @Title:isHaveDetail
+	* @Description:判断报损单是否拥有明细
+	* @param:@param damagedId
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午12:25:14
+	 */
+	public boolean isHaveDetail(String damagedId) {
+		boolean flag = true;
+		int count = damagedDrugDetailsDao.isHaveDetail(damagedId);
+		if(count == 0) {
+			flag = false;
+		}
+		return flag;
+	}
 	
 	/**
 	* @Title:addDamageDetailByBatch
@@ -92,6 +136,45 @@ public class DamagedDrugDetailsService {
 				e.printStackTrace();
 				throw new ServiceException("批量加入报损明细失败");
 			}
+		}
+	}
+	
+	/**
+	* @Title:updateDamageDetialNumber
+	* @Description:修改一个明细的数量
+	* @param:@param damagedId
+	* @param:@param medicineId
+	* @param:@param updateNumber
+	* @param:@throws ServiceException
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午12:47:34
+	 */
+	public void updateDamageDetialNumber(String damagedId,String medicineId,BigDecimal updateNumber) throws ServiceException{
+		//创建主键
+		DamagedDrugDetailPK damagedDrugDetailPk = new DamagedDrugDetailPK();
+		damagedDrugDetailPk.setDamagedId(damagedId);
+		damagedDrugDetailPk.setMedicineId(medicineId);
+		DamagedDrugDetail d = damagedDrugDetailsDao.findById(damagedDrugDetailPk).get();
+		Medicine medicine = medicineDao.findById(medicineId).get();
+		//改回库存
+		BigDecimal number = d.getDamNum();	//原来的数量
+		//先判断更改数量的关系
+		if(number.compareTo(updateNumber)==1) {
+			//原来的数量大
+			BigDecimal cha = number.subtract(updateNumber);
+			//修改库存 库存增加
+			medicine.setMedicineName(medicine.getMedicineName().add(cha));
+			//修改明细数量
+			d.setDamNum(updateNumber);
+		}else {
+			//原来的数量小
+			BigDecimal cha = updateNumber.subtract(number);
+			//修改库存 库存减少
+			medicine.setMedicineName(medicine.getMedicineName().subtract(cha));
+			//修改明细数量
+			d.setDamNum(updateNumber);
 		}
 	}
 	

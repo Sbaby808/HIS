@@ -55,6 +55,21 @@ public class DrugWarehouseService {
 	private IEmpInformationDao empInformationDao;
 	
 	/**
+	* @Title:getDrugTotalNumber
+	* @Description:获取某一个药的总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午4:54:12
+	 */
+	public int getDrugTotalNumber(String ypId) {
+		int totalNumber = drugWarehouseDao.getDrugTotalNumber(ypId);
+		return totalNumber;
+	}
+	
+	/**
 	* @Title:queryMedicineNowNumber
 	* @Description:查找特定范围的药品
 	* @param:@param chooseNumber

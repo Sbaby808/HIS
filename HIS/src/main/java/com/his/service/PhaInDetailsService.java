@@ -1,9 +1,12 @@
 package com.his.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import com.his.pojo.PhaInDetail;
 import com.his.pojo.PhaInDetailHelp;
 import com.his.pojo.PhaInDetailPK;
 import com.his.utils.ServiceException;
+import com.his.utils.SimpleTools;
 
 /**  
 * @ClassName: PhaInDetailsService  
@@ -45,6 +49,33 @@ public class PhaInDetailsService {
 	private IDrugWarehouseDao drugWarehouseDao;
 	@Autowired
 	private DeptDAO deptDao;
+	
+	/**
+	* @Title:getOneDrugAllPutStockByPage
+	* @Description:获取某一个药品的所有入库记录
+	* @param:@param searchContent
+	* @param:@param deptId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午5:44:46
+	 */
+	public Map getOneDrugAllPutStockByPage(String searchContent,String deptId,int curPage,int pageSize){
+		Map map = new HashMap();
+		List<PhaInDetail> list = phaInDetailsDao.getOneDrugAllPutStockByPage(
+				searchContent.equals("")?SimpleTools.addCharForSearch(searchContent):searchContent,
+				deptId, 
+				PageRequest.of(curPage - 1, pageSize));
+		int total = phaInDetailsDao.getOneDrugAllPutStockCount(
+				searchContent.equals("")?SimpleTools.addCharForSearch(searchContent):searchContent,
+				deptId);
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:addPhaInDetailByBatch

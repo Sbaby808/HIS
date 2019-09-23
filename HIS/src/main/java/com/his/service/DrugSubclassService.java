@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.hibernate.mapping.Subclass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,43 @@ public class DrugSubclassService {
 	
 	@Autowired
 	private IDrugSubclassDao drugSubclassDao;
+	
+	/**
+	* @Title:updateSubclassName
+	* @Description:修改小类名称
+	* @param:@param subclassId
+	* @param:@param name
+	* @param:@return
+	* @param:@throws ServiceException
+	* @return:String
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月18日 下午2:20:27
+	 */
+	public String updateSubclassName(String subclassId,String name) throws ServiceException{
+		String flag = "yes";
+		try {
+			Iterable<DrugSubclass> list = drugSubclassDao.findAll();
+			DrugSubclass drugSubclass = drugSubclassDao.findById(subclassId).get();
+			if (drugSubclass != null) {
+				boolean has = true;
+				for (DrugSubclass d : list) {
+					if (d.getSubclassName().equals(name)) {
+						flag = "theNameHasExist";
+						has = false;
+						break;
+					}
+				}
+				if(has) {
+					drugSubclass.setSubclassName(name);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("小改小类名称失败");
+		}
+		return flag;
+	}
 	
 	/**
 	* @Title:addDrugSubclass

@@ -25,6 +25,31 @@ public class DamagedMedicineController {
 	private DamagedMedicineService damagedMedicineService;
 	
 	/**
+	* @Title:get_damagedMedicine_forYes_byPage
+	* @Description:分页获取所有‘已完成’的申领单
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午1:23:30
+	 */
+	@ResponseBody
+	@GetMapping("get_damagedMedicine_forYes_byPage")
+	public JsonResult get_damagedMedicine_forYes_byPage(int curPage,int pageSize) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(damagedMedicineService.getDamagedMedicineForYes(curPage, pageSize));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:update_damege_for_yes_byId
 	* @Description:修改报损单位已完成
 	* @param:@param damagedId

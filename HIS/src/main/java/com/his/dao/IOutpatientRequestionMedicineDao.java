@@ -19,6 +19,35 @@ import com.his.pojo.Outstock;
 public interface IOutpatientRequestionMedicineDao extends CrudRepository<OutpatientRequestionMedicine, String>{
 	
 	/**
+	* @Title:getAllRequestionForrStatusByPage
+	* @Description:分页查询某一个部门的“某一状态”的申领单
+	* @param:@param deptId
+	* @param:@param state
+	* @param:@param page
+	* @param:@return
+	* @return:List<OutpatientRequestionMedicine>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午11:34:20
+	 */
+	@Query("from OutpatientRequestionMedicine o where o.dept.deptId = ?1 and o.reqStatus=?2 order by o.reqTime desc")
+	public List<OutpatientRequestionMedicine> getAllRequestionForrStatusByPage(String deptId,String state,Pageable page);
+	
+	/**
+	* @Title:getAllRequestionForrStatusCount
+	* @Description:分页查询某一个部门的“某一状态”的申领单的条数
+	* @param:@param deptId
+	* @param:@param state
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午11:35:57
+	 */
+	@Query("select count(*) from OutpatientRequestionMedicine o where o.dept.deptId = ?1 and o.reqStatus=?2 ")
+	public int getAllRequestionForrStatusCount(String deptId,String state);
+	
+	/**
 	* @Title:getNewCreateById
 	* @Description:查看对应部门的申领单
 	* @param:@param deptId

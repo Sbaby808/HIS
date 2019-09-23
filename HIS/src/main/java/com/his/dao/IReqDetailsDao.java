@@ -19,6 +19,19 @@ import com.his.pojo.ReqDetailPK;
 public interface IReqDetailsDao extends CrudRepository<ReqDetail, ReqDetailPK>{
 	
 	/**
+	* @Title:isHaveDetail
+	* @Description:判断一个申领单是否有明细
+	* @param:@param reqId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午3:40:41
+	 */
+	@Query(value="select count(*) from req_details rd where rd.req_id = ?1 ",nativeQuery = true)
+	public int isHaveDetail(String reqId);
+	
+	/**
 	* @Title:qeuryRequestDetail
 	* @Description:查找有没有未处理的药品
 	* @param:@param reqId

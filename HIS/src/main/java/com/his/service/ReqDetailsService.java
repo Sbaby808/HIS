@@ -1,5 +1,6 @@
 package com.his.service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.his.dao.IDrugInformationDao;
 import com.his.dao.IOutpatientRequestionMedicineDao;
 import com.his.dao.IReqDetailsDao;
-import com.his.pojo.DrugInformation;
-import com.his.pojo.OutpatientRequestionMedicine;
 import com.his.pojo.ReqDetail;
 import com.his.pojo.ReqDetailPK;
 import com.his.utils.ServiceException;
@@ -35,6 +34,49 @@ public class ReqDetailsService {
 	private IOutpatientRequestionMedicineDao outpatientRequestionMedicineDao;
 	@Autowired 
 	private IDrugInformationDao drugInformationDao;
+	
+	/**
+	* @Title:updateAnDetailNumber
+	* @Description:修改一个明细的数量
+	* @param:@param reqId
+	* @param:@param ypId
+	* @param:@param updateNum
+	* @return:void
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午4:18:49
+	 */
+	public void updateAnDetailNumber(String reqId,String ypId,BigDecimal updateNum)  throws ServiceException{
+		try {
+			ReqDetailPK reqDetailPK = new ReqDetailPK();
+			reqDetailPK.setReqId(reqId);
+			reqDetailPK.setYpId(ypId);
+			ReqDetail reqDetail = reqDetailsDao.findById(reqDetailPK).get();
+			reqDetail.setReqNum(updateNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("修改明细数量失败");
+		}
+	}
+	
+	/**
+	* @Title:isHaveDetail
+	* @Description:判断一个申领单是否有明细
+	* @param:@param reqId
+	* @param:@return
+	* @return:boolean
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午3:44:54
+	 */
+	public boolean isHaveDetail(String reqId) {
+		boolean flag = true;
+		int count = reqDetailsDao.isHaveDetail(reqId);
+		if(count==0) {
+			flag = false;
+		}
+		return flag;
+	}
 	
 	/**
 	* @Title:delOneDetail

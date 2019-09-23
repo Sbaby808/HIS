@@ -31,6 +31,30 @@ public class DrugWarehouseController {
 	private DrugWarehouseService drugWarehouseService;
 	
 	/**
+	* @Title:get_drug_totalNumber
+	* @Description:获取某一个药的总库存
+	* @param:@param ypId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午4:56:21
+	 */
+	@ResponseBody
+	@GetMapping("get_drug_totalNumber")
+	public JsonResult get_drug_totalNumber(String ypId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(drugWarehouseService.getDrugTotalNumber(ypId));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:query_drugWarehouse_by_choosenumber
 	* @Description:查找特定范围的药品
 	* @param:@param chooseNumber

@@ -18,6 +18,33 @@ import com.his.pojo.PurchaseCheck;
 public interface IPurchaseCheckDao extends CrudRepository<PurchaseCheck, String>{
 	
 	/**
+	* @Title:getAllPurchaseCheckByState
+	* @Description:查看某一个状态的采购验收
+	* @param:@param state
+	* @param:@param page
+	* @param:@return
+	* @return:List<PurchaseCheck>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 上午12:59:48
+	 */
+	@Query("from PurchaseCheck p where p.state= ?1 order by p.purChaTime asc")
+	public List<PurchaseCheck> getAllPurchaseCheckByState(String state,Pageable page);
+	
+	/**
+	* @Title:getAllPurchaseCheckByState
+	* @Description:查看某一个状态的采购验收的数量
+	* @param:@param state
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 上午1:00:22
+	 */
+	@Query("select count(*) from PurchaseCheck p where p.state= ?1 order by p.purChaTime asc")
+	public int getAllPurchaseCheckByStateCount(String state);
+	
+	/**
 	* @Title:getOneCheckAndDetial
 	* @Description:获取个未入库的采购验收
 	* @param:@return

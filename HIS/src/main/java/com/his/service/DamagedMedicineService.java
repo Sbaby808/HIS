@@ -1,9 +1,12 @@
 package com.his.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,26 @@ public class DamagedMedicineService {
 	private IDamagedMedicineDao damagedMedicineDao;
 	@Autowired
 	private IEmpInformationDao empInformationDao;
+	
+	/**
+	* @Title:getDamagedMedicineForYes
+	* @Description:分页获取报损单
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午1:21:32
+	 */
+	public Map getDamagedMedicineForYes(int curPage,int pageSize){
+		Map map = new HashMap();
+		List<DamagedMedicine> list = damagedMedicineDao.getDamagedMedicineForYes(PageRequest.of(curPage - 1, pageSize));
+		int total = damagedMedicineDao.getDamagedMedicineForYesCount();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:updateDamegeForYesById

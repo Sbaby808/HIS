@@ -18,6 +18,33 @@ import com.his.pojo.Purchase;
 public interface IPurchaseDao extends CrudRepository<Purchase, String>{
 	
 	/**
+	* @Title:getAllPurchaseByState
+	* @Description:分页获取某一个状态的采购计划
+	* @param:@param state
+	* @param:@param page
+	* @param:@return
+	* @return:List<Purchase>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月20日 下午4:30:38
+	 */
+	@Query("from Purchase p where p.state = ?1  order by p.cgTime desc")
+	public List<Purchase> getAllPurchaseByState(String state,Pageable page);
+	
+	/**
+	* @Title:getAllPurchaseByStateCount
+	* @Description:分页获取某一个状态的采购计划的数量
+	* @param:@param state
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月20日 下午4:33:45
+	 */
+	@Query("select count(*) from Purchase p where p.state = ?1  order by p.cgTime desc")
+	public int getAllPurchaseByStateCount(String state);
+	
+	/**
 	* @Title:getAllHaveToSubmit
 	* @Description:获取已提交的采购单
 	* @param:@return

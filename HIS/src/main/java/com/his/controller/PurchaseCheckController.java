@@ -22,6 +22,32 @@ public class PurchaseCheckController {
 	private PurchaseChecService purchaseChecService;
 
 	/**
+	* @Title:get_allPurchaseCheck_By_State
+	* @Description:获取某一状态的采购验收
+	* @param:@param state
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 上午1:05:43
+	 */
+	@ResponseBody
+	@GetMapping("get_allPurchaseCheck_by_state")
+	public JsonResult get_allPurchaseCheck_By_State(String state,int pageSize,int curPage) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(purchaseChecService.getAllPurchaseCheckByState(state, curPage, pageSize));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:get_all_purcheck_noPut
 	* @Description:获取能入库的验收
 	* @param:@return

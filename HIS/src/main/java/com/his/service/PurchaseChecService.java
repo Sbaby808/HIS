@@ -1,8 +1,12 @@
 package com.his.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,27 @@ public class PurchaseChecService {
 	
 	@Autowired
 	private IPurchaseCheckDao purchaseCheckDao; 
+	
+	/**
+	* @Title:getAllPurchaseCheckByState
+	* @Description:获取某一状态的采购验收
+	* @param:@param state
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 上午1:04:12
+	 */
+	public Map getAllPurchaseCheckByState(String state,int curPage,int pageSize){
+		Map map = new HashMap();
+		List<PurchaseCheck> list = purchaseCheckDao.getAllPurchaseCheckByState(state, PageRequest.of(curPage-1, pageSize));
+		int total = purchaseCheckDao.getAllPurchaseCheckByStateCount(state);
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:updatePurchaseCheckState

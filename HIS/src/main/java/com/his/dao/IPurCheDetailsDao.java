@@ -19,6 +19,33 @@ import com.his.pojo.PurCheDetailPK;
 public interface IPurCheDetailsDao extends CrudRepository<PurCheDetail, PurCheDetailPK>{
 	
 	/**
+	* @Title:getAnCheckAndDetialByPurchaId
+	* @Description:分页获取采购验收和明细
+	* @param:@param purChaId
+	* @param:@param page
+	* @param:@return
+	* @return:List<PurCheDetail>
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 上午1:19:46
+	 */
+	@Query("from PurCheDetail p where p.purchaseCheck.purChaId = ?1")
+	public List<PurCheDetail> getAnCheckAndDetialByPurchaId(String purChaId,Pageable page);
+	
+	/**
+	* @Title:getAnCheckAndDetialCount
+	* @Description:分页获取采购验收和明细数量
+	* @param:@param purChaId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 上午1:20:50
+	 */
+	@Query("select count(*) from PurCheDetail p where p.purchaseCheck.purChaId = ?1")
+	public int getAnCheckAndDetialCount(String purChaId);
+	
+	/**
 	* @Title:getOneCheckAndDetial
 	* @Description:分页获取一个未入库的采购验收明细
 	* @param:@return

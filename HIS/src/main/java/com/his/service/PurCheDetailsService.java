@@ -39,6 +39,26 @@ public class PurCheDetailsService {
 	@Autowired
 	private IEmpInformationDao empInformationDao;
 	
+	/**
+	* @Title:getAnCheckAndDetialByPurchaId
+	* @Description:分页获取采购验收和明细
+	* @param:@param checkId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 上午1:22:05
+	 */
+	public Map getAnCheckAndDetialByPurchaId(String checkId,int curPage,int pageSize) {
+		List<PurCheDetail> list = purCheDetailsDao.getAnCheckAndDetialByPurchaId(checkId, PageRequest.of(curPage-1, pageSize));
+		int total = purCheDetailsDao.getAnCheckAndDetialCount(checkId);
+		Map map = new HashMap();
+		map.put("list", list);
+		map.put("total", total);
+		return map;
+	}
 	
 	/**
 	* @Title:getOnePurchaseCheckNoputById

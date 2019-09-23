@@ -39,6 +39,34 @@ public class OutpatientRequestionMedicineService {
 	private IEmpInformationDao empInformationDao;
 	
 	/**
+	* @Title:getAllRequestionForrStatusByPage
+	* @Description:分页查询某一个部门的“某一状态”的申领单
+	* @param:@param deptId
+	* @param:@param state
+	* @param:@param curpage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:Map
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月21日 下午11:38:24
+	 */
+	public Map getAllRequestionForrStatusByPage(String deptId,String state,int curpage,int pageSize) {
+		Map map = new HashMap();
+		List<OutpatientRequestionMedicine> list = null;
+		int total = 0;
+		try {
+			list = outpatientRequestionMedicineDao.getAllRequestionForrStatusByPage(deptId,state,PageRequest.of(curpage - 1, pageSize));
+			total = outpatientRequestionMedicineDao.getAllRequestionForrStatusCount(deptId,state);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("list", list);
+		map.put("total", total);	
+		return map;
+	}
+	
+	/**
 	* @Title:createOutpatientReq
 	* @Description:创建药房申领单
 	* @param:@param createDate

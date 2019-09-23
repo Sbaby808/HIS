@@ -32,6 +32,20 @@ public class MedicineService {
 	private IMedicineDao medicineDao;
 	
 	/**
+	* @Title:getAnDrugNowNumber
+	* @Description:查找某一个药品的库存
+	* @param:@param medicineId
+	* @param:@return
+	* @return:BigDecimal
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 上午1:28:00
+	 */
+	public BigDecimal getAnDrugNowNumber(String medicineId) {
+		return medicineDao.findById(medicineId).get().getMedicineName();
+	}
+	
+	/**
 	* @Title:getNoOverdueDrugByPage
 	* @Description:查找某一个部门过期的药品
 	* @param:@param deptId

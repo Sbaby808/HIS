@@ -18,6 +18,19 @@ import com.his.pojo.ChangeDrugDetailPK;
 public interface IChangeDrugDetailsDao extends CrudRepository<ChangeDrugDetail,ChangeDrugDetailPK>{
 	
 	/**
+	* @Title:getDetailCount
+	* @Description:获取明细的数量
+	* @param:@param alloId
+	* @param:@return
+	* @return:int
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午9:19:32
+	 */
+	@Query("select count(*) from ChangeDrugDetail c where c.allocationOutbound.alloId = ?1 ")
+	public int getDetailCount(String alloId);
+	
+	/**
 	* @Title:getDetailByAlloId
 	* @Description:根据返库id查找明细
 	* @param:@param alloId

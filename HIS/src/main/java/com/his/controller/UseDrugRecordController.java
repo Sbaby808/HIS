@@ -2,6 +2,7 @@ package com.his.controller;
 
 import java.math.BigDecimal;
 
+import org.apache.tomcat.util.buf.UEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,77 @@ public class UseDrugRecordController {
 
 	@Autowired
 	private UseDrugRecordService useDrugRecordService;
+	
+	/**
+	* @Title:finish_use_drug_record
+	* @Description:根据就诊卡id查找未取药的处方单
+	* @param:@param injId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月23日 上午2:01:28
+	 */
+	@GetMapping("/qurey_priscription_by_CardId")
+	@ResponseBody
+	public JsonResult qurey_priscription_by_CardId(String cardId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(useDrugRecordService.qureyPriscriptionByCardId(cardId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:qurey_priscription_notNull_ByCardId
+	* @Description:根据就诊卡id查询"已取药"的处方单
+	* @param:@param cardId
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月23日 上午3:10:49
+	 */
+	@GetMapping("/qurey_priscription_notNull_ByCardId")
+	@ResponseBody
+	public JsonResult qurey_priscription_notNull_ByCardId(String cardId) {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(useDrugRecordService.qureyPriscriptionNotNullByCardId(cardId));
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
+	
+	/**
+	* @Title:qurey_all_priscription
+	* @Description:查找处方单测试数据
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月23日 上午2:32:46
+	 */
+	@GetMapping("/qurey_all_priscription")
+	@ResponseBody
+	public JsonResult qurey_all_priscription() {
+		JsonResult result = new JsonResult();
+		try {
+			result.setResult(useDrugRecordService.getAllPriscriptionToTest());
+			result.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus("error");
+		}
+		return result;
+	}
 	
 	/**
 	* @Title:finish_use_drug_record

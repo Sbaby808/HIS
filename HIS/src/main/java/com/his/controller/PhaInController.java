@@ -25,6 +25,58 @@ public class PhaInController {
 	private PhaInService pahInservice;
 	
 	/**
+	* @Title:get_outstockDetail_byPage
+	* @Description:分页获取入库（出库明细）
+	* @param:@param reqId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午4:52:10
+	 */
+	@ResponseBody
+	@GetMapping("get_outstockDetail_byPage")
+	public JsonResult get_outstockDetail_byPage(String reqId,int curPage,int pageSize) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(pahInservice.getOutstockDetailForReqIdByPage(reqId, curPage, pageSize));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
+	* @Title:get_dept_AllPhaIn_ByPage
+	* @Description:分页查找某一部门的入库单
+	* @param:@param deptId
+	* @param:@param curPage
+	* @param:@param pageSize
+	* @param:@return
+	* @return:JsonResult
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月22日 下午4:15:10
+	 */
+	@ResponseBody
+	@GetMapping("get_dept_AllPhaIn_ByPage")
+	public JsonResult get_dept_AllPhaIn_ByPage(String deptId,int curPage,int pageSize) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			jsonResult.setResult(pahInservice.getDeptAllPhaInByPage(deptId, curPage, pageSize));
+			jsonResult.setStatus("ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setStatus("error");
+		}
+		return jsonResult;
+	}
+	
+	/**
 	* @Title:add_a_phaIn
 	* @Description:插入一个药房入库单
 	* @param:@param phaIn

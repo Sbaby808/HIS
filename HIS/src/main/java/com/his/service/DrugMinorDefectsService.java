@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.his.dao.IDrugMinorDefectsDao;
 import com.his.pojo.DrugMinorDefect;
+import com.his.pojo.DrugSubclass;
 import com.his.utils.ServiceException;
 
 /**  
 * @ClassName: DrugMinorDefectsService  
-* @Description: 药品种类service
+* @Description: 药品中类service
 * @author crazy_long
 * @date 2019年7月30日  下午12:07:54
 *    
@@ -24,6 +25,43 @@ public class DrugMinorDefectsService {
 	
 	@Autowired
 	private IDrugMinorDefectsDao drugMinorDefectDao;
+	
+	/**
+	* @Title:updateSubclassName
+	* @Description:修改中类名称
+	* @param:@param minorDefectsId
+	* @param:@param name
+	* @param:@return
+	* @param:@throws ServiceException
+	* @return:String
+	* @throws
+	* @author:crazy_long
+	* @Date:2019年9月18日 下午2:27:59
+	 */
+	public String updateminorDefectName(String minorDefectsId,String name) throws ServiceException{
+		String flag = "yes";
+		try {
+			Iterable<DrugMinorDefect> list = drugMinorDefectDao.findAll();
+			DrugMinorDefect drugMinorDefect = drugMinorDefectDao.findById(minorDefectsId).get();
+			if (drugMinorDefect != null) {
+				boolean has = true;
+				for (DrugMinorDefect d : list) {
+					if (d.getMinorDefectsName().equals(name)){
+						flag = "theNameHasExist";
+						has = false;
+						break;
+					}
+				}
+				if(has) {
+					drugMinorDefect.setMinorDefectsName(name);;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("小改小类名称失败");
+		}
+		return flag;
+	}
 	
 	/**
 	* @Title:addDrugMinorDefects
