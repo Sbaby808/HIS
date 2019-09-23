@@ -160,7 +160,7 @@ public interface IOutpatientRequestionMedicineDao extends CrudRepository<Outpati
 	* @Date:2019年8月29日 上午11:09:40
 	 */
 	@Query("from OutpatientRequestionMedicine o where o.reqStatus = '已入库'  order by o.reqTime desc ")
-	public List<OutpatientRequestionMedicine> queryRequestForYes(Pageable page);
+	public List<OutpatientRequestionMedicine> queryRequestForYes(Pageable page);	
 	
 	/**
 	* @Title:queryRequestInNowCount

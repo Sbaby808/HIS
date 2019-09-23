@@ -54,11 +54,13 @@ public class DrugInformationService {
 		try {
 			DrugInformation drug = new DrugInformation();
 			String ypId = UUID.randomUUID().toString().replace("-", "");
-			drugInformation.setYpId(ypId);
+			drug.setYpId(ypId);
 			//维护供应商
 			Supplier supplier = supplierDao.findById(drugInformation.getSupplier().getGysId()).get();
 			//维护小类id
 			DrugSubclass drugSubclass = drugSubclassDao.findById(drugInformation.getDrugSubclass().getSubclassId()).get();
+			drug.setSupplier(supplier);
+			drug.setDrugSubclass(drugSubclass);
 			drug.setYpName(drugInformation.getYpName());
 			drug.setYpType(drugInformation.getYpType());
 			drug.setYpGuige(drugInformation.getYpGuige());

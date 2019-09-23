@@ -29,7 +29,7 @@ public class DeptController {
 	public int findcount() {
 		return deptService.findcount();
 	}
-//添加部门
+	//添加部门
 	@PostMapping("/addDept")
 	@ResponseBody
 	public void addDept(@RequestBody Dept dept) {

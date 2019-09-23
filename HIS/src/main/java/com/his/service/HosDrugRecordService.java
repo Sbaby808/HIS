@@ -82,35 +82,38 @@ public class HosDrugRecordService {
 			String ypId = details.get(i).getDrugInformation().getYpId();
 			
 			List <DrugWarehouse> list = drugWarehouseDao.getDrugsOrderByExpireDate(ypId);
-			String pcId = list.get(0).getPckcId();
-			Medicine medicine = medicineDao.getMedBypcId(pcId);
-			if(medicine.getMedicineName().compareTo(details.get(i).getDrugUseNum()) > -1){
-				BigDecimal num1 = medicine.getMedicineName();
-				BigDecimal num2 = details.get(i).getDrugUseNum();
-				medicine.setMedicineName(num1.subtract(num2));
-				medicineDao.save(medicine);
-			}	
-			else{
-				BigDecimal total = details.get(i).getDrugUseNum();
-				System.out.println("total:"+total);
-				for(int j=0;j<list.size();j++){	
-					String pcId2 = list.get(j).getPckcId();
-					Medicine medicine2 = medicineDao.getMedBypcId(pcId2);
-					
-					if(total.compareTo(BigDecimal.ZERO)==1){
-						if(medicine2.getMedicineName().compareTo(total) > -1){
-							medicine2.setMedicineName(medicine2.getMedicineName().subtract(total));		
-							medicineDao.save(medicine2);
-						}
-						else{
-							total = total.subtract(medicine2.getMedicineName());
-							System.out.println(total);
-							medicine2.setMedicineName(BigDecimal.ZERO);
-							medicineDao.save(medicine2);
+			if(list.size()>0){
+				String pcId = list.get(0).getPckcId();
+				Medicine medicine = medicineDao.getMedBypcId(pcId);
+				if(medicine.getMedicineName().compareTo(details.get(i).getDrugUseNum()) > -1){
+					BigDecimal num1 = medicine.getMedicineName();
+					BigDecimal num2 = details.get(i).getDrugUseNum();
+					medicine.setMedicineName(num1.subtract(num2));
+					medicineDao.save(medicine);
+				}	
+				else{
+					BigDecimal total = details.get(i).getDrugUseNum();
+					System.out.println("total:"+total);
+					for(int j=0;j<list.size();j++){	
+						String pcId2 = list.get(j).getPckcId();
+						Medicine medicine2 = medicineDao.getMedBypcId(pcId2);
+						
+						if(total.compareTo(BigDecimal.ZERO)==1){
+							if(medicine2.getMedicineName().compareTo(total) > -1){
+								medicine2.setMedicineName(medicine2.getMedicineName().subtract(total));		
+								medicineDao.save(medicine2);
+							}
+							else{
+								total = total.subtract(medicine2.getMedicineName());
+								System.out.println(total);
+								medicine2.setMedicineName(BigDecimal.ZERO);
+								medicineDao.save(medicine2);
+							}
 						}
 					}
 				}
 			}
+			
 		}
 		
 	}
