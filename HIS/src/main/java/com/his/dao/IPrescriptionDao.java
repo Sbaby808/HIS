@@ -26,9 +26,11 @@ public interface IPrescriptionDao extends CrudRepository<Prescription, String> {
 	* @author:crazy_long
 	* @Date:2019年9月23日 上午1:51:12
 	 */
-	@Query(" from Prescription p where p.useDrugRecord IS NULL"
-			+ " and p.history.outpatientRegistration.medicalCard.cardId = ?1 "
-			+ " order by p.history.hisTime desc ")
+	@Query(value=" select pr.* from medical_card mc  " + 
+			"left outer join outpatient_registration ort on mc.card_id = ort.card_id " + 
+			"left outer join history his on ort.history_id = his.history_id " + 
+			"left outer join prescription pr on pr.prescription_id = his.prescription_id " + 
+			"where mc.card_id = ?1 order by pr.pres_time desc ",nativeQuery = true)
 	public List<Prescription> qureyPriscriptionByCardId(String cardId);
 	
 	/**
