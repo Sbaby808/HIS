@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.his.controller.TixinController;
 import com.his.dao.DeptDAO;
 import com.his.dao.IDepartmentDao;
 import com.his.dao.IEmpInformationDao;
@@ -100,7 +103,7 @@ public class EmpInformationService {
 	 * @throws @author:crazy_long
 	 * @Date:2019年8月2日 下午10:46:00
 	 */
-	public void addEmpAllInformation(EmpInformation empInformation) throws ServiceException {
+	public void addEmpAllInformation(EmpInformation empInformation,HttpSession httpSession) throws ServiceException {
 		try {
 			// 维护职称id
 			String tp_id = empInformation.getTechnicalPost().getTpId();
@@ -131,6 +134,9 @@ public class EmpInformationService {
 			pk.setYgxh(ygxh);
 			userRole.setId(pk);
 			iUserRoleDao.save(userRole);
+			TixinController ti=new TixinController();
+			ti.getCode(empInformation.getYgTel(), empInformation.getYgGh(), httpSession);
+			
 		
 		} catch (Exception e) {
 			e.printStackTrace();
